@@ -9,8 +9,9 @@ const Footer = ({ config }: Props) => {
 
   const links = [
     { label: '首页', href: '#top' },
-    { label: '导航', href: '#navigation' },
-    { label: '项目', href: '#projects' },
+    { label: '案例', href: '#projects' },
+    { label: '启动', href: '#launch' },
+    { label: '收藏', href: '#collections' },
     { label: '邮箱', href: 'mailto:1215240348@qq.com' },
   ]
 
@@ -28,7 +29,7 @@ const Footer = ({ config }: Props) => {
             {config?.title || '个人主页'}
           </span>
           <p className="font-body-md text-body-md text-text-muted">
-            © {currentYear} {config?.author || 'Tech Professional'}. 静态构建.
+            © {currentYear} {config?.author || 'Personal Hub'}. 静态构建.
           </p>
         </div>
 

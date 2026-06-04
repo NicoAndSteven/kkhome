@@ -10,10 +10,10 @@ interface Props {
 const Header = ({ config, activeSection = 'top', onContactClick }: Props) => {
   const navLinks = [
     { id: 'top', label: '首页', href: '#top' },
-    { id: 'projects', label: '项目', href: '#projects' },
-    { id: 'tools', label: '工具', href: '#tools' },
-    { id: 'navigation', label: '导航', href: '#navigation' },
-    { id: 'social', label: '联系', href: '#social' },
+    { id: 'projects', label: '案例', href: '#projects' },
+    { id: 'launch', label: '启动', href: '#launch' },
+    { id: 'workbench', label: '工具', href: '#workbench' },
+    { id: 'collections', label: '收藏', href: '#collections' },
   ]
 
   return (

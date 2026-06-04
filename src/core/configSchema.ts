@@ -55,6 +55,67 @@ const appConfigSchema = z.object({
   }).catch(defaultMotionConfig).default(defaultMotionConfig),
 })
 
+const hubItemBaseSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  category: z.string().min(1),
+  enabled: z.boolean().optional(),
+  description: z.string().optional(),
+  tags: z.array(z.string().min(1)).optional(),
+  aliases: z.array(z.string().min(1)).optional(),
+  icon: z.string().optional(),
+  favorite: z.boolean().optional(),
+})
+
+const resourceItemSchema = hubItemBaseSchema.extend({
+  type: z.literal('link'),
+  url: z.string().min(1),
+  openIn: z.enum(['same-tab', 'new-tab']).optional(),
+  local: z.boolean().optional(),
+})
+
+const utilityItemSchema = hubItemBaseSchema.extend({
+  type: z.literal('tool'),
+  mode: z.enum(['inline', 'external']),
+  utilityType: z.enum(['json-format', 'base64', 'url-codec', 'timestamp', 'uuid']).optional(),
+  url: z.string().min(1).optional(),
+})
+
+const snippetItemSchema = hubItemBaseSchema.extend({
+  type: z.enum(['prompt', 'snippet']),
+  content: z.string().min(1),
+  language: z.string().optional(),
+  copyLabel: z.string().optional(),
+})
+
+const searchTargetSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  urlTemplate: z.string().min(1),
+  icon: z.string().optional(),
+})
+
+const quickLaunchConfigSchema = z.object({
+  resources: z.array(resourceItemSchema).catch([]).default([]),
+  utilities: z.array(utilityItemSchema).catch([]).default([]),
+  snippets: z.array(snippetItemSchema).catch([]).default([]),
+  searchTargets: z.array(searchTargetSchema).catch([]).default([]),
+})
+
+const workbenchConfigSchema = z.object({
+  utilities: z.array(utilityItemSchema).catch([]).default([]),
+  maxVisible: z.number().int().positive().optional(),
+})
+
+const collectionsConfigSchema = z.object({
+  resources: z.array(resourceItemSchema).catch([]).default([]),
+  snippets: z.array(snippetItemSchema).catch([]).default([]),
+})
+
+const scratchpadConfigSchema = z.object({
+  storageKey: z.string().min(1).catch('kkhome:scratchpad').default('kkhome:scratchpad'),
+})
+
 const pluginConfigSchema = z.object({
   id: z.string().min(1),
   enabled: z.boolean().default(true),
@@ -80,13 +141,34 @@ export const parsePluginConfigs = (data: unknown): PluginConfig[] => {
   return result.data.plugins.map((plugin, index) => ({
     ...plugin,
     order: plugin.order || index + 1,
+    config: parsePluginRuntimeConfig(plugin.id, plugin.config),
   }))
+}
+
+const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, unknown> | undefined => {
+  const parsers: Record<string, z.ZodType<Record<string, unknown>>> = {
+    'quick-launch': quickLaunchConfigSchema,
+    workbench: workbenchConfigSchema,
+    collections: collectionsConfigSchema,
+    scratchpad: scratchpadConfigSchema,
+  }
+  const parser = parsers[id]
+
+  if (!parser) {
+    return config && typeof config === 'object' && !Array.isArray(config)
+      ? config as Record<string, unknown>
+      : undefined
+  }
+
+  const result = parser.safeParse(config ?? {})
+  return result.success ? result.data : undefined
 }
 
 export const getDefaultPluginConfigs = (): PluginConfig[] => [
   { id: 'profile', enabled: true, order: 1 },
-  { id: 'navigation', enabled: true, order: 2 },
-  { id: 'tools', enabled: true, order: 3 },
-  { id: 'social', enabled: true, order: 4 },
-  { id: 'projects', enabled: true, order: 5 },
+  { id: 'projects', enabled: true, order: 2 },
+  { id: 'quick-launch', enabled: true, order: 3 },
+  { id: 'workbench', enabled: true, order: 4 },
+  { id: 'collections', enabled: true, order: 5 },
+  { id: 'scratchpad', enabled: true, order: 6 },
 ]

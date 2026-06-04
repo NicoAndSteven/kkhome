@@ -7,105 +7,6 @@
       "config": {}
     },
     {
-      "id": "navigation",
-      "enabled": true,
-      "order": 4,
-      "config": {
-        "items": [
-          {
-            "id": "nav-contact",
-            "title": "联系邮箱",
-            "url": "mailto:1215240348@qq.com",
-            "icon": "mail",
-            "category": "个人",
-            "description": "通过邮件沟通合作与项目机会"
-          },
-          {
-            "id": "nav-projects",
-            "title": "项目作品",
-            "url": "#projects",
-            "icon": "folder",
-            "category": "站内",
-            "description": "查看当前主页项目与技术栈"
-          },
-          {
-            "id": "nav-docs",
-            "title": "React 文档",
-            "url": "https://react.dev/",
-            "icon": "article",
-            "category": "技术",
-            "description": "React 官方文档"
-          },
-          {
-            "id": "nav-cloudflare",
-            "title": "Cloudflare Pages",
-            "url": "https://pages.cloudflare.com/",
-            "icon": "cloud",
-            "category": "技术",
-            "description": "静态站点部署平台"
-          }
-        ]
-      }
-    },
-    {
-      "id": "tools",
-      "enabled": true,
-      "order": 3,
-      "config": {
-        "items": [
-          {
-            "id": "tool-react",
-            "name": "React",
-            "url": "https://react.dev/",
-            "category": "开发工具",
-            "description": "用于构建用户界面的前端库",
-            "tags": ["frontend", "ui"],
-            "favorite": true
-          },
-          {
-            "id": "tool-typescript",
-            "name": "TypeScript",
-            "url": "https://www.typescriptlang.org/",
-            "category": "开发工具",
-            "description": "为 JavaScript 增加静态类型",
-            "tags": ["language", "type-safety"],
-            "favorite": true
-          },
-          {
-            "id": "tool-vite",
-            "name": "Vite",
-            "url": "https://vite.dev/",
-            "category": "开发工具",
-            "description": "快速的前端构建工具",
-            "tags": ["build", "dev-server"]
-          },
-          {
-            "id": "tool-cloudflare",
-            "name": "Cloudflare Pages",
-            "url": "https://pages.cloudflare.com/",
-            "category": "云服务",
-            "description": "面向前端项目的边缘部署平台",
-            "tags": ["deploy", "edge"]
-          }
-        ]
-      }
-    },
-    {
-      "id": "social",
-      "enabled": true,
-      "order": 5,
-      "config": {
-        "items": [
-          {
-            "id": "social-email",
-            "platform": "邮箱",
-            "url": "mailto:1215240348@qq.com",
-            "icon": "email"
-          }
-        ]
-      }
-    },
-    {
       "id": "projects",
       "enabled": true,
       "order": 2,
@@ -121,15 +22,333 @@
       }
     },
     {
-      "id": "timeline",
-      "enabled": false,
-      "order": 6,
+      "id": "quick-launch",
+      "enabled": true,
+      "order": 3,
       "config": {
-        "items": []
+        "searchTargets": [
+          {
+            "id": "search-github",
+            "title": "GitHub",
+            "urlTemplate": "https://github.com/search?q={query}",
+            "icon": "code"
+          },
+          {
+            "id": "search-npm",
+            "title": "npm",
+            "urlTemplate": "https://www.npmjs.com/search?q={query}",
+            "icon": "package_2"
+          },
+          {
+            "id": "search-mdn",
+            "title": "MDN",
+            "urlTemplate": "https://developer.mozilla.org/search?q={query}",
+            "icon": "article"
+          },
+          {
+            "id": "search-bilibili",
+            "title": "Bilibili",
+            "urlTemplate": "https://search.bilibili.com/all?keyword={query}",
+            "icon": "smart_display"
+          }
+        ],
+        "resources": [
+          {
+            "id": "resource-chatgpt",
+            "title": "ChatGPT",
+            "type": "link",
+            "url": "https://chatgpt.com/",
+            "category": "AI",
+            "description": "日常问题拆解、代码协作和 Prompt 调试入口",
+            "tags": ["ai", "assistant"],
+            "aliases": ["gpt", "ai"],
+            "icon": "auto_awesome",
+            "favorite": true
+          },
+          {
+            "id": "resource-github",
+            "title": "GitHub",
+            "type": "link",
+            "url": "https://github.com/",
+            "category": "开发",
+            "description": "代码仓库、issue、release 和项目动态",
+            "tags": ["code", "git"],
+            "aliases": ["gh"],
+            "icon": "code",
+            "favorite": true
+          },
+          {
+            "id": "resource-cloudflare",
+            "title": "Cloudflare Dashboard",
+            "type": "link",
+            "url": "https://dash.cloudflare.com/",
+            "category": "云服务",
+            "description": "Pages、DNS、Workers 和部署状态入口",
+            "tags": ["deploy", "edge"],
+            "aliases": ["cf", "pages"],
+            "icon": "cloud",
+            "favorite": true
+          },
+          {
+            "id": "resource-local-vite",
+            "title": "本地 Vite",
+            "type": "link",
+            "url": "http://localhost:5173/",
+            "category": "本地服务",
+            "description": "当前项目的默认本地开发入口",
+            "tags": ["local", "dev"],
+            "aliases": ["local", "vite"],
+            "icon": "terminal",
+            "local": true
+          }
+        ],
+        "utilities": [
+          {
+            "id": "utility-json",
+            "title": "JSON 格式化",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "json-format",
+            "category": "文本处理",
+            "description": "格式化和校验 JSON 片段",
+            "aliases": ["json"],
+            "icon": "data_object",
+            "favorite": true
+          },
+          {
+            "id": "utility-base64",
+            "title": "Base64 编解码",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "base64",
+            "category": "编码转换",
+            "description": "在普通文本和 Base64 之间转换",
+            "aliases": ["b64"],
+            "icon": "swap_horiz"
+          },
+          {
+            "id": "utility-url",
+            "title": "URL 编解码",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "url-codec",
+            "category": "编码转换",
+            "description": "处理 URL encode 和 decode",
+            "aliases": ["url"],
+            "icon": "link"
+          },
+          {
+            "id": "utility-time",
+            "title": "时间戳转换",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "timestamp",
+            "category": "时间",
+            "description": "把秒或毫秒时间戳转成 ISO 时间",
+            "aliases": ["time", "timestamp"],
+            "icon": "schedule"
+          },
+          {
+            "id": "utility-uuid",
+            "title": "UUID 生成",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "uuid",
+            "category": "生成器",
+            "description": "快速生成随机 UUID",
+            "aliases": ["id"],
+            "icon": "fingerprint"
+          }
+        ],
+        "snippets": [
+          {
+            "id": "snippet-check",
+            "title": "项目检查命令",
+            "type": "snippet",
+            "category": "命令",
+            "description": "运行当前项目完整质量门禁",
+            "content": "npm run check",
+            "tags": ["npm", "check"],
+            "aliases": ["verify", "ci"],
+            "icon": "task_alt",
+            "favorite": true
+          },
+          {
+            "id": "prompt-review",
+            "title": "审查 Prompt",
+            "type": "prompt",
+            "category": "Prompt",
+            "description": "让审查者优先检查漏洞、方向偏差和缺失测试",
+            "content": "请以代码审查视角检查这次改动，优先指出 bug、方向偏差、可维护性风险和缺失测试。",
+            "tags": ["review", "prompt"],
+            "aliases": ["review"],
+            "icon": "rate_review"
+          }
+        ]
       }
     },
     {
-      "id": "blog",
+      "id": "workbench",
+      "enabled": true,
+      "order": 4,
+      "config": {
+        "utilities": [
+          {
+            "id": "utility-json",
+            "title": "JSON 格式化",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "json-format",
+            "category": "文本处理",
+            "description": "格式化和校验 JSON 片段",
+            "icon": "data_object"
+          },
+          {
+            "id": "utility-base64",
+            "title": "Base64 编解码",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "base64",
+            "category": "编码转换",
+            "description": "在普通文本和 Base64 之间转换",
+            "icon": "swap_horiz"
+          },
+          {
+            "id": "utility-url",
+            "title": "URL 编解码",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "url-codec",
+            "category": "编码转换",
+            "description": "处理 URL encode 和 decode",
+            "icon": "link"
+          },
+          {
+            "id": "utility-time",
+            "title": "时间戳转换",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "timestamp",
+            "category": "时间",
+            "description": "把秒或毫秒时间戳转成 ISO 时间",
+            "icon": "schedule"
+          },
+          {
+            "id": "utility-uuid",
+            "title": "UUID 生成",
+            "type": "tool",
+            "mode": "inline",
+            "utilityType": "uuid",
+            "category": "生成器",
+            "description": "快速生成随机 UUID",
+            "icon": "fingerprint"
+          }
+        ]
+      }
+    },
+    {
+      "id": "collections",
+      "enabled": true,
+      "order": 5,
+      "config": {
+        "resources": [
+          {
+            "id": "resource-chatgpt",
+            "title": "ChatGPT",
+            "type": "link",
+            "url": "https://chatgpt.com/",
+            "category": "AI",
+            "description": "日常问题拆解、代码协作和 Prompt 调试入口",
+            "tags": ["ai", "assistant"],
+            "aliases": ["gpt", "ai"],
+            "icon": "auto_awesome",
+            "favorite": true
+          },
+          {
+            "id": "resource-github",
+            "title": "GitHub",
+            "type": "link",
+            "url": "https://github.com/",
+            "category": "开发",
+            "description": "代码仓库、issue、release 和项目动态",
+            "tags": ["code", "git"],
+            "aliases": ["gh"],
+            "icon": "code",
+            "favorite": true
+          },
+          {
+            "id": "resource-cloudflare",
+            "title": "Cloudflare Dashboard",
+            "type": "link",
+            "url": "https://dash.cloudflare.com/",
+            "category": "云服务",
+            "description": "Pages、DNS、Workers 和部署状态入口",
+            "tags": ["deploy", "edge"],
+            "aliases": ["cf", "pages"],
+            "icon": "cloud",
+            "favorite": true
+          },
+          {
+            "id": "resource-mdn",
+            "title": "MDN",
+            "type": "link",
+            "url": "https://developer.mozilla.org/",
+            "category": "资料",
+            "description": "Web API 和浏览器行为查询",
+            "tags": ["docs", "web"],
+            "aliases": ["docs"],
+            "icon": "article"
+          },
+          {
+            "id": "resource-local-vite",
+            "title": "本地 Vite",
+            "type": "link",
+            "url": "http://localhost:5173/",
+            "category": "本地服务",
+            "description": "当前项目的默认本地开发入口",
+            "tags": ["local", "dev"],
+            "aliases": ["local", "vite"],
+            "icon": "terminal",
+            "local": true
+          }
+        ],
+        "snippets": [
+          {
+            "id": "snippet-check",
+            "title": "项目检查命令",
+            "type": "snippet",
+            "category": "命令",
+            "description": "运行当前项目完整质量门禁",
+            "content": "npm run check",
+            "tags": ["npm", "check"],
+            "aliases": ["verify", "ci"],
+            "icon": "task_alt",
+            "favorite": true
+          },
+          {
+            "id": "prompt-review",
+            "title": "审查 Prompt",
+            "type": "prompt",
+            "category": "Prompt",
+            "description": "让审查者优先检查漏洞、方向偏差和缺失测试",
+            "content": "请以代码审查视角检查这次改动，优先指出 bug、方向偏差、可维护性风险和缺失测试。",
+            "tags": ["review", "prompt"],
+            "aliases": ["review"],
+            "icon": "rate_review"
+          }
+        ]
+      }
+    },
+    {
+      "id": "scratchpad",
+      "enabled": true,
+      "order": 6,
+      "config": {
+        "storageKey": "kkhome:scratchpad"
+      }
+    },
+    {
+      "id": "navigation",
       "enabled": false,
       "order": 7,
       "config": {
@@ -137,9 +356,41 @@
       }
     },
     {
-      "id": "stats",
+      "id": "tools",
       "enabled": false,
       "order": 8,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "social",
+      "enabled": false,
+      "order": 9,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "timeline",
+      "enabled": false,
+      "order": 10,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "blog",
+      "enabled": false,
+      "order": 11,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "stats",
+      "enabled": false,
+      "order": 12,
       "config": {
         "githubRepos": 0,
         "githubContributions": 0,
@@ -149,7 +400,7 @@
     {
       "id": "analytics",
       "enabled": false,
-      "order": 9,
+      "order": 13,
       "config": {
         "totalVisitors": 0,
         "todayVisitors": 0,
@@ -159,7 +410,7 @@
     {
       "id": "comments",
       "enabled": false,
-      "order": 10,
+      "order": 14,
       "config": {
         "items": []
       }
@@ -167,7 +418,7 @@
     {
       "id": "downloads",
       "enabled": false,
-      "order": 11,
+      "order": 15,
       "config": {
         "items": []
       }

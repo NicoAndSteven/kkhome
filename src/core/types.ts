@@ -85,6 +85,59 @@ export interface ToolItem {
   favorite?: boolean
 }
 
+export type HubItemType = 'link' | 'tool' | 'prompt' | 'snippet' | 'feed' | 'integration'
+
+export interface HubItem {
+  id: string
+  title: string
+  type: HubItemType
+  category: string
+  enabled?: boolean
+  description?: string
+  tags?: string[]
+  aliases?: string[]
+  icon?: string
+  favorite?: boolean
+}
+
+export interface ResourceItem extends HubItem {
+  type: 'link'
+  url: string
+  openIn?: 'same-tab' | 'new-tab'
+  local?: boolean
+}
+
+export interface UtilityItem extends HubItem {
+  type: 'tool'
+  mode: 'inline' | 'external'
+  utilityType?: 'json-format' | 'base64' | 'url-codec' | 'timestamp' | 'uuid'
+  url?: string
+}
+
+export interface SnippetItem extends HubItem {
+  type: 'prompt' | 'snippet'
+  content: string
+  language?: string
+  copyLabel?: string
+}
+
+export interface SearchTarget {
+  id: string
+  title: string
+  urlTemplate: string
+  icon?: string
+}
+
+export interface ScratchpadItem {
+  id: string
+  type: 'text' | 'link' | 'prompt' | 'code' | 'json' | 'markdown'
+  content: string
+  title?: string
+  tags?: string[]
+  createdAt: string
+  updatedAt: string
+}
+
 /**
  * 社交链接配置
  */

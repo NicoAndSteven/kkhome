@@ -5,7 +5,8 @@ interface Props {
 }
 
 const SocialPlugin = ({ config }: Props) => {
-  const links = (Array.isArray(config?.items) ? config.items : []) as SocialLink[]
+  const rawLinks = (Array.isArray(config?.items) ? config.items : []) as SocialLink[]
+  const links = rawLinks.filter(link => link.icon !== 'email')
 
   // 平台对应的 Material Symbols 图标
   const getPlatformIcon = (icon: string): string => {

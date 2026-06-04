@@ -1,0 +1,176 @@
+{
+  "plugins": [
+    {
+      "id": "profile",
+      "enabled": true,
+      "order": 1,
+      "config": {}
+    },
+    {
+      "id": "navigation",
+      "enabled": true,
+      "order": 4,
+      "config": {
+        "items": [
+          {
+            "id": "nav-contact",
+            "title": "联系邮箱",
+            "url": "mailto:1215240348@qq.com",
+            "icon": "mail",
+            "category": "个人",
+            "description": "通过邮件沟通合作与项目机会"
+          },
+          {
+            "id": "nav-projects",
+            "title": "项目作品",
+            "url": "#projects",
+            "icon": "folder",
+            "category": "站内",
+            "description": "查看当前主页项目与技术栈"
+          },
+          {
+            "id": "nav-docs",
+            "title": "React 文档",
+            "url": "https://react.dev/",
+            "icon": "article",
+            "category": "技术",
+            "description": "React 官方文档"
+          },
+          {
+            "id": "nav-cloudflare",
+            "title": "Cloudflare Pages",
+            "url": "https://pages.cloudflare.com/",
+            "icon": "cloud",
+            "category": "技术",
+            "description": "静态站点部署平台"
+          }
+        ]
+      }
+    },
+    {
+      "id": "tools",
+      "enabled": true,
+      "order": 3,
+      "config": {
+        "items": [
+          {
+            "id": "tool-react",
+            "name": "React",
+            "url": "https://react.dev/",
+            "category": "开发工具",
+            "description": "用于构建用户界面的前端库",
+            "tags": ["frontend", "ui"],
+            "favorite": true
+          },
+          {
+            "id": "tool-typescript",
+            "name": "TypeScript",
+            "url": "https://www.typescriptlang.org/",
+            "category": "开发工具",
+            "description": "为 JavaScript 增加静态类型",
+            "tags": ["language", "type-safety"],
+            "favorite": true
+          },
+          {
+            "id": "tool-vite",
+            "name": "Vite",
+            "url": "https://vite.dev/",
+            "category": "开发工具",
+            "description": "快速的前端构建工具",
+            "tags": ["build", "dev-server"]
+          },
+          {
+            "id": "tool-cloudflare",
+            "name": "Cloudflare Pages",
+            "url": "https://pages.cloudflare.com/",
+            "category": "云服务",
+            "description": "面向前端项目的边缘部署平台",
+            "tags": ["deploy", "edge"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "social",
+      "enabled": true,
+      "order": 5,
+      "config": {
+        "items": [
+          {
+            "id": "social-email",
+            "platform": "邮箱",
+            "url": "mailto:1215240348@qq.com",
+            "icon": "email"
+          }
+        ]
+      }
+    },
+    {
+      "id": "projects",
+      "enabled": true,
+      "order": 2,
+      "config": {
+        "items": [
+          {
+            "id": "project-homepage",
+            "name": "个人主页",
+            "description": "基于 React、TypeScript 和 Tailwind CSS 构建的配置驱动个人主页。",
+            "techStack": ["React", "TypeScript", "Tailwind CSS", "Vite"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "timeline",
+      "enabled": false,
+      "order": 6,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "blog",
+      "enabled": false,
+      "order": 7,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "stats",
+      "enabled": false,
+      "order": 8,
+      "config": {
+        "githubRepos": 0,
+        "githubContributions": 0,
+        "languages": []
+      }
+    },
+    {
+      "id": "analytics",
+      "enabled": false,
+      "order": 9,
+      "config": {
+        "totalVisitors": 0,
+        "todayVisitors": 0,
+        "weeklyVisitors": 0
+      }
+    },
+    {
+      "id": "comments",
+      "enabled": false,
+      "order": 10,
+      "config": {
+        "items": []
+      }
+    },
+    {
+      "id": "downloads",
+      "enabled": false,
+      "order": 11,
+      "config": {
+        "items": []
+      }
+    }
+  ]
+}

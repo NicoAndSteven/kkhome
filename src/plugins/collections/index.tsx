@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react'
 import { PluginRuntimeConfig, ResourceItem, SnippetItem } from '@core/types'
+import { Icon } from '@components'
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -53,7 +54,7 @@ const CollectionsPlugin = ({ config }: Props) => {
 
   if (items.length === 0) {
     return (
-      <section id="collections" className="rounded-lg border border-white/10 bg-surface-card/74 p-lg scroll-mt-24">
+      <section id="collections" className="surface-panel rounded-[2px] p-lg scroll-mt-24">
         <p className="font-body-md text-body-md text-text-muted">未配置收藏资源</p>
       </section>
     )
@@ -61,7 +62,7 @@ const CollectionsPlugin = ({ config }: Props) => {
 
   return (
     <section id="collections" className="space-y-lg scroll-mt-24">
-      <div className="rounded-lg border border-white/10 bg-surface-card/74 p-md md:p-lg">
+      <div className="surface-panel rounded-[2px] p-md md:p-lg">
         <div className="grid gap-md md:grid-cols-12 md:items-end">
           <div className="md:col-span-5">
             <span className="font-label-mono text-xs uppercase text-secondary">Collections</span>
@@ -71,14 +72,14 @@ const CollectionsPlugin = ({ config }: Props) => {
             </p>
           </div>
           <div className="relative md:col-span-7">
-            <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">search</span>
+            <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-xl text-text-muted" />
             <input
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="搜索收藏、标签或别名..."
               aria-label="搜索收藏资源"
-              className="w-full rounded-lg border border-white/10 bg-background/50 py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+              className="surface-control w-full rounded-[2px] py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
             />
           </div>
         </div>
@@ -88,10 +89,10 @@ const CollectionsPlugin = ({ config }: Props) => {
               key={category}
               type="button"
               onClick={() => setActiveCategory(category)}
-              className={`rounded-md px-sm py-2 font-body-md text-sm transition-premium ${
+              className={`rounded-[2px] px-sm py-2 font-body-md text-sm transition-premium ${
                 activeCategory === category
                   ? 'bg-primary/12 text-primary'
-                  : 'text-text-muted hover:bg-white/5 hover:text-on-surface'
+                  : 'text-text-muted hover:bg-surface-card/70 hover:text-on-surface'
               }`}
             >
               {category}
@@ -106,12 +107,12 @@ const CollectionsPlugin = ({ config }: Props) => {
             key={item.id}
             type="button"
             onClick={() => openOrCopy(item)}
-            className="group grid gap-sm rounded-lg border border-white/10 bg-surface-card/70 p-md text-left transition-premium hover:border-primary/30 hover:bg-surface-container/72"
+            className="surface-item group grid gap-sm rounded-[2px] p-md text-left transition-premium hover:border-primary/35 hover:bg-surface-container/80"
           >
             <div className="flex items-start justify-between gap-md">
               <div className="flex items-start gap-sm">
-                <span className="material-symbols-outlined rounded-lg border border-white/10 bg-background/45 p-2 text-primary" aria-hidden="true">
-                  {item.icon ?? (item.type === 'link' ? 'bookmark' : 'content_copy')}
+                <span className="rounded-[2px] border border-border-subtle bg-background/55 p-2 text-primary" aria-hidden="true">
+                  <Icon name={item.icon ?? (item.type === 'link' ? 'bookmark' : 'content_copy')} className="text-2xl" />
                 </span>
                 <span>
                   <span className="block font-body-lg font-bold text-on-surface">{item.title}</span>
@@ -122,7 +123,7 @@ const CollectionsPlugin = ({ config }: Props) => {
                   )}
                 </span>
               </div>
-              <span className="rounded border border-white/10 px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
+              <span className="rounded border border-border-subtle px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
                 {item.category}
               </span>
             </div>

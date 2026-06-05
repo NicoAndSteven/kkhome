@@ -15,87 +15,128 @@ test('homepage renders configured content without placeholders', async ({ page }
     }
   })
   await page.goto('/')
+  await expect(page.locator('.intro-stage')).toBeVisible({ timeout: 1_000 })
+  await expect.poll(() => page.evaluate(() => (
+    window.getComputedStyle(document.documentElement).overflowY
+  ))).toBe('hidden')
   await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 4_000 })
 
-  await expect(page).toHaveTitle('垣钰 | 个人主页')
+  await expect(page).toHaveTitle('垣钰 | Personal Hub')
+  await expect.poll(() => page.evaluate(() => (
+    document.documentElement.scrollHeight <= window.innerHeight + 1
+    && document.documentElement.scrollWidth <= window.innerWidth + 1
+  ))).toBe(true)
   await expect(page.getByRole('heading', { name: '垣钰' })).toBeVisible()
-  await expect(page.locator('#projects').getByRole('heading', { name: '项目作品' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '万能投入口' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '万能跳转' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '工具收纳台' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '场景工作流' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '分类收藏' })).toBeVisible()
-  await expect(page.getByRole('heading', { name: '临时收纳' })).toBeVisible()
-  await expect(page.locator('#launch').getByText('ChatGPT')).toBeVisible()
+  await expect.poll(() => page.evaluate(() => window.__hubAvailableRoutes)).toEqual(['home', 'ai-tools', 'inbox'])
+  await expect(page.locator('#inbox')).toHaveCount(0)
+  await expect(page.locator('#launch')).toHaveCount(0)
+  await expect(page.locator('#workbench')).toHaveCount(0)
+  await expect(page.locator('#collections')).toHaveCount(0)
+  await expect(page.locator('#scratchpad')).toHaveCount(0)
+  await expect(page.locator('#projects')).toHaveCount(0)
+  await expect(page.locator('#workflows')).toHaveCount(0)
 
   await expect(page.locator('body')).not.toContainText('example.com')
   await expect(page.locator('body')).not.toContainText('yourusername')
   await expect(page.locator('body')).not.toContainText('常用工具栈')
   await expect(page.locator('body')).not.toContainText('探索我的世界')
+  await expect(page.locator('body')).not.toContainText('项目作品')
+  await expect(page.locator('body')).not.toContainText('场景工作流')
 
   const themeToggle = page.getByRole('button', { name: '切换主题' })
   await expect(themeToggle).toBeVisible()
   await themeToggle.click()
   await expect(page.locator('html')).not.toHaveClass(/dark/)
 
-  await page.locator('#projects').getByRole('button', { name: '展开详情' }).click()
-  await expect(page.getByText('产物为纯静态资源，适配 Cloudflare Pages。')).toBeVisible()
+  const goRoute = async (route: string) => {
+    await page.evaluate((nextRoute) => {
+      window.location.hash = `#/${nextRoute}`
+    }, route)
+    await expect(page).toHaveURL(new RegExp(`#/${route}`))
+    await expect.poll(() => page.evaluate(() => (
+      document.documentElement.scrollHeight <= window.innerHeight + 1
+    ))).toBe(true)
+  }
 
+  await goRoute('inbox')
+  await expect(page).toHaveURL(/#\/inbox/)
   const inboxSection = page.locator('#inbox')
-  const workbenchSection = page.locator('#workbench')
+  await expect(inboxSection.getByRole('heading', { name: '万能投入口' })).toBeVisible()
   await inboxSection.getByLabel('万能投入口').fill('{"capsule":true}')
   await expect(inboxSection.getByText('json', { exact: true })).toBeVisible()
-  await inboxSection.getByRole('button', { name: /发送到 JSON 工具/ }).click()
-  await expect(page).toHaveURL(/#workbench/)
-  await expect(workbenchSection.getByLabel('JSON 格式化 输入')).toHaveValue('{"capsule":true}')
-  await expect(workbenchSection.getByText('"capsule": true')).toBeVisible()
+  await expect(inboxSection.getByRole('button', { name: /复制 JSON/ })).toBeVisible()
+  await expect.poll(() => page.evaluate(() => (
+    document.documentElement.scrollHeight <= window.innerHeight + 1
+  ))).toBe(true)
+
+  await goRoute('inbox')
   await inboxSection.getByLabel('万能投入口').fill('https://localhost.test/capsule')
   await expect(inboxSection.getByText('url', { exact: true })).toBeVisible()
-  await inboxSection.getByRole('button', { name: /收纳链接/ }).click()
-  await expect(page.locator('#scratchpad').getByRole('heading', { name: /localhost\.test\/capsule/ })).toBeVisible()
+  await expect(inboxSection.getByRole('button', { name: /复制链接/ })).toBeVisible()
 
-  const launchSection = page.locator('#launch')
-  await launchSection.getByRole('searchbox', { name: '搜索快捷资源' }).fill('check')
-  await expect(launchSection.getByText('项目检查命令')).toBeVisible()
-  await launchSection.getByRole('searchbox', { name: '搜索快捷资源' }).fill('uuid')
-  await launchSection.getByRole('button', { name: /UUID 生成/ }).click()
-  await expect(page).toHaveURL(/#workbench/)
+  await goRoute('ai-tools')
+  const aiToolsSection = page.locator('#ai-tools')
+  await expect(aiToolsSection.getByRole('heading', { name: 'AI 工具导航' })).toBeVisible()
+  await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible()
+  await expect(aiToolsSection.getByText('File Converter')).toBeVisible()
+  await expect(aiToolsSection.getByText(/30aitool/).first()).toBeVisible()
+  await aiToolsSection.getByRole('button', { name: '转换工具', exact: true }).click()
+  const resultMetrics = await aiToolsSection.locator('.ai-results-scroll').evaluate((element) => ({
+    height: element.clientHeight,
+    cards: element.querySelectorAll('.surface-item').length,
+  }))
+  expect(resultMetrics.height).toBeGreaterThan(260)
+  expect(resultMetrics.cards).toBeGreaterThan(3)
+  await expect(aiToolsSection.locator('.ai-results-scroll .surface-item').first()).not.toContainText('30aitool')
+  await aiToolsSection.getByRole('button', { name: '文件转换器', exact: true }).click()
+  await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible()
+  await expect(aiToolsSection.getByText('File Converter')).toBeVisible()
+  await aiToolsSection.getByRole('searchbox', { name: '搜索目标工具' }).fill('图片压缩')
+  await expect(aiToolsSection.getByText(/TinyPNG|Tinypng/)).toBeVisible()
+  await expect(aiToolsSection.getByText('File Converter')).toHaveCount(0)
 
-  await expect(workbenchSection.getByText(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i)).toBeVisible()
-  await workbenchSection.getByRole('button', { name: 'JSON 格式化' }).click()
-  await workbenchSection.getByLabel('JSON 格式化 输入').fill('{"hub":true}')
-  await workbenchSection.getByRole('button', { name: '运行' }).click()
-  await expect(workbenchSection.getByText('"hub": true')).toBeVisible()
-  await workbenchSection.getByRole('button', { name: 'UUID 生成' }).click()
-  await expect(workbenchSection.getByText(/[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}/i)).toBeVisible()
-  await workbenchSection.getByRole('button', { name: 'URL 编解码' }).click()
-  await expect(workbenchSection.getByLabel('URL 编解码 输入')).toHaveValue(/localhost\.test/)
-
-  const workflowsSection = page.locator('#workflows')
-  await workflowsSection.getByRole('button', { name: /开发模式/ }).click()
-  await workflowsSection.getByRole('button', { name: '执行场景' }).click()
-  await expect(workflowsSection.getByText('已执行 开发模式')).toBeVisible()
-  await expect(page.locator('#scratchpad').getByRole('heading', { name: 'npm run check' })).toBeVisible()
-
-  const collectionsSection = page.locator('#collections')
-  await collectionsSection.getByRole('button', { name: '命令', exact: true }).click()
-  await expect(collectionsSection.getByText('项目检查命令')).toBeVisible()
-  await expect(collectionsSection.getByText('ChatGPT')).toHaveCount(0)
-
-  const scratchpadSection = page.locator('#scratchpad')
-  await scratchpadSection.getByLabel('粘贴临时内容').fill('https://localhost.test/dev-note')
-  await scratchpadSection.getByRole('button', { name: '收纳' }).click()
-  await expect(scratchpadSection.getByRole('heading', { name: /localhost\.test\/dev-note/ })).toBeVisible()
-  await page.reload()
-  await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 4_000 })
-  await expect(page.locator('#scratchpad').getByRole('heading', { name: /localhost\.test\/dev-note/ })).toBeVisible()
-
-  await page.getByRole('button', { name: '联系我' }).click()
+  await page.locator('header').getByRole('button', { name: '打开联系抽屉' }).click()
   await expect(page.getByRole('dialog', { name: '联系我' })).toBeVisible()
   await page.getByRole('button', { name: '关闭', exact: true }).click()
   await expect(page.getByRole('dialog', { name: '联系我' })).toBeHidden()
 
   expect(consoleErrors).toEqual([])
+})
+
+test('routes stay within desktop and mobile viewports', async ({ browser }) => {
+  test.setTimeout(70_000)
+
+  const routes = ['/', '/#/ai-tools', '/#/inbox']
+  const viewports = [
+    { width: 1440, height: 1000, isMobile: false },
+    { width: 390, height: 844, isMobile: true },
+  ]
+
+  for (const viewport of viewports) {
+    const page = await browser.newPage({
+      viewport: { width: viewport.width, height: viewport.height },
+      isMobile: viewport.isMobile,
+    })
+
+    for (const route of routes) {
+      await page.goto(route)
+      await page.locator('.page-shell.page-ready').waitFor({ state: 'attached', timeout: 7_000 })
+
+      await expect.poll(() => page.evaluate(() => ({
+        heightFits: document.documentElement.scrollHeight <= window.innerHeight + 1,
+        widthFits: document.documentElement.scrollWidth <= window.innerWidth + 1,
+        overflowingControls: [...document.querySelectorAll('button, a, input, textarea, pre')]
+          .filter((element) => element.scrollWidth > element.clientWidth + 1)
+          .map((element) => element.textContent?.trim() || element.getAttribute('placeholder') || ''),
+      }))).toEqual({
+        heightFits: true,
+        widthFits: true,
+        overflowingControls: [],
+      })
+    }
+
+    await page.close()
+  }
 })
 
 test('universal inbox reports unavailable receiver modules', async ({ page }) => {
@@ -142,7 +183,7 @@ test('universal inbox reports unavailable receiver modules', async ({ page }) =>
     })
   })
 
-  await page.goto('/')
+  await page.goto('/#/inbox')
   await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 4_000 })
 
   const inboxSection = page.locator('#inbox')

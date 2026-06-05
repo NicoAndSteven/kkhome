@@ -1,5 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { PluginRuntimeConfig, UtilityItem } from '@core/types'
+import { consumeQueuedToolSelection } from '@core/routeBridge'
+import { Icon } from '@components'
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -125,6 +127,15 @@ const WorkbenchPlugin = ({ config }: Props) => {
     return () => window.removeEventListener('hub:select-tool', handleSelectTool)
   }, [inlineTools, selectTool])
 
+  useEffect(() => {
+    const pendingTool = consumeQueuedToolSelection()
+    if (!pendingTool) return
+
+    if (inlineTools.some((tool) => tool.utilityType === pendingTool.tool)) {
+      selectTool(pendingTool.tool, pendingTool.input, pendingTool.autorun !== false)
+    }
+  }, [inlineTools, selectTool])
+
   const execute = () => {
     setResult(runTool(activeTool, input))
   }
@@ -137,7 +148,7 @@ const WorkbenchPlugin = ({ config }: Props) => {
 
   if (inlineTools.length === 0) {
     return (
-      <section id="workbench" className="rounded-lg border border-white/10 bg-surface-card/74 p-lg scroll-mt-24">
+      <section id="workbench" className="surface-panel rounded-[2px] p-lg scroll-mt-24">
         <p className="font-body-md text-body-md text-text-muted">未配置可用工具</p>
       </section>
     )
@@ -153,16 +164,16 @@ const WorkbenchPlugin = ({ config }: Props) => {
             只放可以直接处理输入输出的实用工具。
           </p>
         </div>
-        <div className="flex flex-wrap gap-xs rounded-lg border border-white/10 bg-surface-card/72 p-xs md:col-span-7 md:justify-end">
+        <div className="surface-panel rounded-[2px] p-xs flex flex-wrap gap-xs md:col-span-7 md:justify-end">
           {inlineTools.map((tool) => (
             <button
               key={tool.id}
               type="button"
               onClick={() => selectTool(tool.utilityType as ToolKind)}
-              className={`rounded-md px-sm py-2 font-body-md text-sm transition-premium ${
+              className={`rounded-[2px] px-sm py-2 font-body-md text-sm transition-premium ${
                 activeTool === tool.utilityType
                   ? 'bg-primary/12 text-primary'
-                  : 'text-text-muted hover:bg-white/5 hover:text-on-surface'
+                  : 'text-text-muted hover:bg-surface-card/70 hover:text-on-surface'
               }`}
             >
               {tool.title}
@@ -171,7 +182,7 @@ const WorkbenchPlugin = ({ config }: Props) => {
         </div>
       </div>
 
-      <div className="grid gap-md rounded-lg border border-white/10 bg-surface-card/78 p-md md:grid-cols-2 md:p-lg">
+      <div className="surface-panel-strong grid gap-md rounded-[2px] p-md md:grid-cols-2 md:p-lg">
         <div className="space-y-sm">
           <label htmlFor="workbench-input" className="font-label-mono text-xs uppercase text-text-muted">
             {activeLabel} 输入
@@ -180,22 +191,22 @@ const WorkbenchPlugin = ({ config }: Props) => {
             id="workbench-input"
             value={input}
             onChange={(event) => setInput(event.target.value)}
-            className="min-h-48 w-full resize-y rounded-lg border border-white/10 bg-background/50 p-sm font-label-mono text-sm text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+            className="surface-control min-h-48 w-full resize-y rounded-[2px] p-sm font-label-mono text-sm text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
           />
           <div className="flex flex-wrap gap-xs">
             <button
               type="button"
               onClick={execute}
-              className="inline-flex items-center gap-xs rounded-lg bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary transition-premium hover:opacity-90"
+              className="inline-flex items-center gap-xs rounded-[2px] bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary transition-premium hover:opacity-90"
             >
-              <span className="material-symbols-outlined text-base" aria-hidden="true">play_arrow</span>
+              <Icon name="play_arrow" className="text-base" />
               运行
             </button>
             {activeTool === 'uuid' && (
               <button
                 type="button"
                 onClick={() => setResult(runTool('uuid', ''))}
-                className="rounded-lg border border-white/10 px-sm py-2 font-body-md text-sm text-text-muted transition-premium hover:border-primary/40 hover:text-primary"
+                className="rounded-[2px] border border-border-subtle px-sm py-2 font-body-md text-sm text-text-muted transition-premium hover:border-primary/40 hover:text-primary"
               >
                 重新生成
               </button>
@@ -210,13 +221,13 @@ const WorkbenchPlugin = ({ config }: Props) => {
               type="button"
               onClick={copyOutput}
               disabled={!result.output}
-              className="inline-flex items-center gap-xs rounded-lg border border-white/10 px-sm py-2 font-body-md text-sm text-text-muted transition-premium hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
+              className="inline-flex items-center gap-xs rounded-[2px] border border-border-subtle px-sm py-2 font-body-md text-sm text-text-muted transition-premium hover:border-primary/40 hover:text-primary disabled:cursor-not-allowed disabled:opacity-40"
             >
-              <span className="material-symbols-outlined text-base" aria-hidden="true">content_copy</span>
+              <Icon name="content_copy" className="text-base" />
               复制
             </button>
           </div>
-          <pre className="min-h-48 overflow-auto whitespace-pre-wrap break-words rounded-lg border border-white/10 bg-background/50 p-sm font-label-mono text-sm text-on-surface">
+          <pre className="surface-control min-h-48 overflow-auto whitespace-pre-wrap break-words rounded-[2px] p-sm font-label-mono text-sm text-on-surface">
             {result.error || result.output}
           </pre>
           {result.error && (

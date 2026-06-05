@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import { PluginRuntimeConfig, ScratchpadItem } from '@core/types'
+import { consumeQueuedScratchpadItem } from '@core/routeBridge'
+import { Icon } from '@components'
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -70,6 +72,13 @@ const ScratchpadPlugin = ({ config }: Props) => {
     return () => window.removeEventListener('hub:add-scratchpad', handleAddScratchpad)
   }, [])
 
+  useEffect(() => {
+    const content = consumeQueuedScratchpadItem()?.trim()
+    if (!content) return
+
+    setItems((current) => [createScratchItem(content), ...current])
+  }, [])
+
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
     if (!normalizedQuery) return items
@@ -117,7 +126,7 @@ const ScratchpadPlugin = ({ config }: Props) => {
             只保存在当前浏览器，用于暂存链接、文本、Prompt 和命令。
           </p>
         </div>
-        <div className="rounded-lg border border-white/10 bg-surface-card/78 p-md md:col-span-7">
+        <div className="surface-panel rounded-[2px] p-md md:col-span-7">
           <label htmlFor="scratchpad-input" className="font-label-mono text-xs uppercase text-text-muted">
             粘贴临时内容
           </label>
@@ -126,22 +135,22 @@ const ScratchpadPlugin = ({ config }: Props) => {
             value={draft}
             onChange={(event) => setDraft(event.target.value)}
             placeholder="URL、JSON、Markdown、Prompt、命令或任意文本..."
-            className="mt-sm min-h-36 w-full resize-y rounded-lg border border-white/10 bg-background/50 p-sm font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+            className="surface-control mt-sm min-h-36 w-full resize-y rounded-[2px] p-sm font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
           />
           <div className="mt-sm flex flex-wrap gap-xs">
             <button
               type="button"
               onClick={addItem}
-              className="inline-flex items-center gap-xs rounded-lg bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary transition-premium hover:opacity-90"
+              className="inline-flex items-center gap-xs rounded-[2px] bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary transition-premium hover:opacity-90"
             >
-              <span className="material-symbols-outlined text-base" aria-hidden="true">add</span>
+              <Icon name="add" className="text-base" />
               收纳
             </button>
             <button
               type="button"
               onClick={clearAll}
               disabled={items.length === 0}
-              className="rounded-lg border border-white/10 px-sm py-2 font-body-md text-sm text-text-muted transition-premium hover:border-error/50 hover:text-error disabled:cursor-not-allowed disabled:opacity-40"
+              className="rounded-[2px] border border-border-subtle px-sm py-2 font-body-md text-sm text-text-muted transition-premium hover:border-error/50 hover:text-error disabled:cursor-not-allowed disabled:opacity-40"
             >
               {confirmClear ? '确认清空' : '清空全部'}
             </button>
@@ -149,16 +158,16 @@ const ScratchpadPlugin = ({ config }: Props) => {
         </div>
       </div>
 
-      <div className="rounded-lg border border-white/10 bg-surface-card/74 p-md">
+      <div className="surface-panel rounded-[2px] p-md">
         <div className="relative">
-          <span className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-text-muted">search</span>
+          <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-xl text-text-muted" />
           <input
             type="search"
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="搜索临时内容..."
             aria-label="搜索临时内容"
-            className="w-full rounded-lg border border-white/10 bg-background/50 py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+            className="surface-control w-full rounded-[2px] py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
           />
         </div>
       </div>
@@ -166,7 +175,7 @@ const ScratchpadPlugin = ({ config }: Props) => {
       {filteredItems.length > 0 ? (
         <div className="grid gap-sm md:grid-cols-2">
           {filteredItems.map((item) => (
-            <article key={item.id} className="rounded-lg border border-white/10 bg-surface-card/70 p-md">
+            <article key={item.id} className="surface-item rounded-[2px] p-md">
               <div className="flex items-start justify-between gap-sm">
                 <div>
                   <span className="font-label-mono text-xs uppercase text-secondary">{item.type}</span>
@@ -177,17 +186,17 @@ const ScratchpadPlugin = ({ config }: Props) => {
                     type="button"
                     onClick={() => copyItem(item)}
                     aria-label="复制临时内容"
-                    className="rounded-lg border border-white/10 p-2 text-text-muted transition-premium hover:border-primary/40 hover:text-primary"
+                    className="rounded-[2px] border border-border-subtle p-2 text-text-muted transition-premium hover:border-primary/40 hover:text-primary"
                   >
-                    <span className="material-symbols-outlined text-base" aria-hidden="true">content_copy</span>
+                    <Icon name="content_copy" className="text-base" />
                   </button>
                   <button
                     type="button"
                     onClick={() => removeItem(item.id)}
                     aria-label="删除临时内容"
-                    className="rounded-lg border border-white/10 p-2 text-text-muted transition-premium hover:border-error/50 hover:text-error"
+                    className="rounded-[2px] border border-border-subtle p-2 text-text-muted transition-premium hover:border-error/50 hover:text-error"
                   >
-                    <span className="material-symbols-outlined text-base" aria-hidden="true">delete</span>
+                    <Icon name="delete" className="text-base" />
                   </button>
                 </div>
               </div>
@@ -198,7 +207,7 @@ const ScratchpadPlugin = ({ config }: Props) => {
           ))}
         </div>
       ) : (
-        <div className="rounded-lg border border-white/10 bg-surface-card/70 p-md">
+        <div className="surface-item rounded-[2px] p-md">
           <p className="font-body-md text-body-md text-text-muted">暂无临时内容</p>
         </div>
       )}

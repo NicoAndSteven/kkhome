@@ -1,6 +1,7 @@
 interface SectionItem {
   id: string
   label: string
+  href?: string
 }
 
 interface Props {
@@ -14,7 +15,7 @@ const ProgressRail = ({ activeSection, sections }: Props) => {
       {sections.map((section) => (
         <a
           key={section.id}
-          href={`#${section.id}`}
+          href={section.href ?? `#${section.id}`}
           className={`progress-dot ${activeSection === section.id ? 'active' : ''}`}
           aria-label={section.label}
         />

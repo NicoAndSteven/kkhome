@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react'
 import { CapsuleItem, CapsuleTrigger, PluginRuntimeConfig } from '@core/types'
+import { isHubRouteAvailable, queueScratchpadItem, queueToolSelection, setHubRoute } from '@core/routeBridge'
+import { Icon } from '@components'
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -32,26 +34,22 @@ const runCapsule = async (capsule: CapsuleItem, input: string) => {
   const action = capsule.action
 
   if (action.type === 'select-tool' && action.tool) {
-    if (!document.getElementById('workbench')) {
+    if (!isHubRouteAvailable('workbench')) {
       throw new Error('Workbench is unavailable')
     }
 
-    window.dispatchEvent(new globalThis.CustomEvent('hub:select-tool', {
-      detail: { tool: action.tool, input, autorun: true },
-    }))
-    window.location.hash = action.target ?? '#workbench'
+    queueToolSelection({ tool: action.tool, input, autorun: true })
+    setHubRoute('workbench')
     return action.label
   }
 
   if (action.type === 'add-scratchpad') {
-    if (!document.getElementById('scratchpad')) {
+    if (!isHubRouteAvailable('scratchpad')) {
       throw new Error('Scratchpad is unavailable')
     }
 
-    window.dispatchEvent(new globalThis.CustomEvent('hub:add-scratchpad', {
-      detail: action.value ?? input,
-    }))
-    window.location.hash = action.target ?? '#scratchpad'
+    queueScratchpadItem(action.value ?? input)
+    setHubRoute('scratchpad')
     return action.label
   }
 
@@ -91,7 +89,7 @@ const UniversalInboxPlugin = ({ config }: Props) => {
 
   return (
     <section id="inbox" className="space-y-lg scroll-mt-24">
-      <div className="rounded-lg border border-white/10 bg-surface-card/82 p-md md:p-lg">
+      <div className="surface-panel rounded-[2px] p-md md:p-lg">
         <div className="grid gap-md md:grid-cols-12 md:items-end">
           <div className="md:col-span-5">
             <span className="font-label-mono text-xs uppercase text-secondary">Universal inbox</span>
@@ -110,7 +108,7 @@ const UniversalInboxPlugin = ({ config }: Props) => {
                 setStatus('')
               }}
               placeholder="URL、JSON、时间戳、Base64、命令、Prompt 或任意文本..."
-              className="min-h-36 w-full resize-y rounded-lg border border-white/10 bg-background/55 p-sm font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+              className="surface-control min-h-36 w-full resize-y rounded-[2px] p-sm font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
             />
           </div>
         </div>
@@ -131,12 +129,12 @@ const UniversalInboxPlugin = ({ config }: Props) => {
             key={capsule.id}
             type="button"
             onClick={() => void executeCapsule(capsule)}
-            className="group grid gap-sm rounded-lg border border-white/10 bg-surface-card/70 p-md text-left transition-premium hover:border-primary/30 hover:bg-surface-container/72"
+            className="surface-item group grid gap-sm rounded-[2px] p-md text-left transition-premium hover:border-primary/35 hover:bg-surface-container/80"
           >
             <div className="flex items-start justify-between gap-md">
               <div className="flex items-start gap-sm">
-                <span className="material-symbols-outlined rounded-lg border border-white/10 bg-background/45 p-2 text-primary" aria-hidden="true">
-                  {capsule.icon ?? 'extension'}
+                <span className="rounded-[2px] border border-border-subtle bg-background/55 p-2 text-primary" aria-hidden="true">
+                  <Icon name={capsule.icon ?? 'extension'} className="text-2xl" />
                 </span>
                 <span>
                   <span className="block font-body-lg font-bold text-on-surface">{capsule.title}</span>
@@ -153,7 +151,7 @@ const UniversalInboxPlugin = ({ config }: Props) => {
             </div>
           </button>
         )) : (
-          <div className="rounded-lg border border-white/10 bg-surface-card/70 p-md md:col-span-2">
+          <div className="surface-item rounded-[2px] p-md md:col-span-2">
             <p className="font-body-md text-body-md text-text-muted">
               {input.trim() ? '没有匹配的 Capsule' : '等待输入以匹配 Capsule'}
             </p>

@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { ProfileConfig } from '@core/types'
+import Icon from './Icon'
 
 interface Props {
   open: boolean
@@ -33,10 +34,10 @@ const ContactDrawer = ({ open, profile, onClose }: Props) => {
           <button
             type="button"
             onClick={onClose}
-            className="material-symbols-outlined text-text-muted hover:text-on-surface transition-premium"
+            className="text-text-muted hover:text-on-surface transition-premium"
             aria-label="关闭"
           >
-            close
+            <Icon name="close" className="text-2xl" />
           </button>
         </div>
 
@@ -55,7 +56,7 @@ const ContactDrawer = ({ open, profile, onClose }: Props) => {
               onClick={copyEmail}
               className="inline-flex items-center justify-center gap-xs rounded-lg border border-border-subtle px-sm py-2 font-body-md text-body-md hover:border-primary hover:text-primary transition-premium"
             >
-              <span className="material-symbols-outlined text-lg">{copied ? 'check' : 'content_copy'}</span>
+              <Icon name={copied ? 'check' : 'content_copy'} className="text-lg" />
               {copied ? '已复制' : '复制'}
             </button>
           </div>

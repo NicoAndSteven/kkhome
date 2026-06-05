@@ -2,7 +2,7 @@ import { z } from 'zod'
 import { AppConfig, MotionConfig, PluginConfig, ProfileConfig, SiteConfig } from './types'
 
 export const defaultSiteConfig: SiteConfig = {
-  title: '垣钰 | 个人主页',
+  title: '垣钰 | Personal Hub',
   description: '全栈开发工程师',
   author: '垣钰',
   theme: 'dark',
@@ -241,11 +241,10 @@ const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, u
 
 export const getDefaultPluginConfigs = (): PluginConfig[] => [
   { id: 'profile', enabled: true, order: 1 },
-  { id: 'projects', enabled: true, order: 2 },
-  { id: 'universal-inbox', enabled: true, order: 3 },
-  { id: 'quick-launch', enabled: true, order: 4 },
-  { id: 'workbench', enabled: true, order: 5 },
-  { id: 'workflow-deck', enabled: true, order: 6 },
-  { id: 'collections', enabled: true, order: 7 },
-  { id: 'scratchpad', enabled: true, order: 8 },
+  { id: 'universal-inbox', enabled: true, order: 2 },
+  { id: 'ai-navigator', enabled: true, order: 3 },
+  { id: 'collections', enabled: false, order: 4 },
+  { id: 'quick-launch', enabled: false, order: 5 },
+  { id: 'workbench', enabled: false, order: 6 },
+  { id: 'scratchpad', enabled: false, order: 7 },
 ]

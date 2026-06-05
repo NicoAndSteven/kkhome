@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { SiteConfig, Theme } from '@core/types'
+import Icon from './Icon'
 
 interface Props {
   initialTheme?: SiteConfig['theme']
@@ -25,10 +26,10 @@ const ThemeToggle = ({ initialTheme = 'dark' }: Props) => {
   return (
     <button
       onClick={toggleTheme}
-      className="material-symbols-outlined rounded-lg p-2 text-on-surface transition-premium hover:bg-white/5"
+      className="rounded-[2px] p-2 text-on-surface transition-premium hover:bg-surface-card/70"
       aria-label="切换主题"
     >
-      {theme === 'dark' ? 'dark_mode' : 'light_mode'}
+      <Icon name={theme === 'dark' ? 'dark_mode' : 'light_mode'} className="text-xl" />
     </button>
   )
 }

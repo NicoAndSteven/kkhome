@@ -1,4 +1,4 @@
-import { CSSProperties, useEffect, useState } from 'react'
+import { CSSProperties, useLayoutEffect, useState } from 'react'
 import { MotionConfig, SiteConfig } from '@core/types'
 
 interface Props {
@@ -11,21 +11,35 @@ interface Props {
 const IntroStage = ({ author, enabled, duration, onComplete }: Props) => {
   const [visible, setVisible] = useState(enabled)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const scrollLockClass = 'intro-scroll-lock'
+    const root = document.documentElement
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
     if (!enabled || reduceMotion) {
+      root.classList.remove(scrollLockClass)
       setVisible(false)
       onComplete()
       return
     }
 
+    root.classList.add(scrollLockClass)
+    let unlockTimer: number | undefined
     const completeTimer = window.setTimeout(() => {
       setVisible(false)
       onComplete()
+      unlockTimer = window.setTimeout(() => {
+        root.classList.remove(scrollLockClass)
+      }, 980)
     }, duration)
 
-    return () => window.clearTimeout(completeTimer)
+    return () => {
+      window.clearTimeout(completeTimer)
+      if (unlockTimer) {
+        window.clearTimeout(unlockTimer)
+      }
+      root.classList.remove(scrollLockClass)
+    }
   }, [duration, enabled, onComplete])
 
   if (!visible) {

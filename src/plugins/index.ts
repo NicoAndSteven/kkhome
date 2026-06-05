@@ -3,10 +3,12 @@ import NavigationPlugin from './navigation'
 import ToolsPlugin from './tools'
 import SocialPlugin from './social'
 import ProjectsPlugin from './projects'
+import UniversalInboxPlugin from './universal-inbox'
 import QuickLaunchPlugin from './quick-launch'
 import WorkbenchPlugin from './workbench'
 import CollectionsPlugin from './collections'
 import ScratchpadPlugin from './scratchpad'
+import WorkflowDeckPlugin from './workflow-deck'
 import TimelinePlugin from './timeline'
 import BlogPlugin from './blog'
 import StatsPlugin from './stats'
@@ -69,11 +71,19 @@ export const plugins: Plugin[] = [
     component: QuickLaunchPlugin,
   },
   {
+    id: 'universal-inbox',
+    name: '万能投入口',
+    version: '1.0.0',
+    enabled: true,
+    order: 7,
+    component: UniversalInboxPlugin,
+  },
+  {
     id: 'workbench',
     name: '工具收纳台',
     version: '1.0.0',
     enabled: true,
-    order: 7,
+    order: 8,
     component: WorkbenchPlugin,
   },
   {
@@ -81,7 +91,7 @@ export const plugins: Plugin[] = [
     name: '分类收藏',
     version: '1.0.0',
     enabled: true,
-    order: 8,
+    order: 9,
     component: CollectionsPlugin,
   },
   {
@@ -89,8 +99,16 @@ export const plugins: Plugin[] = [
     name: '临时收纳',
     version: '1.0.0',
     enabled: true,
-    order: 9,
+    order: 10,
     component: ScratchpadPlugin,
+  },
+  {
+    id: 'workflow-deck',
+    name: '场景工作流',
+    version: '1.0.0',
+    enabled: true,
+    order: 11,
+    component: WorkflowDeckPlugin,
   },
   {
     id: 'timeline',
@@ -148,10 +166,12 @@ export {
   ToolsPlugin,
   SocialPlugin,
   ProjectsPlugin,
+  UniversalInboxPlugin,
   QuickLaunchPlugin,
   WorkbenchPlugin,
   CollectionsPlugin,
   ScratchpadPlugin,
+  WorkflowDeckPlugin,
   TimelinePlugin,
   BlogPlugin,
   StatsPlugin,

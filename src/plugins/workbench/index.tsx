@@ -7,6 +7,12 @@ interface Props {
 
 type ToolKind = NonNullable<UtilityItem['utilityType']>
 
+interface SelectToolDetail {
+  tool: ToolKind
+  input?: string
+  autorun?: boolean
+}
+
 const toolLabels: Record<ToolKind, string> = {
   'json-format': 'JSON 格式化',
   base64: 'Base64 编解码',
@@ -92,18 +98,26 @@ const WorkbenchPlugin = ({ config }: Props) => {
   const [result, setResult] = useState(runTool(activeTool, defaultInputs[activeTool]))
   const activeLabel = toolLabels[activeTool]
 
-  const selectTool = useCallback((kind: ToolKind) => {
-    const nextInput = defaultInputs[kind]
+  const selectTool = useCallback((kind: ToolKind, overrideInput?: string, autorun = true) => {
+    const nextInput = overrideInput ?? defaultInputs[kind]
     setActiveTool(kind)
     setInput(nextInput)
-    setResult(runTool(kind, nextInput))
+    if (autorun) {
+      setResult(runTool(kind, nextInput))
+    } else {
+      setResult({ output: '', error: '' })
+    }
   }, [])
 
   useEffect(() => {
     const handleSelectTool = (event: globalThis.Event) => {
-      const kind = (event as globalThis.CustomEvent<ToolKind>).detail
+      const detail = (event as globalThis.CustomEvent<ToolKind | SelectToolDetail>).detail
+      const kind = typeof detail === 'string' ? detail : detail.tool
+      const inputValue = typeof detail === 'string' ? undefined : detail.input
+      const autorun = typeof detail === 'string' ? true : detail.autorun !== false
+
       if (inlineTools.some((tool) => tool.utilityType === kind)) {
-        selectTool(kind)
+        selectTool(kind, inputValue, autorun)
       }
     }
 

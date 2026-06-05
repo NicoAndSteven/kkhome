@@ -7,8 +7,10 @@ import { MotionConfig, ProfileConfig, SiteConfig, Plugin } from '@core/types'
 const pageSections = [
   { id: 'top', label: '首页' },
   { id: 'projects', label: '案例' },
+  { id: 'inbox', label: '投喂' },
   { id: 'launch', label: '启动' },
   { id: 'workbench', label: '工具' },
+  { id: 'workflows', label: '工作流' },
   { id: 'collections', label: '收藏' },
   { id: 'scratchpad', label: '收纳' },
 ]

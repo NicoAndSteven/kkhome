@@ -58,6 +58,18 @@ const ScratchpadPlugin = ({ config }: Props) => {
     }
   }, [items, storageKey])
 
+  useEffect(() => {
+    const handleAddScratchpad = (event: globalThis.Event) => {
+      const content = (event as globalThis.CustomEvent<string>).detail?.trim()
+      if (!content) return
+
+      setItems((current) => [createScratchItem(content), ...current])
+    }
+
+    window.addEventListener('hub:add-scratchpad', handleAddScratchpad)
+    return () => window.removeEventListener('hub:add-scratchpad', handleAddScratchpad)
+  }, [])
+
   const filteredItems = useMemo(() => {
     const normalizedQuery = query.trim().toLowerCase()
     if (!normalizedQuery) return items

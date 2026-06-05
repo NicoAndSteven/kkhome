@@ -95,6 +95,75 @@ const searchTargetSchema = z.object({
   icon: z.string().optional(),
 })
 
+const capsuleTriggerSchema = z.enum(['url', 'json', 'timestamp', 'base64', 'command', 'prompt', 'text'])
+
+const hashTargetSchema = z.string().regex(/^#[A-Za-z][\w-]*$/)
+
+const selectToolActionSchema = z.object({
+  type: z.literal('select-tool'),
+  label: z.string().min(1),
+  tool: z.enum(['json-format', 'base64', 'url-codec', 'timestamp', 'uuid']),
+  target: hashTargetSchema.optional(),
+  value: z.string().optional(),
+})
+
+const addScratchpadActionSchema = z.object({
+  type: z.literal('add-scratchpad'),
+  label: z.string().min(1),
+  value: z.string().optional(),
+  target: hashTargetSchema.optional(),
+})
+
+const copyActionSchema = z.object({
+  type: z.literal('copy'),
+  label: z.string().min(1),
+  value: z.string().optional(),
+})
+
+const jumpActionSchema = z.object({
+  type: z.literal('jump'),
+  label: z.string().min(1),
+  target: hashTargetSchema,
+})
+
+const capsuleActionSchema = z.discriminatedUnion('type', [
+  selectToolActionSchema,
+  addScratchpadActionSchema,
+  copyActionSchema,
+  jumpActionSchema,
+])
+
+const capsuleItemSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  triggers: z.array(capsuleTriggerSchema).min(1),
+  action: capsuleActionSchema,
+  enabled: z.boolean().optional(),
+  description: z.string().optional(),
+  icon: z.string().optional(),
+})
+
+const workflowActionSchema = z.discriminatedUnion('type', [
+  selectToolActionSchema.extend({ id: z.string().min(1) }),
+  addScratchpadActionSchema.extend({ id: z.string().min(1) }),
+  copyActionSchema.extend({ id: z.string().min(1) }),
+  jumpActionSchema.extend({ id: z.string().min(1) }),
+])
+
+const workflowItemSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  category: z.string().min(1),
+  actions: z.array(workflowActionSchema).min(1),
+  description: z.string().optional(),
+  icon: z.string().optional(),
+  enabled: z.boolean().optional(),
+})
+
+const universalInboxConfigSchema = z.object({
+  capsules: z.array(capsuleItemSchema).catch([]).default([]),
+})
+
 const quickLaunchConfigSchema = z.object({
   resources: z.array(resourceItemSchema).catch([]).default([]),
   utilities: z.array(utilityItemSchema).catch([]).default([]),
@@ -114,6 +183,10 @@ const collectionsConfigSchema = z.object({
 
 const scratchpadConfigSchema = z.object({
   storageKey: z.string().min(1).catch('kkhome:scratchpad').default('kkhome:scratchpad'),
+})
+
+const workflowDeckConfigSchema = z.object({
+  workflows: z.array(workflowItemSchema).catch([]).default([]),
 })
 
 const pluginConfigSchema = z.object({
@@ -147,10 +220,12 @@ export const parsePluginConfigs = (data: unknown): PluginConfig[] => {
 
 const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, unknown> | undefined => {
   const parsers: Record<string, z.ZodType<Record<string, unknown>>> = {
+    'universal-inbox': universalInboxConfigSchema,
     'quick-launch': quickLaunchConfigSchema,
     workbench: workbenchConfigSchema,
     collections: collectionsConfigSchema,
     scratchpad: scratchpadConfigSchema,
+    'workflow-deck': workflowDeckConfigSchema,
   }
   const parser = parsers[id]
 
@@ -167,8 +242,10 @@ const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, u
 export const getDefaultPluginConfigs = (): PluginConfig[] => [
   { id: 'profile', enabled: true, order: 1 },
   { id: 'projects', enabled: true, order: 2 },
-  { id: 'quick-launch', enabled: true, order: 3 },
-  { id: 'workbench', enabled: true, order: 4 },
-  { id: 'collections', enabled: true, order: 5 },
-  { id: 'scratchpad', enabled: true, order: 6 },
+  { id: 'universal-inbox', enabled: true, order: 3 },
+  { id: 'quick-launch', enabled: true, order: 4 },
+  { id: 'workbench', enabled: true, order: 5 },
+  { id: 'workflow-deck', enabled: true, order: 6 },
+  { id: 'collections', enabled: true, order: 7 },
+  { id: 'scratchpad', enabled: true, order: 8 },
 ]

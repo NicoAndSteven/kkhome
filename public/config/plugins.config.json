@@ -24,7 +24,7 @@
     {
       "id": "quick-launch",
       "enabled": true,
-      "order": 3,
+      "order": 4,
       "config": {
         "searchTargets": [
           {
@@ -188,9 +188,93 @@
       }
     },
     {
+      "id": "universal-inbox",
+      "enabled": true,
+      "order": 3,
+      "config": {
+        "capsules": [
+          {
+            "id": "capsule-json",
+            "title": "发送到 JSON 工具",
+            "triggers": ["json"],
+            "description": "识别 JSON 内容并激活 Workbench 的格式化工具",
+            "icon": "data_object",
+            "action": {
+              "type": "select-tool",
+              "label": "已激活 JSON 工具",
+              "tool": "json-format",
+              "target": "#workbench"
+            }
+          },
+          {
+            "id": "capsule-url",
+            "title": "收纳链接",
+            "triggers": ["url"],
+            "description": "把 URL 作为临时链接写入 Scratchpad",
+            "icon": "bookmark_add",
+            "action": {
+              "type": "add-scratchpad",
+              "label": "已收纳链接",
+              "target": "#scratchpad"
+            }
+          },
+          {
+            "id": "capsule-command",
+            "title": "保存命令片段",
+            "triggers": ["command"],
+            "description": "把终端命令暂存，稍后可归档为 snippet",
+            "icon": "terminal",
+            "action": {
+              "type": "add-scratchpad",
+              "label": "已保存命令",
+              "target": "#scratchpad"
+            }
+          },
+          {
+            "id": "capsule-timestamp",
+            "title": "转换时间戳",
+            "triggers": ["timestamp"],
+            "description": "识别秒或毫秒时间戳并激活时间工具",
+            "icon": "schedule",
+            "action": {
+              "type": "select-tool",
+              "label": "已激活时间戳工具",
+              "tool": "timestamp",
+              "target": "#workbench"
+            }
+          },
+          {
+            "id": "capsule-base64",
+            "title": "尝试 Base64 解码",
+            "triggers": ["base64"],
+            "description": "把疑似 Base64 的文本交给编码转换工具",
+            "icon": "swap_horiz",
+            "action": {
+              "type": "select-tool",
+              "label": "已激活 Base64 工具",
+              "tool": "base64",
+              "target": "#workbench"
+            }
+          },
+          {
+            "id": "capsule-prompt",
+            "title": "收纳 Prompt",
+            "triggers": ["prompt", "text"],
+            "description": "把长文本或 Prompt 放入临时收纳区",
+            "icon": "rate_review",
+            "action": {
+              "type": "add-scratchpad",
+              "label": "已收纳文本",
+              "target": "#scratchpad"
+            }
+          }
+        ]
+      }
+    },
+    {
       "id": "workbench",
       "enabled": true,
-      "order": 4,
+      "order": 5,
       "config": {
         "utilities": [
           {
@@ -247,9 +331,77 @@
       }
     },
     {
+      "id": "workflow-deck",
+      "enabled": true,
+      "order": 6,
+      "config": {
+        "workflows": [
+          {
+            "id": "workflow-dev",
+            "title": "开发模式",
+            "category": "工作台",
+            "description": "激活 JSON 工具并收纳本项目检查命令",
+            "icon": "terminal",
+            "actions": [
+              {
+                "id": "dev-tool",
+                "type": "select-tool",
+                "label": "激活 JSON 工具",
+                "tool": "json-format",
+                "target": "#workbench"
+              },
+              {
+                "id": "dev-check",
+                "type": "add-scratchpad",
+                "label": "收纳 npm run check",
+                "value": "npm run check",
+                "target": "#scratchpad"
+              }
+            ]
+          },
+          {
+            "id": "workflow-review",
+            "title": "审查模式",
+            "category": "质量",
+            "description": "复制审查 Prompt 并跳到临时收纳",
+            "icon": "rate_review",
+            "actions": [
+              {
+                "id": "review-copy",
+                "type": "copy",
+                "label": "复制审查 Prompt",
+                "value": "请以代码审查视角检查这次改动，优先指出 bug、方向偏差、可维护性风险和缺失测试。"
+              },
+              {
+                "id": "review-jump",
+                "type": "jump",
+                "label": "打开临时收纳",
+                "target": "#scratchpad"
+              }
+            ]
+          },
+          {
+            "id": "workflow-inbox",
+            "title": "投喂模式",
+            "category": "收纳",
+            "description": "跳到万能投入口，准备处理任意内容",
+            "icon": "move_to_inbox",
+            "actions": [
+              {
+                "id": "inbox-jump",
+                "type": "jump",
+                "label": "打开万能投入口",
+                "target": "#inbox"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
       "id": "collections",
       "enabled": true,
-      "order": 5,
+      "order": 7,
       "config": {
         "resources": [
           {
@@ -342,7 +494,7 @@
     {
       "id": "scratchpad",
       "enabled": true,
-      "order": 6,
+      "order": 8,
       "config": {
         "storageKey": "kkhome:scratchpad"
       }
@@ -350,7 +502,7 @@
     {
       "id": "navigation",
       "enabled": false,
-      "order": 7,
+      "order": 9,
       "config": {
         "items": []
       }
@@ -358,7 +510,7 @@
     {
       "id": "tools",
       "enabled": false,
-      "order": 8,
+      "order": 10,
       "config": {
         "items": []
       }
@@ -366,7 +518,7 @@
     {
       "id": "social",
       "enabled": false,
-      "order": 9,
+      "order": 11,
       "config": {
         "items": []
       }
@@ -374,7 +526,7 @@
     {
       "id": "timeline",
       "enabled": false,
-      "order": 10,
+      "order": 12,
       "config": {
         "items": []
       }
@@ -382,7 +534,7 @@
     {
       "id": "blog",
       "enabled": false,
-      "order": 11,
+      "order": 13,
       "config": {
         "items": []
       }
@@ -390,7 +542,7 @@
     {
       "id": "stats",
       "enabled": false,
-      "order": 12,
+      "order": 14,
       "config": {
         "githubRepos": 0,
         "githubContributions": 0,
@@ -400,7 +552,7 @@
     {
       "id": "analytics",
       "enabled": false,
-      "order": 13,
+      "order": 15,
       "config": {
         "totalVisitors": 0,
         "todayVisitors": 0,
@@ -410,7 +562,7 @@
     {
       "id": "comments",
       "enabled": false,
-      "order": 14,
+      "order": 16,
       "config": {
         "items": []
       }
@@ -418,7 +570,7 @@
     {
       "id": "downloads",
       "enabled": false,
-      "order": 15,
+      "order": 17,
       "config": {
         "items": []
       }

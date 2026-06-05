@@ -138,6 +138,42 @@ export interface ScratchpadItem {
   updatedAt: string
 }
 
+export type CapsuleTrigger = 'url' | 'json' | 'timestamp' | 'base64' | 'command' | 'prompt' | 'text'
+
+export type CapsuleActionType = 'select-tool' | 'add-scratchpad' | 'copy' | 'jump'
+
+export interface CapsuleAction {
+  type: CapsuleActionType
+  label: string
+  value?: string
+  tool?: UtilityItem['utilityType']
+  target?: string
+}
+
+export interface CapsuleItem {
+  id: string
+  title: string
+  triggers: CapsuleTrigger[]
+  action: CapsuleAction
+  enabled?: boolean
+  description?: string
+  icon?: string
+}
+
+export interface WorkflowAction extends CapsuleAction {
+  id: string
+}
+
+export interface WorkflowItem {
+  id: string
+  title: string
+  description?: string
+  category: string
+  icon?: string
+  enabled?: boolean
+  actions: WorkflowAction[]
+}
+
 /**
  * 社交链接配置
  */

@@ -58,7 +58,7 @@ const IntroStage = ({ author, enabled, duration, onComplete }: Props) => {
         <div className="intro-ring intro-ring-outer" />
         <div className="intro-ring intro-ring-inner" />
         <div className="intro-mark">
-          <span>{author.slice(0, 1).toUpperCase()}</span>
+          <span>可</span>
         </div>
       </div>
       <div className="intro-copy">

@@ -115,6 +115,44 @@ const fallbackTools: AiTool[] = [
   },
 ]
 
+const getHostname = (url: string) => {
+  try {
+    return new globalThis.URL(url).hostname.replace(/^www\./, '')
+  } catch {
+    return ''
+  }
+}
+
+const fieldIncludes = (field: string | undefined, query: string) => (
+  field?.toLowerCase().includes(query) ?? false
+)
+
+const listIncludes = (items: string[] | undefined, query: string) => (
+  items?.some((item) => item.toLowerCase().includes(query)) ?? false
+)
+
+const scoreTool = (tool: AiTool, query: string) => {
+  if (!query) return Number(tool.featured)
+
+  const title = tool.title.toLowerCase()
+  let score = 0
+
+  if (title === query) score += 100
+  else if (title.startsWith(query)) score += 80
+  else if (title.includes(query)) score += 55
+
+  if (listIncludes(tool.aliases, query)) score += 45
+  if (listIncludes(tool.tags, query)) score += 35
+  if (fieldIncludes(tool.description, query)) score += 18
+  if (fieldIncludes(tool.sourceTitle, query)) score += 12
+  if (fieldIncludes(tool.category, query)) score += 8
+  if (fieldIncludes(tool.id, query)) score += 5
+  if (fieldIncludes(getHostname(tool.url), query)) score += 5
+  if (tool.featured && score > 0) score += 4
+
+  return score
+}
+
 const AiNavigatorPlugin = ({ config }: Props) => {
   const categories = useMemo(
     () => (Array.isArray(config?.categories) ? config.categories : fallbackCategories) as AiCategory[],
@@ -130,26 +168,14 @@ const AiNavigatorPlugin = ({ config }: Props) => {
   )
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState(categories[0]?.id ?? 'all')
+  const normalizedQuery = query.trim().toLowerCase()
 
-  const filteredTools = tools
+  const rankedTools = tools
     .filter((tool) => activeCategory === 'all' || tool.category === activeCategory)
-    .filter((tool) => {
-      const normalizedQuery = query.trim().toLowerCase()
-      if (!normalizedQuery) return true
-
-      return [
-        tool.title,
-        tool.id,
-        tool.url,
-        tool.description,
-        tool.category,
-        tool.sourceTitle ?? '',
-        tool.sourceCategory ?? '',
-        ...(tool.tags ?? []),
-        ...(tool.aliases ?? []),
-      ].join(' ').toLowerCase().includes(normalizedQuery)
-    })
-    .sort((a, b) => Number(b.featured) - Number(a.featured))
+    .map((tool) => ({ tool, score: scoreTool(tool, normalizedQuery) }))
+    .filter((entry) => !normalizedQuery || entry.score > 0)
+    .sort((a, b) => b.score - a.score || Number(b.tool.featured) - Number(a.tool.featured) || a.tool.title.localeCompare(b.tool.title))
+  const filteredTools = rankedTools.map((entry) => entry.tool)
   const visibleTools = query.trim() || activeCategory !== 'all' ? filteredTools : filteredTools.slice(0, 48)
 
   const openTool = (tool: AiTool) => {
@@ -164,7 +190,7 @@ const AiNavigatorPlugin = ({ config }: Props) => {
             <span className="font-label-mono text-xs uppercase text-secondary">AI navigator</span>
             <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">AI 工具导航</h2>
             <p className="mt-xs font-body-md text-body-md text-text-muted">
-              按目标意图检索 30aitool 收录的网站：转换、图片、视频音频、文档办公、素材、软件和知识资源。
+              按目标意图检索收录的网站：转换、图片、视频音频、文档办公、素材、软件和知识资源。
             </p>
           </div>
           <div className="relative md:col-span-7">
@@ -240,6 +266,9 @@ const AiNavigatorPlugin = ({ config }: Props) => {
                 </span>
                 <span className="min-w-0">
                   <span className="block font-body-lg font-bold text-on-surface">{tool.title}</span>
+                  <span className="mt-1 block font-label-mono text-[10px] uppercase text-secondary/80">
+                    {getHostname(tool.url) || tool.sourceCategory || 'external'}
+                  </span>
                   <span className="mt-xs block font-body-md text-body-md text-text-muted">
                     {tool.description}
                   </span>

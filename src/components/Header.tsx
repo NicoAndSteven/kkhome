@@ -12,7 +12,7 @@ interface Props {
 const fallbackRoutes = [
     { id: 'home', label: '首页', href: '#/home' },
     { id: 'ai-tools', label: '导向', href: '#/ai-tools' },
-    { id: 'inbox', label: '投喂', href: '#/inbox' },
+    { id: 'wish-wall', label: '许愿', href: '#/wish-wall' },
 ]
 
 const Header = ({ config, activeSection = 'home', routes = fallbackRoutes, onContactClick }: Props) => {

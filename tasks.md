@@ -1,51 +1,60 @@
 # 任务清单
 
-## 已完成
+## 当前主线
 
-- [x] 初始化 Vite + React + TypeScript 项目。
-- [x] 配置 Tailwind CSS。
-- [x] 建立核心插件注册表。
-- [x] 实现配置加载器。
-- [x] 规范化 `{ site, profile }` 配置契约。
-- [x] 合并 Profile 插件与站点 profile 配置。
-- [x] 修复 ESLint 配置语法错误。
-- [x] 修复主题按钮重复与无行为按钮。
-- [x] 修复 Tools 卡片覆盖链接影响收藏按钮的问题。
-- [x] 清理插件配置中的占位链接和假数据展示。
-- [x] 使用 Zod 为 App 配置和插件配置补充 schema 校验。
-- [x] 增加配置本地资源检查脚本。
-- [x] 增加 Playwright Chromium 首页烟测。
-- [x] 增加 `npm run check` 综合质量门禁。
-- [x] 增加 `Signal Bloom Intro` 首屏入场动画。
-- [x] 增加 motion 配置契约和 Zod 校验。
-- [x] 入场动画支持 `prefers-reduced-motion` 降级。
-- [x] Playwright 验证入场结束后页面可交互。
-- [x] 实现 Header section 高亮。
-- [x] 实现右侧 Progress Rail。
-- [x] 实现 Tools 分类过滤。
-- [x] 实现 Projects inline 展开详情。
-- [x] 实现 Contact Drawer。
-- [x] 保持 Cloudflare Pages 纯静态部署兼容。
-- [x] 更新 README 与规格说明。
-- [x] 验证 `npm run lint`。
-- [x] 验证 `npm run check:assets`。
-- [x] 验证 `npm run build`。
-- [x] 验证 `npm run test:e2e`。
-- [x] 验证 `npm run check`。
+- [x] 收敛产品定位为个人 AI 工具导航与需求反馈 Hub。
+- [x] 默认路由固定为 `home / ai-tools / wish-wall / cloudflare-lab`。
+- [x] 注册已有插件，默认只启用当前核心模块。
+- [x] 为 `ai-navigator` 和 `wish-wall` 补配置 schema。
+- [x] 为 AI 工具导航增加轻量搜索评分。
+- [x] 为 AI 工具卡片展示工具域名。
+- [x] 增加 AI 工具数据质量检查脚本。
+- [x] 将 `npm run check:data` 纳入综合质量门禁。
+- [x] 为 Wish Wall API 增加蜜罐、链接数量限制和服务端提交频控。
+- [x] 为 D1 migration 增加提交频控表。
+- [x] 更新 README 与当前 spec。
+- [x] 新增 Cloudflare-native Hub 规格。
+- [x] 新增 Cloudflare 功能实验计划。
+- [x] 新增 Cloudflare roadmap 总 spec。
+- [x] 新增 Data Foundation spec。
+- [x] 新增 AI Tool Intelligence spec。
+- [x] 新增 Wish Wall 2.0 spec。
+- [x] 新增 Browser Lab spec。
+- [x] 新增 Realtime Playground spec。
+- [x] 新增 Automation Center spec。
+- [x] 新增 Public API Toolbox spec。
+- [x] 新增 feature flags 配置。
+- [x] 新增统一 Pages Functions API 响应工具。
+- [x] 新增 `/api/health` 绑定探测端点。
+- [x] 将 Wish Wall API 接入统一响应结构。
+- [x] 在 `wrangler.toml` 增加未来绑定草案。
+- [x] 新增 Cloudflare Lab 插件。
+- [x] 新增 `cloudflare-lab` 路由。
+- [x] Cloudflare Lab 接入 `/api/health` 和 feature flags。
+- [x] 新增 Data Foundation v2 migration。
 
-## 待办
+## 下一步
 
-- [ ] 按 `spec-homepage-visual-upgrade.md` 重构 Profile Hero 的身份叙事与首屏构图。
-- [ ] 调整全局视觉系统，降低模板化玻璃态和霓虹蓝紫占比。
-- [ ] 将 Projects 在单项目场景下改为 featured case-study 布局。
-- [ ] 将 Tools 改为能力矩阵，并移除不可验证的随机熟练度标签。
-- [ ] 重排 Navigation 的标题、搜索、分类和链接卡片，避免搜索框孤立。
-- [ ] 通过插件 `order` 将 Projects 提前到 Tools 前，Social 放到末尾。
-- [ ] 为桌面和移动首屏结构补充 Playwright 或人工验收记录。
-- [ ] 为插件增加懒加载和 chunk 拆分策略。
-- [ ] 增加单元测试或组件测试。
-- [ ] 接入真实博客数据源后启用 Blog 插件。
-- [ ] 接入真实统计数据源后启用 Stats/Analytics 插件。
-- [ ] 接入持久化留言服务后启用 Comments 插件。
-- [ ] 添加真实下载资源后启用 Downloads 插件。
-- [ ] 补充 Cloudflare Pages 线上部署验证记录。
+- [ ] 创建真实 KV namespace 并绑定 `HUB_KV`。
+- [ ] 创建真实 R2 bucket 并绑定 `HUB_BUCKET`。
+- [ ] 创建真实 D1 database 并绑定 `WISHES_DB`。
+- [ ] 创建 Vectorize index 并绑定 `HUB_VECTORIZE`。
+- [ ] 创建 Queue 并绑定 `HUB_QUEUE`。
+- [ ] 启用 Workers AI binding。
+- [ ] 清洗 AI 工具导航中的重复 id。
+- [ ] 批量替换“官网下载”“Github”“Zh”“Apps”等泛化标题。
+- [ ] 为 Wish Wall 增加最小管理脚本或管理接口，用于推进状态。
+- [ ] 在 Cloudflare Pages 上绑定真实 D1 数据库并应用 migration。
+- [ ] 补充 Wish Wall Function 的独立 API 测试。
+- [ ] 为 `configSchema` 增加单元测试。
+- [ ] 为 AI 搜索排序增加单元测试。
+- [ ] 补充线上部署验证记录。
+
+## 暂缓模块
+
+- [ ] `quick-launch`：等 AI 工具导航稳定后再决定是否恢复为命令面板。
+- [ ] `workbench`：等有明确工具 MVP 后再启用。
+- [ ] `collections`：等资源数据完成清洗后再启用。
+- [ ] `scratchpad`：等本地收纳流程明确后再启用。
+- [ ] `projects`：如后续需要作品集叙事，再以 featured case-study 形式启用。
+- [ ] `universal-inbox`：当前由许愿墙承担公开输入入口，暂不启用。

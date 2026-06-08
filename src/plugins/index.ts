@@ -3,7 +3,15 @@ import NavigationPlugin from './navigation'
 import ToolsPlugin from './tools'
 import SocialPlugin from './social'
 import UniversalInboxPlugin from './universal-inbox'
+import QuickLaunchPlugin from './quick-launch'
+import WorkbenchPlugin from './workbench'
+import CollectionsPlugin from './collections'
+import ScratchpadPlugin from './scratchpad'
+import WorkflowDeckPlugin from './workflow-deck'
+import ProjectsPlugin from './projects'
 import AiNavigatorPlugin from './ai-navigator'
+import WishWallPlugin from './wish-wall'
+import CloudflareLabPlugin from './cloudflare-lab'
 import TimelinePlugin from './timeline'
 import BlogPlugin from './blog'
 import StatsPlugin from './stats'
@@ -54,16 +62,80 @@ export const plugins: Plugin[] = [
     name: 'AI 工具导航',
     version: '1.0.0',
     enabled: true,
-    order: 4,
+    order: 2,
     component: AiNavigatorPlugin,
+  },
+  {
+    id: 'wish-wall',
+    name: '访客许愿墙',
+    version: '1.0.0',
+    enabled: true,
+    order: 3,
+    component: WishWallPlugin,
+  },
+  {
+    id: 'cloudflare-lab',
+    name: 'Cloudflare Lab',
+    version: '1.0.0',
+    enabled: true,
+    order: 4,
+    component: CloudflareLabPlugin,
   },
   {
     id: 'universal-inbox',
     name: '万能投入口',
     version: '1.0.0',
-    enabled: true,
-    order: 2,
+    enabled: false,
+    order: 4,
     component: UniversalInboxPlugin,
+  },
+  {
+    id: 'quick-launch',
+    name: '快速启动',
+    version: '1.0.0',
+    enabled: false,
+    order: 5,
+    component: QuickLaunchPlugin,
+  },
+  {
+    id: 'workbench',
+    name: '工作台',
+    version: '1.0.0',
+    enabled: false,
+    order: 6,
+    component: WorkbenchPlugin,
+  },
+  {
+    id: 'collections',
+    name: '资源收藏',
+    version: '1.0.0',
+    enabled: false,
+    order: 7,
+    component: CollectionsPlugin,
+  },
+  {
+    id: 'scratchpad',
+    name: '临时收纳',
+    version: '1.0.0',
+    enabled: false,
+    order: 8,
+    component: ScratchpadPlugin,
+  },
+  {
+    id: 'workflow-deck',
+    name: '工作流卡组',
+    version: '1.0.0',
+    enabled: false,
+    order: 9,
+    component: WorkflowDeckPlugin,
+  },
+  {
+    id: 'projects',
+    name: '项目作品',
+    version: '1.0.0',
+    enabled: false,
+    order: 10,
+    component: ProjectsPlugin,
   },
   {
     id: 'timeline',
@@ -121,7 +193,15 @@ export {
   ToolsPlugin,
   SocialPlugin,
   UniversalInboxPlugin,
+  QuickLaunchPlugin,
+  WorkbenchPlugin,
+  CollectionsPlugin,
+  ScratchpadPlugin,
+  WorkflowDeckPlugin,
+  ProjectsPlugin,
   AiNavigatorPlugin,
+  WishWallPlugin,
+  CloudflareLabPlugin,
   TimelinePlugin,
   BlogPlugin,
   StatsPlugin,

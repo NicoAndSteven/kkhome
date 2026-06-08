@@ -1,0 +1,44 @@
+{
+  "features": {
+    "cloudflareHealth": true,
+    "aiSemanticSearch": false,
+    "browserLab": false,
+    "fileDrop": false,
+    "realtimePresence": false,
+    "automationCenter": false,
+    "publicApiToolbox": false,
+    "adminConsole": false
+  },
+  "experiments": [
+    {
+      "id": "ai-semantic-search",
+      "title": "AI 语义搜索",
+      "requires": ["D1", "Vectorize", "Workers AI"],
+      "enabled": false
+    },
+    {
+      "id": "browser-lab",
+      "title": "网页炼金室",
+      "requires": ["Browser Rendering", "R2", "Queues"],
+      "enabled": false
+    },
+    {
+      "id": "realtime-presence",
+      "title": "实时访客空间",
+      "requires": ["Durable Objects"],
+      "enabled": false
+    },
+    {
+      "id": "automation-center",
+      "title": "自动化中心",
+      "requires": ["Queues", "Workflows", "Cron Triggers"],
+      "enabled": false
+    },
+    {
+      "id": "public-api-toolbox",
+      "title": "公开 Edge API 工具箱",
+      "requires": ["Workers", "KV", "Analytics"],
+      "enabled": false
+    }
+  ]
+}

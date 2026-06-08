@@ -1,6 +1,6 @@
 import { UtilityItem } from './types'
 
-export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'workbench' | 'collections' | 'scratchpad'
+export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'cloudflare-lab' | 'workbench' | 'collections' | 'scratchpad'
 
 export type ToolKind = NonNullable<UtilityItem['utilityType']>
 
@@ -18,12 +18,18 @@ const routeAliases: Record<string, HubRouteId> = {
   top: 'home',
   home: 'home',
   inbox: 'inbox',
-  launch: 'home',
+  launch: 'launch',
   'ai-tools': 'ai-tools',
   ai: 'ai-tools',
-  workbench: 'home',
-  collections: 'home',
-  scratchpad: 'home',
+  wish: 'wish-wall',
+  wishes: 'wish-wall',
+  'wish-wall': 'wish-wall',
+  edge: 'cloudflare-lab',
+  cloudflare: 'cloudflare-lab',
+  'cloudflare-lab': 'cloudflare-lab',
+  workbench: 'workbench',
+  collections: 'collections',
+  scratchpad: 'scratchpad',
 }
 
 declare global {

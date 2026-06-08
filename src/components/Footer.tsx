@@ -10,7 +10,7 @@ const Footer = ({ config }: Props) => {
   const links = [
     { label: '首页', href: '#/home' },
     { label: '导向', href: '#/ai-tools' },
-    { label: '投喂', href: '#/inbox' },
+    { label: '许愿', href: '#/wish-wall' },
     { label: '邮箱', href: 'mailto:1215240348@qq.com' },
   ]
 

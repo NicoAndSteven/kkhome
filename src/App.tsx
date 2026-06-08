@@ -8,7 +8,13 @@ import { HubRouteId, normalizeHubRoute, routeHash } from '@core/routeBridge'
 const routeItems: Array<{ id: HubRouteId; label: string; href: string; pluginId: string }> = [
   { id: 'home', label: '首页', href: routeHash('home'), pluginId: 'profile' },
   { id: 'ai-tools', label: '导向', href: routeHash('ai-tools'), pluginId: 'ai-navigator' },
+  { id: 'wish-wall', label: '许愿', href: routeHash('wish-wall'), pluginId: 'wish-wall' },
+  { id: 'cloudflare-lab', label: '边缘', href: routeHash('cloudflare-lab'), pluginId: 'cloudflare-lab' },
   { id: 'inbox', label: '投喂', href: routeHash('inbox'), pluginId: 'universal-inbox' },
+  { id: 'launch', label: '启动', href: routeHash('launch'), pluginId: 'quick-launch' },
+  { id: 'workbench', label: '工作台', href: routeHash('workbench'), pluginId: 'workbench' },
+  { id: 'collections', label: '收藏', href: routeHash('collections'), pluginId: 'collections' },
+  { id: 'scratchpad', label: '暂存', href: routeHash('scratchpad'), pluginId: 'scratchpad' },
 ]
 
 function App() {
@@ -133,6 +139,8 @@ function App() {
   }
 
   const enabledPlugins = pluginSystem.getEnabledPlugins()
+  const enabledPluginIds = new Set(enabledPlugins.map((plugin) => plugin.id))
+  const availableRouteItems = routeItems.filter((route) => enabledPluginIds.has(route.pluginId))
   const activeRouteItem = routeItems.find((route) => route.id === activeRoute) ?? routeItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
   const isHomeRoute = activeRouteItem.id === 'home'
@@ -153,10 +161,10 @@ function App() {
       <Header
         config={siteConfig ?? undefined}
         activeSection={activeRoute}
-        routes={routeItems}
+        routes={availableRouteItems}
         onContactClick={() => setContactOpen(true)}
       />
-      <ProgressRail activeSection={activeRoute} sections={routeItems} />
+      <ProgressRail activeSection={activeRoute} sections={availableRouteItems} />
 
       <main className={mainClassName}>
         <ErrorBoundary key={activeRouteItem.id}>

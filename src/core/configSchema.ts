@@ -189,6 +189,56 @@ const workflowDeckConfigSchema = z.object({
   workflows: z.array(workflowItemSchema).catch([]).default([]),
 })
 
+const aiCategorySchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  description: z.string().optional(),
+  icon: z.string().optional(),
+})
+
+const aiToolSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  category: z.string().min(1),
+  url: z.string().min(1),
+  description: z.string().min(1),
+  tags: z.array(z.string().min(1)).optional(),
+  aliases: z.array(z.string().min(1)).optional(),
+  icon: z.string().optional(),
+  featured: z.boolean().optional(),
+  sourceTitle: z.string().optional(),
+  sourceUrl: z.string().optional(),
+  sourceCategory: z.string().optional(),
+})
+
+const aiNavigatorConfigSchema = z.object({
+  categories: z.array(aiCategorySchema).catch([]).default([]),
+  intentPrompts: z.array(z.string().min(1)).catch([]).default([]),
+  tools: z.array(aiToolSchema).catch([]).default([]),
+})
+
+const wishCategorySchema = z.enum(['feature', 'tool', 'content', 'design', 'other'])
+const wishStatusSchema = z.enum(['new', 'accepted', 'building', 'shipped'])
+
+const wishItemSchema = z.object({
+  id: z.string().min(1),
+  title: z.string().min(1),
+  detail: z.string().optional(),
+  category: wishCategorySchema.catch('other'),
+  author: z.string().optional(),
+  status: wishStatusSchema.catch('new'),
+  createdAt: z.string().min(1),
+})
+
+const wishWallConfigSchema = z.object({
+  seedWishes: z.array(wishItemSchema).optional().catch(undefined),
+})
+
+const cloudflareLabConfigSchema = z.object({
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+})
+
 const pluginConfigSchema = z.object({
   id: z.string().min(1),
   enabled: z.boolean().default(true),
@@ -226,6 +276,9 @@ const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, u
     collections: collectionsConfigSchema,
     scratchpad: scratchpadConfigSchema,
     'workflow-deck': workflowDeckConfigSchema,
+    'ai-navigator': aiNavigatorConfigSchema,
+    'wish-wall': wishWallConfigSchema,
+    'cloudflare-lab': cloudflareLabConfigSchema,
   }
   const parser = parsers[id]
 
@@ -241,10 +294,12 @@ const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, u
 
 export const getDefaultPluginConfigs = (): PluginConfig[] => [
   { id: 'profile', enabled: true, order: 1 },
-  { id: 'universal-inbox', enabled: true, order: 2 },
+  { id: 'wish-wall', enabled: true, order: 2 },
   { id: 'ai-navigator', enabled: true, order: 3 },
-  { id: 'collections', enabled: false, order: 4 },
-  { id: 'quick-launch', enabled: false, order: 5 },
-  { id: 'workbench', enabled: false, order: 6 },
-  { id: 'scratchpad', enabled: false, order: 7 },
+  { id: 'cloudflare-lab', enabled: true, order: 4 },
+  { id: 'universal-inbox', enabled: false, order: 5 },
+  { id: 'collections', enabled: false, order: 6 },
+  { id: 'quick-launch', enabled: false, order: 7 },
+  { id: 'workbench', enabled: false, order: 8 },
+  { id: 'scratchpad', enabled: false, order: 9 },
 ]

@@ -4,7 +4,7 @@
 
 This is a Vite + React + TypeScript personal hub, deployed as a static site. Source code lives in `src/`. Core configuration and plugin infrastructure are in `src/core/`, shared UI components are in `src/components/`, and feature modules are registered from `src/plugins/index.ts`. Each plugin should live in `src/plugins/<plugin-id>/index.tsx`.
 
-Static assets and runtime JSON config live in `public/`, especially `public/config/site.config.json` and `public/config/plugins.config.json`. End-to-end tests live in `tests/`. Utility scripts are in `scripts/`. Product specs and task notes are kept in root Markdown files such as `spec.md`, `tasks.md`, and `spec-personal-hub-after-featured-project.md`.
+Static assets and runtime JSON config live in `public/`, especially `public/config/site.config.json` and `public/config/plugins.config.json`. End-to-end tests live in `tests/`. Utility scripts are in `scripts/`. Product specs and task notes are kept in root Markdown files such as `spec.md`, `tasks.md`, and `spec-cloudflare-roadmap.md`.
 
 ## Build, Test, and Development Commands
 

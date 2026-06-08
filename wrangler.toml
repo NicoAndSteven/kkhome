@@ -1,3 +1,36 @@
 name = "personal-homepage"
 compatibility_date = "2024-01-01"
 pages_build_output_dir = "dist"
+
+# Enable after creating a D1 database:
+# npx wrangler d1 create kkhome_wishes
+# npx wrangler d1 migrations apply kkhome_wishes
+# Optional: set ALLOWED_ORIGIN in Cloudflare Pages environment variables.
+# [[d1_databases]]
+# binding = "WISHES_DB"
+# database_name = "kkhome_wishes"
+# database_id = "<replace-with-created-database-id>"
+
+# Future platform bindings:
+# [[kv_namespaces]]
+# binding = "HUB_KV"
+# id = "<replace-with-kv-namespace-id>"
+
+# [[r2_buckets]]
+# binding = "HUB_BUCKET"
+# bucket_name = "kkhome-artifacts"
+
+# [[vectorize]]
+# binding = "HUB_VECTORIZE"
+# index_name = "kkhome-tools"
+
+# [[queues.producers]]
+# binding = "HUB_QUEUE"
+# queue = "kkhome-jobs"
+
+# [ai]
+# binding = "AI"
+
+# [[durable_objects.bindings]]
+# name = "HUB_ROOM"
+# class_name = "HubRoom"

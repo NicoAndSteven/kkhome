@@ -8,8 +8,8 @@
     },
     {
       "id": "universal-inbox",
-      "enabled": true,
-      "order": 3,
+      "enabled": false,
+      "order": 4,
       "config": {
         "capsules": [
           {
@@ -8701,6 +8701,21 @@
             "sourceCategory": "电脑课"
           }
         ]
+      }
+    },
+    {
+      "id": "wish-wall",
+      "enabled": true,
+      "order": 3,
+      "config": {}
+    },
+    {
+      "id": "cloudflare-lab",
+      "enabled": true,
+      "order": 4,
+      "config": {
+        "title": "Cloudflare Lab",
+        "description": "查看当前平台绑定、功能开关和后续 Cloudflare 实验队列。"
       }
     },
     {

@@ -9,6 +9,7 @@ const configDir = path.join(publicDir, 'config')
 const configFiles = [
   path.join(configDir, 'site.config.json'),
   path.join(configDir, 'plugins.config.json'),
+  path.join(configDir, 'features.config.json'),
 ]
 
 const localPaths = new Set()

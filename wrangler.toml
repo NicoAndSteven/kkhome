@@ -28,8 +28,8 @@ pages_build_output_dir = "dist"
 # binding = "HUB_QUEUE"
 # queue = "kkhome-jobs"
 
-[ai]
-binding = "AI"
+# [ai]
+# binding = "AI"
 
 # [[durable_objects.bindings]]
 # name = "HUB_ROOM"

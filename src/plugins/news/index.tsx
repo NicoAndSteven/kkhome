@@ -57,7 +57,7 @@ const COUNTRIES: CountryMeta[] = [
   { id: 'israel', name: '以色列', lang: 'he' },
 ]
 
-const API_BASE = 'https://www.thehear.org/api/country-view'
+const API_BASE = '/api/news'
 
 /* ─── helpers ─────────────────────────────────────────── */
 
@@ -87,8 +87,9 @@ const NewsPlugin = (_props: Props) => {
     try {
       const res = await fetch(`${API_BASE}/${c}`)
       if (!res.ok) throw new Error(`API ${res.status}`)
-      const json = (await res.json()) as CountryResponse
-      setData(json)
+      const body = (await res.json()) as { ok: boolean; data: CountryResponse }
+      if (!body.ok || !body.data) throw new Error('代理返回异常')
+      setData(body.data)
     } catch (e) {
       setError(e instanceof Error ? e.message : '加载失败')
       setData(null)

@@ -14,7 +14,9 @@ export function getBeijingHour(): number {
     hour: 'numeric',
     hour12: false,
   })
-  return parseInt(formatter.format(now), 10)
+  const parts = formatter.formatToParts(now)
+  const hour = parts.find(p => p.type === 'hour')?.value
+  return hour ? parseInt(hour, 10) : 0
 }
 
 /** 13:00 = evening boundary */

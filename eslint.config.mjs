@@ -17,6 +17,13 @@ const browserGlobals = {
   IntersectionObserver: 'readonly',
   HTMLMetaElement: 'readonly',
   MouseEvent: 'readonly',
+  setTimeout: 'readonly',
+  clearTimeout: 'readonly',
+  setInterval: 'readonly',
+  clearInterval: 'readonly',
+  ResizeObserver: 'readonly',
+  HTMLDivElement: 'readonly',
+  CustomEvent: 'readonly',
   __dirname: 'readonly',
   process: 'readonly',
 }
@@ -32,7 +39,14 @@ export default [
       globals: {
         console: 'readonly',
         process: 'readonly',
+        URL: 'readonly',
+        Response: 'readonly',
+        fetch: 'readonly',
+        crypto: 'readonly',
       },
+    },
+    rules: {
+      'no-redeclare': 'off',
     },
   },
   {
@@ -59,7 +73,8 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
-      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_' }],
+      'no-unused-vars': 'off', // handled by @typescript-eslint/no-unused-vars
+      '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },
   },
 ]

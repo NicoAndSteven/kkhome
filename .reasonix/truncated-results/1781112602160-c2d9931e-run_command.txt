@@ -1,0 +1,193 @@
+$ npx skills add obra/superpowers -g -y
+[exit 0]
+
+[38;5;250m███████╗██╗  ██╗██╗██╗     ██╗     ███████╗[0m
+[38;5;248m██╔════╝██║ ██╔╝██║██║     ██║     ██╔════╝[0m
+[38;5;245m███████╗█████╔╝ ██║██║     ██║     ███████╗[0m
+[38;5;243m╚════██║██╔═██╗ ██║██║     ██║     ╚════██║[0m
+[38;5;240m███████║██║  ██╗██║███████╗███████╗███████║[0m
+[38;5;238m╚══════╝╚═╝  ╚═╝╚═╝╚══════╝╚══════╝╚══════╝[0m
+
+[90mT[39m  [46m[30m skills [39m[49m
+[90m|[39m
+[90m|[39m  [2mTip: use the --yes (-y) and --global (-g) flags to install without prompts.[22m
+[?25l[90m|[39m
+[32mo[39m  Source: https://github.com/obra/superpowers.git
+[?25h[?25l[90m|[39m
+[35m•[39m  Cloning repository[999D[J[35mo[39m  Cloning repository[999D[J[35mO[39m  Cloning repository[999D[J[35m0[39m  Cloning repository[999D[J[35m•[39m  Cloning repository[999D[J[35mo[39m  Cloning repository[999D[J[35mO[39m  Cloning repository[999D[J[35m0[39m  Cloning repository[999D[J[35m•[39m  Cloning repository.[999D[J[35mo[39m  Cloning repository.[999D[J[35mO[39m  Cloning repository.[999D[J[35m0[39m  Cloning repository.[999D[J[35m•[39m  Cloning repository.[999D[J[35mo[39m  Cloning repository.[999D[J[35mO[39m  Cloning repository.[999D[J[35m0[39m  Cloning repository.[999D[J[35m•[39m  Cloning repository..[999D[J[35mo[39m  Cloning repository..[999D[J[35mO[39m  Cloning repository..[999D[J[35m0[39m  Cloning repository..[999D[J[35m•[39m  Cloning repository..[999D[J[35mo[39m  Cloning repository..[999D[J[35mO[39m  Cloning repository..[999D[J[35m0[39m  Cloning repository..[999D[J[35m•[39m  Cloning repository...[999D[J[32mo[39m  Repository cloned
+[?25h[?25l[90m|[39m
+[999D[J[35m•[39m  Discovering skills[999D[J[35mo[39m  Discovering skills[999D[J[35mO[39m  Discovering skills[999D[J[32mo[39m  Found [32m14[39m skills
+[?25h[90m|[39m
+[34m•[39m  Installing all 14 skills
+[?25l[90m|[39m
+[999D[J[32mo[39m  71 agents
+[?25h[90m|[39m
+[34m•[39m  Installing to: [36mClaude Code[39m, [36mCodex[39m, [36mCursor[39m, [36mGitHub Copilot[39m, [36mHermes Agent[39m, [36mLingma[39m, [36mQoder[39m, [36mQoder CN[39m, [36mReasonix[39m, [36mTrae[39m, [36mTrae CN[39m
+
+[90m|[39m
+[32mo[39m  [0mInstallation Summary[0m [90m---------------------------------------------------+[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\brainstorming[39m[22m                                          [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\dispatching-parallel-agents[39m[22m                            [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\executing-plans[39m[22m                                        [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\finishing-a-development-branch[39m[22m                         [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\receiving-code-review[39m[22m                                  [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\requesting-code-review[39m[22m                                 [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\subagent-driven-development[39m[22m                            [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\systematic-debugging[39m[22m                                   [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\test-driven-development[39m[22m                                [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\using-git-worktrees[39m[22m                                    [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\using-superpowers[39m[22m                                      [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\verification-before-completion[39m[22m                         [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\writing-plans[39m[22m                                          [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m|[39m  [2m[36m~\.agents\skills\writing-skills[39m[22m                                         [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m   [90m|[39m
+[90m|[39m  [2m  [2msymlink →[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                        [90m|[39m
+[90m+--------------------------------------------------------------------------+[39m
+[90m|[39m
+[32mo[39m  [0mSecurity Risk Assessments[0m [90m----------------------------------------------------+[39m
+[90m|[39m  [2m[22m                                                                              [90m|[39m
+[90m|[39m  [2m                                [2mGen[22m[2m               [2mSocket[22m[2m            [2mSnyk[22m[2m[22m      [90m|[39m
+[90m|[39m  [2m[36mbrainstorming[39m                   [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mdispatching-parallel-agents[39m     [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mexecuting-plans[39m                 [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mfinishing-a-development-branch[39m  [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mreceiving-code-review[39m           [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mrequesting-code-review[39m          [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36msubagent-driven-development[39m     [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36msystematic-debugging[39m            [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mtest-driven-development[39m         [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36musing-git-worktrees[39m             [32mSafe[39m              [32m0 alerts[39m          [33mMed Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36musing-superpowers[39m               [32mSafe[39m              [31m1 alert[39m           [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mverification-before-completion[39m  [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mwriting-plans[39m                   [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[36mwriting-skills[39m                  [32mSafe[39m              [32m0 alerts[39m          [32mLow Risk[39m[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                              [90m|[39m
+[90m|[39m  [2m[2mDetails:[22m[2m [2mhttps://skills.sh/obra/superpowers[22m[2m[22m                                   [90m|[39m
+[90m|[39m  [2m[22m                                                                              [90m|[39m
+[90m+--------------------------------------------------------------------------------+[39m
+[?25l[90m|[39m
+[999D[J[35m•[39m  Installing skills[999D[J[35mo[39m  Installing skills[999D[J[35mO[39m  Installing skills[999D[J[35m0[39m  Installing skills[999D[J[35m•[39m  Installing skills[999D[J[35mo[39m  Installing skills[999D[J[35mO[39m  Installing skills[999D[J[35m0[39m  Installing skills[999D[J[35m•[39m  Installing skills.[999D[J[35mo[39m  Installing skills.[999D[J[35mO[39m  Installing skills.[999D[J[35m0[39m  Installing skills.[999D[J[35m•[39m  Installing skills.[999D[J[35mo[39m  Installing skills.[999D[J[35mO[39m  Installing skills.[999D[J[35m0[39m  Installing skills.[999D[J[35m•[39m  Installing skills..[999D[J[35mo[39m  Installing skills..[999D[J[35mO[39m  Installing skills..[999D[J[35m0[39m  Installing skills..[999D[J[35m•[39m  Installing skills..[999D[J[35mo[39m  Installing skills..[999D[J[32mo[39m  Installation complete
+[?25h
+[90m|[39m
+[32mo[39m  [0m[32mInstalled 14 skills[39m[0m [90m-----------------------------------------------------+[39m
+[90m|[39m  [2m[22m                                                                         [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\brainstorming[22m                                         [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\dispatching-parallel-agents[22m                           [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\executing-plans[22m                                       [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\finishing-a-development-branch[22m                        [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\receiving-code-review[22m                                 [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\requesting-code-review[22m                                [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\subagent-driven-development[22m                           [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\systematic-debugging[22m                                  [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\test-driven-development[22m                               [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\using-git-worktrees[22m                                   [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\using-superpowers[22m                                     [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\verification-before-completion[22m                        [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\writing-plans[22m                                         [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[32m✓[39m ~\.agents\skills\writing-skills[22m                                        [90m|[39m
+[90m|[39m  [2m  [32muniversal:[39m Codex, Cursor, GitHub Copilot, Amp, Antigravity +12 more[22m    [90m|[39m
+[90m|[39m  [2m  [2msymlinked:[22m[2m Claude Code, Hermes Agent, Lingma, Qoder, Qoder CN +3 more[22m  [90m|[39m
+[90m|[39m  [2m[22m                                                                         [90m|[39m
+[90m+---------------------------------------------------------------------------+[39m
+
+[90m|[39m
+[31mx[39m  [31mFailed to install 14[39m
+[90m|[39m
+[90m|[39m    [31m✗[39m brainstorming → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m dispatching-parallel-agents → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m executing-plans → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m finishing-a-development-branch → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m receiving-code-review → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m requesting-code-review → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m subagent-driven-development → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m systematic-debugging → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m test-driven-development → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m using-git-worktrees → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m using-superpowers → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m verification-before-completion → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m writing-plans → PromptScript: [2mPromptScript does not support global skill installation[22m
+[90m|[39m
+[90m|[39m    [31m✗[39m writing-skills → PromptScript: [2mPromptScript does not support global skill installation[22m
+
+[90m|[39m
+[90m—[39m  [32mDone![39m[2m  Review skills before use; they run with full agent permissions.[22m
+

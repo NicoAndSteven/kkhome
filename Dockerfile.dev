@@ -3,8 +3,9 @@
 #       即使 --yolo 模式失控，也碰不到宿主机文件系统
 FROM node:20-alpine
 
-# 工具
-RUN apk add --no-cache git curl openssh
+# 工具：bash（Reasonix 需要）+ git（版本控制）
+RUN sed -i 's/dl-cdn.alpinelinux.org/mirrors.tuna.tsinghua.edu.cn/g' /etc/apk/repositories && \
+    apk add --no-cache bash git
 
 WORKDIR /workspace
 

@@ -19,6 +19,15 @@ export function getBeijingHour(): number {
   return hour ? parseInt(hour, 10) : 0
 }
 
+/** Get today's date string in Beijing time (YYYY-MM-DD) */
+export function getBeijingDate(): string {
+  const formatter = new Intl.DateTimeFormat('zh-CN', {
+    timeZone: 'Asia/Shanghai',
+    year: 'numeric', month: '2-digit', day: '2-digit',
+  })
+  return formatter.format(new Date()).replace(/\//g, '-')
+}
+
 /** 13:00 = evening boundary */
 export function getCurrentPeriod(): Period {
   return getBeijingHour() < 13 ? 'noon' : 'evening'
@@ -51,13 +60,18 @@ export function loadTodayResult(): { item: FoodItem; period: Period } | null {
     const raw = localStorage.getItem(STORAGE_KEYS.TODAY)
     if (!raw) return null
     const parsed = JSON.parse(raw)
-    return (parsed?.item && parsed?.period) ? parsed : null
+    // Ignore results from previous days
+    if (!parsed?.item || !parsed?.period || parsed?.date !== getBeijingDate()) {
+      if (parsed?.date && parsed.date !== getBeijingDate()) clearTodayResult()
+      return null
+    }
+    return parsed
   } catch { return null }
 }
 
 export function saveTodayResult(result: { item: FoodItem; period: Period }): void {
   localStorage.setItem(STORAGE_KEYS.TODAY, JSON.stringify({
-    ...result, timestamp: new Date().toISOString(),
+    ...result, date: getBeijingDate(), timestamp: new Date().toISOString(),
   }))
 }
 

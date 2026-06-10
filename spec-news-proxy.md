@@ -42,9 +42,11 @@ thehear.org API → JSON → Function 透传 → 浏览器
 
 | # | 文件 | 操作 | 说明 |
 |---|------|------|------|
-| 1 | `functions/api/news/[country].js` | **新建** | Pages Function 代理端点 |
-| 2 | `src/plugins/news/index.tsx` | **修改** | 替换 `API_BASE` 为同域路径 |
-| 3 | `public/config/plugins.config.json` | 不修改 | 数据由 API 实时返回，无需配置变更 |
+| 1 | `functions/api/news/[country].js` | **新建** | Pages Function 代理端点（CORS 绕过） |
+| 2 | `functions/api/news/article.js` | **新建** | Pages Function 文章抓取+净化端点 |
+| 3 | `functions/api/news/translate.js` | **新建** | Pages Function Cloudflare AI 翻译端点 |
+| 4 | `src/plugins/news/index.tsx` | **重写** | 替换 fetch URL + 添加站内阅读模态框 + 添加翻译按钮 |
+| 5 | `wrangler.toml` | **修改** | 启用 `[ai]` binding |
 
 ---
 

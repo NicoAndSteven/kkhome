@@ -8,6 +8,8 @@ import AiNavigatorPlugin from './ai-navigator'
 import WishWallPlugin from './wish-wall'
 import CloudflareLabPlugin from './cloudflare-lab'
 import NewsPlugin from './news'
+import StockWatchPlugin from './stock-watch'
+import FoodPlugin from './food'
 import { Plugin } from '@core/types'
 
 /**
@@ -95,6 +97,22 @@ export const plugins: Plugin[] = [
     order: 8,
     component: ScratchpadPlugin,
   },
+  {
+    id: 'stock-watch',
+    name: '股市看盘',
+    version: '1.0.0',
+    enabled: true,
+    order: 6,
+    component: StockWatchPlugin,
+  },
+  {
+    id: 'food',
+    name: '今天吃什么',
+    version: '1.0.0',
+    enabled: true,
+    order: 7,
+    component: FoodPlugin,
+  },
 ]
 
 export {
@@ -108,4 +126,6 @@ export {
   WishWallPlugin,
   CloudflareLabPlugin,
   NewsPlugin,
+  StockWatchPlugin,
+  FoodPlugin,
 }

@@ -11,6 +11,8 @@ const routeItems: Array<{ id: HubRouteId; label: string; href: string; pluginId:
   { id: 'wish-wall', label: '许愿', href: routeHash('wish-wall'), pluginId: 'wish-wall' },
   { id: 'cloudflare-lab', label: '边缘', href: routeHash('cloudflare-lab'), pluginId: 'cloudflare-lab' },
   { id: 'news', label: '新闻', href: routeHash('news'), pluginId: 'news' },
+  { id: 'stock-watch', label: '看盘', href: routeHash('stock-watch'), pluginId: 'stock-watch' },
+  { id: 'food', label: '吃啥', href: routeHash('food'), pluginId: 'food' },
   { id: 'inbox', label: '投喂', href: routeHash('inbox'), pluginId: 'universal-inbox' },
   { id: 'launch', label: '启动', href: routeHash('launch'), pluginId: 'quick-launch' },
   { id: 'workbench', label: '工作台', href: routeHash('workbench'), pluginId: 'workbench' },

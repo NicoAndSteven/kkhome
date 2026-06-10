@@ -21,7 +21,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
   const [newItemName, setNewItemName] = useState('')
   const [editId, setEditId] = useState<string | null>(null)
   const [editName, setEditName] = useState('')
-  const [collapsedCats, setCollapsedCats] = useState<Set<string>>(new Set())
+  const [collapsedCats, setCollapsedCats] = useState<Record<string, boolean>>({})
   const [searchQuery, setSearchQuery] = useState('')
 
   // Sync props to local state when drawer opens
@@ -68,12 +68,14 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     }))
   }
 
+  const confirmEdit = () => {
+    if (!editId || !editName.trim()) return
+    setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i))
+    setEditId(null)
+  }
+
   const toggleCategory = (cat: string) => {
-    setCollapsedCats(prev => {
-      const next = new Set(prev)
-      if (next.has(cat)) next.delete(cat); else next.add(cat)
-      return next
-    })
+    setCollapsedCats(prev => ({ ...prev, [cat]: !prev[cat] }))
   }
 
   if (!open) return null
@@ -148,9 +150,9 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
                       <>
                         <input type="text" value={editName}
                           onChange={e => setEditName(e.target.value)}
-                          onKeyDown={e => { if (e.key === 'Enter') { setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i)); setEditId(null) } }}
+                          onKeyDown={e => { if (e.key === 'Enter') confirmEdit() }}
                           className="flex-1 surface-control rounded-[2px] px-sm py-1 font-body-md text-sm outline-none" autoFocus />
-                        <button type="button" onClick={() => { setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i)); setEditId(null) }}
+                        <button type="button" onClick={confirmEdit}
                           className="text-primary hover:text-on-surface transition-premium">
                           <Icon name="check" className="text-lg" />
                         </button>
@@ -197,11 +199,14 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
 
               {/* Built-in recipe categories */}
               <p className="font-label-mono text-xs text-text-muted mb-xs">内置菜谱 ({flatRecipes.length}道)</p>
+              {searchQuery && flatRecipes.filter(r => r.name.includes(searchQuery)).length === 0 && (
+                <p className="font-body-md text-sm text-text-muted text-center py-lg">没有匹配的菜谱</p>
+              )}
               {recipeGroups.map(group => {
                 const groupRecipes = flatRecipes.filter(r => r.category === group.category)
                 const filtered = searchQuery ? groupRecipes.filter(r => r.name.includes(searchQuery)) : groupRecipes
                 if (filtered.length === 0 && !searchQuery) return null
-                const isCollapsed = collapsedCats.has(group.category)
+                const isCollapsed = collapsedCats[group.category] || false
                 return (
                   <div key={group.category} className="surface-item rounded-[2px] mb-sm">
                     {/* Category header */}

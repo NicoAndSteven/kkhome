@@ -103,15 +103,11 @@ test('homepage renders configured content without placeholders', async ({ page }
   await expect(page.locator('#workbench')).toHaveCount(0)
   await expect(page.locator('#collections')).toHaveCount(0)
   await expect(page.locator('#scratchpad')).toHaveCount(0)
-  await expect(page.locator('#projects')).toHaveCount(0)
-  await expect(page.locator('#workflows')).toHaveCount(0)
 
   await expect(page.locator('body')).not.toContainText('example.com')
   await expect(page.locator('body')).not.toContainText('yourusername')
   await expect(page.locator('body')).not.toContainText('常用工具栈')
   await expect(page.locator('body')).not.toContainText('探索我的世界')
-  await expect(page.locator('body')).not.toContainText('项目作品')
-  await expect(page.locator('body')).not.toContainText('场景工作流')
 
   const themeToggle = page.getByRole('button', { name: '切换主题' })
   await expect(themeToggle).toBeVisible()
@@ -130,7 +126,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 
   await goRoute('ai-tools')
   const aiToolsSection = page.locator('#ai-tools')
-  await expect(aiToolsSection.getByRole('heading', { name: 'AI 工具导航' })).toBeVisible()
+  await expect(aiToolsSection.getByRole('heading', { name: '工具导航' })).toBeVisible()
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible()
   await expect(aiToolsSection.getByText('File Converter')).toBeVisible()
   await aiToolsSection.getByRole('button', { name: '转换工具', exact: true }).click()

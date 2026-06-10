@@ -1,0 +1,19 @@
+# ─── 安全开发沙箱 ─────────────────────────────────
+# 用途：AI 代理（Reasonix Code / Claude Code）和 Vite 都跑在容器内
+#       即使 --yolo 模式失控，也碰不到宿主机文件系统
+FROM node:20-alpine
+
+# 工具
+RUN apk add --no-cache git curl openssh
+
+WORKDIR /workspace
+
+# 预装项目依赖
+COPY package.json package-lock.json ./
+RUN npm ci
+
+# 全局安装 Reasonix，避免每次 npx 重下
+RUN npm install -g reasonix
+
+# 默认启动 Vite 开发服务器
+CMD ["npm", "run", "dev"]

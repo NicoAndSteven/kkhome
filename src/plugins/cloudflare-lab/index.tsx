@@ -41,9 +41,18 @@ const fallbackFeatures: FeatureConfig = {
 
 const plannedBindings = ['WISHES_DB', 'HUB_KV', 'HUB_BUCKET', 'HUB_VECTORIZE', 'HUB_QUEUE', 'AI']
 
+const bindingLabels: Record<string, string> = {
+  WISHES_DB: 'WISHES_DB',
+  HUB_KV: 'HUB_KV',
+  HUB_BUCKET: 'HUB_BUCKET',
+  HUB_VECTORIZE: 'HUB_VECTORIZE',
+  HUB_QUEUE: 'HUB_QUEUE',
+  AI: 'Workers AI',
+}
+
 const featureLabels: Record<string, string> = {
   cloudflareHealth: '平台健康',
-  aiSemanticSearch: 'AI 语义搜索',
+  aiSemanticSearch: '语义搜索',
   browserLab: '网页炼金室',
   fileDrop: '文件投递',
   realtimePresence: '实时空间',
@@ -203,7 +212,7 @@ const CloudflareLabPlugin = ({ config }: Props) => {
           <div className="mt-sm grid gap-xs sm:grid-cols-2">
             {bindingEntries.map((binding) => (
               <div key={binding.id} className="surface-item flex items-center justify-between gap-sm rounded-[2px] p-sm">
-                <span className="font-label-mono text-[10px] uppercase text-text-muted">{binding.id}</span>
+                <span className="font-label-mono text-[10px] uppercase text-text-muted">{bindingLabels[binding.id] ?? binding.id}</span>
                 <span className={`rounded border px-2 py-1 font-label-mono text-[10px] uppercase ${
                   binding.enabled
                     ? 'border-tertiary/30 bg-tertiary/10 text-tertiary'

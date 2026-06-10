@@ -1,0 +1,42 @@
+services:
+  # ─── 安全开发沙箱 ────────────────────────────────
+  # AI 代理（rc）和 Vite 都跑在容器内
+  # 即使 --yolo 模式失控，也碰不到宿主机文件系统
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      args:
+        NPM_REGISTRY: https://registry.npmmirror.com
+    image: personal-hub:dev
+    container_name: personal-hub-dev
+    ports:
+      - "5173:5173"
+    volumes:
+      - .:/workspace
+      - /workspace/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+      - WATCHPACK_POLLING=true
+      - NPM_REGISTRY=https://registry.npmmirror.com
+      - DEEPSEEK_API_KEY=${DEEPSEEK_API_KEY}
+    working_dir: /workspace
+    tty: true
+    stdin_open: true
+    init: true
+    command: sh -c "npm config set registry \"$NPM_REGISTRY\" 2>/dev/null; npm run dev -- --host 0.0.0.0"
+    restart: unless-stopped
+
+  # ─── 生产构建 ────────────────────────────────────
+  hub:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NPM_REGISTRY: https://registry.npmmirror.com
+    image: personal-hub:latest
+    container_name: personal-hub
+    ports:
+      - "8080:80"
+    restart: unless-stopped

@@ -1,6 +1,6 @@
 import { UtilityItem } from './types'
 
-export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'cloudflare-lab' | 'workbench' | 'collections' | 'scratchpad'
+export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'cloudflare-lab' | 'news' | 'workbench' | 'collections' | 'scratchpad'
 
 export type ToolKind = NonNullable<UtilityItem['utilityType']>
 
@@ -27,6 +27,7 @@ const routeAliases: Record<string, HubRouteId> = {
   edge: 'cloudflare-lab',
   cloudflare: 'cloudflare-lab',
   'cloudflare-lab': 'cloudflare-lab',
+  news: 'news',
   workbench: 'workbench',
   collections: 'collections',
   scratchpad: 'scratchpad',

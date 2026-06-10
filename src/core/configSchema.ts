@@ -143,23 +143,6 @@ const capsuleItemSchema = z.object({
   icon: z.string().optional(),
 })
 
-const workflowActionSchema = z.discriminatedUnion('type', [
-  selectToolActionSchema.extend({ id: z.string().min(1) }),
-  addScratchpadActionSchema.extend({ id: z.string().min(1) }),
-  copyActionSchema.extend({ id: z.string().min(1) }),
-  jumpActionSchema.extend({ id: z.string().min(1) }),
-])
-
-const workflowItemSchema = z.object({
-  id: z.string().min(1),
-  title: z.string().min(1),
-  category: z.string().min(1),
-  actions: z.array(workflowActionSchema).min(1),
-  description: z.string().optional(),
-  icon: z.string().optional(),
-  enabled: z.boolean().optional(),
-})
-
 const universalInboxConfigSchema = z.object({
   capsules: z.array(capsuleItemSchema).catch([]).default([]),
 })
@@ -183,10 +166,6 @@ const collectionsConfigSchema = z.object({
 
 const scratchpadConfigSchema = z.object({
   storageKey: z.string().min(1).catch('kkhome:scratchpad').default('kkhome:scratchpad'),
-})
-
-const workflowDeckConfigSchema = z.object({
-  workflows: z.array(workflowItemSchema).catch([]).default([]),
 })
 
 const aiCategorySchema = z.object({
@@ -239,6 +218,12 @@ const cloudflareLabConfigSchema = z.object({
   description: z.string().min(1).optional(),
 })
 
+const newsConfigSchema = z.object({
+  title: z.string().min(1).optional(),
+  description: z.string().min(1).optional(),
+  defaultCountry: z.string().min(1).optional(),
+})
+
 const pluginConfigSchema = z.object({
   id: z.string().min(1),
   enabled: z.boolean().default(true),
@@ -275,10 +260,10 @@ const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, u
     workbench: workbenchConfigSchema,
     collections: collectionsConfigSchema,
     scratchpad: scratchpadConfigSchema,
-    'workflow-deck': workflowDeckConfigSchema,
     'ai-navigator': aiNavigatorConfigSchema,
     'wish-wall': wishWallConfigSchema,
     'cloudflare-lab': cloudflareLabConfigSchema,
+    news: newsConfigSchema,
   }
   const parser = parsers[id]
 
@@ -297,7 +282,8 @@ export const getDefaultPluginConfigs = (): PluginConfig[] => [
   { id: 'wish-wall', enabled: true, order: 2 },
   { id: 'ai-navigator', enabled: true, order: 3 },
   { id: 'cloudflare-lab', enabled: true, order: 4 },
-  { id: 'universal-inbox', enabled: false, order: 5 },
+  { id: 'news', enabled: true, order: 5 },
+  { id: 'universal-inbox', enabled: false, order: 6 },
   { id: 'collections', enabled: false, order: 6 },
   { id: 'quick-launch', enabled: false, order: 7 },
   { id: 'workbench', enabled: false, order: 8 },

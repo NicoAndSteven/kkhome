@@ -12,7 +12,7 @@
   "experiments": [
     {
       "id": "ai-semantic-search",
-      "title": "AI 语义搜索",
+      "title": "语义搜索",
       "requires": ["D1", "Vectorize", "Workers AI"],
       "enabled": false
     },

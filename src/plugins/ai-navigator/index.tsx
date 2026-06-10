@@ -39,7 +39,7 @@ const fallbackCategories: AiCategory[] = [
   { id: 'design-assets', title: '素材设计', icon: 'bookmark' },
   { id: 'software-system', title: '软件系统', icon: 'terminal' },
   { id: 'knowledge', title: '知识学习', icon: 'rate_review' },
-  { id: 'ai', title: 'AI 相关', icon: 'auto_awesome' },
+  { id: 'ai', title: '其他', icon: 'auto_awesome' },
 ]
 
 const fallbackTools: AiTool[] = [
@@ -187,8 +187,8 @@ const AiNavigatorPlugin = ({ config }: Props) => {
       <div className="surface-panel rounded-[2px] p-md md:p-lg">
         <div className="grid gap-md md:grid-cols-12 md:items-end">
           <div className="md:col-span-5">
-            <span className="font-label-mono text-xs uppercase text-secondary">AI navigator</span>
-            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">AI 工具导航</h2>
+            <span className="font-label-mono text-xs uppercase text-secondary">Navigator</span>
+            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">工具导航</h2>
             <p className="mt-xs font-body-md text-body-md text-text-muted">
               按目标意图检索收录的网站：转换、图片、视频音频、文档办公、素材、软件和知识资源。
             </p>

@@ -386,7 +386,7 @@
           },
           {
             "id": "ai",
-            "title": "AI 相关",
+            "title": "其他",
             "icon": "auto_awesome"
           }
         ],
@@ -8719,6 +8719,16 @@
       }
     },
     {
+      "id": "news",
+      "enabled": true,
+      "order": 5,
+      "config": {
+        "title": "新闻聚合",
+        "description": "全球多源头条快照与 AI 视角概述",
+        "defaultCountry": "china"
+      }
+    },
+    {
       "id": "collections",
       "enabled": false,
       "order": 4,
@@ -8857,82 +8867,5 @@
       "config": {
         "storageKey": "kkhome:scratchpad"
       }
-    },
-    {
-      "id": "navigation",
-      "enabled": false,
-      "order": 9,
-      "config": {
-        "items": []
-      }
-    },
-    {
-      "id": "tools",
-      "enabled": false,
-      "order": 10,
-      "config": {
-        "items": []
-      }
-    },
-    {
-      "id": "social",
-      "enabled": false,
-      "order": 11,
-      "config": {
-        "items": []
-      }
-    },
-    {
-      "id": "timeline",
-      "enabled": false,
-      "order": 12,
-      "config": {
-        "items": []
-      }
-    },
-    {
-      "id": "blog",
-      "enabled": false,
-      "order": 13,
-      "config": {
-        "items": []
-      }
-    },
-    {
-      "id": "stats",
-      "enabled": false,
-      "order": 14,
-      "config": {
-        "githubRepos": 0,
-        "githubContributions": 0,
-        "languages": []
-      }
-    },
-    {
-      "id": "analytics",
-      "enabled": false,
-      "order": 15,
-      "config": {
-        "totalVisitors": 0,
-        "todayVisitors": 0,
-        "weeklyVisitors": 0
-      }
-    },
-    {
-      "id": "comments",
-      "enabled": false,
-      "order": 16,
-      "config": {
-        "items": []
-      }
-    },
-    {
-      "id": "downloads",
-      "enabled": false,
-      "order": 17,
-      "config": {
-        "items": []
-      }
-    }
   ]
 }

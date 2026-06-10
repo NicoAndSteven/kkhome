@@ -59,32 +59,6 @@ export interface ProfileConfig {
   email?: string
 }
 
-/**
- * 导航项配置
- */
-export interface NavigationItem {
-  id: string
-  title: string
-  url: string
-  icon?: string
-  category?: string
-  description?: string
-}
-
-/**
- * 工具项配置
- */
-export interface ToolItem {
-  id: string
-  name: string
-  url: string
-  icon?: string
-  category: string
-  description: string
-  tags?: string[]
-  favorite?: boolean
-}
-
 export type HubItemType = 'link' | 'tool' | 'prompt' | 'snippet' | 'feed' | 'integration'
 
 export interface HubItem {
@@ -160,30 +134,6 @@ export interface CapsuleItem {
   icon?: string
 }
 
-export interface WorkflowAction extends CapsuleAction {
-  id: string
-}
-
-export interface WorkflowItem {
-  id: string
-  title: string
-  description?: string
-  category: string
-  icon?: string
-  enabled?: boolean
-  actions: WorkflowAction[]
-}
-
-/**
- * 社交链接配置
- */
-export interface SocialLink {
-  id: string
-  platform: string
-  url: string
-  icon: string
-}
-
 /**
  * 主题类型
  */
@@ -198,67 +148,3 @@ export interface PluginSystemState {
   error: string | null
 }
 
-// Projects Plugin
-export interface ProjectItem {
-  id: string
-  name: string
-  description: string
-  techStack: string[]
-  githubUrl?: string
-  demoUrl?: string
-  imageUrl?: string
-}
-
-// Timeline Plugin
-export interface TimelineItem {
-  id: string
-  date: string
-  title: string
-  description: string
-  icon?: string
-  type: 'education' | 'work' | 'achievement'
-}
-
-// Blog Plugin
-export interface BlogPost {
-  id: string
-  title: string
-  summary: string
-  date: string
-  url: string
-  tags?: string[]
-}
-
-// Stats Plugin
-export interface StatsConfig {
-  githubRepos: number
-  githubContributions: number
-  languages: { name: string; percentage: number; color: string }[]
-}
-
-// Analytics Plugin
-export interface AnalyticsConfig {
-  totalVisitors: number
-  todayVisitors: number
-  weeklyVisitors: number
-}
-
-// Comments Plugin
-export interface CommentItem {
-  id: string
-  author: string
-  content: string
-  date: string
-  avatar?: string
-}
-
-// Downloads Plugin
-export interface DownloadItem {
-  id: string
-  name: string
-  description: string
-  type: string
-  url: string
-  downloads: number
-  icon?: string
-}

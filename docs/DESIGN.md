@@ -1,155 +1,145 @@
-# Design System: kkhome — Kinetic Personal Hub
+# Design System: kkhome — Sea Salt Soda Personal Blog
 
 ## 1. Visual Theme & Atmosphere
 
-A kinetic, editorial-grade personal dashboard that feels alive with perpetual micro-motion. The atmosphere is **architectural yet playful** — deep charcoal foundations with vibrant cyan energy pulses, asymmetric compositional risk, and hardware-accelerated motion at every interaction layer.
+A fresh, clean personal blog with a **Sea Salt Soda** aesthetic — cool,通透, and calming. The atmosphere is like a seaside café: cold white bases with seafoam green and sky blue accents, cherry blossom pink as playful highlights. The design is minimal and editorial, with generous white space, subtle glassmorphism, and gentle micro-motion.
 
-- **Density:** Balanced (5/10) — spacious on hero, dense on data views
-- **Variance:** Confident Asymmetric (7/10) — no symmetrical hero sections, no 3-column equal card grids
-- **Motion:** Cinematic Choreography (8/10) — spring physics, parallax depth, perpetual micro-interactions, staggered orchestration
-- **Emotion:** Premium, alive, technically confident — like walking through a well-lit gallery where every artifact responds to your presence
+- **Density:** Balanced — spacious hero, dense data views
+- **Variance:** Clean asymmetric layouts
+- **Motion:** Gentle and purposeful — scroll reveals, fade transitions, Vanta Birds dynamic background on homepage
 
 ## 2. Color Palette & Roles
 
-- **Abyss Black** (#070809) — Primary background, deepest layer
-- **Charcoal Canvas** (#111416) — Secondary background surface
-- **Surface Card** (#15191b) — Card and container fill
-- **Cyan Pulse** (#8be9f4) — Primary accent, interactive states, active indicators
-- **Ember Orange** (#ff6b4a) — Secondary accent, CTAs, energy markers, error states
-- **Warm Amber** (#ffd6a3) — Tertiary accent, highlights, premium badges
-- **Pearl White** (#f1ece6) — Primary text on dark backgrounds
-- **Muted Silver** (#9aa3a8) — Secondary text, metadata, descriptions
-- **Subtle Border** (rgba(223, 232, 236, 0.12)) — Card borders, structural lines
-- **Cyan Glow** (rgba(139, 233, 244, 0.10)) — Ambient glow behind active elements
-- **Ember Glow** (rgba(255, 107, 74, 0.08)) — Secondary ambient glow
-- **Canvas White** (#f4f5f2) — Light mode background
-- **Pure Surface** (#ffffff) — Light mode card fill
-- **Charcoal Ink** (#1a1a1a) — Light mode primary text
-- **Slate Muted** (#687076) — Light mode secondary text
+- **Ice White** (#F5F9FC) — Primary background, cool off-white
+- **Pure White** (#FFFFFF) — Card surfaces, containers
+- **Seafoam** (#4DD0C8) — Primary accent, buttons, links, active states
+- **Sky Blue** (#64B5F6) — Secondary accent, gradients, supporting interactions
+- **Cherry Pink** (#F06292) — Tertiary accent, CTAs, highlights, badges
+- **Deep Slate** (#37474F) — Primary text, headings
+- **Muted Steel** (#90A4AE) — Secondary text, metadata, placeholders
+- **Frost Border** (#E0ECF5) — Subtle card and container borders
+- **Blue Mist** (#F0F6FE) — Container backgrounds, tag/chip backgrounds
 
-## 3. Typography Rules
+## 3. Typography
 
-- **Display:** Geist + Cabinet Grotesk — Track-tight, weight-driven hierarchy. Display sizes use negative letter-spacing for premium compactness. Never use font-size alone for hierarchy — pair weight and color.
-- **Body:** Geist — Relaxed leading (1.6–1.75), max 65ch width, neutral secondary color for subdued content
-- **Mono:** JetBrains Mono — For all numerical data, timestamps, labels, metadata, keyboard shortcuts. Monospace everywhere data needs precision.
-- **Scale:**
-  - Display: 112px desktop / 56px mobile, weight 700, letter-spacing -0.04em
-  - Headline: 32px, weight 600, letter-spacing -0.02em
-  - Body Large: 18px, weight 400, leading 1.75
-  - Body: 16px, weight 400, leading 1.6
-  - Label Mono: 14px/12px/10px, weight 500, letter-spacing 0.02em, uppercase
-- **Banned:** Inter, generic system fonts. No serif fonts in dashboards.
+- **Display/Headlines:** Geist — Weight 700 for display (56px–112px), Weight 600 for headlines (32px). Tight letter-spacing for premium feel.
+- **Body:** Geist — Weight 400, 16px body, 14px small. Relaxed leading (1.6–1.75). Max 65ch width.
+- **Monospace:** JetBrains Mono — For labels, metadata, tags, data displays. Uppercase with letter-spacing 0.02em.
+- **Banned fonts:** Inter (overused), serif fonts in UI context.
 
-## 4. Component Stylings
+## 4. Layout & Navigation
+
+### Welcome Screen (Home)
+- Full-screen Vanta Birds dynamic background (animated birds in seafoam/purple)
+- Centered content: gradient brand logo (rounded square) + name + optional daily quote + "Get Started" button
+- No navigation header, no sidebar — minimal entry point
+
+### Blog Pages
+- **Header:** Simple — brand logo only, no route tabs. Glass backdrop (85% white, blur). Bottom border in frost color.
+- **Sidebar:** 200px left sidebar, white background, frost border-right. Each route has an icon and label. Active route highlighted with seafoam accent background.
+- **Content Area:** Glass container (80% white, blur 12px, rounded 16px, seafoam border glow). Gradient top border (seafoam → sky blue → cherry pink). Dashed inner border decoration. Content scrolls internally.
+- **Mobile (<768px):** Sidebar hidden, content full-width.
+
+## 5. Component Stylings
+
+### Cards (Surface Items)
+- White background, 1px frost border (#E0ECF5)
+- Rounded corners (8px)
+- Subtle shadow (inset top highlight)
+- **Hover:** Lift -3px, seafoam border, soft glow
 
 ### Buttons
-- **Primary:** Solid accent fill (Cyan Pulse), white text, weight 600. No outer glow. On hover: slight lift (-2px translateY) with intensified shadow. On active: tactile -1px translateY with scale(0.98). Shimmer overflow on primary CTA buttons.
-- **Secondary:** Glass background with 1px subtle border. On hover: border shifts to accent with 30% opacity, background gains accent at 8%.
-- **Ghost:** No background, no border. On hover: subtle background at 8% accent.
-- **All buttons:** Min 44px tap target. No neon outer glows. No custom cursors.
+- **Primary:** Seafoam-to-Sky-Blue gradient fill, white text (14-15px, weight 600). Rounded (8-12px). Subtle shadow. Hover: slight lift. Active: scale(0.98).
+- **Secondary:** White background, 1px frost border, slate text. Hover: seafoam border tint.
+- **Ghost:** No background/border. Hover: seafoam bg at 8%.
 
-### Cards
-- **Elevated cards:** Large rounded corners (1.5rem / 24px), diffused whisper shadow tinted to background. Used only when elevation serves hierarchy.
-- **Surface cards:** 1px subtle border, no shadow. Background at card level. On hover: border shifts to accent at 25% opacity, -2px translateY lift, shadow intensifies.
-- **High-density cards:** Replace card containers with border-top dividers or pure negative space separation.
-- **Loading skeleton:** Skeletal shimmer matching exact card dimensions — never generic circular spinners.
+### Tags/Chips
+- Blue mist background (#F0F6FE), seafoam or pink text
+- Rounded (4px), small padding
+- Or: white bg, frost border
 
-### Inputs & Forms
-- Label above input (never floating labels), helper text optional, error text below.
-- Focus ring in accent color with subtle glow, 2px offset.
-- Background at surface level, inset shadow for depth.
-- Search inputs: icon left-inset, clear button on right when populated.
+### Glass Panels
+- Background: rgba(255,255,255,0.8–0.9)
+- backdrop-filter: blur(12px)
+- Frost border, rounded (16px)
+- Optional gradient top accent stripe
 
-### Navigation
-- **Header:** Fixed top bar, glass background (backdrop-blur-xl), 1px bottom border. Horizontal scroll on mobile with overflow-x-auto.
-- **Progress Rail:** Right-side vertical dot rail. Active dot expands to pill shape with accent fill. Dot count matches available routes.
-- **Route tabs:** Bottom border indicator for active state. Hover shows animated underline with scale transition.
+### Navigation (Sidebar)
+- 200px width, white bg, frost right border
+- Each nav item: icon + label, rounded (8px), slate text
+- **Hover:** Blue mist background
+- **Active:** Seafoam bg at 10%, seafoam text, medium weight
+- Divider line between primary and secondary sections
 
-### Drawers & Modals
-- **Contact Drawer:** Right-side slide-in panel, max 420px width. Full-height backdrop with blur. Spring transition on open/close (transform translateX).
-- **Overlay:** Backdrop with 3px blur, opacity fade transition.
-
-### Empty States
-- Composed, intentional compositions — never just "No data" text. Provide actionable next step.
-- Use muted icon + descriptive text + CTA button pattern.
-
-### Error States
-- Inline error banners: accent border at 20% opacity, accent background at 10%, icon + message.
-- Full-page error: centered composition with error code in display mono, description, retry button.
-
-## 5. Layout Principles
-
-- **Grid:** 12-column CSS Grid. Never flexbox percentage math (`calc()` hacks banned).
-- **Hero:** Left-aligned asymmetric split. Text occupies 7 columns, visual/decorative panel occupies 5 columns. Never centered hero sections.
-- **Max-width:** 1480px centered container for home page. Full-bleed for route pages.
-- **Section spacing:** `clamp(3rem, 8vw, 6rem)` vertical gaps. Internal card padding: `clamp(1rem, 3vw, 2rem)`.
-- **Route view:** Full viewport height with 3D perspective wrapper. Content frame floats inside depth layers.
-- **Mobile collapse:** All multi-column layouts collapse to single column below 768px. No horizontal overflow.
-- **Full-height:** Use `min-h-[100dvh]` never `h-screen`.
-- **Background:** Fixed grid pattern (88px cells) with ambient gradient orbs that respond to mouse position (--mouse-x / --mouse-y CSS variables). Cyan glow from bottom-left, ember glow from top-right.
+### Inputs
+- Blue mist background (#F0F6FE), frost border
+- Focus: seafoam border + glow ring
+- Placeholder: muted steel (#90A4AE)
 
 ## 6. Motion & Interaction
 
-### Core Philosophy
-Every element should feel alive. No static interfaces. Motion communicates hierarchy, state, and personality.
-
-### Spring Physics (default)
-- **Interactive elements:** `stiffness: 120, damping: 14` — premium bounce-back on hover, press, and release
-- **Page transitions:** `stiffness: 80, damping: 12` — weighty, cinematic camera moves
-- **Drawer/modal reveals:** `stiffness: 100, damping: 16` — smooth slide with subtle overshoot
-- **Never linear easing.** All transitions use cubic-bezier(0.16, 1, 0.3, 1) — the "premium ease" curve.
-
-### Perpetual Micro-Interactions
-- **Background orbs:** Slow floating animation (20s duration, infinite) on ambient gradient blobs
-- **Progress dots:** Gentle pulse animation on the active dot (2s cycle)
-- **Status indicators:** Slow breathing pulse on online/live indicators
-- **Shimmer buttons:** Infinite shimmer sweep across primary CTA buttons (3s cycle)
-- **Route transitions:** 3D camera rotation on route enter (rotateX, translateZ, blur fade-in cascade)
-- **Intro stage:** Grid rise, scanline sweep, ring pulse, copy reveal — orchestrated timeline (1.8s total)
-
-### Staggered Orchestration
-- **List/Grid reveals:** Children animate in sequence with 80ms cascade delay per item, 760ms total duration
-- **Content sections:** Opacity + translateY fade-in, staggered by nth-child with CSS custom property `--stagger`
-- **Route depth layers:** Three depth planes (far/mid/frame) animate in sequence creating 3D parallax entrance
-
-### Performance Rules
-- Animate exclusively via `transform` and `opacity` — never `top`, `left`, `width`, `height`
-- Use `will-change: transform` on animated elements
-- `contain: paint` on shimmer overflow elements
-- Respect `prefers-reduced-motion`: disable all animations, show static content immediately
-- Hardware-accelerated transforms via `translate3d` and `scale3d`
-
-### Scroll Effects
-- **Reveal on scroll:** IntersectionObserver at 15% threshold, adds `.active` class for fade-in-up animation (800ms)
-- **Parallax background:** Grid pattern shifts subtly based on scroll position
-- **Mouse-reactive:** Background gradient orbs track cursor position via `--mouse-x` / `--mouse-y`
+- **Scroll Reveal:** Elements fade in and translate up when scrolled into view (IntersectionObserver, 15% threshold). Spring-like ease (0.16, 1, 0.3, 1). Staggered per child.
+- **Intro Sequence (homepage):** Vanta Rings animation → Grid rise + scanline sweep + ring pulse + text reveal (1.8s orchestrated) → Rings fade out → Vanta Birds background appears (1.2s crossfade).
+- **Route Transitions:** Simple fade-in with translateY (500ms, no 3D effects).
+- **Card Hover:** Lift with seafoam border glow (320ms ease).
+- **Perpetual:** Pulse ring on status indicators, gentle float on decorative elements.
+- **Reduced Motion:** All animations respect prefers-reduced-motion. Intro skipped, transitions instant.
 
 ## 7. Responsive Rules
 
-- **Mobile-first collapse < 768px:** All multi-column → single column. No exceptions.
-- **Header:** Horizontal nav with scroll on mobile. Route labels visible, no hamburger menu — content-first approach.
-- **Typography:** Display scales via `clamp()`. Body min 14px.
-- **Touch targets:** All interactive elements min 44px.
-- **Progress rail:** Hidden on mobile (below 768px) and short viewports (below 820px height).
-- **Section gaps:** Reduce proportionally on mobile (`clamp(2rem, 5vw, 4rem)`).
+- **<768px:** Sidebar hidden, single-column layouts, reduced padding
+- **Typography:** Headlines scale via clamp()
+- **Touch targets:** Minimum 44px
+- **Content:** No horizontal overflow
+- **Section gaps:** clamp(2rem, 5vw, 4rem)
 
-## 8. Anti-Patterns (Banned)
+## 8. Pages/Screens
 
-- ❌ No emojis anywhere in UI
-- ❌ No Inter font
-- ❌ No serif fonts in dashboards
-- ❌ No pure black (#000000)
-- ❌ No neon/outer glow shadows (use tinted diffuse shadows)
-- ❌ No oversaturated accents (max saturation 80%)
-- ❌ No excessive gradient text on large headers
-- ❌ No custom mouse cursors
-- ❌ No overlapping elements — clean spatial separation
-- ❌ No 3-column equal card layouts
-- ❌ No centered hero sections
-- ❌ No generic names ("John Doe", "Acme Team")
-- ❌ No fake round numbers ("99.99%", "50%+")
-- ❌ No AI copywriting clichés ("Elevate", "Seamless", "Unleash", "Next-Gen", "Supercharge")
-- ❌ No filler UI text: "Scroll to explore", "Swipe down", scroll arrows, bouncing chevrons
-- ❌ No broken Unsplash links — use picsum.photos or SVG
-- ❌ No circular spinners — use skeletal shimmer instead
-- ❌ No `h-screen` — use `min-h-[100dvh]` only
+### Welcome Screen (Homepage)
+Full-screen Vanta Birds background with centered content:
+- Gradient brand logo (rounded square, seafoam → sky blue)
+- Name in large display weight
+- Optional daily inspirational quote (italic, slate text)
+- "Get Started" button (gradient, with arrow animation on hover)
+
+### AI Navigator (Tool Search)
+- Search bar with icon + intent chips + category tabs
+- 3-column tool card grid
+- Each card: icon box, title, hostname, description, tags, optional "Pick" badge
+- Search and category filtering
+
+### News Aggregator
+- Country selector (pill buttons) + stat badges
+- AI overview card with seafoam border
+- 3-column headline card grid (source badge, headline, timestamp, hover "open" link)
+- Historical overview section (previous round + yesterday)
+
+### Wish Wall
+- Wish list with status badges (new/accepted/building/shipped)
+- Submit form: title, detail, author, category selector
+- Real-time updates via API
+
+### Cloudflare Lab
+- Health status + binding/feature/experiment grids
+- 2-column panel layout
+- Status badges (bound/pending/on/off)
+
+### Stock Watch
+- Stock list with price, change %, market state
+- Detail view with charts (lightweight-charts)
+- Search/add symbols
+
+### Food Wheel
+- Period-aware spinner (noon/evening)
+- Today's result banner
+- Menu management drawer
+- 24-hour auto-switch
+
+## 9. Banned Patterns
+- No dark mode (light theme only)
+- No 3D perspective or depth effects
+- No emojis in UI
+- No neon/outer-glow shadows
+- No centered hero sections (home page is centered, but it's a welcome screen not a hero)
+- No 3-column equal card grids (use asymmetric or varied layouts)
+- No circular spinners (use skeleton shimmer instead)

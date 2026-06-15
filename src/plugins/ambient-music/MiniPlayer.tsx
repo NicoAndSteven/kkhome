@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useState, useRef } from 'react'
 import { TrackState, getAudioEngine } from './AudioEngine'
 import { TRACKS } from './tracks'
 import Icon from '../../components/Icon'
@@ -17,27 +17,28 @@ function formatTime(seconds: number): string {
 }
 
 const MiniPlayer = ({ tracks, onToggleTrack, onVolumeChange, onOpenFull }: Props) => {
-  const activeTracks = tracks.filter((t) => t.playing)
   const [dragging, setDragging] = useState(false)
   const barRef = useRef<HTMLDivElement>(null)
 
+  const activeTracks = tracks.filter((t) => t.playing)
   if (activeTracks.length === 0) return null
 
   const primary = activeTracks[0]
   const def = TRACKS.find((t) => t.id === primary.id)
-  const elapsed = primary.duration > 0 ? primary.progress * primary.duration : 0
   const progressPct = primary.duration > 0 ? Math.min(primary.progress, 1) * 100 : 0
 
-  const handleSeek = useCallback((clientX: number) => {
+  const elapsed = primary.duration > 0 ? primary.progress * primary.duration : 0
+
+  const handleSeek = (clientX: number) => {
     const bar = barRef.current
     if (!bar) return
     const rect = bar.getBoundingClientRect()
     const x = Math.max(0, Math.min(clientX - rect.left, rect.width))
     const pct = x / rect.width
     getAudioEngine().seek(primary.id, pct)
-  }, [primary.id])
+  }
 
-  const onBarMouseDown = (e: React.MouseEvent) => {
+  const onBarMouseDown = (e: { clientX: number }) => {
     setDragging(true)
     handleSeek(e.clientX)
     const onMove = (ev: MouseEvent) => handleSeek(ev.clientX)

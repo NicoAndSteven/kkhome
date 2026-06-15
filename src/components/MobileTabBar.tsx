@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import Icon from './Icon'
-import { HubRouteId } from '@core/routeBridge'
 
 interface RouteItem {
   id: string

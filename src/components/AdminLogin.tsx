@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import Icon from './Icon'
 
-const ADMIN_TOKEN_KEY = 'hub:music-admin-token'
-
 interface Props {
   open: boolean
   onClose: () => void
+  /** 认证成功回调，传递 token */
+  onAuth?: (token: string) => void
 }
 
-const AdminLogin = ({ open, onClose }: Props) => {
+const AdminLogin = ({ open, onClose, onAuth }: Props) => {
   const [token, setToken] = useState('')
   const [error, setError] = useState(false)
 
@@ -16,8 +16,7 @@ const AdminLogin = ({ open, onClose }: Props) => {
 
   const handleSubmit = () => {
     if (!token.trim()) return
-    globalThis.localStorage.setItem(ADMIN_TOKEN_KEY, token.trim())
-    window.dispatchEvent(new Event('admin-auth-changed'))
+    onAuth?.(token.trim())
     setError(false)
     setToken('')
     onClose()

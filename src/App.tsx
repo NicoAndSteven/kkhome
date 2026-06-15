@@ -46,6 +46,7 @@ function App() {
   const [activeRoute, setActiveRoute] = useState<HubRouteId>(() => normalizeHubRoute(window.location.hash))
   const [contactOpen, setContactOpen] = useState(false)
   const [adminLoginOpen, setAdminLoginOpen] = useState(false)
+  const [_adminToken, setAdminToken] = useState('')
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
   const ambientInitialized = useRef(false)
 
@@ -243,7 +244,7 @@ function App() {
           profile={profileConfig ?? undefined}
           onClose={() => setContactOpen(false)}
         />
-        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} />
+        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={(token) => { setAdminToken(token); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } })) }} />
 
         {/* 管理员入口 — 右下角 */}
         <button
@@ -268,8 +269,6 @@ function App() {
     ?? blogRouteItems.find((route) => enabledPluginIds.has(route.pluginId))
     ?? blogRouteItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
-  const activeLabel = activeRouteItem?.label ?? ''
-
   const commonMiniPlayer = (
     <MiniPlayer
       tracks={ambientTracks}

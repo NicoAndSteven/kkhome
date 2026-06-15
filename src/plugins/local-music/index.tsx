@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Icon from '../../components/Icon'
 
 interface Song {
@@ -19,8 +19,6 @@ function formatTime(seconds: number): string {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 
-const ADMIN_TOKEN_KEY = 'hub:music-admin-token'
-
 const LocalMusicPlugin = () => {
   const [songs, setSongs] = useState<Song[]>([])
   const [loading, setLoading] = useState(true)
@@ -30,12 +28,15 @@ const LocalMusicPlugin = () => {
   const [progress, setProgress] = useState(0)
   const [duration, setDuration] = useState(0)
   const [uploadMode, setUploadMode] = useState<'none' | 'upload' | 'wish'>('none')
-  const [adminToken, setAdminToken] = useState(() => globalThis.localStorage.getItem(ADMIN_TOKEN_KEY) || '')
-  // 监听外部设置的 adminToken（从欢迎页管理员入口进入）
+  const [adminToken, setAdminToken] = useState('')
+  // 从欢迎页管理员入口接收 token（仅内存，刷新后失效）
   useEffect(() => {
-    const handler = () => setAdminToken(globalThis.localStorage.getItem(ADMIN_TOKEN_KEY) || '')
-    window.addEventListener('admin-auth-changed', handler)
-    return () => window.removeEventListener('admin-auth-changed', handler)
+    const handler = (e: Event) => {
+      const detail = (e as CustomEvent).detail
+      if (detail?.token) setAdminToken(detail.token)
+    }
+    window.addEventListener('admin-auth', handler)
+    return () => window.removeEventListener('admin-auth', handler)
   }, [])
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
@@ -70,6 +71,7 @@ const LocalMusicPlugin = () => {
     audio.addEventListener('loadedmetadata', onMeta)
     audio.addEventListener('ended', onEnd)
     return () => { audio.pause(); audio.src = '' }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const playSong = useCallback(async (song: Song) => {

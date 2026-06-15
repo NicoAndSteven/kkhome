@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaBackground } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
@@ -202,12 +202,6 @@ function App() {
   if (isOnWelcome) {
     return (
       <Layout>
-        <VantaBackground
-          effect="waves"
-          color="#4DD0C8"
-          backgroundColor="#F5F9FC"
-          opacity={0.7}
-        />
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}

@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
@@ -169,6 +169,7 @@ function App() {
 
   const handleIntroComplete = useCallback(() => {
     setIntroComplete(true)
+    window.dispatchEvent(new Event('intro-complete'))
   }, [])
 
   // Reveal 动画
@@ -203,6 +204,7 @@ function App() {
     return (
       <Layout>
         <VantaRings />
+        <VantaBirds />
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}

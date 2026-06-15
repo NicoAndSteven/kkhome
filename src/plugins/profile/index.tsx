@@ -59,7 +59,7 @@ const ProfilePlugin = ({ config }: Props) => {
       <div className="md:col-span-7">
         <div className="mb-md flex flex-wrap items-center gap-sm reveal">
           <span className="rounded-[2px] border border-primary/45 bg-primary/10 px-sm py-1 font-label-mono text-xs uppercase text-primary">
-            Personal operating desk
+            Personal Space
           </span>
           {profile.location && (
             <span className="font-label-mono text-xs text-text-muted">
@@ -91,10 +91,10 @@ const ProfilePlugin = ({ config }: Props) => {
           )}
           <a
             href="#/ai-tools"
-            className="inline-flex items-center justify-center gap-xs rounded-[2px] border border-border-subtle bg-surface-card/70 px-lg py-3 font-body-md text-body-md font-semibold text-on-surface transition-premium hover:border-primary/45 hover:bg-surface-container/80 btn-interact"
+            className="inline-flex items-center justify-center gap-xs rounded-lg border border-primary/30 bg-primary/10 px-lg py-3 font-body-md text-body-md font-semibold text-primary transition-premium hover:bg-primary/20 hover:shadow-[0_8px_24px_-12px_rgba(77,208,200,0.5)] btn-interact"
           >
             <Icon name="arrow_downward" className="text-lg" />
-            进入工作台
+            开始使用 →
           </a>
         </div>
 
@@ -167,9 +167,9 @@ const ProfilePlugin = ({ config }: Props) => {
         className="home-next-link reveal hidden items-center gap-sm border-t border-border-subtle pt-sm font-label-mono text-xs uppercase text-text-muted transition-premium hover:text-primary md:col-span-12 md:flex"
         style={{transitionDelay: '400ms'}}
       >
-        <span className="float-gentle inline-block">Next</span>
+        <span className="float-gentle inline-block">开始探索</span>
         <span className="h-px flex-1 bg-border-subtle" />
-        <span>AI navigator</span>
+        <span>进入站点</span>
         <Icon name="south" className="text-base float-gentle" />
       </a>
     </section>

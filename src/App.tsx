@@ -3,27 +3,36 @@ import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
 import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
-import { HubRouteId, normalizeHubRoute, routeHash } from '@core/routeBridge'
+import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import { TRACKS, synthesizeTrack } from '@plugins/ambient-music/tracks'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
 
-const routeItems: Array<{ id: HubRouteId; label: string; href: string; pluginId: string }> = [
-  { id: 'home', label: '首页', href: routeHash('home'), pluginId: 'profile' },
-  { id: 'ai-tools', label: '导向', href: routeHash('ai-tools'), pluginId: 'ai-navigator' },
-  { id: 'wish-wall', label: '许愿', href: routeHash('wish-wall'), pluginId: 'wish-wall' },
-  { id: 'cloudflare-lab', label: '边缘', href: routeHash('cloudflare-lab'), pluginId: 'cloudflare-lab' },
-  { id: 'news', label: '新闻', href: routeHash('news'), pluginId: 'news' },
-  { id: 'stock-watch', label: '看盘', href: routeHash('stock-watch'), pluginId: 'stock-watch' },
-  { id: 'food', label: '吃啥', href: routeHash('food'), pluginId: 'food' },
-  { id: 'ambient-music', label: '氛围', href: routeHash('ambient-music'), pluginId: 'ambient-music' },
-  { id: 'gallery', label: '画廊', href: routeHash('gallery'), pluginId: 'gallery' },
-  { id: 'inbox', label: '投喂', href: routeHash('inbox'), pluginId: 'universal-inbox' },
-  { id: 'launch', label: '启动', href: routeHash('launch'), pluginId: 'quick-launch' },
-  { id: 'workbench', label: '工作台', href: routeHash('workbench'), pluginId: 'workbench' },
-  { id: 'collections', label: '收藏', href: routeHash('collections'), pluginId: 'collections' },
-  { id: 'scratchpad', label: '暂存', href: routeHash('scratchpad'), pluginId: 'scratchpad' },
+/** 所有路由定义（含 welcome） */
+const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; pluginId: string }> = [
+  { id: 'home', label: '首页', href: '#/home', pluginId: 'profile' },
+  { id: 'ai-tools', label: '导向', href: '#/ai-tools', pluginId: 'ai-navigator' },
+  { id: 'wish-wall', label: '许愿', href: '#/wish-wall', pluginId: 'wish-wall' },
+  { id: 'cloudflare-lab', label: '边缘', href: '#/cloudflare-lab', pluginId: 'cloudflare-lab' },
+  { id: 'news', label: '新闻', href: '#/news', pluginId: 'news' },
+  { id: 'stock-watch', label: '看盘', href: '#/stock-watch', pluginId: 'stock-watch' },
+  { id: 'food', label: '吃啥', href: '#/food', pluginId: 'food' },
+  { id: 'ambient-music', label: '氛围', href: '#/ambient-music', pluginId: 'ambient-music' },
+  { id: 'gallery', label: '画廊', href: '#/gallery', pluginId: 'gallery' },
+  { id: 'inbox', label: '投喂', href: '#/inbox', pluginId: 'universal-inbox' },
+  { id: 'launch', label: '启动', href: '#/launch', pluginId: 'quick-launch' },
+  { id: 'workbench', label: '工作台', href: '#/workbench', pluginId: 'workbench' },
+  { id: 'collections', label: '收藏', href: '#/collections', pluginId: 'collections' },
+  { id: 'scratchpad', label: '暂存', href: '#/scratchpad', pluginId: 'scratchpad' },
 ]
+
+/** 博客内部路由（不含 welcome） */
+const blogRouteItems = allRouteItems.filter(r => r.id !== 'home')
+
+/** 首个有效路由 */
+function firstRoute(routes: typeof blogRouteItems, enabled: Set<string>): string {
+  return routes.find(r => enabled.has(r.pluginId))?.href ?? '#/ai-tools'
+}
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -40,11 +49,8 @@ function App() {
     const initializeApp = async () => {
       try {
         pluginSystem.reset()
-
-        // 注册所有插件
         pluginSystem.registerAll(plugins)
 
-        // 加载配置
         const [appCfg, pluginCfgs] = await Promise.all([
           configLoader.loadAppConfig(),
           configLoader.loadPluginConfigs(),
@@ -54,22 +60,14 @@ function App() {
         setProfileConfig(appCfg.profile)
         setMotionConfig(appCfg.motion)
 
-        // 应用插件配置
         pluginSystem.applyConfigs(
           pluginCfgs.map((pluginCfg) => (
             pluginCfg.id === 'profile'
-              ? {
-                  ...pluginCfg,
-                  config: {
-                    ...appCfg.profile,
-                    ...pluginCfg.config,
-                  },
-                }
+              ? { ...pluginCfg, config: { ...appCfg.profile, ...pluginCfg.config } }
               : pluginCfg
           )),
         )
 
-        // 初始化插件系统
         await pluginSystem.initialize()
       } catch (error) {
         console.error('Failed to initialize app:', error)
@@ -83,28 +81,37 @@ function App() {
 
   useEffect(() => {
     if (!siteConfig) return
-
     document.title = siteConfig.title
     const description = document.querySelector<HTMLMetaElement>('meta[name="description"]')
     description?.setAttribute('content', siteConfig.description)
   }, [siteConfig])
 
+  // 路由变化监听：如果在博客内部访问 #/home，跳转到第一个有效路由
   useEffect(() => {
     const handleHashChange = () => {
-      setActiveRoute(normalizeHubRoute(window.location.hash))
+      const route = normalizeHubRoute(window.location.hash)
+      const enabledPluginIds = new Set(pluginSystem.getEnabledPlugins().map((p) => p.id))
+
+      // 在博客内部（非 welcome），如果访问 home 则重定向到第一个有效路由
+      if (route === 'home' && activeRoute !== 'home') {
+        const target = firstRoute(blogRouteItems, enabledPluginIds)
+        window.location.hash = target
+        return
+      }
+
+      setActiveRoute(route)
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
     }
 
     handleHashChange()
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [])
+  }, [activeRoute])
 
   useEffect(() => {
     if (loading) return
-
     const enabledPluginIds = new Set(pluginSystem.getEnabledPlugins().map((plugin) => plugin.id))
-    window.__hubAvailableRoutes = routeItems
+    window.__hubAvailableRoutes = allRouteItems
       .filter((route) => enabledPluginIds.has(route.pluginId))
       .map((route) => route.id)
   }, [loading])
@@ -126,7 +133,6 @@ function App() {
       if (ambientInitialized.current) return
       ambientInitialized.current = true
 
-      // 初始化音轨 AudioBuffer
       const ctx = new globalThis.AudioContext()
       await Promise.all(
         TRACKS.map(async (track) => {
@@ -136,7 +142,6 @@ function App() {
       )
       ctx.close()
 
-      // 默认播放第一个音轨（雨声）
       const hasPlayed = globalThis.sessionStorage.getItem('hub:ambient-played')
       if (!hasPlayed) {
         await engine.play('rain')
@@ -144,7 +149,6 @@ function App() {
       }
     }
 
-    // 监听首次用户交互
     document.addEventListener('click', startAmbient, { once: true })
     document.addEventListener('keydown', startAmbient, { once: true })
     document.addEventListener('touchstart', startAmbient, { once: true })
@@ -167,27 +171,19 @@ function App() {
     setIntroComplete(true)
   }, [])
 
-  // Reveal 动画 - 使用 IntersectionObserver 观察元素进入视口
+  // Reveal 动画
   useEffect(() => {
-    const observerOptions = {
-      threshold: 0.15,
-      rootMargin: '0px 0px -50px 0px',
-    }
-
+    const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
     const revealObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active')
-        }
+        if (entry.isIntersecting) entry.target.classList.add('active')
       })
     }, observerOptions)
 
     const revealElements = document.querySelectorAll('.reveal')
     revealElements.forEach((el) => revealObserver.observe(el))
-
     return () => revealObserver.disconnect()
   }, [activeRoute, loading])
-
 
   if (loading) {
     return (
@@ -199,50 +195,73 @@ function App() {
 
   const enabledPlugins = pluginSystem.getEnabledPlugins()
   const enabledPluginIds = new Set(enabledPlugins.map((plugin) => plugin.id))
-  const availableRouteItems = routeItems.filter((route) => enabledPluginIds.has(route.pluginId))
-  const activeRouteItem = routeItems.find((route) => route.id === activeRoute) ?? routeItems[0]
+  const isOnWelcome = activeRoute === 'home'
+  const profilePlugin = enabledPlugins.find((plugin) => plugin.id === 'profile')
+
+  // === 欢迎页模式：无导航栏，只有首屏 + 开始按钮 ===
+  if (isOnWelcome) {
+    return (
+      <Layout>
+        {siteConfig && motionConfig && (
+          <IntroStage
+            author={siteConfig.author}
+            enabled={motionConfig.intro}
+            duration={motionConfig.introDuration}
+            onComplete={handleIntroComplete}
+          />
+        )}
+        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] pt-14 px-6 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`}>
+          <ErrorBoundary>
+            {profilePlugin ? (
+              <profilePlugin.component config={profilePlugin.config} />
+            ) : (
+              <div className="surface-panel rounded-lg p-lg">
+                <p className="text-text-muted font-body-md">加载中...</p>
+              </div>
+            )}
+          </ErrorBoundary>
+        </main>
+
+        <ContactDrawer
+          open={contactOpen}
+          profile={profileConfig ?? undefined}
+          onClose={() => setContactOpen(false)}
+        />
+      </Layout>
+    )
+  }
+
+  // === 博客内部模式：Header + 侧边栏 + 内容区 ===
+  const availableRouteItems = blogRouteItems.filter((route) => enabledPluginIds.has(route.pluginId))
+  const activeRouteItem = allRouteItems.find((route) => route.id === activeRoute)
+    ?? blogRouteItems.find((route) => enabledPluginIds.has(route.pluginId))
+    ?? blogRouteItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
-  const isHomeRoute = activeRouteItem.id === 'home'
-  const mainClassName = isHomeRoute
-    ? `page-shell home-page-shell mx-auto max-w-[1480px] pt-14 px-6 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`
-    : `page-shell route-page-shell ${introComplete ? 'page-ready' : ''}`
 
   return (
-    <Layout routeMode={!isHomeRoute}>
-      {siteConfig && motionConfig && (
-        <IntroStage
-          author={siteConfig.author}
-          enabled={motionConfig.intro}
-          duration={motionConfig.introDuration}
-          onComplete={handleIntroComplete}
-        />
-      )}
+    <Layout routeMode>
       <Header
         config={siteConfig ?? undefined}
         activeSection={activeRoute}
         routes={availableRouteItems}
         ambientTracks={ambientTracks}
-        simple={!isHomeRoute}
+        simple
         onContactClick={() => setContactOpen(true)}
         onAmbientClick={() => { window.location.hash = '#/ambient-music' }}
       />
-      <main className={mainClassName}>
+      <main className={`page-shell route-page-shell ${introComplete ? 'page-ready' : ''}`}>
         <ErrorBoundary key={activeRouteItem.id}>
           {activePlugin ? (
-            isHomeRoute ? (
-              <activePlugin.component config={activePlugin.config} />
-            ) : (
-              <div className="route-stage" aria-label={activeRouteItem.label}>
-                <div className="route-frame">
-                  <div className="blog-layout">
-                    <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
-                    <div className="blog-content">
-                      <activePlugin.component config={activePlugin.config} />
-                    </div>
+            <div className="route-stage" aria-label={activeRouteItem.label}>
+              <div className="route-frame">
+                <div className="blog-layout">
+                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
+                  <div className="blog-content">
+                    <activePlugin.component config={activePlugin.config} />
                   </div>
                 </div>
               </div>
-            )
+            </div>
           ) : (
             <section className="route-stage" aria-label={activeRouteItem.label}>
               <div className="route-frame">

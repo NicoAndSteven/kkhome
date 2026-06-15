@@ -4,6 +4,9 @@ test('homepage renders configured content without placeholders', async ({ page }
   const consoleErrors: string[] = []
   let postedWish: Record<string, unknown> | null = null
 
+  // 过滤非关键资源加载错误（如音频引擎离线合成）
+  const allowedErrors = ['ERR_CONNECTION_CLOSED', 'ERR_CONNECTION_REFUSED', 'ERR_NETWORK_ACCESS_DENIED']
+
   await page.route('**/api/health', async (route) => {
     await route.fulfill({
       contentType: 'application/json',
@@ -72,7 +75,7 @@ test('homepage renders configured content without placeholders', async ({ page }
   })
 
   page.on('console', (message) => {
-    if (message.type() === 'error') {
+    if (message.type() === 'error' && !allowedErrors.some((e) => message.text().includes(e))) {
       consoleErrors.push(message.text())
     }
   })
@@ -119,6 +122,9 @@ test('homepage renders configured content without placeholders', async ({ page }
   await expect(page.locator('body')).not.toContainText('常用工具栈')
   await expect(page.locator('body')).not.toContainText('探索我的世界')
 
+  // 进入博客后测试主题切换
+  await page.evaluate(() => { window.location.hash = '#/ai-tools' })
+  await expect(page.locator('.route-frame')).toBeVisible({ timeout: 3_000 })
   const themeToggle = page.getByRole('button', { name: '切换主题' })
   await expect(themeToggle).toBeVisible()
   await themeToggle.click()

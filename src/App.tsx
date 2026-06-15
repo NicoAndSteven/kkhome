@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds, MobileTabBar } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds, MobileTabBar, AdminLogin } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
@@ -45,6 +45,7 @@ function App() {
   const isMobile = useIsMobile()
   const [activeRoute, setActiveRoute] = useState<HubRouteId>(() => normalizeHubRoute(window.location.hash))
   const [contactOpen, setContactOpen] = useState(false)
+  const [adminLoginOpen, setAdminLoginOpen] = useState(false)
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
   const ambientInitialized = useRef(false)
 
@@ -242,6 +243,21 @@ function App() {
           profile={profileConfig ?? undefined}
           onClose={() => setContactOpen(false)}
         />
+        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} />
+
+        {/* 管理员入口 — 右下角 */}
+        <button
+          type="button"
+          onClick={() => setAdminLoginOpen(true)}
+          className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-surface/60 backdrop-blur-md border border-border-subtle flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/30 transition-all opacity-60 hover:opacity-100"
+          aria-label="管理员"
+          title="管理员"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+          </svg>
+        </button>
       </Layout>
     )
   }

@@ -31,6 +31,12 @@ const LocalMusicPlugin = () => {
   const [duration, setDuration] = useState(0)
   const [uploadMode, setUploadMode] = useState<'none' | 'upload' | 'wish'>('none')
   const [adminToken, setAdminToken] = useState(() => globalThis.localStorage.getItem(ADMIN_TOKEN_KEY) || '')
+  // 监听外部设置的 adminToken（从欢迎页管理员入口进入）
+  useEffect(() => {
+    const handler = () => setAdminToken(globalThis.localStorage.getItem(ADMIN_TOKEN_KEY) || '')
+    window.addEventListener('admin-auth-changed', handler)
+    return () => window.removeEventListener('admin-auth-changed', handler)
+  }, [])
 
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
@@ -205,13 +211,13 @@ const LocalMusicPlugin = () => {
         </div>
       </div>
 
-      {/* Admin Token Input */}
-      <div className="flex items-center gap-2">
-        <input type="password" placeholder="管理员密码（审核用）" value={adminToken}
-          onChange={e => { setAdminToken(e.target.value); globalThis.localStorage.setItem(ADMIN_TOKEN_KEY, e.target.value) }}
-          className="flex-1 max-w-xs surface-control rounded-lg px-3 py-1.5 font-label-mono text-xs outline-none focus:border-primary/60" />
-        <span className="font-label-mono text-[10px] text-text-muted">{adminToken ? '✓ 已登录' : ''}</span>
-      </div>
+      {/* 管理员状态 — 从欢迎页入口认证 */}
+      {adminToken && (
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-primary/5 border border-primary/10">
+          <span className="w-2 h-2 rounded-full bg-primary" />
+          <span className="font-label-mono text-[10px] text-primary uppercase tracking-wider">管理员模式 · 显示待审核</span>
+        </div>
+      )}
 
       {/* Upload Form */}
       {uploadMode === 'upload' && (

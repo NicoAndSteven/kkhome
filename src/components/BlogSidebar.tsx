@@ -13,7 +13,6 @@ interface Props {
 }
 
 const routeIcons: Record<string, string> = {
-  home: 'fingerprint',
   'ai-tools': 'travel_explore',
   'wish-wall': 'rate_review',
   'cloudflare-lab': 'cloud',
@@ -29,16 +28,33 @@ const routeIcons: Record<string, string> = {
   scratchpad: 'data_object',
 }
 
+const primaryRoutes = ['ai-tools', 'wish-wall', 'cloudflare-lab', 'news', 'stock-watch', 'food', 'ambient-music', 'gallery']
+const secondaryRoutes = ['inbox', 'launch', 'workbench', 'collections', 'scratchpad']
+
 const BlogSidebar = ({ routes, activeRoute }: Props) => {
-  const topRoutes = routes.filter((r) =>
-    ['home', 'ai-tools', 'wish-wall', 'cloudflare-lab', 'news', 'stock-watch', 'food', 'ambient-music', 'gallery'].includes(r.id)
-  )
-  const bottomRoutes = routes.filter((r) => !topRoutes.includes(r))
+  const topRoutes = routes.filter((r) => primaryRoutes.includes(r.id))
+  const bottomRoutes = routes.filter((r) => secondaryRoutes.includes(r.id))
 
   return (
     <aside className="blog-sidebar">
-      <nav aria-label="博客导航">
-        <div className="space-y-px">
+      {/* Brand */}
+      <div className="blog-sidebar-brand">
+        <div className="blog-sidebar-logo">
+          <Icon name="fingerprint" className="text-xl text-primary" />
+        </div>
+        <div>
+          <div className="font-bold text-on-surface" style={{ fontSize: 20, lineHeight: 1.1 }}>
+            KKHOME
+          </div>
+          <div className="font-label-mono text-[10px] uppercase text-text-muted tracking-wider mt-0.5">
+            Personal Hub
+          </div>
+        </div>
+      </div>
+
+      {/* Primary Nav */}
+      <nav className="blog-sidebar-nav" aria-label="博客导航">
+        <div className="space-y-1">
           {topRoutes.map((route) => {
             const isActive = route.id === activeRoute
             return (
@@ -48,8 +64,8 @@ const BlogSidebar = ({ routes, activeRoute }: Props) => {
                 className={`blog-sidebar-link ${isActive ? 'active' : ''}`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                <Icon name={routeIcons[route.id] ?? 'link'} className="text-sm" />
-                <span>{route.label}</span>
+                <Icon name={routeIcons[route.id] ?? 'link'} className="text-lg" />
+                <span className="font-label-mono text-xs uppercase tracking-wider">{route.label}</span>
               </a>
             )
           })}
@@ -58,7 +74,7 @@ const BlogSidebar = ({ routes, activeRoute }: Props) => {
         {bottomRoutes.length > 0 && (
           <>
             <div className="blog-sidebar-divider" />
-            <div className="space-y-px">
+            <div className="space-y-1">
               {bottomRoutes.map((route) => {
                 const isActive = route.id === activeRoute
                 return (
@@ -68,8 +84,8 @@ const BlogSidebar = ({ routes, activeRoute }: Props) => {
                     className={`blog-sidebar-link ${isActive ? 'active' : ''}`}
                     aria-current={isActive ? 'page' : undefined}
                   >
-                    <Icon name={routeIcons[route.id] ?? 'link'} className="text-sm" />
-                    <span>{route.label}</span>
+                    <Icon name={routeIcons[route.id] ?? 'link'} className="text-lg" />
+                    <span className="font-label-mono text-xs uppercase tracking-wider">{route.label}</span>
                   </a>
                 )
               })}

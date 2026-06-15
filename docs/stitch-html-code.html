@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>KKHOME | Architectural Fluidity</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;family=Geist:wght@100;300;400;600;800&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "primary": "#4DD0C8", // Seafoam
+                    "secondary": "#64B5F6", // Sky Blue
+                    "accent": "#F06292", // Cherry Pink
+                    "ice-white": "#F5F9FC",
+                    "pure-white": "#FFFFFF",
+                    "frost-border": "#E0ECF5",
+                    "deep-slate": "#37474F",
+                    "muted-steel": "#90A4AE",
+                    "surface-container-highest": "#FFFFFF",
+                    "on-surface": "#37474F",
+                    "on-surface-variant": "#90A4AE",
+                    "background": "#F5F9FC",
+                    "surface": "#FFFFFF",
+                    "outline-variant": "#E0ECF5"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "unit": "4px",
+                    "gutter": "24px",
+                    "margin-mobile": "16px",
+                    "container-max": "1440px",
+                    "margin-desktop": "48px"
+            },
+            "fontFamily": {
+                    "headline-lg": ["Geist"],
+                    "display-lg": ["Geist"],
+                    "body-md": ["Geist"],
+                    "label-sm": ["JetBrains Mono"],
+                    "display-sm": ["Geist"],
+                    "data-mono": ["JetBrains Mono"],
+                    "body-lg": ["Geist"]
+            },
+            "fontSize": {
+                    "headline-lg": ["24px", {"lineHeight": "1.3", "fontWeight": "600"}],
+                    "display-lg": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "600"}],
+                    "body-md": ["16px", {"lineHeight": "1.5", "fontWeight": "400"}],
+                    "label-sm": ["12px", {"lineHeight": "1.2", "fontWeight": "500"}],
+                    "display-sm": ["32px", {"lineHeight": "1.2", "fontWeight": "600"}],
+                    "data-mono": ["14px", {"lineHeight": "1.4", "fontWeight": "500"}],
+                    "body-lg": ["18px", {"lineHeight": "1.6", "fontWeight": "500"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body {
+            background-color: #F5F9FC;
+            background-image: 
+                linear-gradient(rgba(224, 236, 245, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(224, 236, 245, 0.5) 1px, transparent 1px);
+            background-size: 40px 40px;
+            color: #37474F;
+            overflow-x: hidden;
+        }
+        
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+
+        .breathing-glow {
+            animation: breathe 4s ease-in-out infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { box-shadow: 0 0 15px rgba(77, 208, 200, 0.1); }
+            50% { box-shadow: 0 0 35px rgba(77, 208, 200, 0.3); }
+        }
+
+        .route-frame {
+            perspective: 1200px;
+            transform-style: preserve-3d;
+            transition: transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        .glass-panel {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid #E0ECF5;
+        }
+
+        .kinetic-card {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .kinetic-card:hover {
+            transform: translateY(-4px);
+            border-color: #4DD0C8;
+            box-shadow: 0 10px 40px -10px rgba(77, 208, 200, 0.15);
+        }
+
+        .gradient-stripe {
+            height: 4px;
+            width: 100%;
+            background: linear-gradient(90deg, #4DD0C8, #64B5F6, #F06292);
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 20;
+        }
+
+        .waveform {
+            display: flex;
+            align-items: flex-end;
+            gap: 2px;
+            height: 20px;
+        }
+
+        .wave-bar {
+            background: #4DD0C8;
+            width: 3px;
+            border-radius: 1px;
+            animation: wave 1.2s ease-in-out infinite;
+        }
+
+        @keyframes wave {
+            0%, 100% { height: 4px; }
+            50% { height: 18px; }
+        }
+
+        .sparkline-svg {
+            stroke: #4DD0C8;
+            stroke-width: 2.5;
+            fill: none;
+            filter: drop-shadow(0 2px 4px rgba(77, 208, 200, 0.2));
+        }
+
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #E0ECF5; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbdde7; }
+    </style>
+</head>
+<body class="font-body-md antialiased selection:bg-primary/20 selection:text-deep-slate">
+<div class="flex h-screen w-full overflow-hidden">
+<!-- SideNavBar (Command Panel) -->
+<aside class="fixed left-0 top-0 h-full w-64 bg-pure-white border-r border-frost-border flex flex-col py-8 px-4 z-50">
+<div class="mb-12 px-4 flex items-center gap-3">
+<div class="w-10 h-10 rounded-lg bg-ice-white flex items-center justify-center breathing-glow border border-primary/20">
+<span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">architecture</span>
+</div>
+<div>
+<h1 class="font-display-sm text-display-sm font-bold text-deep-slate tracking-tighter leading-none">KKHOME</h1>
+<p class="font-label-sm text-label-sm text-muted-steel uppercase tracking-widest mt-1">Personal Hub</p>
+</div>
+</div>
+<nav class="flex-1 space-y-2">
+<!-- Dashboard Active -->
+<a class="group relative flex items-center gap-4 px-4 py-3 rounded-xl bg-primary/10 text-primary font-bold before:absolute before:left-0 before:w-1 before:h-8 before:bg-primary before:rounded-full transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="grid_view">grid_view</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Dashboard</span>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3 rounded-xl text-muted-steel hover:text-deep-slate hover:bg-ice-white hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="account_tree">account_tree</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Projects</span>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3 rounded-xl text-muted-steel hover:text-deep-slate hover:bg-ice-white hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="smart_toy">smart_toy</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">AI Tools</span>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3 rounded-xl text-muted-steel hover:text-deep-slate hover:bg-ice-white hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="temp_preferences_custom">temp_preferences_custom</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Wish Wall</span>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3 rounded-xl text-muted-steel hover:text-deep-slate hover:bg-ice-white hover:translate-x-1 transition-all duration-300" href="#">
+<span class="material-symbols-outlined" data-icon="monitoring">monitoring</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Stock Watch</span>
+</a>
+</nav>
+<div class="mt-auto space-y-2 pt-8 border-t border-frost-border">
+<a class="group flex items-center gap-4 px-4 py-3 rounded-xl text-muted-steel hover:text-deep-slate hover:bg-ice-white transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Support</span>
+</a>
+<a class="group flex items-center gap-4 px-4 py-3 rounded-xl text-muted-steel hover:text-accent transition-all" href="#">
+<span class="material-symbols-outlined" data-icon="logout">logout</span>
+<span class="font-label-sm text-label-sm uppercase tracking-wider">Exit</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 ml-64 p-8 relative overflow-y-auto">
+<!-- Content Header (Top Bar) -->
+<header class="relative z-10 flex justify-between items-center mb-8">
+<div class="flex items-center gap-3">
+<span class="font-data-mono text-muted-steel uppercase tracking-widest text-xs">ROOT / DASHBOARD /</span>
+<h2 class="font-headline-lg text-headline-lg text-deep-slate">Overview</h2>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-muted-steel text-sm">search</span>
+<input class="bg-pure-white border-b border-frost-border focus:border-primary text-deep-slate font-data-mono text-xs px-10 py-2 w-64 transition-all outline-none" placeholder="COMMAND SEARCH..." type="text"/>
+</div>
+<button class="w-10 h-10 rounded-full bg-pure-white border border-frost-border flex items-center justify-center hover:border-primary transition-colors relative">
+<span class="material-symbols-outlined text-muted-steel hover:text-primary transition-colors">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-accent rounded-full"></span>
+</button>
+<div class="flex items-center gap-3 pl-4 border-l border-frost-border">
+<div class="text-right">
+<p class="font-label-sm text-label-sm text-deep-slate">K. KARSTEN</p>
+<p class="font-data-mono text-[10px] text-muted-steel">ARCHITECT Lvl. 4</p>
+</div>
+<img class="w-10 h-10 rounded-lg object-cover border border-frost-border" data-alt="A professional headshot" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPGtZyZbjoPXZ2ZrQ-omAbbvqVVhTdEx9UqWm5wtBwTldYNyLqrpDQdqvdFg4wY_hp63JIrvmFvQU8-PXIoWR11Maxtvb4Wq2VKPn9qKGn6a3xqfRKSSV8ITb5CyFsrdrL1EScMIoV9NsQQDLjDutyDOpNDWs19OlDZKE2P3z2iUREDAz9CPCGwgy3wdBZUWOpoGWSk_ZrlW4zX4Pbtp3sHz7yYU6TixXhGq3jhruTYHLFaAaH3-jYBkJoVv7NHp98h61CSKAoWw"/>
+</div>
+</div>
+</header>
+<!-- Route Frame Container -->
+<section class="route-frame relative z-10 w-full min-h-[calc(100vh-180px)] rounded-3xl glass-panel p-8 shadow-sm overflow-hidden">
+<div class="gradient-stripe"></div>
+<!-- Bento Workbench Grid -->
+<div class="grid grid-cols-12 gap-6 h-full mt-2">
+<!-- Featured Project Card (Large) -->
+<div class="col-span-8 row-span-2 kinetic-card bg-ice-white/50 rounded-2xl p-6 relative overflow-hidden group border border-frost-border">
+<div class="absolute inset-0 z-0 opacity-20 group-hover:scale-105 transition-transform duration-700">
+<img class="w-full h-full object-cover" data-alt="Futuristic skyscraper" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC4AIO0eJ6j19x167nf6NW89_i80DYqCK-THiYGRvAhsvStX-WOQxBGxyMjkQq__gJ_8Vxf_dgJleiNLFP0ov3Lt8JDk1FxfPfgm2qYW9hJomeZME52oyoLLv4SEnC9OD6nND1ehV8NcM_1JwYGrZESz5E_2yzCUAbABaPll0Xudqd9650pN4G4w5-mbQ8wR4ka8GNi7lZxPnUJSMdUt5zApzbRe4tQIgKZGGFgoaPZa1brY085bwTlylmNCyu-kuathr5kaozIcw"/>
+</div>
+<div class="relative z-10 h-full flex flex-col">
+<div class="flex justify-between items-start">
+<div>
+<span class="bg-accent text-pure-white font-data-mono text-[10px] px-2 py-1 rounded-sm font-bold uppercase tracking-wider">Urgent Action</span>
+<h3 class="font-display-sm text-display-sm mt-3 text-deep-slate">Neo-Tokyo Res.</h3>
+<p class="font-body-md text-muted-steel max-w-md">Refining structural load-bearing logic for the upper cantilever sections. Review due by EOD.</p>
+</div>
+<div class="w-12 h-12 rounded-xl bg-pure-white border border-frost-border flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-primary">auto_awesome</span>
+</div>
+</div>
+<div class="mt-auto flex items-end justify-between">
+<div class="flex -space-x-3">
+<img class="w-10 h-10 rounded-full border-2 border-pure-white object-cover" data-alt="Portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCTDIKuq8bDVzhauwIzj_6PfGB0vdhLA8Rq0XxzVGxC_IAhDc3hdU5g7UjiGrlC2nbwzYia5wxZQADeUIAL0JGbyJs96MI7ys4-gIQqSMMHmNftEMG3uvNB5fsQ6QbvkZOL9Jxj7RHk_a2jszhdhWhGyJEuQqGOcKgUrY2xC6ygdqGrt8gCy_Jql5OSvZZ4QPYjIEw7-e-UNmlfRk3VVCYjEtvXoklE6bNsA_0XoyDFh0XOYt3zRVo-0qVJvG_HvYuJcXO8-WtmTg"/>
+<img class="w-10 h-10 rounded-full border-2 border-pure-white object-cover" data-alt="Portrait" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDPzcPrfVNtnrQQ59h564UVJ0ccT3glT7y2g0zKs9MZmISMc5vyAYWId2dxI8MrpjPlK55yOotbZtZy46-ipxLCXSDmK5FxRAImmn_bFUhA2RrDyoBYFUU3OwDydUkImdJ4YSKsPoipvp2i64m6M4SQAuq8D9dFU9aZdK3_XNIzCFr_2ol-0U3rQKMe1AoAX-qpVtkNFN1hPGyVfuhze0dp9JpdLRQ5dTadZ1_9Fs9JZPaUTZD-xicdRrmeSd8JMsw8Mop0fSWjuw"/>
+<div class="w-10 h-10 rounded-full border-2 border-pure-white bg-ice-white flex items-center justify-center font-data-mono text-xs text-muted-steel">+4</div>
+</div>
+<button class="px-6 py-2 bg-primary text-pure-white font-bold rounded-lg hover:bg-primary/90 hover:shadow-lg transition-all flex items-center gap-2">
+<span class="font-label-sm">RESUME DESIGN</span>
+<span class="material-symbols-outlined text-sm">arrow_forward_ios</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Stock Watch Card (Compact) -->
+<div class="col-span-4 kinetic-card bg-pure-white rounded-2xl p-6 border border-frost-border flex flex-col justify-between shadow-sm">
+<div class="flex justify-between items-center">
+<div>
+<h4 class="font-data-mono text-xs text-muted-steel uppercase tracking-widest">STOCK WATCH</h4>
+<p class="font-headline-lg text-deep-slate mt-1">NVDA <span class="text-xs font-normal text-primary">+4.2%</span></p>
+</div>
+<span class="material-symbols-outlined text-primary">trending_up</span>
+</div>
+<div class="h-24 w-full mt-4">
+<svg class="w-full h-full" viewbox="0 0 100 40">
+<defs>
+<lineargradient id="chartGradient" x1="0%" x2="0%" y1="0%" y2="100%">
+<stop offset="0%" stop-color="#4DD0C8" stop-opacity="0.2"></stop>
+<stop offset="100%" stop-color="#64B5F6" stop-opacity="0"></stop>
+</lineargradient>
+</defs>
+<path class="sparkline-svg" d="M0,35 Q10,30 20,32 T40,20 T60,25 T80,10 T100,15"></path>
+<path d="M0,35 Q10,30 20,32 T40,20 T60,25 T80,10 T100,15 L100,40 L0,40 Z" fill="url(#chartGradient)"></path>
+</svg>
+</div>
+<div class="flex justify-between items-center mt-4 pt-4 border-t border-frost-border">
+<p class="font-data-mono text-[10px] text-muted-steel">$824.19 USD</p>
+<p class="font-data-mono text-[10px] text-primary">VOL: 42.1M</p>
+</div>
+</div>
+<!-- AI Tools Quick Access -->
+<div class="col-span-4 kinetic-card bg-pure-white rounded-2xl p-6 border border-frost-border shadow-sm">
+<h4 class="font-data-mono text-xs text-muted-steel uppercase tracking-widest mb-4">AI WORKFLOW</h4>
+<div class="grid grid-cols-2 gap-3">
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-frost-border hover:bg-primary/5 hover:border-primary transition-all group">
+<span class="material-symbols-outlined text-muted-steel group-hover:text-primary">model_training</span>
+<span class="font-label-sm text-[10px] text-muted-steel group-hover:text-deep-slate">TRAIN</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-frost-border hover:bg-primary/5 hover:border-primary transition-all group">
+<span class="material-symbols-outlined text-muted-steel group-hover:text-primary">architecture</span>
+<span class="font-label-sm text-[10px] text-muted-steel group-hover:text-deep-slate">RENDER</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-frost-border hover:bg-primary/5 hover:border-primary transition-all group">
+<span class="material-symbols-outlined text-muted-steel group-hover:text-primary">terminal</span>
+<span class="font-label-sm text-[10px] text-muted-steel group-hover:text-deep-slate">SCRIPT</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-2 p-4 rounded-xl border border-frost-border hover:bg-primary/5 hover:border-primary transition-all group">
+<span class="material-symbols-outlined text-muted-steel group-hover:text-primary">database</span>
+<span class="font-label-sm text-[10px] text-muted-steel group-hover:text-deep-slate">QUERY</span>
+</button>
+</div>
+</div>
+<!-- Recent Projects -->
+<div class="col-span-12 kinetic-card bg-pure-white/60 rounded-2xl p-6 border border-frost-border overflow-hidden shadow-sm">
+<div class="flex justify-between items-center mb-6">
+<h4 class="font-headline-lg text-deep-slate">Recent Archive</h4>
+<a class="font-data-mono text-xs text-secondary hover:text-primary font-bold uppercase tracking-wider" href="#">View All Projects</a>
+</div>
+<div class="grid grid-cols-4 gap-4">
+<div class="relative group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden border border-frost-border relative">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" data-alt="Interior design" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBxmMPytmeeUBRnAhSCz0uljha_IlrC4LdagqClWPrVwk2gcAhS7-MMMzUaxed2rGrpwDpWSB9IahuansP9_GlLsOSG81A5mXX75Drpol1EuDKgmX-ZRwOKvGT5S7oa4ajkAXpRIWFwetXb8HBNNjBItBrV_vRwqPq-dnhQhfEmKgETo2eV8hyrVVCzZFLkI95tzBUdUEH0iDuPNp2V5SNsRCS1dS0RzTbcXToqsqVlYPFeCwV0SeEHMoekdbTwV_NmTSn9y1GtGg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-deep-slate/60 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<p class="font-label-sm text-pure-white">Echo Villa</p>
+<p class="font-data-mono text-[10px] text-primary">2024 / ARCH</p>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden border border-frost-border relative">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" data-alt="Residential building" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAUWCxN7VB4S6r2knUF8n1UFAsngUdOYGr2V1-MczCab0uQKw2GgyiRdJRnf_aEHE9z4q-Zu1eUXFlz4VgqnU4gQzhwAmyslnAOKY3dE82Md5SI4p0JFOYcEDUWPDbgIy7OpUnJitKrk8b_YPGhC-JGwT4Z_CwxCLx9AAuro0UNo8eF3XMJ94_1OIFM9hUtRkQa7WQGnfglcTSzxWGvQ5Ljg0o8AnsGqFGnC_qknpFZsNkdi-kgL416oQ8aigbHqn_LQTEznKgoDQ"/>
+<div class="absolute inset-0 bg-gradient-to-t from-deep-slate/60 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<p class="font-label-sm text-pure-white">Void Pavilion</p>
+<p class="font-data-mono text-[10px] text-primary">2023 / INST</p>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden border border-frost-border relative">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" data-alt="Mountain landscape" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCqgJ1XlIJbv_9ZqULNf4NQ4ViCWTaInT8a755nfZw9UcD_sW8FfM7DQtzBpaL3VxtWs-Qh9_PuAg-PvJdkF1LTM4XdtADMlbPzP1BW3oFYyTMKN9qYtp72egz3c5EHU-x-DAja5OKaEAnTmmLAovLl_mj1aDlVBId3S9pOYStQFBiHhswAh8aZoalGzSCWBT-vV_BX1f79eDvY-ccleasAJ8XgEHuS4fmGpT7yRJamk2CulAylQVqJIB-QIkP1CGZBroM1keg1bg"/>
+<div class="absolute inset-0 bg-gradient-to-t from-deep-slate/60 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<p class="font-label-sm text-pure-white">Mist Ridge</p>
+<p class="font-data-mono text-[10px] text-primary">2024 / CONCEPT</p>
+</div>
+</div>
+</div>
+<div class="relative group cursor-pointer">
+<div class="aspect-[4/3] rounded-xl overflow-hidden border border-frost-border relative">
+<img class="w-full h-full object-cover grayscale opacity-80 group-hover:grayscale-0 group-hover:opacity-100 transition-all duration-500" data-alt="Architectural lines" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAvDdSTp4xMs3WL_0qULv-fJwCqeA-oKJ9n6e0arb6xpUTf73NFtZ40FCu2qDntJn2RwYPjfMvWNy78-s5XEq6rTY72OOssJbJ54evbsNhbfV7YDFJXtE8CSZzi4LAVZiW3snhYu2jr0wv4RrEJIVkHs0qaaD-bGPwHASKopUhQCwxCTpRzq8awTMlOBRTzFbZ6U0brGL4HFqzHTBgKdaQZkceDw7pgTgWbP5uyWGUQcIOtx5C-v_P7B7jELp9FJge8ZucullBjGw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-deep-slate/60 to-transparent"></div>
+<div class="absolute bottom-3 left-3">
+<p class="font-label-sm text-pure-white">Flux Center</p>
+<p class="font-data-mono text-[10px] text-primary">2022 / STRUCT</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Ambient MiniPlayer -->
+<div class="fixed bottom-8 right-8 z-[100]">
+<div class="glass-panel px-6 py-4 rounded-2xl shadow-xl flex items-center gap-6 border border-primary/30">
+<div class="flex items-center gap-4">
+<div class="w-10 h-10 bg-ice-white rounded-lg overflow-hidden border border-frost-border">
+<img class="w-full h-full object-cover" data-alt="Sound waves" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDL1PWvzL40Qr7xxmHA4MFB4YFfGunRVHbg4vt791ISbzFQb3N2FqwQ5LJD96Klxxa6yXP3c1oLGruh3dH5B2vQlwhLr1Hj4ZCRi5Z5E-HvR0-SNbF27E7oU9WiSAW05E1y-5_FnSqA1zlzNLmLEPNBwGxxb9KZFjpV5fEZX_qUo51F5518qYhayRWntN0fHhGhrszZ-5RE9ZAP3h6kIwH198ZPY_tGuMYUcFtq-YqC0f2J7bHFJtRQU3dJbzBioKF-OIViGYydww"/>
+</div>
+<div>
+<p class="font-label-sm text-deep-slate text-xs leading-none">Midnight Pulse</p>
+<p class="font-data-mono text-[10px] text-muted-steel uppercase mt-1">Lo-Fi / Architecture</p>
+</div>
+</div>
+<div class="waveform">
+<div class="wave-bar" style="animation-delay: 0.1s"></div>
+<div class="wave-bar" style="animation-delay: 0.3s"></div>
+<div class="wave-bar" style="animation-delay: 0.2s"></div>
+<div class="wave-bar" style="animation-delay: 0.4s"></div>
+<div class="wave-bar" style="animation-delay: 0.15s"></div>
+</div>
+<div class="flex items-center gap-3">
+<button class="text-muted-steel hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">skip_previous</span></button>
+<button class="w-8 h-8 rounded-full bg-primary text-pure-white flex items-center justify-center hover:scale-110 active:scale-95 transition-all"><span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">play_arrow</span></button>
+<button class="text-muted-steel hover:text-primary transition-colors"><span class="material-symbols-outlined text-sm">skip_next</span></button>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // 3D card tilt effect
+    document.querySelectorAll('.kinetic-card').forEach(card => {
+        card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 30;
+            const rotateY = (centerX - x) / 30;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-4px)`;
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) translateY(0)';
+        });
+    });
+
+    // Logo breathing glow
+    const glowElement = document.querySelector('.breathing-glow');
+    if (glowElement) {
+        let opacity = 0.1;
+        let growing = true;
+        setInterval(() => {
+            if (growing) {
+                opacity += 0.005;
+                if (opacity >= 0.3) growing = false;
+            } else {
+                opacity -= 0.005;
+                if (opacity <= 0.1) growing = true;
+            }
+            glowElement.style.boxShadow = `0 0 35px rgba(77, 208, 200, ${opacity})`;
+        }, 50);
+    }
+</script>
+</body></html>

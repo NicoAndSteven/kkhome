@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds, MobileTabBar } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
@@ -245,13 +245,65 @@ function App() {
     )
   }
 
-  // === 博客内部模式：Header + 侧边栏 + 内容区 ===
+  // === 博客内部模式 ===
   const availableRouteItems = blogRouteItems.filter((route) => enabledPluginIds.has(route.pluginId))
   const activeRouteItem = allRouteItems.find((route) => route.id === activeRoute)
     ?? blogRouteItems.find((route) => enabledPluginIds.has(route.pluginId))
     ?? blogRouteItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
+  const activeLabel = activeRouteItem?.label ?? ''
 
+  const commonMiniPlayer = (
+    <MiniPlayer
+      tracks={ambientTracks}
+      onToggleTrack={(id) => {
+        const engine = getAudioEngine()
+        const state = ambientTracks.find((t) => t.id === id)
+        if (state?.playing) engine.stop(id)
+        else engine.play(id)
+      }}
+      onVolumeChange={(id, vol) => getAudioEngine().setVolume(id, vol)}
+      onOpenFull={() => { window.location.hash = '#/ambient-music' }}
+    />
+  )
+
+  const commonDrawer = (
+    <ContactDrawer
+      open={contactOpen}
+      profile={profileConfig ?? undefined}
+      onClose={() => setContactOpen(false)}
+    />
+  )
+
+  if (isMobile) {
+    // === 移动端：全宽卡片 + 底部 TabBar ===
+    return (
+      <div style={{ backgroundColor: '#F5F9FC', minHeight: '100vh', paddingTop: '16px', paddingBottom: '64px' }}>
+        <MobileTabBar routes={availableRouteItems} activeRoute={activeRoute} />
+        <main className="px-4">
+          <ErrorBoundary key={activeRouteItem.id}>
+            {activePlugin ? (
+              <div className="bg-surface rounded-xl border border-border-subtle p-4">
+                <activePlugin.component config={activePlugin.config} />
+              </div>
+            ) : (
+              <div className="bg-surface rounded-xl border border-border-subtle p-4">
+                <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
+                <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
+                <p className="mt-xs font-body-md text-body-md text-text-muted">
+                  当前配置没有启用「{activeRouteItem?.label ?? ''}」模块。
+                </p>
+              </div>
+            )}
+          </ErrorBoundary>
+        </main>
+        {commonMiniPlayer}
+        {commonDrawer}
+      </div>
+    )
+  }
+
+  // === 桌面端：侧边栏 + 玻璃面板（保持原样） ===
   return (
     <Layout routeMode>
       <Header
@@ -296,24 +348,8 @@ function App() {
           )}
         </ErrorBoundary>
       </main>
-
-      <ContactDrawer
-        open={contactOpen}
-        profile={profileConfig ?? undefined}
-        onClose={() => setContactOpen(false)}
-      />
-
-      <MiniPlayer
-        tracks={ambientTracks}
-        onToggleTrack={(id) => {
-          const engine = getAudioEngine()
-          const state = ambientTracks.find((t) => t.id === id)
-          if (state?.playing) engine.stop(id)
-          else engine.play(id)
-        }}
-        onVolumeChange={(id, vol) => getAudioEngine().setVolume(id, vol)}
-        onOpenFull={() => { window.location.hash = '#/ambient-music' }}
-      />
+      {commonMiniPlayer}
+      {commonDrawer}
     </Layout>
   )
 }

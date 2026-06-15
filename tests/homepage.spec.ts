@@ -104,6 +104,7 @@ test('homepage renders configured content without placeholders', async ({ page }
     'food',
     'ambient-music',
     'gallery',
+    'local-music',
   ])
   await expect(page.locator('#inbox')).toHaveCount(0)
   await expect(page.locator('#launch')).toHaveCount(0)

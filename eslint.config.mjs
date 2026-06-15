@@ -36,6 +36,7 @@ const browserGlobals = {
   alert: 'readonly',
   confirm: 'readonly',
   React: 'readonly',
+  crypto: 'readonly',
   __dirname: 'readonly',
   process: 'readonly',
 }

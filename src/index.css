@@ -885,6 +885,118 @@ html.intro-scroll-lock #root {
     }
 }
 
+/* 欢迎页 - 极简 Vanta Rings 整合 */
+.welcome-screen {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    z-index: 1;
+    pointer-events: none;
+}
+
+.welcome-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    text-align: center;
+    opacity: 0;
+    transform: translateY(16px);
+    transition: all 900ms cubic-bezier(0.16, 1, 0.3, 1);
+    pointer-events: none;
+}
+
+.welcome-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+}
+
+.welcome-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 20px;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 32px -12px rgba(77, 208, 200, 0.3);
+}
+
+.welcome-logo-inner {
+    font-family: Geist, sans-serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #FFFFFF;
+    line-height: 1;
+}
+
+.welcome-title {
+    font-family: Geist, sans-serif;
+    font-size: clamp(36px, 6vw, 56px);
+    font-weight: 700;
+    color: var(--color-on-surface);
+    line-height: 1.1;
+    margin: 0;
+    letter-spacing: -0.02em;
+}
+
+.welcome-quote {
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin: 0;
+}
+
+.welcome-quote-text {
+    font-size: 15px;
+    color: var(--color-on-surface-variant);
+    line-height: 1.6;
+    font-style: italic;
+}
+
+.welcome-quote-author {
+    font-size: 12px;
+    color: var(--color-text-muted);
+    font-family: "JetBrains Mono", monospace;
+}
+
+.welcome-enter-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border-radius: 12px;
+    border: none;
+    background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+    color: #FFFFFF;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 4px 16px -8px rgba(77, 208, 200, 0.3);
+}
+
+.welcome-enter-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px -12px rgba(77, 208, 200, 0.5);
+}
+
+.welcome-enter-btn:active {
+    transform: translateY(0) scale(0.98);
+}
+
+.welcome-enter-arrow {
+    font-size: 18px;
+    transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.welcome-enter-btn:hover .welcome-enter-arrow {
+    transform: translateX(4px);
+}
+
 @media (prefers-reduced-motion: reduce) {
     .intro-stage {
         display: none;

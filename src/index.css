@@ -4,173 +4,91 @@
 
 /* Editorial Engineering design system */
 
-/* CSS 变量 - 日间模式 (默认) */
+/* CSS 变量 - 海盐苏打配色 (日间模式) */
 :root {
     --mouse-x: 50%;
     --mouse-y: 50%;
 
     /* 核心颜色 */
-    --color-background: #f4f5f2;
-    --color-surface: #fcfcf8;
-    --color-surface-card: #ffffff;
-    --color-primary: #006c7a;
-    --color-secondary: #c2410c;
-    --color-text-muted: #687076;
-    --color-border-subtle: rgba(19, 24, 28, 0.18);
-    --color-glow-cyan: rgba(0, 108, 122, 0.16);
-    --color-glow-indigo: rgba(194, 65, 12, 0.08);
+    --color-background: #F5F9FC;
+    --color-surface: #FFFFFF;
+    --color-surface-card: #FFFFFF;
+    --color-primary: #4DD0C8;
+    --color-secondary: #64B5F6;
+    --color-text-muted: #90A4AE;
+    --color-border-subtle: rgba(144, 164, 174, 0.2);
+    --color-glow-primary: rgba(77, 208, 200, 0.10);
+    --color-glow-secondary: rgba(100, 181, 246, 0.08);
 
     /* Material Design 扩展颜色 */
-    --color-tertiary-fixed-dim: #d97706;
-    --color-on-primary-container: #0891b2;
-    --color-inverse-on-surface: #f5f5f0;
-    --color-surface-container: #f0f0f0;
-    --color-outline: #6b7280;
-    --color-on-primary: #ffffff;
-    --color-surface-container-lowest: #ebebeb;
-    --color-outline-variant: #d1d5db;
-    --color-error: #dc2626;
-    --color-secondary-fixed: #e0e7ff;
-    --color-on-secondary: #1e1b4b;
-    --color-surface-variant: #e5e5e5;
-    --color-surface-bright: #ffffff;
-    --color-on-secondary-fixed-variant: #4338ca;
-    --color-secondary-container: #c7d2fe;
-    --color-on-secondary-container: #312e81;
-    --color-primary-container: #cffafe;
-    --color-error-container: #fef2f2;
-    --color-on-secondary-fixed: #1e1b4b;
-    --color-on-error: #ffffff;
-    --color-primary-fixed-dim: #0891b2;
-    --color-on-primary-fixed: #083344;
-    --color-on-surface: #1a1a1a;
-    --color-primary-fixed: #a5f3fc;
-    --color-on-background: #1a1a1a;
-    --color-surface-tint: #0891b2;
-    --color-on-tertiary-container: #92400e;
-    --color-tertiary-fixed: #fef3c7;
-    --color-inverse-surface: #1a1a1a;
-    --color-surface-container-high: #e5e5e5;
-    --color-on-tertiary-fixed: #78350f;
-    --color-on-tertiary: #ffffff;
-    --color-on-error-container: #991b1b;
-    --color-inverse-primary: #22d3ee;
-    --color-surface-container-highest: #d4d4d4;
-    --color-on-surface-variant: #4b5563;
-    --color-surface-dim: #e5e5e5;
-    --color-tertiary-container: #fbbf24;
-    --color-on-tertiary-fixed-variant: #92400e;
-    --color-surface-container-low: #f0f0f0;
-    --color-secondary-fixed-dim: #a5b4fc;
-    --color-tertiary: #f59e0b;
-    --color-on-primary-fixed-variant: #0e7490;
+    --color-tertiary: #F06292;
+    --color-on-primary: #FFFFFF;
+    --color-on-surface: #37474F;
+    --color-on-background: #37474F;
+    --color-on-surface-variant: #607D8B;
+    --color-surface-container: #F0F6FE;
+    --color-error: #E57373;
+    --color-tertiary-fixed-dim: #F06292;
+    --color-on-primary-container: #4DD0C8;
+    --color-inverse-on-surface: #FFFFFF;
+    --color-surface-container-lowest: #F5F9FC;
+    --color-outline: #90A4AE;
+    --color-surface-container-low: #F0F6FE;
+    --color-outline-variant: #B0BEC5;
+    --color-secondary-fixed: #E3F2FD;
+    --color-on-secondary: #FFFFFF;
+    --color-surface-variant: #ECEFF1;
+    --color-surface-bright: #FFFFFF;
+    --color-on-secondary-fixed-variant: #64B5F6;
+    --color-secondary-container: #BBDEFB;
+    --color-on-secondary-container: #37474F;
+    --color-primary-container: #B2DFDB;
+    --color-error-container: #FFEBEE;
+    --color-on-secondary-fixed: #37474F;
+    --color-on-error: #FFFFFF;
+    --color-primary-fixed-dim: #4DD0C8;
+    --color-on-primary-fixed: #37474F;
+    --color-primary-fixed: #B2DFDB;
+    --color-surface-tint: #4DD0C8;
+    --color-on-tertiary-container: #F06292;
+    --color-tertiary-fixed: #FCE4EC;
+    --color-inverse-surface: #37474F;
+    --color-surface-container-high: #E3F2FD;
+    --color-on-tertiary-fixed: #F06292;
+    --color-on-tertiary: #FFFFFF;
+    --color-on-error-container: #E57373;
+    --color-inverse-primary: #4DD0C8;
+    --color-surface-container-highest: #B0BEC5;
+    --color-surface-dim: #E3F2FD;
+    --color-tertiary-container: #FCE4EC;
+    --color-on-tertiary-fixed-variant: #F06292;
+    --color-secondary-fixed-dim: #BBDEFB;
+    --color-on-primary-fixed-variant: #37474F;
+    --color-surface-variant: #ECEFF1;
 
     /* 组件级变量 */
-    --color-body-bg: #f4f5f2;
-    --color-body-text: #1a1a1a;
-    --color-interactive-bg-base: #f5f5f0;
-    --color-glass-bg: rgba(255, 255, 255, 0.86);
-    --color-glass-border: rgba(0, 0, 0, 0.1);
-    --color-glass-hover-border: rgba(8, 145, 178, 0.28);
-    --color-glass-shadow: rgba(0, 0, 0, 0.1);
-    --color-intro-bg: #f5f5f0;
-    --color-drawer-bg: rgba(255, 255, 255, 0.92);
-    --color-drawer-border: rgba(0, 0, 0, 0.1);
-    --color-drawer-shadow: rgba(0, 0, 0, 0.1);
-    --color-panel-bg: rgba(255, 255, 251, 0.94);
-    --color-panel-item-bg: rgba(252, 252, 248, 0.88);
-    --color-panel-border: rgba(19, 24, 28, 0.22);
-    --color-panel-border-strong: rgba(19, 24, 28, 0.34);
-    --color-panel-highlight: rgba(255, 255, 255, 0.88);
-    --color-panel-shadow: rgba(15, 23, 42, 0.18);
-    --color-panel-accent: rgba(194, 65, 12, 0.72);
-    --color-field-bg: rgba(244, 245, 242, 0.78);
-    --color-grid-line: rgba(19, 24, 28, 0.055);
+    --color-body-bg: #F5F9FC;
+    --color-body-text: #37474F;
+    --color-interactive-bg-base: #F5F9FC;
+    --color-glass-bg: rgba(255, 255, 255, 0.85);
+    --color-glass-border: rgba(144, 164, 174, 0.15);
+    --color-glass-hover-border: rgba(77, 208, 200, 0.3);
+    --color-glass-shadow: rgba(55, 71, 79, 0.06);
+    --color-intro-bg: #F0F6FE;
+    --color-drawer-bg: rgba(255, 255, 255, 0.95);
+    --color-drawer-border: rgba(144, 164, 174, 0.15);
+    --color-drawer-shadow: rgba(55, 71, 79, 0.08);
+    --color-panel-bg: rgba(255, 255, 255, 0.9);
+    --color-panel-item-bg: rgba(255, 255, 255, 0.85);
+    --color-panel-border: rgba(144, 164, 174, 0.2);
+    --color-panel-border-strong: rgba(144, 164, 174, 0.3);
+    --color-panel-highlight: rgba(255, 255, 255, 0.9);
+    --color-panel-shadow: rgba(55, 71, 79, 0.06);
+    --color-panel-accent: rgba(77, 208, 200, 0.7);
+    --color-field-bg: #F0F6FE;
+    --color-grid-line: rgba(144, 164, 174, 0.06);
 }
 
-/* CSS 变量 - 夜间模式 */
-:root.dark {
-    --mouse-x: 50%;
-    --mouse-y: 50%;
-
-    /* 核心颜色 */
-    --color-background: #0a0c0d;
-    --color-surface: #111416;
-    --color-surface-card: #15191b;
-    --color-primary: #8be9f4;
-    --color-secondary: #ff6b4a;
-    --color-text-muted: #9aa3a8;
-    --color-border-subtle: rgba(223, 232, 236, 0.16);
-    --color-glow-cyan: rgba(139, 233, 244, 0.12);
-    --color-glow-indigo: rgba(255, 107, 74, 0.08);
-
-    /* Material Design 扩展颜色 */
-    --color-tertiary-fixed-dim: #ffb957;
-    --color-on-primary-container: #005763;
-    --color-inverse-on-surface: #313030;
-    --color-surface-container: #24221f;
-    --color-outline: #859397;
-    --color-on-primary: #00363e;
-    --color-surface-container-lowest: #0e0e0e;
-    --color-outline-variant: #3c494c;
-    --color-error: #ffb4ab;
-    --color-secondary-fixed: #e1e0ff;
-    --color-on-secondary: #1000a9;
-    --color-surface-variant: #34312d;
-    --color-surface-bright: #3b3833;
-    --color-on-secondary-fixed-variant: #2f2ebe;
-    --color-secondary-container: #3131c0;
-    --color-on-secondary-container: #b0b2ff;
-    --color-primary-container: #22d3ee;
-    --color-error-container: #93000a;
-    --color-on-secondary-fixed: #07006c;
-    --color-on-error: #690005;
-    --color-primary-fixed-dim: #2fd9f4;
-    --color-on-primary-fixed: #001f25;
-    --color-on-surface: #f1ece6;
-    --color-primary-fixed: #a2eeff;
-    --color-on-background: #f1ece6;
-    --color-surface-tint: #2fd9f4;
-    --color-on-tertiary-container: #6e4600;
-    --color-tertiary-fixed: #ffddb5;
-    --color-inverse-surface: #e5e2e1;
-    --color-surface-container-high: #2a2a2a;
-    --color-on-tertiary-fixed: #2a1800;
-    --color-on-tertiary: #462b00;
-    --color-on-error-container: #ffdad6;
-    --color-inverse-primary: #006877;
-    --color-surface-container-highest: #353534;
-    --color-on-surface-variant: #c9c1b8;
-    --color-surface-dim: #131313;
-    --color-tertiary-container: #ffb13b;
-    --color-on-tertiary-fixed-variant: #643f00;
-    --color-surface-container-low: #1c1b1b;
-    --color-secondary-fixed-dim: #c0c1ff;
-    --color-tertiary: #ffd6a3;
-    --color-on-primary-fixed-variant: #004e5a;
-
-    /* 组件级变量 */
-    --color-body-bg: #0a0c0d;
-    --color-body-text: #f1ece6;
-    --color-interactive-bg-base: #0a0c0d;
-    --color-glass-bg: rgba(17, 20, 22, 0.9);
-    --color-glass-border: rgba(223, 232, 236, 0.13);
-    --color-glass-hover-border: rgba(138, 221, 236, 0.28);
-    --color-glass-shadow: rgba(0, 0, 0, 0.72);
-    --color-intro-bg: #080807;
-    --color-drawer-bg: rgba(19, 19, 19, 0.92);
-    --color-drawer-border: rgba(255, 255, 255, 0.1);
-    --color-drawer-shadow: rgba(0, 0, 0, 0.38);
-    --color-panel-bg: rgba(17, 20, 22, 0.92);
-    --color-panel-item-bg: rgba(21, 25, 27, 0.86);
-    --color-panel-border: rgba(223, 232, 236, 0.18);
-    --color-panel-border-strong: rgba(223, 232, 236, 0.28);
-    --color-panel-highlight: rgba(255, 255, 255, 0.1);
-    --color-panel-shadow: rgba(0, 0, 0, 0.86);
-    --color-panel-accent: rgba(255, 107, 74, 0.74);
-    --color-field-bg: rgba(10, 12, 13, 0.72);
-    --color-grid-line: rgba(223, 232, 236, 0.045);
-}
 
 /* Body 样式 */
 body {
@@ -195,23 +113,160 @@ html.intro-scroll-lock #root {
     width: 100vw;
     height: 100vh;
     z-index: -1;
+    overflow: hidden;
     background:
         linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px),
         linear-gradient(0deg, var(--color-grid-line) 1px, transparent 1px),
-        linear-gradient(115deg, var(--color-glow-indigo), transparent 34%),
-        linear-gradient(180deg, var(--color-glow-cyan), transparent 18%),
         var(--color-interactive-bg-base);
     background-size:
         88px 88px,
         88px 88px,
-        auto,
-        auto,
         auto;
     transition: background 0.3s ease;
 }
 
+/* Floating gradient orbs */
+.orb-glow {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    pointer-events: none;
+    z-index: -1;
+    will-change: transform;
+    transition: transform 0.5s ease;
+}
+
+.orb-primary {
+    width: min(520px, 60vw);
+    height: min(520px, 60vw);
+    background: var(--color-glow-primary);
+    top: -6%;
+    right: -8%;
+    animation: orb-float-primary 24s ease-in-out infinite;
+}
+
+.orb-secondary {
+    width: min(440px, 50vw);
+    height: min(440px, 50vw);
+    background: var(--color-glow-secondary);
+    bottom: -8%;
+    left: -6%;
+    animation: orb-float-secondary 28s ease-in-out infinite;
+}
+
+.orb-ambient {
+    width: min(360px, 40vw);
+    height: min(360px, 40vw);
+    background: radial-gradient(circle, var(--color-glow-primary) 0%, transparent 70%);
+    opacity: 0.5;
+    top: 40%;
+    left: 50%;
+    animation: orb-float-ambient 32s ease-in-out infinite;
+}
+
+@keyframes orb-float-primary {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(40px, 30px) scale(1.08); }
+    50% { transform: translate(-20px, 60px) scale(0.92); }
+    75% { transform: translate(30px, -20px) scale(1.04); }
+}
+
+@keyframes orb-float-secondary {
+    0%, 100% { transform: translate(0, 0) scale(1); }
+    25% { transform: translate(-30px, -40px) scale(1.06); }
+    50% { transform: translate(20px, -60px) scale(0.94); }
+    75% { transform: translate(-40px, 10px) scale(1.02); }
+}
+
+@keyframes orb-float-ambient {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.4; }
+    50% { transform: translate(-40%, -40%) scale(1.15); opacity: 0.6; }
+}
+
 .transition-premium {
     transition: all 280ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Pulse ring - for live/active indicators */
+.pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-primary);
+    position: relative;
+}
+
+.pulse-dot::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border-radius: 50%;
+    border: 1.5px solid var(--color-primary);
+    opacity: 0.6;
+    animation: pulse-ring 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+}
+
+@keyframes pulse-ring {
+    0% { transform: scale(1); opacity: 0.6; }
+    50% { transform: scale(1.6); opacity: 0.15; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Gentle float */
+.float-gentle {
+    animation: float-gentle 4.8s ease-in-out infinite;
+}
+
+@keyframes float-gentle {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
+
+/* Skeleton shimmer for loading states */
+.skeleton-shimmer {
+    background: linear-gradient(
+        90deg,
+        var(--color-surface) 25%,
+        var(--color-surface-container) 50%,
+        var(--color-surface) 75%
+    );
+    background-size: 200% 100%;
+    animation: skeleton-shimmer 1.8s ease-in-out infinite;
+    border-radius: 4px;
+}
+
+@keyframes skeleton-shimmer {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* Shimmer sweep for CTA buttons */
+.shimmer-btn {
+    position: relative;
+    contain: paint;
+    overflow: hidden;
+}
+
+.shimmer-btn::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        90deg,
+        transparent 0%,
+        rgba(77, 208, 200, 0.10) 30%,
+        rgba(77, 208, 200, 0.15) 50%,
+        rgba(77, 208, 200, 0.10) 70%,
+        transparent 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer-sweep 3.2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes shimmer-sweep {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
 }
 
 .route-mode {
@@ -270,9 +325,10 @@ html.intro-scroll-lock #root {
 }
 
 .glass:hover {
-    transform: translateY(-2px);
+    transform: translateY(-3px);
     border-color: var(--color-glass-hover-border);
-    box-shadow: 0 18px 48px -32px var(--color-glass-shadow);
+    box-shadow: 0 24px 64px -40px var(--color-glass-shadow),
+                0 0 0 1px var(--color-glass-hover-border);
 }
 
 .surface-panel,
@@ -319,6 +375,17 @@ html.intro-scroll-lock #root {
 .surface-item {
     background: var(--color-panel-item-bg);
     box-shadow: inset 0 1px 0 var(--color-panel-highlight);
+    transition: transform 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 320ms cubic-bezier(0.16, 1, 0.3, 1),
+                box-shadow 320ms cubic-bezier(0.16, 1, 0.3, 1);
+    will-change: transform;
+}
+
+.surface-item:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+    box-shadow: 0 12px 40px -20px var(--color-panel-shadow),
+                0 0 0 1px var(--color-glow-primary);
 }
 
 .surface-action {
@@ -366,7 +433,7 @@ html.intro-scroll-lock #root {
     place-items: center;
     overflow: hidden;
     background:
-        linear-gradient(90deg, transparent 0%, var(--color-glow-indigo) 50%, transparent 100%),
+        linear-gradient(90deg, transparent 0%, var(--color-glow-secondary) 50%, transparent 100%),
         var(--color-intro-bg);
     animation: intro-stage-exit var(--intro-duration) cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
@@ -376,8 +443,8 @@ html.intro-scroll-lock #root {
     inset: -1px;
     opacity: 0;
     background-image:
-        linear-gradient(var(--color-glow-cyan) 1px, transparent 1px),
-        linear-gradient(90deg, var(--color-glow-cyan) 1px, transparent 1px);
+        linear-gradient(var(--color-glow-primary) 1px, transparent 1px),
+        linear-gradient(90deg, var(--color-glow-primary) 1px, transparent 1px);
     background-size: 64px 64px;
     mask-image: radial-gradient(circle at center, black 0%, black 36%, transparent 72%);
     animation: intro-grid-rise 1100ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -391,7 +458,7 @@ html.intro-scroll-lock #root {
     height: 1px;
     opacity: 0;
     background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
-    box-shadow: 0 0 24px var(--color-glow-cyan);
+    box-shadow: 0 0 24px var(--color-glow-primary);
     transform: translate(-50%, -50%) scaleX(0);
     transform-origin: center;
     animation: intro-scan 960ms cubic-bezier(0.16, 1, 0.3, 1) 280ms forwards;
@@ -417,7 +484,7 @@ html.intro-scroll-lock #root {
 .intro-ring-outer {
     inset: 0;
     border: 1px solid var(--color-glass-hover-border);
-    box-shadow: 0 0 42px var(--color-glow-cyan);
+    box-shadow: 0 0 42px var(--color-glow-primary);
     animation: intro-ring-pulse 1500ms cubic-bezier(0.16, 1, 0.3, 1) 900ms forwards;
 }
 
@@ -550,7 +617,7 @@ html.intro-scroll-lock #root {
         linear-gradient(90deg, transparent, var(--color-panel-border), transparent),
         linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 22%, transparent 78%, rgba(255, 255, 255, 0.03));
     opacity: 0.72;
-    box-shadow: 0 0 42px -24px var(--color-glow-cyan);
+    box-shadow: 0 0 42px -24px var(--color-glow-primary);
     transform: translateX(-50%) translateZ(-620px) rotateX(70deg) translateY(18%) scale(1.22);
     transform-origin: center;
 }
@@ -562,7 +629,7 @@ html.intro-scroll-lock #root {
     z-index: -1;
     border: 1px solid var(--color-panel-border-strong);
     background:
-        linear-gradient(90deg, transparent, var(--color-glow-cyan), transparent),
+        linear-gradient(90deg, transparent, var(--color-glow-primary), transparent),
         rgba(0, 0, 0, 0.05);
     opacity: 0.64;
     transform: translateZ(-420px) scale(0.68);
@@ -574,7 +641,7 @@ html.intro-scroll-lock #root {
     pointer-events: none;
     border: 1px solid var(--color-panel-border-strong);
     background:
-        linear-gradient(90deg, transparent, var(--color-glow-cyan), transparent),
+        linear-gradient(90deg, transparent, var(--color-glow-primary), transparent),
         linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent);
     transform-origin: center;
 }
@@ -584,7 +651,7 @@ html.intro-scroll-lock #root {
     opacity: 0.58;
     filter: blur(2px);
     transform: translateZ(-680px) scale(0.56);
-    box-shadow: 0 0 56px -30px var(--color-glow-cyan);
+    box-shadow: 0 0 56px -30px var(--color-glow-primary);
     animation: route-depth-far-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
@@ -612,7 +679,7 @@ html.intro-scroll-lock #root {
     opacity: 0.82;
     box-shadow:
         inset 0 0 0 1px var(--color-border-subtle),
-        0 0 54px -36px var(--color-glow-cyan);
+        0 0 54px -36px var(--color-glow-primary);
     transform: translateZ(-300px) scale(0.82);
 }
 
@@ -621,7 +688,7 @@ html.intro-scroll-lock #root {
     pointer-events: none;
     border: 1px solid var(--color-panel-border-strong);
     background:
-        linear-gradient(90deg, transparent, var(--color-glow-cyan), transparent),
+        linear-gradient(90deg, transparent, var(--color-glow-primary), transparent),
         linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 42%);
     transform-origin: 50% 54%;
 }
@@ -632,7 +699,7 @@ html.intro-scroll-lock #root {
     filter: blur(2px);
     box-shadow:
         0 0 0 24px rgba(139, 233, 244, 0.018),
-        0 0 80px -46px var(--color-glow-cyan);
+        0 0 80px -46px var(--color-glow-primary);
     transform: translateZ(-760px) scale(0.58);
     animation: route-depth-far-in 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -643,7 +710,7 @@ html.intro-scroll-lock #root {
     filter: blur(0.5px);
     box-shadow:
         0 0 0 14px rgba(139, 233, 244, 0.022),
-        0 0 72px -42px var(--color-glow-cyan);
+        0 0 72px -42px var(--color-glow-primary);
     transform: translateZ(-420px) scale(0.74);
     animation: route-depth-mid-in 780ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -662,7 +729,7 @@ html.intro-scroll-lock #root {
     box-shadow:
         inset 0 1px 0 var(--color-panel-highlight),
         0 56px 150px -72px var(--color-panel-shadow),
-        0 22px 96px -48px var(--color-glow-cyan),
+        0 22px 96px -48px var(--color-glow-primary),
         0 0 0 1px rgba(255, 255, 255, 0.02);
     transform-origin: 50% 58%;
     animation: route-camera-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
@@ -687,7 +754,7 @@ html.intro-scroll-lock #root {
     width: 72px;
     height: 2px;
     background: var(--color-primary);
-    box-shadow: 0 0 24px var(--color-glow-cyan);
+    box-shadow: 0 0 24px var(--color-glow-primary);
 }
 
 .route-frame > * {
@@ -759,6 +826,16 @@ html.intro-scroll-lock #root {
     background: var(--color-primary);
     border-color: var(--color-primary);
     transform: translateX(-5px);
+}
+
+.progress-dot.active {
+    box-shadow: 0 0 12px var(--color-glow-primary);
+    animation: dot-pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes dot-pulse {
+    0%, 100% { box-shadow: 0 0 8px var(--color-glow-primary); }
+    50% { box-shadow: 0 0 20px var(--color-glow-primary); }
 }
 
 .drawer-layer {
@@ -853,7 +930,7 @@ html.intro-scroll-lock #root {
     }
 }
 
-@media (max-height: 820px) {
+@media (max-height: 720px) {
     .home-next-link {
         display: none !important;
     }
@@ -936,6 +1013,12 @@ html.intro-scroll-lock #root {
     }
 }
 
+/* MiniPlayer 波形动画 */
+@keyframes mini-bar {
+    0% { height: 4px; }
+    100% { height: 16px; }
+}
+
 @keyframes route-camera-in {
     0% {
         opacity: 0;
@@ -998,34 +1081,19 @@ html.intro-scroll-lock #root {
     }
 }
 
-/* Reveal Animation - reveal 动画 */
+/* Reveal Animation - spring-like, staggered */
 .reveal {
     opacity: 0;
-    transform: translateY(20px);
-    transition: all 800ms cubic-bezier(0.4, 0, 0.2, 1);
+    transform: translateY(24px) scale(0.98);
+    transition: all 700ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .reveal.active {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(0) scale(1);
 }
 
-/* Shimmer Effect for Buttons - shimmer 动画按钮 */
-.shimmer-btn {
-    position: relative;
-    contain: paint;
-    overflow: hidden;
-}
-
-.shimmer-btn::after {
-    content: none;
-}
-
-@keyframes shimmer {
-    0% { transform: translateX(-120%); }
-    20% { transform: translateX(120%); }
-    100% { transform: translateX(120%); }
-}
+/* Shimmer is now defined in the micro-interactions section above */
 
 @media (prefers-reduced-motion: no-preference) {
     .nav-link {

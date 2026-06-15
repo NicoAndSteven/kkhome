@@ -47,6 +47,24 @@ function App() {
   const [contactOpen, setContactOpen] = useState(false)
   const [adminLoginOpen, setAdminLoginOpen] = useState(false)
   const [_adminToken, setAdminToken] = useState('')
+  const [pendingCount, setPendingCount] = useState(0)
+
+  // 定期检查待审核数量
+  useEffect(() => {
+    const check = async () => {
+      try {
+        const res = await fetch('/api/music/songs')
+        const json = await res.json()
+        if (json.ok) {
+          const pending = json.data.songs.filter((s: any) => s.status === 'pending').length
+          setPendingCount(pending)
+        }
+      } catch { /* ignore */ }
+    }
+    check()
+    const timer = setInterval(check, 30000)
+    return () => clearInterval(timer)
+  }, [])
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
   const ambientInitialized = useRef(false)
 
@@ -258,6 +276,11 @@ function App() {
             <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
             <path d="M7 11V7a5 5 0 0 1 10 0v4" />
           </svg>
+          {pendingCount > 0 && (
+            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-error text-white text-[9px] font-bold flex items-center justify-center shadow-lg">
+              {pendingCount > 9 ? '9+' : pendingCount}
+            </span>
+          )}
         </button>
       </Layout>
     )

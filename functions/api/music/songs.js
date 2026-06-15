@@ -31,12 +31,10 @@ export const onRequestOptions = (context) => new Response(null, {
   },
 })
 
-/** GET — 所有人可看已上架歌曲；admin 可看全部 */
+/** GET — 返回全部歌曲（pending 状态由前端过滤） */
 export const onRequestGet = async ({ request, env }) => {
   const songs = await loadSongs(env)
-  const admin = isAdmin(request, env)
-  const result = admin ? songs : songs.filter((s) => s.status === 'approved')
-  return ok({ songs: result }, { request, env })
+  return ok({ songs }, { request, env })
 }
 
 /** POST — 上传或许愿，自动上架 */
@@ -72,7 +70,7 @@ export const onRequestPost = async ({ request, env }) => {
       id, title, artist,
       file: `audio/${id}.mp3`,
       uploadedBy: formData.get('uploader') || '匿名',
-      status: 'approved', // 自动上架
+      status: 'pending', // 待审核
       createdAt: new Date().toISOString(),
     }
     songs.push(newSong)
@@ -93,7 +91,7 @@ export const onRequestPost = async ({ request, env }) => {
     id: crypto.randomUUID(), title, artist,
     source: source || '',
     uploadedBy: body.uploader || '匿名',
-    status: 'approved',
+    status: 'pending',
     createdAt: new Date().toISOString(),
   }
   songs.push(wish)

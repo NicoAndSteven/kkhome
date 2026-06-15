@@ -3,12 +3,16 @@
  * 支持多音源混音、淡入淡出、循环播放
  */
 
+import { TRACKS } from './tracks'
+
 /* eslint-disable no-undef */
 
 export interface TrackState {
   id: string
   playing: boolean
   volume: number // 0-1
+  progress: number // 0-1
+  duration: number // seconds
 }
 
 type EngineListener = (tracks: TrackState[]) => void
@@ -17,9 +21,10 @@ export class AudioEngine {
   private ctx: AudioContext | null = null
   private masterGain: GainNode | null = null
   private sources: Map<string, { node: AudioBufferSourceNode; gain: GainNode; buffer: AudioBuffer }> = new Map()
-  private trackConfigs: Map<string, { buffer: AudioBuffer; volume: number }> = new Map()
+  private trackConfigs: Map<string, { buffer: AudioBuffer; volume: number; _progress: number; duration: number }> = new Map()
   private listeners: Set<EngineListener> = new Set()
   private _started = false
+  private tickTimer: ReturnType<typeof setInterval> | null = null
 
   get started() { return this._started }
 
@@ -37,7 +42,9 @@ export class AudioEngine {
 
   /** 注册一个音轨的 AudioBuffer */
   registerTrack(id: string, buffer: AudioBuffer, defaultVolume = 0.5) {
-    this.trackConfigs.set(id, { buffer, volume: defaultVolume })
+    const def = TRACKS.find(t => t.id === id)
+    const duration = def?.duration ?? 120
+    this.trackConfigs.set(id, { buffer, volume: defaultVolume, _progress: 0, duration })
     this.notify()
   }
 
@@ -65,6 +72,7 @@ export class AudioEngine {
 
     this.sources.set(id, { node: source, gain, buffer: config.buffer })
     this._started = true
+    this.startTick()
     this.notify()
   }
 
@@ -90,6 +98,7 @@ export class AudioEngine {
     }
 
     this.sources.delete(id)
+    if (this.sources.size === 0) this.stopTick()
     this.notify()
   }
 
@@ -120,12 +129,48 @@ export class AudioEngine {
     this._started = false
   }
 
+  private startTick() {
+    if (this.tickTimer) return
+    this.tickTimer = setInterval(() => {
+      let hasPlaying = false
+      for (const id of this.sources.keys()) {
+        const config = this.trackConfigs.get(id)
+        if (!config) continue
+        hasPlaying = true
+        // Increment progress approximately (50ms tick / duration)
+        const inc = 0.05 / config.duration
+        config._progress = (config._progress || 0) + inc
+        if (config._progress >= 1) config._progress = 0
+      }
+      if (hasPlaying) this.notify()
+      else this.stopTick()
+    }, 50)
+  }
+
+  private stopTick() {
+    if (this.tickTimer) {
+      clearInterval(this.tickTimer)
+      this.tickTimer = null
+    }
+  }
+
+  /** Seek to a specific progress point on a track */
+  seek(id: string, progress: number): void {
+    const config = this.trackConfigs.get(id)
+    if (config) {
+      config._progress = Math.max(0, Math.min(1, progress))
+    }
+    this.notify()
+  }
+
   /** 获取当前所有音轨状态 */
   getTrackStates(): TrackState[] {
     return Array.from(this.trackConfigs.entries()).map(([id, config]) => ({
       id,
       playing: this.sources.has(id),
       volume: config.volume,
+      progress: config._progress || 0,
+      duration: config.duration || 120,
     }))
   }
 
@@ -142,6 +187,7 @@ export class AudioEngine {
 
   /** 销毁引擎 */
   destroy() {
+    this.stopTick()
     this.stopAll(0)
     if (this.ctx) {
       this.ctx.close()

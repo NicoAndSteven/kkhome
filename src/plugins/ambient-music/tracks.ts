@@ -11,15 +11,16 @@ export interface TrackDef {
   icon: string
   category: 'synth' | 'file'
   color: string
+  duration: number // seconds
 }
 
 /** 可用音轨列表 */
 export const TRACKS: TrackDef[] = [
-  { id: 'rain', name: '雨声', icon: 'water_drop', category: 'synth', color: '#3b82f6' },
-  { id: 'waves', name: '海浪', icon: 'waves', category: 'synth', color: '#06b6d4' },
-  { id: 'forest', name: '森林', icon: 'forest', category: 'synth', color: '#22c55e' },
-  { id: 'whitenoise', name: '白噪音', icon: 'graphic_eq', category: 'synth', color: '#8b5cf6' },
-  { id: 'fireplace', name: '壁炉', icon: 'local_fire_department', category: 'synth', color: '#f97316' },
+  { id: 'rain', name: '雨声', icon: 'water_drop', category: 'synth', color: '#3b82f6', duration: 180 },
+  { id: 'waves', name: '海浪', icon: 'waves', category: 'synth', color: '#06b6d4', duration: 240 },
+  { id: 'forest', name: '森林', icon: 'forest', category: 'synth', color: '#22c55e', duration: 300 },
+  { id: 'whitenoise', name: '白噪音', icon: 'graphic_eq', category: 'synth', color: '#8b5cf6', duration: 200 },
+  { id: 'fireplace', name: '壁炉', icon: 'local_fire_department', category: 'synth', color: '#f97316', duration: 180 },
 ]
 
 /**

@@ -249,7 +249,7 @@ function App() {
         onContactClick={() => setContactOpen(true)}
         onAmbientClick={() => { window.location.hash = '#/ambient-music' }}
       />
-      <main className={`page-shell route-page-shell ${introComplete ? 'page-ready' : ''}`}>
+      <main className={`page-shell route-page-shell page-ready`}>
         <ErrorBoundary key={activeRouteItem.id}>
           {activePlugin ? (
             <div className="route-stage" aria-label={activeRouteItem.label}>

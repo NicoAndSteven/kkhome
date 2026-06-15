@@ -7,6 +7,7 @@ import StockWatchPlugin from './stock-watch'
 import FoodPlugin from './food'
 import AmbientMusicPlugin from './ambient-music'
 import GalleryPlugin from './gallery'
+import LocalMusicPlugin from './local-music'
 import UniversalInboxPlugin from './universal-inbox'
 import QuickLaunchPlugin from './quick-launch'
 import WorkbenchPlugin from './workbench'
@@ -92,6 +93,14 @@ export const plugins: Plugin[] = [
     component: GalleryPlugin,
   },
   {
+    id: 'local-music',
+    name: '本地音乐',
+    version: '1.0.0',
+    enabled: true,
+    order: 10,
+    component: LocalMusicPlugin,
+  },
+  {
     id: 'universal-inbox',
     name: '万能投入口',
     version: '1.0.0',
@@ -148,4 +157,5 @@ export {
   FoodPlugin,
   AmbientMusicPlugin,
   GalleryPlugin,
+  LocalMusicPlugin,
 }

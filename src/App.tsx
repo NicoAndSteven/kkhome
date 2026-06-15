@@ -20,6 +20,7 @@ const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; plugin
   { id: 'food', label: '吃啥', href: '#/food', pluginId: 'food' },
   { id: 'ambient-music', label: '氛围', href: '#/ambient-music', pluginId: 'ambient-music' },
   { id: 'gallery', label: '画廊', href: '#/gallery', pluginId: 'gallery' },
+  { id: 'local-music', label: '音乐', href: '#/local-music', pluginId: 'local-music' },
   { id: 'inbox', label: '投喂', href: '#/inbox', pluginId: 'universal-inbox' },
   { id: 'launch', label: '启动', href: '#/launch', pluginId: 'quick-launch' },
   { id: 'workbench', label: '工作台', href: '#/workbench', pluginId: 'workbench' },

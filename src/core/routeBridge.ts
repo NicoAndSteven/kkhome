@@ -1,6 +1,6 @@
 import { UtilityItem } from './types'
 
-export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'cloudflare-lab' | 'news' | 'workbench' | 'collections' | 'scratchpad' | 'stocks' | 'stock-watch' | 'food' | 'ambient-music' | 'gallery'
+export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'cloudflare-lab' | 'news' | 'workbench' | 'collections' | 'scratchpad' | 'stocks' | 'stock-watch' | 'food' | 'ambient-music' | 'gallery' | 'local-music'
 
 export type ToolKind = NonNullable<UtilityItem['utilityType']>
 
@@ -41,6 +41,7 @@ const routeAliases: Record<string, HubRouteId> = {
   gallery: 'gallery',
   photos: 'gallery',
   moodboard: 'gallery',
+  'local-music': 'local-music',
 }
 
 declare global {

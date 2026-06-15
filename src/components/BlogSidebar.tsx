@@ -13,6 +13,7 @@ interface Props {
 }
 
 const routeIcons: Record<string, string> = {
+  'local-music': 'library_music',
   'ai-tools': 'travel_explore',
   'wish-wall': 'rate_review',
   'cloudflare-lab': 'cloud',
@@ -28,7 +29,7 @@ const routeIcons: Record<string, string> = {
   scratchpad: 'data_object',
 }
 
-const primaryRoutes = ['ai-tools', 'wish-wall', 'cloudflare-lab', 'news', 'stock-watch', 'food', 'ambient-music', 'gallery']
+const primaryRoutes = ['ai-tools', 'wish-wall', 'cloudflare-lab', 'news', 'stock-watch', 'food', 'ambient-music', 'gallery', 'local-music']
 const secondaryRoutes = ['inbox', 'launch', 'workbench', 'collections', 'scratchpad']
 
 const BlogSidebar = ({ routes, activeRoute }: Props) => {

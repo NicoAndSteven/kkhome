@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { HubRouteId, normalizeHubRoute, routeHash } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
@@ -222,6 +222,7 @@ function App() {
         activeSection={activeRoute}
         routes={availableRouteItems}
         ambientTracks={ambientTracks}
+        simple={!isHomeRoute}
         onContactClick={() => setContactOpen(true)}
         onAmbientClick={() => { window.location.hash = '#/ambient-music' }}
       />
@@ -233,19 +234,29 @@ function App() {
             ) : (
               <div className="route-stage" aria-label={activeRouteItem.label}>
                 <div className="route-frame">
-                  <activePlugin.component config={activePlugin.config} />
+                  <div className="blog-layout">
+                    <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
+                    <div className="blog-content">
+                      <activePlugin.component config={activePlugin.config} />
+                    </div>
+                  </div>
                 </div>
               </div>
             )
           ) : (
             <section className="route-stage" aria-label={activeRouteItem.label}>
               <div className="route-frame">
-                <div className="surface-panel rounded-[2px] p-lg">
-                  <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
-                  <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
-                  <p className="mt-xs font-body-md text-body-md text-text-muted">
-                    当前配置没有启用「{activeRouteItem.label}」模块。
-                  </p>
+                <div className="blog-layout">
+                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
+                  <div className="blog-content">
+                    <div className="surface-panel rounded-[2px] p-lg">
+                      <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
+                      <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
+                      <p className="mt-xs font-body-md text-body-md text-text-muted">
+                        当前配置没有启用「{activeRouteItem.label}」模块。
+                      </p>
+                    </div>
+                  </div>
                 </div>
               </div>
             </section>

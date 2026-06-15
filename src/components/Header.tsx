@@ -11,9 +11,10 @@ interface Props {
   ambientTracks?: TrackState[]
   onContactClick?: () => void
   onAmbientClick?: () => void
+  simple?: boolean
 }
 
-const Header = ({ config, activeSection = 'home', routes = [], ambientTracks = [], onContactClick, onAmbientClick }: Props) => {
+const Header = ({ config, activeSection = 'home', routes = [], ambientTracks = [], onContactClick, onAmbientClick, simple = false }: Props) => {
   return (
     <header className="fixed top-0 w-full z-50 h-14 border-b border-border-subtle bg-background/80 backdrop-blur-xl">
       <nav className="mx-auto flex h-full w-full max-w-[1480px] items-center gap-md px-4 md:px-8 xl:px-12">
@@ -26,25 +27,29 @@ const Header = ({ config, activeSection = 'home', routes = [], ambientTracks = [
           </span>
         </a>
 
-        <div className="flex-1 min-w-0 flex items-center gap-xs overflow-x-auto scrollbar-none">
-          {routes.map((route) => {
-            const isActive = route.id === activeSection
-            return (
-              <a
-                key={route.id}
-                href={route.href}
-                className={`nav-tab shrink-0 px-sm py-1 font-body-md text-sm transition-premium ${
-                  isActive
-                    ? 'nav-tab-active text-primary'
-                    : 'text-text-muted hover:text-on-surface'
-                }`}
-                aria-current={isActive ? 'page' : undefined}
-              >
-                {route.label}
-              </a>
-            )
-          })}
-        </div>
+        {simple ? (
+          <div className="flex-1 min-w-0" />
+        ) : (
+          <div className="flex-1 min-w-0 flex items-center gap-xs overflow-x-auto scrollbar-none">
+            {routes.map((route) => {
+              const isActive = route.id === activeSection
+              return (
+                <a
+                  key={route.id}
+                  href={route.href}
+                  className={`nav-tab shrink-0 px-sm py-1 font-body-md text-sm transition-premium ${
+                    isActive
+                      ? 'nav-tab-active text-primary'
+                      : 'text-text-muted hover:text-on-surface'
+                  }`}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {route.label}
+                </a>
+              )
+            })}
+          </div>
+        )}
 
         <div className="flex items-center gap-xs shrink-0">
           <NowPlayingBadge tracks={ambientTracks} onClick={onAmbientClick ?? (() => {})} />

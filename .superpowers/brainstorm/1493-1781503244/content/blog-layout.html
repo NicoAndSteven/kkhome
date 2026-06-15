@@ -1,0 +1,90 @@
+<h2>📖 博客式路由页面布局</h2>
+<p class="subtitle">现在的路由页面（工具导航、新闻、许愿墙等）改成博客风格</p>
+
+<div class="cards">
+
+  <!-- A: 经典博客 -->
+  <div class="card" data-choice="blog-a" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>A · 侧边栏博客</h3>
+      <div style="display:flex;gap:8px;background:#F5F9FC;border-radius:8px;padding:12px;margin-top:8px;">
+        <div style="width:120px;flex-shrink:0;background:#FFFFFF;border-radius:6px;border:1px solid #E0ECF5;padding:8px;">
+          <div style="font-size:10px;color:#4DD0C8;font-weight:600;margin-bottom:8px;">📋 导航</div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;margin-bottom:4px;"></div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;margin-bottom:4px;width:80%;"></div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;margin-bottom:4px;width:70%;"></div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;width:60%;"></div>
+        </div>
+        <div style="flex:1;background:#FFFFFF;border-radius:6px;border:1px solid #E0ECF5;padding:12px;">
+          <div style="height:10px;width:150px;background:#F0F6FE;border-radius:4px;margin-bottom:8px;"></div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;margin-bottom:4px;"></div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;margin-bottom:4px;width:85%;"></div>
+          <div style="height:6px;background:#F0F6FE;border-radius:3px;width:60%;"></div>
+        </div>
+      </div>
+      <div class="pros-cons" style="margin-top:4px;">
+        <div class="pros"><ul style="font-size:11px;margin:0;padding-left:12px;"><li>左侧导航栏显示路由列表</li><li>右侧主内容区展示插件内容</li><li>适合多工具的导航场景</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- B: 文章流 -->
+  <div class="card" data-choice="blog-b" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>B · 文章流阅读</h3>
+      <div style="background:#F5F9FC;border-radius:8px;padding:12px;margin-top:8px;">
+        <div style="background:#FFFFFF;border-radius:6px;border:1px solid #E0ECF5;padding:12px;max-width:400px;margin:0 auto;">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:8px;">
+            <span style="display:inline-block;width:6px;height:6px;border-radius:50%;background:#4DD0C8;"></span>
+            <span style="font-size:10px;color:#90A4AE;">工具导航 · 2026.06</span>
+          </div>
+          <div style="font-size:18px;font-weight:700;color:#37474F;margin-bottom:6px;">🔧 工具导航</div>
+          <div style="height:1px;background:#F0F6FE;margin:8px 0;"></div>
+          <div style="font-size:12px;color:#90A4AE;line-height:1.6;">
+            收录常用在线工具，按场景分类快速检索...
+          </div>
+          <div style="display:flex;gap:8px;margin-top:10px;">
+            <span style="display:inline-block;padding:4px 12px;background:#F0F6FE;border-radius:4px;font-size:10px;color:#4DD0C8;">转换工具</span>
+            <span style="display:inline-block;padding:4px 12px;background:#FCE4EC;border-radius:4px;font-size:10px;color:#F06292;">图片处理</span>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons" style="margin-top:4px;">
+        <div class="pros"><ul style="font-size:11px;margin:0;padding-left:12px;"><li>每页像一篇文章,有标题区+meta信息</li><li>内容区上下滚动阅读</li><li>切换路由像翻到下一篇文章</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- C: 极简居中 -->
+  <div class="card" data-choice="blog-c" onclick="toggleSelect(this)">
+    <div class="card-body">
+      <h3>C · 极简居中（Medium风格）</h3>
+      <div style="background:#F5F9FC;border-radius:8px;padding:12px;margin-top:8px;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="width:320px;max-width:100%;background:#FFFFFF;border-radius:6px;border:1px solid #E0ECF5;padding:16px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:12px;padding-bottom:12px;border-bottom:1px solid #F0F6FE;">
+              <span style="width:24px;height:24px;background:linear-gradient(135deg,#4DD0C8,#64B5F6);border-radius:6px;display:flex;align-items:center;justify-content:center;color:white;font-size:12px;">K</span>
+              <span style="font-size:12px;color:#37474F;font-weight:500;">垣钰</span>
+              <span style="font-size:11px;color:#90A4AE;">·</span>
+              <span style="font-size:11px;color:#90A4AE;">工具导航</span>
+            </div>
+            <div style="font-size:24px;font-weight:700;color:#37474F;line-height:1.2;margin-bottom:8px;">在线工具集</div>
+            <div style="font-size:12px;color:#90A4AE;line-height:1.7;">收录常用在线工具，按场景分类快速检索...</div>
+            <div style="display:flex;gap:6px;margin-top:12px;">
+              <span style="padding:3px 10px;background:#F0F6FE;border-radius:4px;font-size:10px;color:#4DD0C8;">转换工具</span>
+              <span style="padding:3px 10px;background:#FCE4EC;border-radius:4px;font-size:10px;color:#F06292;">图片处理</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="pros-cons" style="margin-top:4px;">
+        <div class="pros"><ul style="font-size:11px;margin:0;padding-left:12px;"><li>窄栏居中,最大宽度720px</li><li>像Medium阅读体验</li><li>上方显示作者+时间线</li></ul></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:16px;padding:12px;background:#E0F2F1;border-radius:8px;border:1px solid #B2DFDB;">
+  <p style="margin:0;font-weight:600;color:#00695C;">👆 喜欢哪个博客布局方案？也可以说"A的导航+B的内容区"混合</p>
+</div>

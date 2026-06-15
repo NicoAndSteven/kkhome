@@ -1,14 +1,5 @@
 /* global Response */
 
-const ALLOWED_ORIGINS = [
-  'https://kkhome.pages.dev',
-  'https://localhost:5173',
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://localhost:5175',
-  'http://127.0.0.1:5173',
-]
-
 /** 简单的请求频率限制（内存计数，每个 Worker 实例独立） */
 const rateMap = new Map()
 

@@ -1,5 +1,5 @@
-/* global Response, crypto */
-import { json, ok, fail, options } from '../../_shared/api.js'
+/* global Response, crypto, File */
+import { ok, fail } from '../../_shared/api.js'
 
 const SONGS_KEY = 'songs.json'
 
@@ -47,7 +47,7 @@ async function isAdmin(request, env) {
   } catch { return false }
 }
 
-export const onRequestOptions = (context) => new Response(null, {
+export const onRequestOptions = () => new Response(null, {
   headers: {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET,POST,PUT,OPTIONS',

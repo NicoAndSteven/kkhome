@@ -1,11 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 
-declare global {
-  interface Window {
-    VANTA: { BIRDS: (opts: Record<string, unknown>) => { destroy: () => void } }
-  }
-}
-
 const VantaBirds = () => {
   const containerRef = useRef<HTMLDivElement>(null)
   const vantaRef = useRef<{ destroy: () => void } | null>(null)
@@ -14,9 +8,7 @@ const VantaBirds = () => {
   // Rings 销毁后启动 Birds
   useEffect(() => {
     const onRingsDone = () => {
-      // 先标记可见（触发淡入）
       setVisible(true)
-      // 再初始化 Vanta
       setTimeout(() => {
         if (!containerRef.current || vantaRef.current || !window.VANTA?.BIRDS) return
         vantaRef.current = window.VANTA.BIRDS({

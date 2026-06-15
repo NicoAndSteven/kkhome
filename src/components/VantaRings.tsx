@@ -2,7 +2,8 @@ import { useEffect, useRef, useState } from 'react'
 
 declare global {
   interface Window {
-    VANTA: { RINGS: (opts: Record<string, unknown>) => { destroy: () => void } }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    VANTA: Record<string, (opts: Record<string, unknown>) => { destroy: () => void }>
   }
 }
 

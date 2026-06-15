@@ -97,7 +97,17 @@ test('homepage renders configured content without placeholders', async ({ page }
     && document.documentElement.scrollWidth <= window.innerWidth + 1
   ))).toBe(true)
   await expect(page.getByRole('heading', { name: '垣钰' })).toBeVisible()
-  await expect.poll(() => page.evaluate(() => window.__hubAvailableRoutes)).toEqual(['home', 'ai-tools', 'wish-wall', 'cloudflare-lab'])
+  await expect.poll(() => page.evaluate(() => window.__hubAvailableRoutes)).toEqual([
+    'home',
+    'ai-tools',
+    'wish-wall',
+    'cloudflare-lab',
+    'news',
+    'stock-watch',
+    'food',
+    'ambient-music',
+    'gallery',
+  ])
   await expect(page.locator('#inbox')).toHaveCount(0)
   await expect(page.locator('#launch')).toHaveCount(0)
   await expect(page.locator('#workbench')).toHaveCount(0)
@@ -163,8 +173,8 @@ test('homepage renders configured content without placeholders', async ({ page }
   await expect(labSection.getByRole('heading', { name: 'Cloudflare Lab' })).toBeVisible()
   await expect(labSection.getByText('WISHES_DB')).toBeVisible()
   await expect(labSection.getByText('bound')).toBeVisible()
-  await expect(labSection.getByRole('heading', { name: 'AI 语义搜索' })).toBeVisible()
-  await expect(labSection.getByRole('heading', { name: '网页炼金室' })).toBeVisible()
+  await expect(labSection.locator('span').filter({ hasText: '语义搜索' })).toBeVisible()
+  await expect(labSection.locator('span').filter({ hasText: '网页炼金室' })).toBeVisible()
 
   await page.locator('header').getByRole('button', { name: '打开联系抽屉' }).click()
   await expect(page.getByRole('dialog', { name: '联系我' })).toBeVisible()
@@ -177,7 +187,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 test('routes stay within desktop and mobile viewports', async ({ browser }) => {
   test.setTimeout(70_000)
 
-  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/cloudflare-lab']
+  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/cloudflare-lab', '/#/news', '/#/stock-watch', '/#/food']
   const viewports = [
     { width: 1440, height: 1000, isMobile: false },
     { width: 390, height: 844, isMobile: true },

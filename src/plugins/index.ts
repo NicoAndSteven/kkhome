@@ -1,15 +1,17 @@
 import ProfilePlugin from './profile'
-import UniversalInboxPlugin from './universal-inbox'
-import QuickLaunchPlugin from './quick-launch'
-import WorkbenchPlugin from './workbench'
-import CollectionsPlugin from './collections'
-import ScratchpadPlugin from './scratchpad'
 import AiNavigatorPlugin from './ai-navigator'
 import WishWallPlugin from './wish-wall'
 import CloudflareLabPlugin from './cloudflare-lab'
 import NewsPlugin from './news'
 import StockWatchPlugin from './stock-watch'
 import FoodPlugin from './food'
+import AmbientMusicPlugin from './ambient-music'
+import GalleryPlugin from './gallery'
+import UniversalInboxPlugin from './universal-inbox'
+import QuickLaunchPlugin from './quick-launch'
+import WorkbenchPlugin from './workbench'
+import CollectionsPlugin from './collections'
+import ScratchpadPlugin from './scratchpad'
 import { Plugin } from '@core/types'
 
 /**
@@ -58,46 +60,6 @@ export const plugins: Plugin[] = [
     component: NewsPlugin,
   },
   {
-    id: 'universal-inbox',
-    name: '万能投入口',
-    version: '1.0.0',
-    enabled: false,
-    order: 4,
-    component: UniversalInboxPlugin,
-  },
-  {
-    id: 'quick-launch',
-    name: '快速启动',
-    version: '1.0.0',
-    enabled: false,
-    order: 5,
-    component: QuickLaunchPlugin,
-  },
-  {
-    id: 'workbench',
-    name: '工作台',
-    version: '1.0.0',
-    enabled: false,
-    order: 6,
-    component: WorkbenchPlugin,
-  },
-  {
-    id: 'collections',
-    name: '资源收藏',
-    version: '1.0.0',
-    enabled: false,
-    order: 7,
-    component: CollectionsPlugin,
-  },
-  {
-    id: 'scratchpad',
-    name: '临时收纳',
-    version: '1.0.0',
-    enabled: false,
-    order: 8,
-    component: ScratchpadPlugin,
-  },
-  {
     id: 'stock-watch',
     name: '股市看盘',
     version: '1.0.0',
@@ -112,6 +74,62 @@ export const plugins: Plugin[] = [
     enabled: true,
     order: 7,
     component: FoodPlugin,
+  },
+  {
+    id: 'ambient-music',
+    name: '氛围音乐',
+    version: '1.0.0',
+    enabled: true,
+    order: 8,
+    component: AmbientMusicPlugin,
+  },
+  {
+    id: 'gallery',
+    name: '视觉画廊',
+    version: '1.0.0',
+    enabled: true,
+    order: 9,
+    component: GalleryPlugin,
+  },
+  {
+    id: 'universal-inbox',
+    name: '万能投入口',
+    version: '1.0.0',
+    enabled: false,
+    order: 8,
+    component: UniversalInboxPlugin,
+  },
+  {
+    id: 'quick-launch',
+    name: '快速启动',
+    version: '1.0.0',
+    enabled: false,
+    order: 9,
+    component: QuickLaunchPlugin,
+  },
+  {
+    id: 'workbench',
+    name: '工作台',
+    version: '1.0.0',
+    enabled: false,
+    order: 10,
+    component: WorkbenchPlugin,
+  },
+  {
+    id: 'collections',
+    name: '资源收藏',
+    version: '1.0.0',
+    enabled: false,
+    order: 11,
+    component: CollectionsPlugin,
+  },
+  {
+    id: 'scratchpad',
+    name: '临时收纳',
+    version: '1.0.0',
+    enabled: false,
+    order: 12,
+    component: ScratchpadPlugin,
   },
 ]
 
@@ -128,4 +146,6 @@ export {
   NewsPlugin,
   StockWatchPlugin,
   FoodPlugin,
+  AmbientMusicPlugin,
+  GalleryPlugin,
 }

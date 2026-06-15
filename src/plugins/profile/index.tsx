@@ -1,5 +1,21 @@
+import { useState, useEffect } from 'react'
 import { PluginRuntimeConfig, ProfileConfig } from '@core/types'
 import { Icon } from '@components'
+
+interface Quote {
+  text: string
+  author: string
+  source: string
+}
+
+/** 根据年积日选取当日引言 */
+function getQuoteOfTheDay(quotes: Quote[]): Quote | null {
+  if (quotes.length === 0) return null
+  const now = new Date()
+  const start = new Date(now.getFullYear(), 0, 0)
+  const dayOfYear = Math.floor((now.getTime() - start.getTime()) / 86400000)
+  return quotes[dayOfYear % quotes.length]
+}
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -7,6 +23,14 @@ interface Props {
 
 const ProfilePlugin = ({ config }: Props) => {
   const profile = config as unknown as ProfileConfig | undefined
+  const [quote, setQuote] = useState<Quote | null>(null)
+
+  useEffect(() => {
+    fetch('/config/quotes.json')
+      .then((res) => res.json())
+      .then((data: Quote[]) => setQuote(getQuoteOfTheDay(data)))
+      .catch(() => { /* 静默失败 */ })
+  }, [])
 
   const openContact = () => {
     window.dispatchEvent(new globalThis.Event('homepage:open-contact'))
@@ -33,7 +57,7 @@ const ProfilePlugin = ({ config }: Props) => {
       className="grid min-h-[calc(100dvh-5rem)] items-start gap-lg overflow-hidden scroll-mt-24 pt-6 md:grid-cols-12 md:items-center md:gap-xl md:pt-6"
     >
       <div className="md:col-span-7">
-        <div className="mb-md flex flex-wrap items-center gap-sm">
+        <div className="mb-md flex flex-wrap items-center gap-sm reveal">
           <span className="rounded-[2px] border border-primary/45 bg-primary/10 px-sm py-1 font-label-mono text-xs uppercase text-primary">
             Personal operating desk
           </span>
@@ -44,17 +68,17 @@ const ProfilePlugin = ({ config }: Props) => {
           )}
         </div>
 
-        <h1 className="max-w-4xl font-display-lg text-[56px] leading-[0.94] text-on-surface md:text-[112px]">
+        <h1 className="reveal max-w-4xl font-display-lg text-[56px] leading-[0.94] text-on-surface md:text-[112px]" style={{transitionDelay: '80ms'}}>
           {profile.name}
         </h1>
-        <div className="mt-md grid max-w-3xl gap-md border-y border-border-subtle py-md md:grid-cols-[180px_1fr]">
+        <div className="reveal mt-md grid max-w-3xl gap-md border-y border-border-subtle py-md md:grid-cols-[180px_1fr]" style={{transitionDelay: '160ms'}}>
           <span className="font-label-mono text-xs uppercase text-secondary">{profile.title}</span>
           <p className="font-body-lg text-body-lg text-on-surface">
             {profile.bio}
           </p>
         </div>
 
-        <div className="mt-lg flex flex-col gap-sm sm:flex-row">
+        <div className="reveal mt-lg flex flex-col gap-sm sm:flex-row" style={{transitionDelay: '240ms'}}>
           {profile.email && (
             <button
               type="button"
@@ -74,7 +98,7 @@ const ProfilePlugin = ({ config }: Props) => {
           </a>
         </div>
 
-        <div className="mt-lg hidden gap-xs md:grid md:grid-cols-3">
+        <div className="reveal mt-lg hidden gap-xs md:grid md:grid-cols-3" style={{transitionDelay: '320ms'}}>
           {signals.map((signal, index) => (
             <div key={signal} className="border-l border-border-subtle pl-sm">
               <span className="block font-label-mono text-[10px] uppercase text-secondary">0{index + 1}</span>
@@ -82,9 +106,22 @@ const ProfilePlugin = ({ config }: Props) => {
             </div>
           ))}
         </div>
+
+        {/* 每日一言 */}
+        {quote && (
+          <div className="reveal mt-lg border-l-2 border-primary/30 pl-md" style={{transitionDelay: '400ms'}}>
+            <span className="font-label-mono text-[10px] uppercase text-primary">Quote of the Day</span>
+            <p className="mt-xs font-body-lg text-lg text-on-surface leading-relaxed">
+              {quote.text}
+            </p>
+            <p className="mt-xs font-label-mono text-xs text-text-muted">
+              — {quote.author}{quote.source ? ` · ${quote.source}` : ''}
+            </p>
+          </div>
+        )}
       </div>
 
-      <aside className="hidden md:col-span-5 md:block" aria-label="个人能力摘要">
+      <aside className="reveal hidden md:col-span-5 md:block" style={{transitionDelay: '200ms'}} aria-label="个人能力摘要">
         <div className="surface-panel-strong grid gap-md rounded-[2px] p-sm md:p-md">
           <div className="flex items-center justify-between border-b border-border-subtle pb-sm">
             <span className="font-label-mono text-xs uppercase text-secondary">Identity plate</span>
@@ -97,7 +134,8 @@ const ProfilePlugin = ({ config }: Props) => {
                 alt={profile.name}
                 className="aspect-[4/3] w-full object-cover object-center"
               />
-              <div className="absolute bottom-sm left-sm rounded-[2px] border border-border-subtle bg-background/86 px-sm py-xs backdrop-blur-md">
+              <div className="absolute bottom-sm left-sm rounded-[2px] border border-border-subtle bg-background/86 px-sm py-xs backdrop-blur-md flex items-center gap-2">
+                <span className="pulse-dot inline-block" />
                 <span className="font-label-mono text-xs text-on-surface">Available for focused builds</span>
               </div>
             </div>
@@ -126,12 +164,13 @@ const ProfilePlugin = ({ config }: Props) => {
 
       <a
         href="#/ai-tools"
-        className="home-next-link hidden items-center gap-sm border-t border-border-subtle pt-sm font-label-mono text-xs uppercase text-text-muted transition-premium hover:text-primary md:col-span-12 md:flex"
+        className="home-next-link reveal hidden items-center gap-sm border-t border-border-subtle pt-sm font-label-mono text-xs uppercase text-text-muted transition-premium hover:text-primary md:col-span-12 md:flex"
+        style={{transitionDelay: '400ms'}}
       >
-        <span>Next</span>
+        <span className="float-gentle inline-block">Next</span>
         <span className="h-px flex-1 bg-border-subtle" />
         <span>AI navigator</span>
-        <Icon name="south" className="text-base" />
+        <Icon name="south" className="text-base float-gentle" />
       </a>
     </section>
   )

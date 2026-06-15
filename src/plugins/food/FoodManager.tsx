@@ -101,13 +101,13 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
             className={`pb-sm px-sm text-sm font-label-mono transition-premium border-b-2 ${
               tab === 'noon' ? 'border-primary text-on-surface' : 'border-transparent text-text-muted'
             }`}>
-            ☀️ 中午清单
+            <Icon name="light_mode" className="text-sm" />中午清单
           </button>
           <button type="button" onClick={() => setTab('evening')}
             className={`pb-sm px-sm text-sm font-label-mono transition-premium border-b-2 ${
               tab === 'evening' ? 'border-primary text-on-surface' : 'border-transparent text-text-muted'
             }`}>
-            🌙 晚上菜谱
+            <Icon name="dark_mode" className="text-sm" />晚上菜谱
           </button>
         </div>
 

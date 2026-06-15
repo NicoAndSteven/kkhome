@@ -1,0 +1,72 @@
+<h2>🌊 海盐苏打 × 路由设计</h2>
+<p class="subtitle">用新配色重新看路由方案，你倾向哪种？</p>
+
+<div class="options">
+
+  <div class="option" data-choice="a" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>🏖️ 海浪层叠</h3>
+      <p>每页像一个"浪层"——背景有水平渐变的蓝色块，内容浮在白色卡片上</p>
+      <div style="background:linear-gradient(180deg,#E8F4F8,#F5F9FC);border-radius:12px;padding:16px;margin-top:8px;">
+        <div style="background:#FFFFFF;border-radius:8px;border:1px solid #E0ECF5;padding:12px;box-shadow:0 8px 24px -12px rgba(77,208,200,0.18);">
+          <div style="display:flex;gap:8px;align-items:center;margin-bottom:10px;">
+            <span style="display:inline-block;width:12px;height:12px;border-radius:50%;background:#4DD0C8;"></span>
+            <span style="height:10px;width:100px;background:#E0ECF5;border-radius:4px;"></span>
+          </div>
+          <div style="height:8px;width:100%;background:#F0F6FE;border-radius:4px;margin-bottom:6px;"></div>
+          <div style="height:8px;width:70%;background:#F0F6FE;border-radius:4px;"></div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px;">顶部：海蓝绿装饰条 / 背景：从下到上渐淡 / 卡片：纯白浮起</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="b" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>🪟 水族窗格</h3>
+      <p>圆润窗框 + 半透明玻璃效果，内容像在"水族箱"里</p>
+      <div style="background:#F5F9FC;border-radius:16px;padding:16px;margin-top:8px;border:1px solid #E0ECF5;">
+        <div style="background:rgba(255,255,255,0.75);backdrop-filter:blur(8px);border-radius:12px;border:1px solid rgba(77,208,200,0.2);padding:12px;">
+          <div style="display:flex;gap:8px;align-items:center;padding-bottom:8px;border-bottom:1px dashed #E0ECF5;margin-bottom:8px;">
+            <span style="display:inline-block;width:24px;height:24px;border-radius:6px;background:linear-gradient(135deg,#4DD0C8,#64B5F6);"></span>
+            <span style="height:8px;width:80px;background:#E0ECF5;border-radius:4px;"></span>
+            <span style="margin-left:auto;height:6px;width:40px;background:#F0F6FE;border-radius:3px;"></span>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+            <div style="height:32px;background:#F5F9FC;border-radius:6px;border:1px solid #E0ECF5;padding:6px;"><div style="height:5px;width:30px;background:#E0ECF5;border-radius:2px;"></div></div>
+            <div style="height:32px;background:#F5F9FC;border-radius:6px;border:1px solid #E0ECF5;padding:6px;"><div style="height:5px;width:30px;background:#E0ECF5;border-radius:2px;"></div></div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px;">玻璃质感 backdrop-filter + 圆润边框 + 虚线分隔，透出底层海蓝色</p>
+    </div>
+  </div>
+
+  <div class="option" data-choice="c" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>🎴 水彩卡片</h3>
+      <p>每张路由卡片像水彩画——左侧有渐变色块装饰，卡片有轻微手绘感边框</p>
+      <div style="background:#F5F9FC;border-radius:12px;padding:16px;margin-top:8px;">
+        <div style="display:flex;gap:0;background:#FFFFFF;border-radius:8px;border:1px solid #E0ECF5;overflow:hidden;">
+          <div style="width:4px;background:linear-gradient(180deg,#4DD0C8,#64B5F6,#F06292);"></div>
+          <div style="flex:1;padding:12px;">
+            <div style="height:10px;width:80px;background:#E0ECF5;border-radius:4px;margin-bottom:8px;"></div>
+            <div style="display:flex;gap:6px;">
+              <span style="display:inline-block;padding:2px 8px;border-radius:4px;background:#E8F4F8;font-size:10px;color:#4DD0C8;">标签</span>
+              <span style="display:inline-block;padding:2px 8px;border-radius:4px;background:#FCE4EC;font-size:10px;color:#F06292;">标签</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:4px;">左侧渐变色条（海蓝→天蓝→樱花粉），内容区纯白，干净通透</p>
+    </div>
+  </div>
+
+</div>
+
+<div style="margin-top:16px;padding:12px;background:#E8F4F8;border-radius:8px;border:1px solid #B3D9F2;">
+  <p style="margin:0;font-weight:600;color:#00695C;">👆 选你最喜欢的路由容器设计！也可以说"A但改一下..."</p>
+</div>

@@ -60,7 +60,7 @@ const StockWatchPlugin = (_props: Props) => {
         low52w: q.fiftyTwoWeekLow,
       }))
       setStocks(mapped)
-    } catch { setError('Network error') }
+    } catch { setError('无法连接数据服务。此功能需要 Cloudflare Pages Functions 支持，本地预览模式下不可用。') }
   }, [symbols])
 
   useEffect(() => {

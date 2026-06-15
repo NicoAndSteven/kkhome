@@ -1,4 +1,6 @@
 import { SiteConfig } from '@core/types'
+import { TrackState } from '@plugins/ambient-music/AudioEngine'
+import NowPlayingBadge from '@plugins/ambient-music/NowPlayingBadge'
 import Icon from './Icon'
 import ThemeToggle from './ThemeToggle'
 
@@ -6,58 +8,52 @@ interface Props {
   config?: SiteConfig
   activeSection?: string
   routes?: Array<{ id: string; label: string; href: string }>
+  ambientTracks?: TrackState[]
   onContactClick?: () => void
+  onAmbientClick?: () => void
 }
 
-const fallbackRoutes = [
-    { id: 'home', label: '首页', href: '#/home' },
-    { id: 'ai-tools', label: '导向', href: '#/ai-tools' },
-    { id: 'wish-wall', label: '许愿', href: '#/wish-wall' },
-]
-
-const Header = ({ config, activeSection = 'home', routes = fallbackRoutes, onContactClick }: Props) => {
-  const activeIndex = Math.max(routes.findIndex((route) => route.id === activeSection), 0)
-  const activeRoute = routes[activeIndex] ?? routes[0]
-  const previousRoute = routes[(activeIndex - 1 + routes.length) % routes.length]
-  const nextRoute = routes[(activeIndex + 1) % routes.length]
-
+const Header = ({ config, activeSection = 'home', routes = [], ambientTracks = [], onContactClick, onAmbientClick }: Props) => {
   return (
-    <header className="fixed top-0 w-full z-50 h-16 border-b border-border-subtle bg-background/72 shadow-[0_16px_48px_-44px_var(--color-panel-shadow)] backdrop-blur-xl">
-      <nav className="mx-auto flex h-full w-full max-w-[1480px] items-center justify-between px-6 md:px-12 xl:px-16">
-        <a href="#/home" className="font-headline-md text-2xl font-bold text-on-surface">
-          {config?.author || '垣钰'}
+    <header className="fixed top-0 w-full z-50 h-14 border-b border-border-subtle bg-background/80 backdrop-blur-xl">
+      <nav className="mx-auto flex h-full w-full max-w-[1480px] items-center gap-md px-4 md:px-8 xl:px-12">
+        <a href="#/home" className="group flex items-center gap-2 shrink-0">
+          <span className="inline-flex items-center justify-center w-7 h-7 rounded-lg border border-primary/30 bg-primary/8 text-primary font-label-mono text-xs transition-premium group-hover:border-primary/60 group-hover:bg-primary/15">
+            K
+          </span>
+          <span className="font-headline-md text-lg font-bold text-on-surface">
+            {config?.author || '垣钰'}
+          </span>
         </a>
 
-        <div className="absolute left-1/2 flex -translate-x-1/2 items-center gap-xs">
-          <a
-            href={previousRoute.href}
-            aria-label={`切换到${previousRoute.label}`}
-            title={previousRoute.label}
-            className="route-nav-button"
-          >
-            <Icon name="chevron_left" className="text-base" />
-          </a>
-          <a href={activeRoute.href} className="route-nav-current" aria-current="page">
-            <span className="font-label-mono text-[10px] uppercase text-secondary">Route</span>
-            <span className="font-body-md text-sm font-semibold text-on-surface">{activeRoute.label}</span>
-          </a>
-          <a
-            href={nextRoute.href}
-            aria-label={`切换到${nextRoute.label}`}
-            title={nextRoute.label}
-            className="route-nav-button"
-          >
-            <Icon name="chevron_right" className="text-base" />
-          </a>
+        <div className="flex-1 min-w-0 flex items-center gap-xs overflow-x-auto scrollbar-none">
+          {routes.map((route) => {
+            const isActive = route.id === activeSection
+            return (
+              <a
+                key={route.id}
+                href={route.href}
+                className={`nav-tab shrink-0 px-sm py-1 font-body-md text-sm transition-premium ${
+                  isActive
+                    ? 'nav-tab-active text-primary'
+                    : 'text-text-muted hover:text-on-surface'
+                }`}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {route.label}
+              </a>
+            )
+          })}
         </div>
 
-        <div className="flex items-center gap-sm">
+        <div className="flex items-center gap-xs shrink-0">
+          <NowPlayingBadge tracks={ambientTracks} onClick={onAmbientClick ?? (() => {})} />
           <button
             type="button"
             onClick={onContactClick}
             aria-label="打开联系抽屉"
             title="联系我"
-            className="route-nav-button"
+            className="inline-flex items-center justify-center w-8 h-8 rounded-[2px] text-text-muted transition-premium hover:text-primary hover:bg-primary/8 btn-interact"
           >
             <Icon name="mail" className="text-base" />
           </button>

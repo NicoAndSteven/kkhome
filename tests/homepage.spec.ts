@@ -87,8 +87,9 @@ test('homepage renders configured content without placeholders', async ({ page }
     }
   })
   await page.goto('/')
-  await expect(page.locator('.welcome-screen')).toBeVisible({ timeout: 3_000 })
-  await expect(page.locator('.welcome-content.visible')).toBeVisible({ timeout: 3_000 })
+  await expect(page.locator('.intro-stage')).toBeVisible({ timeout: 3_000 })
+  await expect(page.locator('.intro-mark')).toHaveText('可')
+  await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 5_000 })
 
   await expect(page).toHaveTitle('垣钰 | Personal Hub')
   await expect(page.getByRole('heading', { name: '垣钰' })).toBeVisible()
@@ -200,7 +201,7 @@ test('routes stay within desktop and mobile viewports', async ({ browser }) => {
     for (const route of routes) {
       await page.goto(route)
       if (route === '/') {
-        await page.locator('.welcome-screen').waitFor({ state: 'attached', timeout: 7_000 })
+        await page.locator('.intro-stage').waitFor({ state: 'attached', timeout: 7_000 })
       } else {
         await page.locator('.page-shell.page-ready').waitFor({ state: 'attached', timeout: 7_000 })
       }

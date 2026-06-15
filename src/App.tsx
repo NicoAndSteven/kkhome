@@ -1,8 +1,8 @@
-import { useState, useEffect, useRef } from 'react'
+import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, WelcomeScreen } from '@components'
-import { ProfileConfig, SiteConfig } from '@core/types'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings } from '@components'
+import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import { TRACKS, synthesizeTrack } from '@plugins/ambient-music/tracks'
@@ -38,6 +38,8 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [siteConfig, setSiteConfig] = useState<SiteConfig | null>(null)
   const [profileConfig, setProfileConfig] = useState<ProfileConfig | null>(null)
+  const [motionConfig, setMotionConfig] = useState<MotionConfig | null>(null)
+  const [introComplete, setIntroComplete] = useState(false)
   const [activeRoute, setActiveRoute] = useState<HubRouteId>(() => normalizeHubRoute(window.location.hash))
   const [contactOpen, setContactOpen] = useState(false)
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
@@ -56,6 +58,7 @@ function App() {
 
         setSiteConfig(appCfg.site)
         setProfileConfig(appCfg.profile)
+        setMotionConfig(appCfg.motion)
 
         pluginSystem.applyConfigs(
           pluginCfgs.map((pluginCfg) => (
@@ -164,6 +167,10 @@ function App() {
     return unsub
   }, [])
 
+  const handleIntroComplete = useCallback(() => {
+    setIntroComplete(true)
+  }, [])
+
   // Reveal 动画
   useEffect(() => {
     const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
@@ -191,12 +198,30 @@ function App() {
   const isOnWelcome = activeRoute === 'home'
   const profilePlugin = enabledPlugins.find((plugin) => plugin.id === 'profile')
 
-  // === 欢迎页模式：无导航栏，只有首屏 + 开始按钮 ===
+  // === 欢迎页模式：Vanta Rings 背景 + Intro 动画 + 原首屏内容 ===
   if (isOnWelcome) {
     return (
       <Layout>
         <VantaRings />
-        <WelcomeScreen />
+        {siteConfig && motionConfig && (
+          <IntroStage
+            author={siteConfig.author}
+            enabled={motionConfig.intro}
+            duration={motionConfig.introDuration}
+            onComplete={handleIntroComplete}
+          />
+        )}
+        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] pt-14 px-6 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`}>
+          <ErrorBoundary>
+            {profilePlugin ? (
+              <profilePlugin.component config={profilePlugin.config} />
+            ) : (
+              <div className="surface-panel rounded-lg p-lg">
+                <p className="text-text-muted font-body-md">加载中...</p>
+              </div>
+            )}
+          </ErrorBoundary>
+        </main>
 
         <ContactDrawer
           open={contactOpen}

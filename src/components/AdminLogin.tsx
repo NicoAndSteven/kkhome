@@ -1,5 +1,6 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Icon from './Icon'
+import QRCode from 'qrcode'
 import { verifyTOTP, generateSecret, generateOTPAuthURI } from '../lib/totp'
 
 interface Props {
@@ -16,17 +17,22 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
   const [error, setError] = useState(false)
   const [totpSecret, setTotpSecret] = useState('')
   const [otpauthURI, setOtpauthURI] = useState('')
+  const [qrDataURL, setQrDataURL] = useState('')
 
   useEffect(() => {
     const saved = globalThis.localStorage.getItem(TOTP_KEY)
     if (saved) {
       setTotpSecret(saved)
+      setOtpauthURI(generateOTPAuthURI(saved))
       setPhase('verify')
+      QRCode.toDataURL(generateOTPAuthURI(saved), { width: 200, margin: 1 }).then(setQrDataURL).catch(() => {})
     } else {
       const secret = generateSecret()
       setTotpSecret(secret)
       globalThis.localStorage.setItem(TOTP_KEY, secret)
-      setOtpauthURI(generateOTPAuthURI(secret))
+      const uri = generateOTPAuthURI(secret)
+      setOtpauthURI(uri)
+      QRCode.toDataURL(uri, { width: 200, margin: 1 }).then(setQrDataURL).catch(() => {})
       setPhase('setup')
     }
   }, [open])
@@ -103,9 +109,14 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
                 </button>
               </div>
 
-              <div className="bg-surface-container rounded-xl p-3 mb-4 text-center">
-                <p className="font-label-mono text-[10px] text-text-muted mb-1">或使用此 URI 生成二维码</p>
-                <code className="font-label-mono text-[9px] text-text-muted break-all select-all">{otpauthURI}</code>
+              <div className="flex justify-center mb-4">
+                {qrDataURL ? (
+                  <img src={qrDataURL} alt="TOTP QR Code" className="w-48 h-48 rounded-xl border border-border-subtle" />
+                ) : (
+                  <div className="w-48 h-48 rounded-xl bg-surface-container flex items-center justify-center">
+                    <span className="font-label-mono text-xs text-text-muted">生成二维码中...</span>
+                  </div>
+                )}
               </div>
 
               {/* 6 位码输入 */}

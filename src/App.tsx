@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
@@ -234,75 +234,56 @@ function App() {
     )
   }
 
-  // === 博客内部模式：Stitch 布局（侧边栏导航 + 主内容区） ===
+  // === 博客内部模式：Header + 侧边栏 + 内容区 ===
   const availableRouteItems = blogRouteItems.filter((route) => enabledPluginIds.has(route.pluginId))
   const activeRouteItem = allRouteItems.find((route) => route.id === activeRoute)
     ?? blogRouteItems.find((route) => enabledPluginIds.has(route.pluginId))
     ?? blogRouteItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
-  const activeLabel = activeRouteItem?.label ?? ''
 
   return (
-    <div className="flex h-screen w-full overflow-hidden" style={{ backgroundColor: '#F5F9FC' }}>
-      {/* Sidebar */}
-      <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
-
-      {/* Main Content */}
-      <main className="flex-1 ml-64 p-8 relative overflow-y-auto">
-        {/* Content Header */}
-        <header className="flex justify-between items-center mb-8">
-          <div className="flex items-center gap-3">
-            <span className="font-label-mono text-text-muted uppercase tracking-widest text-xs">
-              ROOT / {activeLabel.toUpperCase()} /
-            </span>
-            <h2 className="font-headline-md text-headline-md text-on-surface">{activeLabel}</h2>
-          </div>
-          <div className="flex items-center gap-4">
-            <button
-              type="button"
-              onClick={() => setContactOpen(true)}
-              className="w-10 h-10 rounded-full bg-surface border border-border-subtle flex items-center justify-center hover:border-primary transition-colors"
-              aria-label="打开联系抽屉"
-            >
-              <span className="text-text-muted hover:text-primary transition-colors text-lg">✉</span>
-            </button>
-          </div>
-        </header>
-
-        {/* Route Frame */}
-        <section className="relative w-full rounded-3xl p-8 shadow-sm overflow-hidden"
-          style={{
-            background: 'rgba(255,255,255,0.85)',
-            backdropFilter: 'blur(12px)',
-            WebkitBackdropFilter: 'blur(12px)',
-            border: '1px solid #E0ECF5',
-            minHeight: 'calc(100vh - 200px)',
-          }}
-        >
-          <div style={{
-            position: 'absolute',
-            top: 0, left: 0, right: 0,
-            height: '4px',
-            background: 'linear-gradient(90deg, #4DD0C8, #64B5F6, #F06292)',
-            zIndex: 10,
-            pointerEvents: 'none',
-          }} />
-          <div className="pt-2">
-            <ErrorBoundary key={activeRouteItem.id}>
-              {activePlugin ? (
-                <activePlugin.component config={activePlugin.config} />
-              ) : (
-                <div className="surface-panel rounded-lg p-lg">
-                  <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
-                  <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
-                  <p className="mt-xs font-body-md text-body-md text-text-muted">
-                    当前配置没有启用「{activeLabel}」模块。
-                  </p>
+    <Layout routeMode>
+      <Header
+        config={siteConfig ?? undefined}
+        activeSection={activeRoute}
+        routes={availableRouteItems}
+        ambientTracks={ambientTracks}
+        simple
+        onContactClick={() => setContactOpen(true)}
+        onAmbientClick={() => { window.location.hash = '#/ambient-music' }}
+      />
+      <main className={`page-shell route-page-shell page-ready`}>
+        <ErrorBoundary key={activeRouteItem.id}>
+          {activePlugin ? (
+            <div className="route-stage" aria-label={activeRouteItem.label}>
+              <div className="route-frame">
+                <div className="blog-layout">
+                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
+                  <div className="blog-content">
+                    <activePlugin.component config={activePlugin.config} />
+                  </div>
                 </div>
-              )}
-            </ErrorBoundary>
-          </div>
-        </section>
+              </div>
+            </div>
+          ) : (
+            <section className="route-stage" aria-label={activeRouteItem.label}>
+              <div className="route-frame">
+                <div className="blog-layout">
+                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
+                  <div className="blog-content">
+                    <div className="surface-panel rounded-[2px] p-lg">
+                      <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
+                      <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
+                      <p className="mt-xs font-body-md text-body-md text-text-muted">
+                        当前配置没有启用「{activeRouteItem.label}」模块。
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+          )}
+        </ErrorBoundary>
       </main>
 
       <ContactDrawer
@@ -322,7 +303,7 @@ function App() {
         onVolumeChange={(id, vol) => getAudioEngine().setVolume(id, vol)}
         onOpenFull={() => { window.location.hash = '#/ambient-music' }}
       />
-    </div>
+    </Layout>
   )
 }
 

@@ -28,6 +28,7 @@ const iconPaths: Record<string, ReactNode> = {
   link: <path d="M10 13a5 5 0 0 0 7 0l2-2a5 5 0 0 0-7-7l-1 1M14 11a5 5 0 0 0-7 0l-2 2a5 5 0 0 0 7 7l1-1" />,
   leaderboard: <path d="M4 20V9h4v11M10 20V4h4v16M16 20v-7h4v7M3 20h18" />,
   mail: <path d="M4 6h16v12H4zM4 7l8 6 8-6" />,
+  more_horiz: <path d="M6 12h.01M12 12h.01M18 12h.01" strokeWidth="2" />,
   mic: <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 0 0-6 0v5a3 3 0 0 0 3 3zM5 11a7 7 0 0 0 14 0M12 18v4M9 22h6" />,
   moon: <path d="M19 15.5A8 8 0 0 1 10.5 5 7 7 0 1 0 19 15.5z" />,
   package_2: <path d="M4 8l8-4 8 4v9l-8 4-8-4zM4 8l8 4 8-4M12 12v9" />,

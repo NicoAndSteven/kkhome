@@ -899,6 +899,16 @@ html.intro-scroll-lock #root {
     }
 }
 
+/* Slide-up animation for bottom sheet */
+@keyframes slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+.animate-slide-up {
+  animation: slide-up 300ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
 /* MiniPlayer 波形动画 */
 @keyframes mini-bar {
     0% { height: 4px; }

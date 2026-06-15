@@ -16,9 +16,13 @@ pages_build_output_dir = "dist"
 # binding = "HUB_KV"
 # id = "<replace-with-kv-namespace-id>"
 
-# [[r2_buckets]]
-# binding = "HUB_BUCKET"
-# bucket_name = "kkhome-artifacts"
+[[r2_buckets]]
+binding = "MUSIC_BUCKET"
+bucket_name = "music"
+
+# 音乐墙管理员令牌 — 在 Cloudflare Pages Dashboard 中设置
+# Settings → Environment variables → Add MUSIC_ADMIN_TOKEN
+# MUSIC_ADMIN_TOKEN = "your-secret-token-here"
 
 # [[vectorize]]
 # binding = "HUB_VECTORIZE"

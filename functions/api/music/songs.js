@@ -34,9 +34,17 @@ async function saveSongs(env, songs) {
   })
 }
 
-function isAdmin(request, env) {
+async function isAdmin(request, env) {
   const auth = request.headers.get('Authorization') || ''
-  return auth === `Bearer ${env.MUSIC_ADMIN_TOKEN || ''}`
+  const token = auth.replace(/^Bearer\s+/i, '')
+  if (!token) return false
+  // 从 R2 读取管理员配置，验证 TOTP 密钥
+  try {
+    const cfg = await env.MUSIC_BUCKET.get('admin-config.json')
+    if (!cfg) return false
+    const { totpSecret } = JSON.parse(await cfg.text())
+    return token === totpSecret
+  } catch { return false }
 }
 
 export const onRequestOptions = (context) => new Response(null, {
@@ -99,8 +107,21 @@ export const onRequestPost = async ({ request, env }) => {
     return ok({ song: newSong }, { request, env }, { status: 201 })
   }
 
-  // 许愿上架（无需审核，直接公开）
+  // JSON 处理
   const body = await request.json().catch(() => ({}))
+  const { _action } = body
+
+  // 保存 TOTP 密钥到 R2
+  if (_action === 'save-totp') {
+    const { totpSecret } = body
+    if (!totpSecret) return fail('MISSING_SECRET', '缺少密钥', 400, { request, env })
+    await env.MUSIC_BUCKET.put('admin-config.json', JSON.stringify({ totpSecret }), {
+      httpMetadata: { contentType: 'application/json' },
+    })
+    return ok({ configured: true }, { request, env })
+  }
+
+  // 许愿上架
   const { title, artist, source } = body
   if (!title || !artist) {
     return fail('MISSING_FIELDS', '请填写歌曲名和歌手', 400, { request, env })
@@ -126,7 +147,8 @@ export const onRequestPut = async ({ request, env }) => {
   if (!checkRate(ip)) {
     return fail('RATE_LIMITED', '操作过于频繁', 429, { request, env })
   }
-  if (!isAdmin(request, env)) {
+  const admin = await isAdmin(request, env)
+  if (!admin) {
     return fail('UNAUTHORIZED', '需要管理员权限', 403, { request, env })
   }
 

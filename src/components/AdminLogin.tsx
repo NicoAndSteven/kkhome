@@ -38,6 +38,8 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
     const valid = await verifyTOTP(totpSecret, code)
     if (!valid) { setError(true); return }
     setError(false)
+    // 将 TOTP 密钥存到 R2（用于 API 鉴权）
+    try { await fetch('/api/music/songs', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ _action: 'save-totp', totpSecret }) }) } catch { /* */ }
     onAuth?.('totp-authenticated')
     setCode('')
     onClose()

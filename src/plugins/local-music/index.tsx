@@ -29,7 +29,7 @@ const LocalMusicPlugin = () => {
   const [duration, setDuration] = useState(0)
   const [uploadMode, setUploadMode] = useState<'none' | 'upload' | 'wish'>('none')
   const [adminToken, setAdminToken] = useState('')
-  // 从欢迎页管理员入口接收 token（仅内存，刷新后失效）
+  // 从欢迎页管理员入口接收 token（使用 TOTP secret 作为 API 凭证）
   useEffect(() => {
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail

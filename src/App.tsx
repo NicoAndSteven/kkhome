@@ -244,7 +244,7 @@ function App() {
           profile={profileConfig ?? undefined}
           onClose={() => setContactOpen(false)}
         />
-        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={(token) => { setAdminToken(token); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } })) }} />
+        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={() => { const secret = globalThis.localStorage.getItem('hub:totp-secret') || ''; setAdminToken(secret); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token: secret } })) }} />
 
         {/* 管理员入口 — 右下角 */}
         <button

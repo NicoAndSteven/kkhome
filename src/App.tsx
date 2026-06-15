@@ -3,6 +3,7 @@ import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
 import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
+import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import { TRACKS, synthesizeTrack } from '@plugins/ambient-music/tracks'
@@ -40,6 +41,7 @@ function App() {
   const [profileConfig, setProfileConfig] = useState<ProfileConfig | null>(null)
   const [motionConfig, setMotionConfig] = useState<MotionConfig | null>(null)
   const [introComplete, setIntroComplete] = useState(false)
+  const isMobile = useIsMobile()
   const [activeRoute, setActiveRoute] = useState<HubRouteId>(() => normalizeHubRoute(window.location.hash))
   const [contactOpen, setContactOpen] = useState(false)
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
@@ -203,12 +205,21 @@ function App() {
   if (isOnWelcome) {
     return (
       <Layout>
-        <VantaRings />
-        <VantaBirds />
+        {isMobile && (
+          <div
+            className="fixed inset-0 z-0 pointer-events-none"
+            style={{
+              background: 'linear-gradient(135deg, rgba(77, 208, 200, 0.08), rgba(100, 181, 246, 0.05))',
+            }}
+            aria-hidden="true"
+          />
+        )}
+        {!isMobile && <VantaRings />}
+        {!isMobile && <VantaBirds />}
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}
-            enabled={motionConfig.intro}
+            enabled={motionConfig.intro && !isMobile}
             duration={motionConfig.introDuration}
             onComplete={handleIntroComplete}
           />

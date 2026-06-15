@@ -274,49 +274,6 @@ html.intro-scroll-lock #root {
     overflow: hidden;
 }
 
-.route-nav-button,
-.route-nav-current {
-    border: 1px solid var(--color-panel-border);
-    background: var(--color-panel-bg);
-    box-shadow: inset 0 1px 0 var(--color-panel-highlight);
-    backdrop-filter: blur(14px);
-}
-
-.route-nav-button {
-    width: 38px;
-    height: 38px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--color-text-muted);
-    transition:
-        color 280ms cubic-bezier(0.16, 1, 0.3, 1),
-        border-color 280ms cubic-bezier(0.16, 1, 0.3, 1),
-        transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.route-nav-button:hover {
-    color: var(--color-on-surface);
-    border-color: var(--color-primary);
-    transform: translateY(-1px);
-}
-
-.route-nav-button .material-symbols-outlined {
-    width: 1em;
-    overflow: hidden;
-}
-
-.route-nav-current {
-    min-width: 116px;
-    height: 38px;
-    display: inline-flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1px;
-    color: var(--color-on-surface);
-}
-
 .glass {
     background: var(--color-glass-bg);
     backdrop-filter: blur(10px);
@@ -584,6 +541,7 @@ html.intro-scroll-lock #root {
     padding: 64px clamp(20px, 4vw, 64px) clamp(18px, 3vw, 40px);
 }
 
+/* 水族窗格 - 路由容器 */
 .route-stage {
     position: relative;
     height: 100%;
@@ -591,170 +549,50 @@ html.intro-scroll-lock #root {
     display: grid;
     align-items: center;
     isolation: isolate;
-    overflow-x: clip;
-    perspective: 1800px;
-    transform-style: preserve-3d;
     padding: clamp(16px, 3vw, 36px) 0;
 }
 
-.route-stage::before {
-    content: '';
-    position: absolute;
-    top: clamp(12px, 3vw, 40px);
-    bottom: clamp(12px, 3vw, 40px);
-    left: 50%;
-    width: 100vw;
-    z-index: -2;
-    border-top: 1px solid var(--color-primary);
-    border-bottom: 1px solid var(--color-panel-border-strong);
-    background:
-        repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 96px,
-            var(--color-grid-line) 97px
-        ),
-        linear-gradient(90deg, transparent, var(--color-panel-border), transparent),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.04), transparent 22%, transparent 78%, rgba(255, 255, 255, 0.03));
-    opacity: 0.72;
-    box-shadow: 0 0 42px -24px var(--color-glow-primary);
-    transform: translateX(-50%) translateZ(-620px) rotateX(70deg) translateY(18%) scale(1.22);
-    transform-origin: center;
-}
-
-.route-stage::after {
-    content: '';
-    position: absolute;
-    inset: clamp(24px, 6vw, 84px) clamp(14px, 8vw, 148px);
-    z-index: -1;
-    border: 1px solid var(--color-panel-border-strong);
-    background:
-        linear-gradient(90deg, transparent, var(--color-glow-primary), transparent),
-        rgba(0, 0, 0, 0.05);
-    opacity: 0.64;
-    transform: translateZ(-420px) scale(0.68);
-    filter: blur(1px);
-}
-
-.route-depth {
-    position: absolute;
-    pointer-events: none;
-    border: 1px solid var(--color-panel-border-strong);
-    background:
-        linear-gradient(90deg, transparent, var(--color-glow-primary), transparent),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.035), transparent);
-    transform-origin: center;
-}
-
-.route-depth-far {
-    inset: clamp(76px, 12vw, 160px) clamp(80px, 18vw, 280px);
-    opacity: 0.58;
-    filter: blur(2px);
-    transform: translateZ(-680px) scale(0.56);
-    box-shadow: 0 0 56px -30px var(--color-glow-primary);
-    animation: route-depth-far-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.route-depth-mid {
-    inset: clamp(44px, 8vw, 116px) clamp(42px, 12vw, 180px);
-    opacity: 0.72;
-    filter: blur(0.5px);
-    transform: translateZ(-420px) scale(0.72);
-    box-shadow: inset 0 0 0 1px var(--color-border-subtle);
-    animation: route-depth-mid-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.route-lens {
-    position: absolute;
-    inset: clamp(18px, 5vw, 72px) clamp(8px, 5vw, 88px);
-    z-index: -1;
-    border: 1px solid var(--color-panel-border-strong);
-    background:
-        repeating-linear-gradient(
-            90deg,
-            transparent 0,
-            transparent 71px,
-            var(--color-grid-line) 72px
-        );
-    opacity: 0.82;
-    box-shadow:
-        inset 0 0 0 1px var(--color-border-subtle),
-        0 0 54px -36px var(--color-glow-primary);
-    transform: translateZ(-300px) scale(0.82);
-}
-
-.route-depth {
-    position: absolute;
-    pointer-events: none;
-    border: 1px solid var(--color-panel-border-strong);
-    background:
-        linear-gradient(90deg, transparent, var(--color-glow-primary), transparent),
-        linear-gradient(180deg, rgba(255, 255, 255, 0.05), transparent 42%);
-    transform-origin: 50% 54%;
-}
-
-.route-depth-far {
-    inset: clamp(96px, 15vw, 180px) clamp(120px, 20vw, 300px);
-    opacity: 0.52;
-    filter: blur(2px);
-    box-shadow:
-        0 0 0 24px rgba(139, 233, 244, 0.018),
-        0 0 80px -46px var(--color-glow-primary);
-    transform: translateZ(-760px) scale(0.58);
-    animation: route-depth-far-in 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.route-depth-mid {
-    inset: clamp(58px, 10vw, 128px) clamp(74px, 13vw, 210px);
-    opacity: 0.76;
-    filter: blur(0.5px);
-    box-shadow:
-        0 0 0 14px rgba(139, 233, 244, 0.022),
-        0 0 72px -42px var(--color-glow-primary);
-    transform: translateZ(-420px) scale(0.74);
-    animation: route-depth-mid-in 780ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
+/* 玻璃质感主容器 */
 .route-frame {
     position: relative;
     width: 100%;
     height: min(780px, calc(100vh - 132px));
     min-height: 0;
     overflow: hidden;
-    padding: clamp(20px, 4vw, 48px);
-    border: 1px solid var(--color-panel-border-strong);
-    background:
-        linear-gradient(180deg, var(--color-panel-bg), rgba(0, 0, 0, 0.02)),
-        var(--color-surface);
+    padding: clamp(16px, 3vw, 32px);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(77, 208, 200, 0.2);
+    border-radius: 16px;
     box-shadow:
-        inset 0 1px 0 var(--color-panel-highlight),
-        0 56px 150px -72px var(--color-panel-shadow),
-        0 22px 96px -48px var(--color-glow-primary),
-        0 0 0 1px rgba(255, 255, 255, 0.02);
-    transform-origin: 50% 58%;
-    animation: route-camera-in 760ms cubic-bezier(0.16, 1, 0.3, 1) both;
+        0 8px 32px -16px var(--color-panel-shadow),
+        0 0 0 1px rgba(255, 255, 255, 0.5);
+    animation: route-frame-in 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.route-frame::before,
-.route-frame::after {
+/* 顶部 header 装饰条 */
+.route-frame::before {
     content: '';
     position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-tertiary));
+    border-radius: 16px 16px 0 0;
     pointer-events: none;
 }
 
-.route-frame::before {
-    inset: 10px;
-    border: 1px solid var(--color-border-subtle);
-    opacity: 0.42;
-}
-
+/* 虚线边框装饰 */
 .route-frame::after {
-    top: 0;
-    left: clamp(16px, 3vw, 44px);
-    width: 72px;
-    height: 2px;
-    background: var(--color-primary);
-    box-shadow: 0 0 24px var(--color-glow-primary);
+    content: '';
+    position: absolute;
+    inset: 12px;
+    border: 1px dashed var(--color-border-subtle);
+    border-radius: 8px;
+    pointer-events: none;
+    opacity: 0.5;
 }
 
 .route-frame > * {
@@ -777,6 +615,7 @@ html.intro-scroll-lock #root {
     scrollbar-color: var(--color-panel-border-strong) transparent;
 }
 
+/* 特定插件覆盖 */
 .route-frame #ai-tools > .ai-results-scroll {
     overflow: visible;
     padding-right: 0;
@@ -796,46 +635,15 @@ html.intro-scroll-lock #root {
     flex: 1;
 }
 
-.progress-rail {
-    position: fixed;
-    right: 24px;
-    top: 50%;
-    z-index: 40;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    transform: translateY(-50%);
-}
-
-.progress-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 9999px;
-    border: 1px solid var(--color-border-subtle);
-    background: var(--color-glass-border);
-    transition:
-        width 300ms cubic-bezier(0.16, 1, 0.3, 1),
-        background-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-        border-color 300ms cubic-bezier(0.16, 1, 0.3, 1),
-        transform 300ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.progress-dot:hover,
-.progress-dot.active {
-    width: 18px;
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    transform: translateX(-5px);
-}
-
-.progress-dot.active {
-    box-shadow: 0 0 12px var(--color-glow-primary);
-    animation: dot-pulse 2.4s ease-in-out infinite;
-}
-
-@keyframes dot-pulse {
-    0%, 100% { box-shadow: 0 0 8px var(--color-glow-primary); }
-    50% { box-shadow: 0 0 20px var(--color-glow-primary); }
+@keyframes route-frame-in {
+    0% {
+        opacity: 0;
+        transform: translateY(12px) scale(0.98);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .drawer-layer {
@@ -887,19 +695,6 @@ html.intro-scroll-lock #root {
 }
 
 @media (max-width: 768px) {
-    .route-nav-current {
-        min-width: 82px;
-    }
-
-    .route-nav-current span:first-child {
-        display: none;
-    }
-
-    .route-nav-button {
-        width: 34px;
-        height: 34px;
-    }
-
     .route-page-shell {
         padding: 64px 18px 18px;
     }
@@ -911,18 +706,6 @@ html.intro-scroll-lock #root {
     .route-frame {
         height: calc(100vh - 92px);
         padding: 20px;
-    }
-
-    .route-depth-far {
-        inset: 128px 84px;
-    }
-
-    .route-depth-mid {
-        inset: 88px 48px;
-    }
-
-    .progress-rail {
-        display: none;
     }
 
     .contact-drawer {
@@ -1019,68 +802,6 @@ html.intro-scroll-lock #root {
     100% { height: 16px; }
 }
 
-@keyframes route-camera-in {
-    0% {
-        opacity: 0;
-        transform: translate3d(0, 42px, -460px) rotateX(12deg) scale(0.86);
-        filter: blur(18px);
-    }
-    62% {
-        opacity: 1;
-        transform: translate3d(0, -4px, 34px) rotateX(-1deg) scale(1.012);
-        filter: blur(0);
-    }
-    100% {
-        opacity: 1;
-        transform: translate3d(0, 0, 0) rotateX(0deg) scale(1);
-        filter: blur(0);
-    }
-}
-
-@keyframes route-depth-far-in {
-    0% {
-        opacity: 0;
-        transform: translateZ(-920px) scale(0.42);
-    }
-    100% {
-        opacity: 0.58;
-        transform: translateZ(-680px) scale(0.56);
-    }
-}
-
-@keyframes route-depth-mid-in {
-    0% {
-        opacity: 0;
-        transform: translateZ(-620px) scale(0.6);
-    }
-    100% {
-        opacity: 0.72;
-        transform: translateZ(-420px) scale(0.72);
-    }
-}
-
-@keyframes route-depth-far-in {
-    0% {
-        opacity: 0;
-        transform: translateZ(-980px) scale(0.42);
-    }
-    100% {
-        opacity: 0.52;
-        transform: translateZ(-760px) scale(0.58);
-    }
-}
-
-@keyframes route-depth-mid-in {
-    0% {
-        opacity: 0;
-        transform: translateZ(-620px) scale(0.58);
-    }
-    100% {
-        opacity: 0.76;
-        transform: translateZ(-420px) scale(0.74);
-    }
-}
-
 /* Reveal Animation - spring-like, staggered */
 .reveal {
     opacity: 0;
@@ -1092,8 +813,6 @@ html.intro-scroll-lock #root {
     opacity: 1;
     transform: translateY(0) scale(1);
 }
-
-/* Shimmer is now defined in the micro-interactions section above */
 
 @media (prefers-reduced-motion: no-preference) {
     .nav-link {
@@ -1113,9 +832,6 @@ html.intro-scroll-lock #root {
     }
 
     .route-stage,
-    .route-stage::before,
-    .route-depth,
-    .route-lens,
     .route-frame {
         transform: none;
         animation: none;
@@ -1125,7 +841,6 @@ html.intro-scroll-lock #root {
     .transition-premium,
     .glass,
     .reveal,
-    .progress-dot,
     .drawer-backdrop,
     .contact-drawer {
         transition-duration: 1ms;

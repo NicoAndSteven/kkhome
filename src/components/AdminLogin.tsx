@@ -132,8 +132,9 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
           {/* 验证 */}
           {phase === 'verify' && (
             <>
-              <p className="font-body-md text-sm text-text-muted mb-4">
-                输入身份验证器中的 6 位动态码
+              <p className="font-body-md text-sm text-text-muted mb-1">输入身份验证器中的 6 位动态码</p>
+              <p className="font-label-mono text-[10px] text-primary mb-4">
+                <button type="button" onClick={() => setPhase('setup')} className="underline hover:no-underline">首次使用？点此设置验证器 →</button>
               </p>
               <div className="flex items-center gap-2 mb-4">
                 {[0, 1, 2, 3, 4, 5].map(i => (

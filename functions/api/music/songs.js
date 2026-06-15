@@ -3,6 +3,22 @@ import { json, ok, fail, options } from '../../_shared/api.js'
 
 const SONGS_KEY = 'songs.json'
 
+// 简单速率限制（内存 Map，每个 Worker 实例独立）
+const rateMap = new Map()
+function checkRate(ip) {
+  const now = Date.now()
+  const windowMs = 60_000
+  const maxReqs = 20 // POST/PUT 每分钟最多 20 次
+  const entry = rateMap.get(ip) || { count: 0, resetAt: now + windowMs }
+  if (now > entry.resetAt) { entry.count = 0; entry.resetAt = now + windowMs }
+  entry.count++
+  rateMap.set(ip, entry)
+  if (rateMap.size > 1000) {
+    for (const [key, val] of rateMap) { if (now > val.resetAt) rateMap.delete(key) }
+  }
+  return entry.count <= maxReqs
+}
+
 async function loadSongs(env) {
   try {
     const obj = await env.MUSIC_BUCKET.get(SONGS_KEY)
@@ -37,8 +53,12 @@ export const onRequestGet = async ({ request, env }) => {
   return ok({ songs }, { request, env })
 }
 
-/** POST — 上传或许愿，自动上架 */
+/** POST — 上传或许愿 */
 export const onRequestPost = async ({ request, env }) => {
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'unknown'
+  if (!checkRate(ip)) {
+    return fail('RATE_LIMITED', '操作过于频繁，请稍后重试', 429, { request, env })
+  }
   const ct = request.headers.get('Content-Type') || ''
 
   if (ct.includes('multipart/form-data')) {
@@ -102,6 +122,10 @@ export const onRequestPost = async ({ request, env }) => {
 
 /** PUT — 仅 admin 可操作：approve / reject / delete */
 export const onRequestPut = async ({ request, env }) => {
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || 'unknown'
+  if (!checkRate(ip)) {
+    return fail('RATE_LIMITED', '操作过于频繁', 429, { request, env })
+  }
   if (!isAdmin(request, env)) {
     return fail('UNAUTHORIZED', '需要管理员权限', 403, { request, env })
   }

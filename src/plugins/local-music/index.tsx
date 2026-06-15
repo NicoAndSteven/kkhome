@@ -139,8 +139,10 @@ const LocalMusicPlugin = () => {
   // === 许愿 ===
   const handleWish = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    e.persist?.()
     const form = e.currentTarget
-    const data = { title: form.title.value, artist: form.artist.value, source: form.source.value || '', uploader: form.uploader.value || '匿名' }
+    const fd = new FormData(form)
+    const data = { title: String(fd.get('title') || ''), artist: String(fd.get('artist') || ''), source: String(fd.get('source') || ''), uploader: String(fd.get('uploader') || '匿名') }
 
     try {
       const headers: Record<string, string> = { 'Content-Type': 'application/json' }

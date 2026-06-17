@@ -16,7 +16,7 @@ const VantaRings = () => {
 
     const timer = setTimeout(() => {
       if (!containerRef.current) return
-      vantaRef.current = window.VANTA.RINGS({
+        vantaRef.current = window.VANTA.RINGS({
         el: containerRef.current,
         mouseControls: true,
         touchControls: true,
@@ -25,8 +25,8 @@ const VantaRings = () => {
         minWidth: 200,
         scale: 1,
         scaleMobile: 1,
-        backgroundColor: 0xf5f9fc,
-        color: 0x4dd0c8,
+        backgroundColor: 0xf1f4ff,
+        color: 0x1148ff,
       })
       setPhase('active')
     }, 50)
@@ -59,6 +59,7 @@ const VantaRings = () => {
 
   return (
     <div
+      className="vanta-rings-layer"
       ref={containerRef}
       style={{
         position: 'fixed',

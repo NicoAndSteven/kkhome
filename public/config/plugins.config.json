@@ -8711,7 +8711,7 @@
     },
     {
       "id": "cloudflare-lab",
-      "enabled": true,
+      "enabled": false,
       "order": 4,
       "config": {
         "title": "Cloudflare Lab",
@@ -8720,7 +8720,7 @@
     },
     {
       "id": "news",
-      "enabled": true,
+      "enabled": false,
       "order": 5,
       "config": {
         "title": "新闻聚合",

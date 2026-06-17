@@ -1,152 +1,115 @@
-import { useState, useRef } from 'react'
-import { TrackState, getAudioEngine } from './AudioEngine'
+import { TrackState } from './AudioEngine'
 import { TRACKS } from './tracks'
 import Icon from '../../components/Icon'
 
 interface Props {
   tracks: TrackState[]
   onToggleTrack: (id: string) => void
-  onVolumeChange: (id: string, volume: number) => void
   onOpenFull: () => void
 }
 
-function formatTime(seconds: number): string {
-  const m = Math.floor(seconds / 60)
-  const s = Math.floor(seconds % 60)
-  return `${m}:${s.toString().padStart(2, '0')}`
-}
+const MiniPlayer = ({ tracks, onToggleTrack, onOpenFull }: Props) => {
+  const activeTracks = tracks.filter((track) => track.playing)
 
-const MiniPlayer = ({ tracks, onToggleTrack, onVolumeChange, onOpenFull }: Props) => {
-  const [dragging, setDragging] = useState(false)
-  const barRef = useRef<HTMLDivElement>(null)
+  const primary = activeTracks[0] ?? tracks[0] ?? { id: TRACKS[0].id, playing: false }
+  const orderedTracks = tracks
+    .map((track) => TRACKS.findIndex((meta) => meta.id === track.id))
+    .filter((index) => index >= 0)
+  const primaryIndex = TRACKS.findIndex((track) => track.id === primary.id)
+  const meta = TRACKS.find((track) => track.id === primary.id) ?? TRACKS[0]
+  const isPlaying = activeTracks.length > 0 && primary.playing
 
-  const activeTracks = tracks.filter((t) => t.playing)
-  if (activeTracks.length === 0) return null
-
-  const primary = activeTracks[0]
-  const def = TRACKS.find((t) => t.id === primary.id)
-  const progressPct = primary.duration > 0 ? Math.min(primary.progress, 1) * 100 : 0
-
-  const elapsed = primary.duration > 0 ? primary.progress * primary.duration : 0
-
-  const handleSeek = (clientX: number) => {
-    const bar = barRef.current
-    if (!bar) return
-    const rect = bar.getBoundingClientRect()
-    const x = Math.max(0, Math.min(clientX - rect.left, rect.width))
-    const pct = x / rect.width
-    getAudioEngine().seek(primary.id, pct)
-  }
-
-  const onBarMouseDown = (e: { clientX: number }) => {
-    setDragging(true)
-    handleSeek(e.clientX)
-    const onMove = (ev: MouseEvent) => handleSeek(ev.clientX)
-    const onUp = () => { setDragging(false); window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp) }
-    window.addEventListener('mousemove', onMove)
-    window.addEventListener('mouseup', onUp)
+  const cycleTrack = (direction: -1 | 1) => {
+    const nextIndex = primaryIndex >= 0
+      ? (primaryIndex + direction + TRACKS.length) % TRACKS.length
+      : 0
+    const nextTrack = TRACKS[nextIndex]
+    if (!nextTrack) return
+    if (primary.id !== nextTrack.id && isPlaying) onToggleTrack(primary.id)
+    onToggleTrack(nextTrack.id)
   }
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 bg-surface border-t border-border-subtle">
-      {/* Progress bar */}
-      <div
-        ref={barRef}
-        className="relative w-full h-1 cursor-pointer group"
-        onMouseDown={onBarMouseDown}
-        role="slider"
-        aria-label="播放进度"
-        aria-valuenow={Math.round(progressPct)}
-        tabIndex={0}
-      >
-        <div className="absolute inset-0 bg-border-subtle rounded-full" />
-        <div
-          className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-primary to-secondary"
-          style={{ width: `${progressPct}%` }}
-        />
-        <div
-          className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 bg-white border-2 border-primary rounded-full transition-opacity ${dragging ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'}`}
-          style={{ left: `calc(${progressPct}% - 6px)` }}
-        />
+    <section className="sidebar-now-playing stack-board relative aspect-square overflow-hidden rounded-[28px] border border-[rgba(19,27,58,0.14)] bg-[linear-gradient(145deg,rgba(255,255,255,0.96),rgba(236,241,255,0.94),rgba(255,230,236,0.88))] p-4 shadow-[0_28px_64px_-42px_rgba(19,27,58,0.24)]">
+      <div className="absolute left-4 top-4 flex items-center gap-2">
+        <span className={`h-2.5 w-2.5 rounded-full ${isPlaying ? 'bg-secondary shadow-[0_0_14px_rgba(224,20,52,0.45)]' : 'bg-primary shadow-[0_0_14px_rgba(17,72,255,0.35)]'}`} />
+        <span className="font-label-mono text-[9px] uppercase tracking-[0.26em] text-text-muted">
+          {isPlaying ? 'On air' : 'Standby'}
+        </span>
       </div>
 
-      {/* Controls row */}
-      <div className="mx-auto flex h-14 max-w-[1480px] items-center gap-3 px-4 md:px-6">
-        {/* Track info */}
-        <div className="flex items-center gap-2 min-w-0 flex-1">
-          <Icon name={def?.icon ?? 'music_note'} className="text-lg text-primary shrink-0" />
-          <div className="min-w-0">
-            <div className="font-label-mono text-xs text-on-surface truncate">
-              {def?.name ?? primary.id}
-            </div>
-            {primary.duration > 0 && (
-              <div className="font-label-mono text-[10px] text-text-muted">
-                {formatTime(elapsed)} / {formatTime(primary.duration)}
+      <div className="relative flex h-full flex-col justify-between">
+        <div className="pt-8">
+          <div className="stack-chip font-label-mono text-[9px] uppercase tracking-[0.24em] text-primary">
+            sound object
+          </div>
+
+          <div className="mt-5 flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <div className="line-clamp-2 font-headline-md text-[clamp(1.6rem,2vw,2rem)] font-semibold leading-[0.9] tracking-[-0.06em] text-on-surface">
+                {meta.name}
               </div>
-            )}
+              <p className="mt-3 max-w-[15ch] text-[11px] leading-relaxed text-on-surface-variant">
+                {isPlaying
+                  ? activeTracks.length > 1
+                    ? `${activeTracks.length} 条音源正在叠加发声。`
+                    : '当前音源已点亮，正在作为页面的背景装置工作。'
+                  : '选择一条音源，让整个界面开始流动。'}
+              </p>
+              </div>
+
+            <div
+              className="grid h-16 w-16 shrink-0 place-items-center rounded-[18px] border border-[rgba(19,27,58,0.12)] bg-[linear-gradient(145deg,rgba(17,72,255,0.96),rgba(224,20,52,0.88))] text-white shadow-[0_18px_36px_-20px_rgba(19,27,58,0.28)]"
+              aria-hidden="true"
+            >
+              <Icon name={meta?.icon ?? 'music_note'} className="text-2xl" />
+            </div>
           </div>
         </div>
 
-        {/* Transport controls */}
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => {
-              const idx = activeTracks.indexOf(primary)
-              const prev = activeTracks[(idx - 1 + activeTracks.length) % activeTracks.length]
-              onToggleTrack(prev.id)
-            }}
-            className="w-8 h-8 inline-flex items-center justify-center text-text-muted hover:text-on-surface transition-colors rounded-full hover:bg-surface-container"
-            aria-label="上一首"
-          >
-            <Icon name="skip_previous" className="text-base" />
-          </button>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between gap-2 rounded-[20px] border border-[rgba(19,27,58,0.1)] bg-white/72 px-3 py-2">
+            <button
+              type="button"
+              onClick={() => cycleTrack(-1)}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(19,27,58,0.12)] bg-white/84 text-on-surface transition-premium hover:border-primary/45 hover:text-primary active:scale-[0.98]"
+              aria-label="上一首"
+            >
+              <Icon name="skip_previous" className="text-base" />
+            </button>
 
-          <button
-            type="button"
-            onClick={() => onToggleTrack(primary.id)}
-            className="w-9 h-9 rounded-full bg-primary text-white inline-flex items-center justify-center hover:scale-105 active:scale-95 transition-transform shadow-sm"
-            aria-label={primary.playing ? '暂停' : '播放'}
-          >
-            <Icon name={primary.playing ? 'pause' : 'play_arrow'} className="text-lg" />
-          </button>
+            <button
+              type="button"
+              onClick={() => onToggleTrack(primary.id)}
+              className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-[linear-gradient(135deg,#1148ff,#e01434)] text-white transition-premium hover:scale-[1.03] active:scale-[0.96]"
+              aria-label={isPlaying ? '暂停当前音源' : '播放当前音源'}
+            >
+              <Icon name={isPlaying ? 'pause' : 'play_arrow'} className="text-lg" />
+            </button>
 
-          <button
-            type="button"
-            onClick={() => {
-              const idx = activeTracks.indexOf(primary)
-              const next = activeTracks[(idx + 1) % activeTracks.length]
-              onToggleTrack(next.id)
-            }}
-            className="w-8 h-8 inline-flex items-center justify-center text-text-muted hover:text-on-surface transition-colors rounded-full hover:bg-surface-container"
-            aria-label="下一首"
-          >
-            <Icon name="skip_next" className="text-base" />
-          </button>
-        </div>
+            <button
+              type="button"
+              onClick={() => cycleTrack(1)}
+              className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[rgba(19,27,58,0.12)] bg-white/84 text-on-surface transition-premium hover:border-primary/45 hover:text-primary active:scale-[0.98]"
+              aria-label="下一首"
+            >
+              <Icon name="skip_next" className="text-base" />
+            </button>
+          </div>
 
-        {/* Volume + expand */}
-        <div className="flex items-center gap-2">
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={Math.round(primary.volume * 100)}
-            onChange={(e) => onVolumeChange(primary.id, Number(e.target.value) / 100)}
-            className="w-16 h-1 accent-primary hidden md:block"
-            aria-label="音量"
-          />
           <button
             type="button"
             onClick={onOpenFull}
-            className="w-8 h-8 inline-flex items-center justify-center text-text-muted hover:text-primary transition-colors rounded-full hover:bg-surface-container"
-            aria-label="打开完整播放器"
+            className="inline-flex w-full items-center justify-between gap-3 rounded-[18px] border border-[rgba(19,27,58,0.12)] bg-[linear-gradient(135deg,rgba(255,255,255,0.88),rgba(237,242,255,0.8))] px-4 py-3 text-left text-[11px] font-semibold uppercase tracking-[0.22em] text-on-surface transition-premium hover:border-primary/35 hover:bg-white"
           >
-            <Icon name="expand_less" className="text-lg" />
+            <span>进入音乐档案</span>
+            <span className="font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">
+              {String(orderedTracks.length || TRACKS.length).padStart(2, '0')}
+            </span>
           </button>
         </div>
       </div>
-    </div>
+    </section>
   )
 }
 

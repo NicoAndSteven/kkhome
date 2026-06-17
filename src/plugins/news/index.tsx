@@ -106,40 +106,38 @@ const NewsPlugin = (_props: Props) => {
   const activeMeta = COUNTRIES.find((c) => c.id === country)
 
   return (
-    <section id="news-feed" className="space-y-md scroll-mt-24">
-      {/* ── header panel ── */}
-      <div className="surface-panel rounded-[2px] p-md md:p-lg">
-        <div className="grid gap-md md:grid-cols-12 md:items-end">
+    <section id="news-feed" className="space-y-5 scroll-mt-24">
+      <div className="surface-panel-strong rounded-[28px] p-5 md:p-7">
+        <div className="grid gap-5 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
-            <span className="font-label-mono text-xs uppercase text-secondary">
+            <span className="font-label-mono text-[10px] uppercase tracking-[0.22em] text-primary">
               <Icon name="travel_explore" className="mr-1" />
-              The Hear · 全球新闻
+              world brief
             </span>
-            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">
+            <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">
               {activeMeta?.name ?? '新闻'}
             </h2>
-            <p className="mt-xs font-body-md text-body-md text-text-muted">
+            <p className="mt-2 font-body-md text-sm leading-relaxed text-on-surface-variant">
               {data?.asOfUtc
                 ? `更新于 ${relativeTime(data.asOfUtc)}`
                 : '实时多源头条快照'}
             </p>
           </div>
 
-          {/* ── stat badges ── */}
-          <div className="grid gap-xs sm:grid-cols-3 md:col-span-5">
-            <div className="surface-item rounded-[2px] p-sm">
+          <div className="grid gap-3 sm:grid-cols-3 md:col-span-5">
+            <div className="surface-item rounded-2xl p-4">
               <span className="font-label-mono text-[10px] uppercase text-text-muted">Sources</span>
               <strong className="mt-1 block font-headline-md text-2xl text-on-surface">
                 {data?.headlines.length ?? 0}
               </strong>
             </div>
-            <div className="surface-item rounded-[2px] p-sm">
+            <div className="surface-item rounded-2xl p-4">
               <span className="font-label-mono text-[10px] uppercase text-text-muted">Overview</span>
               <strong className="mt-1 block font-headline-md text-2xl text-on-surface">
                 {data?.overviews.current ? '摘要' : '—'}
               </strong>
             </div>
-            <div className="surface-item rounded-[2px] p-sm">
+            <div className="surface-item rounded-2xl p-4">
               <span className="font-label-mono text-[10px] uppercase text-text-muted">Region</span>
               <strong className="mt-1 block font-headline-md text-2xl text-on-surface">
                 {activeMeta?.lang.toUpperCase() ?? '—'}
@@ -148,16 +146,15 @@ const NewsPlugin = (_props: Props) => {
           </div>
         </div>
 
-        {/* ── country selector ── */}
-        <div className="mt-md flex flex-wrap gap-1.5 border-t border-border-subtle pt-sm">
+        <div className="mt-4 flex flex-wrap gap-2 border-t border-border-subtle pt-4">
           {COUNTRIES.map((c) => (
             <button
               key={c.id}
               onClick={() => setCountry(c.id)}
-              className={`rounded border px-2.5 py-1 font-label-mono text-[10px] uppercase transition-all duration-200 ${
+              className={`rounded-full border px-3 py-1.5 font-label-mono text-[10px] uppercase transition-all duration-200 ${
                 country === c.id
                   ? 'border-primary/40 bg-primary/10 text-primary shadow-sm'
-                  : 'border-border-subtle text-text-muted hover:border-primary/30 hover:text-on-surface'
+                  : 'border-border-subtle bg-white/70 text-text-muted hover:border-primary/30 hover:bg-white hover:text-on-surface'
               }`}
             >
               {c.name}
@@ -166,16 +163,15 @@ const NewsPlugin = (_props: Props) => {
         </div>
       </div>
 
-      {/* ── 摘要概览 ── */}
       {data?.overviews.current && (
-        <div className="surface-panel-strong rounded-[2px] p-md">
-          <div className="flex items-start gap-sm">
+        <div className="surface-panel rounded-2xl p-5">
+          <div className="flex items-start gap-3">
             <Icon name="auto_awesome" className="mt-0.5 shrink-0 text-primary" />
             <div className="min-w-0">
               <h3 className="font-body-lg font-semibold text-on-surface">
                 {data.overviews.current.headline}
               </h3>
-              <p className="mt-1 font-body-md text-sm text-text-muted leading-relaxed">
+              <p className="mt-1 font-body-md text-sm leading-relaxed text-on-surface-variant">
                 {data.overviews.current.summary}
               </p>
             </div>
@@ -183,9 +179,8 @@ const NewsPlugin = (_props: Props) => {
         </div>
       )}
 
-      {/* ── loading / error ── */}
       {loading && (
-        <div className="surface-panel rounded-[2px] p-lg text-center">
+        <div className="surface-panel rounded-[28px] p-6 text-center">
           <div className="inline-flex items-center gap-2 font-body-md text-sm text-text-muted">
             <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
               <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" strokeDasharray="31.4 31.4" strokeLinecap="round" />
@@ -196,20 +191,19 @@ const NewsPlugin = (_props: Props) => {
       )}
 
       {error && (
-        <div className="surface-panel rounded-[2px] p-lg text-center">
-          <div className="inline-flex items-center gap-2 font-body-md text-sm text-error">
+        <div className="surface-panel rounded-[28px] border border-[rgba(223,161,144,0.3)] bg-[rgba(223,161,144,0.12)] p-6 text-center">
+          <div className="inline-flex items-center gap-2 font-body-md text-sm text-[rgb(150,95,84)]">
             <Icon name="close" />
             {error}
           </div>
         </div>
       )}
 
-      {/* ── headlines grid ── */}
       {data && !loading && (
         <>
           <div
             ref={scrollRef}
-            className="grid gap-sm sm:grid-cols-2 xl:grid-cols-3"
+            className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3"
           >
             {data.headlines.map((h, i) => (
               <a
@@ -217,27 +211,23 @@ const NewsPlugin = (_props: Props) => {
                 href={h.link}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="surface-item group flex flex-col rounded-[2px] p-sm transition-all duration-200 hover:border-primary/25 hover:shadow-sm"
+                className="surface-item group flex flex-col rounded-[24px] p-4 transition-all duration-200 hover:border-primary/25 hover:bg-white"
               >
-                {/* source badge */}
-                <span className="inline-flex items-center gap-1 self-start rounded border border-border-subtle px-2 py-0.5 font-label-mono text-[10px] uppercase text-text-muted group-hover:border-primary/20 group-hover:text-primary transition-colors">
+                <span className="inline-flex items-center gap-1 self-start rounded-full border border-border-subtle px-2 py-0.5 font-label-mono text-[10px] uppercase text-text-muted group-hover:border-primary/20 group-hover:text-primary transition-colors">
                   <Icon name="article" className="text-[9px]" />
                   {h.sourceLabel}
                 </span>
 
-                {/* headline */}
                 <h4 className="mt-2 font-body-md text-sm font-semibold text-on-surface leading-snug line-clamp-3 group-hover:text-primary transition-colors">
                   {h.headline}
                 </h4>
 
-                {/* subtitle */}
                 {h.subtitle && (
-                  <p className="mt-1 font-body-md text-xs text-text-muted line-clamp-2 leading-relaxed">
+                  <p className="mt-1 font-body-md text-xs leading-relaxed text-on-surface-variant line-clamp-2">
                     {h.subtitle}
                   </p>
                 )}
 
-                {/* footer */}
                 <div className="mt-auto flex items-center justify-between gap-2 pt-2">
                   <span className="font-label-mono text-[9px] text-text-muted">
                     {relativeTime(h.capturedAt)}
@@ -250,27 +240,26 @@ const NewsPlugin = (_props: Props) => {
             ))}
           </div>
 
-          {/* ── historical overviews ── */}
           {(data.overviews.yesterday || data.overviews.previous) && (
-            <div className="grid gap-sm md:grid-cols-2">
+            <div className="grid gap-3 md:grid-cols-2">
               {data.overviews.previous && (
-                <div className="surface-panel rounded-[2px] p-md">
-                  <span className="font-label-mono text-[10px] uppercase text-secondary">← 上一轮</span>
+                <div className="surface-panel rounded-2xl p-4">
+                  <span className="font-label-mono text-[10px] uppercase text-primary">← 上一轮</span>
                   <h4 className="mt-1 font-body-md text-sm font-semibold text-on-surface">
                     {data.overviews.previous.headline}
                   </h4>
-                  <p className="mt-1 font-body-md text-xs text-text-muted leading-relaxed">
+                  <p className="mt-1 font-body-md text-xs leading-relaxed text-on-surface-variant">
                     {data.overviews.previous.summary}
                   </p>
                 </div>
               )}
               {data.overviews.yesterday && (
-                <div className="surface-panel rounded-[2px] p-md">
+                <div className="surface-panel rounded-2xl p-4">
                   <span className="font-label-mono text-[10px] uppercase text-text-muted">← 昨日回顾</span>
                   <h4 className="mt-1 font-body-md text-sm font-semibold text-on-surface">
                     {data.overviews.yesterday?.headline}
                   </h4>
-                  <p className="mt-1 font-body-md text-xs text-text-muted leading-relaxed">
+                  <p className="mt-1 font-body-md text-xs leading-relaxed text-on-surface-variant">
                     {data.overviews.yesterday?.summary}
                   </p>
                 </div>
@@ -278,8 +267,7 @@ const NewsPlugin = (_props: Props) => {
             </div>
           )}
 
-          {/* ── footer ── */}
-          <div className="flex items-center justify-between gap-sm border-t border-border-subtle pt-sm">
+          <div className="flex items-center justify-between gap-3 border-t border-border-subtle pt-4">
             <span className="font-label-mono text-[10px] text-text-muted">
               数据源：The Hear · {data.headlines.length} 家媒体
             </span>

@@ -160,38 +160,38 @@ const CloudflareLabPlugin = ({ config }: Props) => {
   }, [enabledBindingCount, health, loading])
 
   return (
-    <section id="cloudflare-lab" className="space-y-md scroll-mt-24">
-      <div className="surface-panel rounded-[2px] p-md md:p-lg">
-        <div className="grid gap-md md:grid-cols-12 md:items-end">
+    <section id="cloudflare-lab" className="space-y-5 scroll-mt-24">
+      <div className="surface-panel-strong rounded-2xl p-5 md:p-6">
+        <div className="grid gap-5 md:grid-cols-12 md:items-end">
           <div className="md:col-span-7">
-            <span className="font-label-mono text-xs uppercase text-secondary">Edge platform</span>
-            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">{title}</h2>
-            <p className="mt-xs font-body-md text-body-md text-text-muted">{description}</p>
+            <span className="font-label-mono text-[10px] uppercase tracking-[0.22em] text-primary">Edge platform</span>
+            <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">{title}</h2>
+            <p className="mt-2 font-body-md text-sm leading-relaxed text-on-surface-variant">{description}</p>
           </div>
-          <div className="grid gap-xs sm:grid-cols-3 md:col-span-5">
-            <div className="surface-item rounded-[2px] p-sm">
+          <div className="grid gap-3 sm:grid-cols-3 md:col-span-5">
+            <div className="surface-item rounded-2xl p-4">
               <span className="font-label-mono text-[10px] uppercase text-text-muted">Bindings</span>
               <strong className="mt-1 block font-headline-md text-2xl text-on-surface">
                 {enabledBindingCount}/{bindingEntries.length}
               </strong>
             </div>
-            <div className="surface-item rounded-[2px] p-sm">
+            <div className="surface-item rounded-2xl p-4">
               <span className="font-label-mono text-[10px] uppercase text-text-muted">Features</span>
               <strong className="mt-1 block font-headline-md text-2xl text-on-surface">
                 {enabledFeatureCount}/{featureEntries.length}
               </strong>
             </div>
-            <div className="surface-item rounded-[2px] p-sm">
+            <div className="surface-item rounded-2xl p-4">
               <span className="font-label-mono text-[10px] uppercase text-text-muted">Specs</span>
               <strong className="mt-1 block font-headline-md text-2xl text-on-surface">{experimentCount}</strong>
             </div>
           </div>
         </div>
 
-        <div className="mt-md flex flex-wrap items-center gap-xs border-t border-border-subtle pt-sm">
-          <span className={`inline-flex items-center gap-1 rounded border px-2 py-1 font-label-mono text-[10px] uppercase ${
+        <div className="mt-4 flex flex-wrap items-center gap-2 border-t border-border-subtle pt-4">
+          <span className={`inline-flex items-center gap-1 rounded-full border px-3 py-1.5 font-label-mono text-[10px] uppercase ${
             platformState === 'connected'
-              ? 'border-tertiary/30 bg-tertiary/10 text-tertiary'
+              ? 'border-primary/20 bg-primary/10 text-primary'
               : 'border-border-subtle bg-surface-container text-text-muted'
           }`}>
             <Icon name={platformState === 'connected' ? 'check' : 'cloud'} className="text-xs" />
@@ -203,19 +203,19 @@ const CloudflareLabPlugin = ({ config }: Props) => {
         </div>
       </div>
 
-      <div className="grid gap-sm lg:grid-cols-2">
-        <div className="surface-panel rounded-[2px] p-md">
-          <div className="flex items-center justify-between gap-sm">
+      <div className="grid gap-3 lg:grid-cols-2">
+        <div className="surface-panel rounded-2xl p-5">
+          <div className="flex items-center justify-between gap-3">
             <h3 className="font-body-lg font-bold text-on-surface">Bindings</h3>
             <span className="font-label-mono text-[10px] uppercase text-text-muted">Runtime</span>
           </div>
-          <div className="mt-sm grid gap-xs sm:grid-cols-2">
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {bindingEntries.map((binding) => (
-              <div key={binding.id} className="surface-item flex items-center justify-between gap-sm rounded-[2px] p-sm">
+              <div key={binding.id} className="surface-item flex items-center justify-between gap-3 rounded-2xl p-4">
                 <span className="font-label-mono text-[10px] uppercase text-text-muted">{bindingLabels[binding.id] ?? binding.id}</span>
-                <span className={`rounded border px-2 py-1 font-label-mono text-[10px] uppercase ${
+                <span className={`rounded-full border px-2 py-1 font-label-mono text-[10px] uppercase ${
                   binding.enabled
-                    ? 'border-tertiary/30 bg-tertiary/10 text-tertiary'
+                    ? 'border-primary/20 bg-primary/10 text-primary'
                     : 'border-border-subtle text-text-muted'
                 }`}>
                   {binding.enabled ? 'bound' : 'pending'}
@@ -225,16 +225,16 @@ const CloudflareLabPlugin = ({ config }: Props) => {
           </div>
         </div>
 
-        <div className="surface-panel rounded-[2px] p-md">
-          <div className="flex items-center justify-between gap-sm">
+        <div className="surface-panel rounded-2xl p-5">
+          <div className="flex items-center justify-between gap-3">
             <h3 className="font-body-lg font-bold text-on-surface">Feature Flags</h3>
             <span className="font-label-mono text-[10px] uppercase text-text-muted">Config</span>
           </div>
-          <div className="mt-sm grid gap-xs sm:grid-cols-2">
+          <div className="mt-4 grid gap-2 sm:grid-cols-2">
             {featureEntries.map(([feature, enabled]) => (
-              <div key={feature} className="surface-item flex items-center justify-between gap-sm rounded-[2px] p-sm">
+              <div key={feature} className="surface-item flex items-center justify-between gap-3 rounded-2xl p-4">
                 <span className="font-body-md text-sm text-on-surface">{featureLabels[feature] ?? feature}</span>
-                <span className={`rounded border px-2 py-1 font-label-mono text-[10px] uppercase ${
+                <span className={`rounded-full border px-2 py-1 font-label-mono text-[10px] uppercase ${
                   enabled
                     ? 'border-primary/30 bg-primary/10 text-primary'
                     : 'border-border-subtle text-text-muted'
@@ -246,27 +246,27 @@ const CloudflareLabPlugin = ({ config }: Props) => {
           </div>
         </div>
 
-        <div className="surface-panel rounded-[2px] p-md lg:col-span-2">
-          <div className="flex items-center justify-between gap-sm">
+        <div className="surface-panel rounded-2xl p-5 lg:col-span-2">
+          <div className="flex items-center justify-between gap-3">
             <h3 className="font-body-lg font-bold text-on-surface">Experiments</h3>
             <span className="font-label-mono text-[10px] uppercase text-text-muted">Spec queue</span>
           </div>
-          <div className="mt-sm grid gap-xs md:grid-cols-2 xl:grid-cols-3">
+          <div className="mt-4 grid gap-2 md:grid-cols-2 xl:grid-cols-3">
             {features.experiments.map((experiment) => (
-              <article key={experiment.id} className="surface-item rounded-[2px] p-sm">
-                <div className="flex items-start justify-between gap-sm">
+              <article key={experiment.id} className="surface-item rounded-2xl p-4">
+                <div className="flex items-start justify-between gap-3">
                   <h4 className="font-body-md text-sm font-semibold text-on-surface">{experiment.title}</h4>
-                  <span className={`rounded border px-2 py-1 font-label-mono text-[10px] uppercase ${
+                  <span className={`rounded-full border px-2 py-1 font-label-mono text-[10px] uppercase ${
                     experiment.enabled
-                      ? 'border-secondary/30 bg-secondary/10 text-secondary'
+                      ? 'border-primary/20 bg-primary/10 text-primary'
                       : 'border-border-subtle text-text-muted'
                   }`}>
                     {experiment.enabled ? 'enabled' : 'planned'}
                   </span>
                 </div>
-                <div className="mt-xs flex flex-wrap gap-1">
+                <div className="mt-2 flex flex-wrap gap-2">
                   {experiment.requires.map((item) => (
-                    <span key={item} className="rounded border border-border-subtle px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
+                    <span key={item} className="rounded-full border border-border-subtle px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
                       {item}
                     </span>
                   ))}

@@ -6,8 +6,8 @@ interface Props {
   initialTheme?: SiteConfig['theme']
 }
 
-const ThemeToggle = ({ initialTheme = 'dark' }: Props) => {
-  const [theme, setTheme] = useState<Theme>('dark')
+const ThemeToggle = ({ initialTheme = 'light' }: Props) => {
+  const [theme, setTheme] = useState<Theme>('light')
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme')
@@ -26,10 +26,11 @@ const ThemeToggle = ({ initialTheme = 'dark' }: Props) => {
   return (
     <button
       onClick={toggleTheme}
-      className="rounded-[2px] p-2 text-on-surface transition-premium hover:bg-surface-card/70"
-      aria-label="切换主题"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-white/80 text-on-surface transition-premium hover:border-primary/25 hover:bg-white"
+      aria-label="切换明暗主题"
+      title={theme === 'dark' ? '切换到浅色' : '切换到深色'}
     >
-      <Icon name={theme === 'dark' ? 'dark_mode' : 'light_mode'} className="text-xl" />
+      <Icon name={theme === 'dark' ? 'dark_mode' : 'light_mode'} className="text-lg" />
     </button>
   )
 }

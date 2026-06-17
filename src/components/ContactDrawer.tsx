@@ -45,7 +45,7 @@ const ContactDrawer = ({ open, profile, onClose }: Props) => {
           欢迎沟通产品、工程、自动化和 Web 体验相关合作。
         </p>
 
-        <div className="glass rounded-xl p-md mb-md">
+        <div className="surface-panel rounded-2xl p-md mb-md">
           <span className="font-label-mono text-xs text-text-muted">邮箱</span>
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-sm mt-xs">
             <a href={`mailto:${email}`} className="text-on-surface hover:text-primary transition-premium">
@@ -54,7 +54,7 @@ const ContactDrawer = ({ open, profile, onClose }: Props) => {
             <button
               type="button"
               onClick={copyEmail}
-              className="inline-flex items-center justify-center gap-xs rounded-lg border border-border-subtle px-sm py-2 font-body-md text-body-md hover:border-primary hover:text-primary transition-premium"
+              className="inline-flex items-center justify-center gap-xs rounded-full border border-border-subtle px-sm py-2 font-body-md text-body-md hover:border-primary hover:text-primary transition-premium"
             >
               <Icon name={copied ? 'check' : 'content_copy'} className="text-lg" />
               {copied ? '已复制' : '复制'}
@@ -63,7 +63,7 @@ const ContactDrawer = ({ open, profile, onClose }: Props) => {
         </div>
 
         <div className="flex items-center gap-xs text-text-muted font-label-mono text-xs">
-          <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           可接受项目合作
         </div>
       </section>

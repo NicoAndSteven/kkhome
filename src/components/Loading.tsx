@@ -1,42 +1,44 @@
-/**
- * 骨架屏加载组件 - shimmer 动画
- */
 const Loading = () => {
   return (
-    <div className="w-full p-6 md:p-12 space-y-6">
-      {/* Header skeleton */}
+    <div className="mx-auto w-full max-w-[1320px] space-y-8 px-6 py-16 md:px-10">
       <div className="flex items-center gap-4">
-        <div className="skeleton-shimmer h-4 w-24 rounded" />
-        <div className="skeleton-shimmer h-4 w-16 rounded" />
-      </div>
-
-      {/* Title skeleton */}
-      <div className="skeleton-shimmer h-10 w-3/4 md:w-1/2 rounded" />
-
-      {/* Content grid skeleton */}
-      <div className="grid gap-4 md:grid-cols-3">
-        <div className="space-y-3">
-          <div className="skeleton-shimmer h-32 w-full rounded" />
-          <div className="skeleton-shimmer h-4 w-3/4 rounded" />
-          <div className="skeleton-shimmer h-4 w-1/2 rounded" />
-        </div>
-        <div className="space-y-3">
-          <div className="skeleton-shimmer h-32 w-full rounded" />
-          <div className="skeleton-shimmer h-4 w-3/4 rounded" />
-          <div className="skeleton-shimmer h-4 w-1/2 rounded" />
-        </div>
-        <div className="space-y-3">
-          <div className="skeleton-shimmer h-32 w-full rounded" />
-          <div className="skeleton-shimmer h-4 w-3/4 rounded" />
-          <div className="skeleton-shimmer h-4 w-1/2 rounded" />
+        <div className="skeleton-shimmer h-12 w-12 rounded-[18px]" />
+        <div className="space-y-2">
+          <div className="skeleton-shimmer h-4 w-24 rounded-full" />
+          <div className="skeleton-shimmer h-3 w-32 rounded-full" />
         </div>
       </div>
 
-      {/* Description skeleton */}
-      <div className="space-y-2">
-        <div className="skeleton-shimmer h-4 w-full rounded" />
-        <div className="skeleton-shimmer h-4 w-5/6 rounded" />
-        <div className="skeleton-shimmer h-4 w-2/3 rounded" />
+      <div className="space-y-3">
+        <div className="skeleton-shimmer h-12 w-3/4 rounded-[20px] md:w-1/2" />
+        <div className="skeleton-shimmer h-4 w-full max-w-[48ch] rounded-full" />
+      </div>
+
+      <div className="grid gap-5 xl:grid-cols-[260px_minmax(0,1fr)]">
+        <div className="space-y-4 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.82),rgba(239,246,240,0.78))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+          <div className="skeleton-shimmer h-16 w-full rounded-[22px]" />
+          <div className="skeleton-shimmer h-12 w-full rounded-[18px]" />
+          <div className="skeleton-shimmer h-12 w-full rounded-[18px]" />
+          <div className="skeleton-shimmer h-12 w-full rounded-[18px]" />
+        </div>
+
+        <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(235,241,255,0.72))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+            <div className="skeleton-shimmer h-24 w-full rounded-[22px]" />
+            <div className="skeleton-shimmer h-5 w-3/4 rounded-full" />
+            <div className="skeleton-shimmer h-4 w-1/2 rounded-full" />
+          </div>
+          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(245,230,225,0.72))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+            <div className="skeleton-shimmer h-24 w-full rounded-[22px]" />
+            <div className="skeleton-shimmer h-5 w-3/4 rounded-full" />
+            <div className="skeleton-shimmer h-4 w-1/2 rounded-full" />
+          </div>
+          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(233,241,235,0.78))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+            <div className="skeleton-shimmer h-24 w-full rounded-[22px]" />
+            <div className="skeleton-shimmer h-5 w-3/4 rounded-full" />
+            <div className="skeleton-shimmer h-4 w-1/2 rounded-full" />
+          </div>
+        </div>
       </div>
     </div>
   )

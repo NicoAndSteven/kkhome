@@ -20,11 +20,11 @@ const VantaBirds = () => {
           minWidth: 200,
           scale: 1,
           scaleMobile: 1,
-          color1: 0x904487,
-          color2: 0x32a1a6,
-          birdSize: 1.2,
-          speedLimit: 7,
-          backgroundColor: 0xf5f9fc,
+          color1: 0xd76f56,
+          color2: 0x6a8d7a,
+          birdSize: 1.1,
+          speedLimit: 5,
+          backgroundColor: 0xebf3ec,
         })
       }, 100)
     }
@@ -44,6 +44,7 @@ const VantaBirds = () => {
 
   return (
     <div
+      className="vanta-birds-layer"
       ref={containerRef}
       style={{
         position: 'fixed',

@@ -12,10 +12,8 @@ export default function AmbientMusicPlugin(_props: Props) {
   const [loading, setLoading] = useState<Set<string>>(new Set())
   const [initialized, setInitialized] = useState(false)
 
-  // 订阅引擎状态
   useEffect(() => {
     const unsub = engine.subscribe(setTrackStates)
-    // 首次加载时初始化所有音轨的 AudioBuffer
     if (!initialized) {
       setInitialized(true)
       const ctx = new globalThis.AudioContext()
@@ -40,7 +38,6 @@ export default function AmbientMusicPlugin(_props: Props) {
       engine.stop(id)
     } else {
       setLoading((prev) => new Set(prev).add(id))
-      // 短延迟模拟加载感
       await engine.play(id)
       setLoading((prev) => {
         const next = new Set(prev)
@@ -55,105 +52,96 @@ export default function AmbientMusicPlugin(_props: Props) {
   }, [engine])
 
   return (
-    <section id="ambient-music" className="h-full flex flex-col">
-      {/* Header */}
-      <div className="shrink-0 mb-md">
-        <span className="font-label-mono text-xs uppercase text-secondary">AMBIENT</span>
-        <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">氛围音乐</h2>
-        <p className="mt-xs font-body-md text-sm text-text-muted">
-          选择环境音，营造沉浸式浏览体验。支持多音源混音。
+    <section id="ambient-music" className="space-y-5">
+      <div className="surface-panel-strong rounded-[28px] p-5 md:p-7">
+        <span className="inline-flex items-center gap-2 font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">
+          <span className="h-2 w-2 rounded-full bg-[rgba(223,161,144,0.95)]" />
+          sound layer
+        </span>
+        <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">氛围音乐</h2>
+        <p className="mt-2 max-w-2xl font-body-md text-sm leading-relaxed text-on-surface-variant">
+          用更轻的环境声给浏览过程加一层情绪，不把整站变成播放器。
         </p>
       </div>
 
-      {/* Track grid */}
-      <div className="flex-1 min-h-0 overflow-y-auto">
-        <div className="grid gap-sm sm:grid-cols-2 lg:grid-cols-3">
-          {TRACKS.map((track) => {
-            const state = trackStates.find((t) => t.id === track.id)
-            const isPlaying = state?.playing ?? false
-            const volume = state?.volume ?? 0.4
-            const isLoading = loading.has(track.id)
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+        {TRACKS.map((track) => {
+          const state = trackStates.find((t) => t.id === track.id)
+          const isPlaying = state?.playing ?? false
+          const volume = state?.volume ?? 0.4
+          const isLoading = loading.has(track.id)
 
-            return (
-              <div
-                key={track.id}
-                className={`surface-item rounded-[2px] p-md transition-all duration-300 ${
-                  isPlaying ? 'border-primary/40 shadow-sm' : ''
-                }`}
-              >
-                {/* Track icon + name */}
-                <div className="flex items-center gap-sm mb-sm">
-                  <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center shrink-0"
-                    style={{ backgroundColor: `${track.color}15` }}
-                  >
-                    <Icon name={track.icon} className="text-xl text-primary" />
-                  </div>
-                  <div className="min-w-0">
-                    <h3 className="font-body-md text-sm font-semibold text-on-surface">{track.name}</h3>
-                    <span className="font-label-mono text-[10px] uppercase text-text-muted">
-                      {isPlaying ? '播放中' : track.category === 'synth' ? '合成音' : '音频'}
-                    </span>
-                  </div>
+          return (
+            <div
+              key={track.id}
+              className={`surface-item rounded-2xl p-5 transition-premium ${
+                isPlaying ? 'border-primary/30 bg-primary/5 shadow-[0_0_0_1px_rgba(111,143,184,0.12)]' : ''
+              }`}
+            >
+              <div className="mb-4 flex items-center gap-3">
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-border-subtle bg-white/80" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.72)' }}>
+                  <Icon name={track.icon} className="text-xl text-primary" />
                 </div>
-
-                {/* Waveform visualization when playing */}
-                {isPlaying && (
-                  <div className="flex items-end gap-[2px] h-6 mb-sm" aria-hidden="true">
-                    {Array.from({ length: 12 }, (_, i) => (
-                      <div
-                        key={i}
-                        className="w-[3px] rounded-full"
-                        style={{
-                          backgroundColor: track.color,
-                          animation: `mini-bar 0.8s ease-in-out ${i * 0.08}s infinite alternate`,
-                          height: `${4 + Math.random() * 16}px`,
-                        }}
-                      />
-                    ))}
-                  </div>
-                )}
-
-                {/* Volume slider */}
-                {isPlaying && (
-                  <div className="flex items-center gap-xs mb-sm">
-                    <Icon name="volume_down" className="text-xs text-text-muted" />
-                    <input
-                      type="range"
-                      min={0}
-                      max={100}
-                      value={Math.round(volume * 100)}
-                      onChange={(e) => handleVolumeChange(track.id, Number(e.target.value) / 100)}
-                      className="flex-1 h-1 accent-primary"
-                      aria-label={`${track.name} 音量`}
-                    />
-                    <Icon name="volume_up" className="text-xs text-text-muted" />
-                  </div>
-                )}
-
-                {/* Play/Stop button */}
-                <button
-                  type="button"
-                  onClick={() => toggleTrack(track.id)}
-                  disabled={isLoading}
-                  className={`w-full inline-flex items-center justify-center gap-xs rounded-[2px] px-sm py-2 font-body-md text-sm font-semibold transition-premium ${
-                    isPlaying
-                      ? 'bg-error/10 text-error hover:bg-error/20'
-                      : 'bg-primary text-on-primary hover:opacity-90'
-                  } ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                >
-                  <Icon name={isPlaying ? 'stop' : 'play_arrow'} className="text-base" />
-                  {isLoading ? '加载中…' : isPlaying ? '停止' : '播放'}
-                </button>
+                <div className="min-w-0">
+                  <h3 className="truncate font-body-md text-sm font-semibold text-on-surface">{track.name}</h3>
+                  <span className="font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
+                    {isPlaying ? '播放中' : track.category === 'synth' ? '合成音' : '音频'}
+                  </span>
+                </div>
               </div>
-            )
-          })}
-        </div>
+
+              {isPlaying && (
+                <div className="mb-4 flex h-7 items-end gap-[2px]" aria-hidden="true">
+                  {Array.from({ length: 12 }, (_, i) => (
+                    <div
+                      key={i}
+                      className="w-[3px] rounded-full"
+                      style={{
+                        backgroundColor: track.color,
+                        animation: `mini-bar 0.8s ease-in-out ${i * 0.08}s infinite alternate`,
+                        height: `${4 + Math.random() * 16}px`,
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
+
+              {isPlaying && (
+                <div className="mb-4 flex items-center gap-2">
+                  <Icon name="volume_down" className="text-xs text-text-muted" />
+                  <input
+                    type="range"
+                    min={0}
+                    max={100}
+                    value={Math.round(volume * 100)}
+                    onChange={(e) => handleVolumeChange(track.id, Number(e.target.value) / 100)}
+                    className="h-1 flex-1 accent-primary"
+                    aria-label={`${track.name} 音量`}
+                  />
+                  <Icon name="volume_up" className="text-xs text-text-muted" />
+                </div>
+              )}
+
+              <button
+                type="button"
+                onClick={() => toggleTrack(track.id)}
+                disabled={isLoading}
+                className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-premium ${
+                  isPlaying
+                    ? 'border border-[rgba(223,161,144,0.35)] bg-[rgba(223,161,144,0.12)] text-[rgb(150,95,84)] hover:bg-[rgba(223,161,144,0.18)]'
+                    : 'bg-primary text-on-primary hover:opacity-90'
+                } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+              >
+                <Icon name={isPlaying ? 'stop' : 'play_arrow'} className="text-base" />
+                {isLoading ? '加载中…' : isPlaying ? '停止' : '播放'}
+              </button>
+            </div>
+          )
+        })}
       </div>
 
-      {/* Footer hint */}
-      <div className="shrink-0 mt-md pt-sm border-t border-border-subtle">
-        <p className="font-body-md text-xs text-text-muted text-center">
+      <div className="border-t border-border-subtle pt-4">
+        <p className="text-center font-body-md text-xs text-text-muted">
           页面任意交互即可自动播放 · 支持同时播放多种音源混音
         </p>
       </div>

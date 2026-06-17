@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Icon from './Icon'
 import QRCode from 'qrcode'
 import { verifyTOTP, generateSecret, generateOTPAuthURI } from '../lib/totp'
@@ -16,14 +16,12 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
   const [code, setCode] = useState('')
   const [error, setError] = useState(false)
   const [totpSecret, setTotpSecret] = useState('')
-  const [otpauthURI, setOtpauthURI] = useState('')
   const [qrDataURL, setQrDataURL] = useState('')
 
   useEffect(() => {
     const saved = globalThis.localStorage.getItem(TOTP_KEY)
     if (saved) {
       setTotpSecret(saved)
-      setOtpauthURI(generateOTPAuthURI(saved))
       setPhase('verify')
       QRCode.toDataURL(generateOTPAuthURI(saved), { width: 200, margin: 1 }).then(setQrDataURL).catch(() => {})
     } else {
@@ -31,7 +29,6 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
       setTotpSecret(secret)
       globalThis.localStorage.setItem(TOTP_KEY, secret)
       const uri = generateOTPAuthURI(secret)
-      setOtpauthURI(uri)
       QRCode.toDataURL(uri, { width: 200, margin: 1 }).then(setQrDataURL).catch(() => {})
       setPhase('setup')
     }

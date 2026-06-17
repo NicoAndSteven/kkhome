@@ -45,9 +45,9 @@ const StockDetail = ({ stock, onBack }: Props) => {
   useEffect(() => {
     if (!chartContainerRef.current || chartData.length === 0) return
     const container = chartContainerRef.current
-    const isDark = document.documentElement.classList.contains('dark')
-    const textColor = isDark ? '#f1ece6' : '#1a1a1a'
-    const gridColor = isDark ? 'rgba(255,255,255,0.06)' : 'rgba(0,0,0,0.06)'
+    const isDark = true
+    const textColor = isDark ? '#f4f4f5' : '#1a1a1a'
+    const gridColor = isDark ? 'rgba(255,255,255,0.08)' : 'rgba(0,0,0,0.06)'
 
     const chart = createChart(container, {
       layout: { background: { type: ColorType.Solid, color: 'transparent' }, textColor, fontSize: 10, fontFamily: 'JetBrains Mono, monospace' },
@@ -76,7 +76,7 @@ const StockDetail = ({ stock, onBack }: Props) => {
     return () => { observer.disconnect(); chart.remove() }
   }, [chartData])
 
-  const changeColor = stock.change >= 0 ? 'text-green-500' : 'text-red-500'
+  const changeColor = stock.change >= 0 ? 'text-primary' : 'text-red-400'
   const isPre = stock.marketState === 'PRE'
   const isPost = stock.marketState === 'POST'
   const extLabel = isPre ? '盘前' : isPost ? '盘后' : null
@@ -86,14 +86,14 @@ const StockDetail = ({ stock, onBack }: Props) => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-sm pb-md border-b border-border-subtle shrink-0">
-        <button type="button" onClick={onBack} className="rounded-[2px] p-1 text-text-muted hover:text-on-surface transition-premium">
+      <div className="flex items-center gap-3 pb-4 border-b border-border-subtle shrink-0">
+        <button type="button" onClick={onBack} className="rounded-full p-1.5 text-text-muted hover:bg-white/5 hover:text-on-surface transition-premium">
           <Icon name="chevron_left" className="text-xl" />
         </button>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2">
             <h2 className="font-headline-md text-headline-md text-on-surface truncate">{stock.symbol}</h2>
-            {extLabel && <span className="font-label-mono text-[10px] uppercase text-secondary px-1 rounded-[2px] bg-secondary/10">{extLabel}</span>}
+            {extLabel && <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 font-label-mono text-[10px] uppercase text-primary">{extLabel}</span>}
           </div>
           <p className="font-body-md text-sm text-text-muted truncate">{stock.name}</p>
         </div>
@@ -105,27 +105,27 @@ const StockDetail = ({ stock, onBack }: Props) => {
         </div>
       </div>
       {extLabel && extPrice != null && extChange != null && (
-        <div className="flex items-center gap-md px-sm py-1 border-b border-border-subtle shrink-0">
+        <div className="flex items-center gap-3 px-0 py-3 border-b border-border-subtle shrink-0">
           <span className="font-label-mono text-xs text-text-muted">{extLabel}</span>
-          <span className={`font-label-mono text-sm ${extChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>{fmt(extPrice)}</span>
-          <span className={`font-label-mono text-xs ${extChange >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+          <span className={`font-label-mono text-sm ${extChange >= 0 ? 'text-primary' : 'text-red-400'}`}>{fmt(extPrice)}</span>
+          <span className={`font-label-mono text-xs ${extChange >= 0 ? 'text-primary' : 'text-red-400'}`}>
             {extChange >= 0 ? '+' : ''}{fmt(extChange)} ({extChangePct != null ? (extChangePct >= 0 ? '+' : '') + extChangePct.toFixed(2) : '--'}%)
           </span>
         </div>
       )}
-      <div className="flex gap-1 py-sm shrink-0">
+      <div className="flex gap-1 py-3 shrink-0">
         {intervals.map((iv) => (
           <button key={iv} type="button" onClick={() => setActiveInterval(iv)}
-            className={`px-2 py-0.5 rounded-[2px] font-label-mono text-xs transition-premium ${activeInterval === iv ? 'bg-primary/12 text-primary' : 'text-text-muted hover:text-on-surface hover:bg-surface-card/50'}`}
+            className={`rounded-full px-3 py-1 font-label-mono text-xs transition-premium ${activeInterval === iv ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-white/5 hover:text-on-surface'}`}
           >{iv}</button>
         ))}
       </div>
       <div className="flex-1 min-h-0 relative">
-        {loading && <div className="absolute inset-0 flex items-center justify-center bg-surface/50 z-10"><span className="font-body-md text-sm text-text-muted">加载中...</span></div>}
+        {loading && <div className="absolute inset-0 z-10 flex items-center justify-center bg-surface/50"><span className="font-body-md text-sm text-text-muted">加载中...</span></div>}
         <div ref={chartContainerRef} className="w-full h-full" />
         {!loading && chartData.length === 0 && <div className="absolute inset-0 flex items-center justify-center"><span className="font-body-md text-sm text-text-muted">暂无数据</span></div>}
       </div>
-      <div className="grid grid-cols-3 gap-x-md gap-y-1 pt-md border-t border-border-subtle shrink-0 text-xs">
+      <div className="grid grid-cols-3 gap-x-md gap-y-1 pt-4 border-t border-border-subtle shrink-0 text-xs">
         <div className="flex items-baseline justify-between gap-1"><span className="font-body-md text-text-muted">昨收</span><span className="font-label-mono text-on-surface">{fmt(stock.previousClose)}</span></div>
         <div className="flex items-baseline justify-between gap-1"><span className="font-body-md text-text-muted">开盘</span><span className="font-label-mono text-on-surface">{fmt(stock.open)}</span></div>
         <div className="flex items-baseline justify-between gap-1"><span className="font-body-md text-text-muted">最高</span><span className="font-label-mono text-on-surface">{fmt(stock.dayHigh)}</span></div>

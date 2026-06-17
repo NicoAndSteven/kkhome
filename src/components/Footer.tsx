@@ -21,31 +21,31 @@ const Footer = ({ config }: Props) => {
   )
 
   return (
-    <footer className="w-full border-t border-border-subtle bg-surface/78 py-xl shadow-[0_-16px_48px_-44px_var(--color-panel-shadow)]">
-      <div className="flex flex-col md:flex-row justify-between items-center px-6 md:px-12 w-full gap-md">
-        <div className="flex flex-col items-center md:items-start gap-xs">
-          <span className="font-headline-md text-headline-md text-on-surface font-bold">
+    <footer className="w-full border-t border-border-subtle bg-surface/92 py-8 shadow-[0_-16px_48px_-44px_var(--color-panel-shadow)] backdrop-blur-xl">
+      <div className="flex w-full flex-col items-center justify-between gap-4 px-6 md:flex-row md:px-12">
+        <div className="flex flex-col items-center gap-1 md:items-start">
+          <span className="font-headline-md text-lg font-bold text-on-surface">
             {config?.title || 'Personal Hub'}
           </span>
-          <p className="font-body-md text-body-md text-text-muted">
+          <p className="font-body-md text-sm text-text-muted">
             © {currentYear} {config?.author || 'Personal Hub'}. 静态构建.
           </p>
         </div>
 
-        <div className="flex flex-wrap justify-center gap-x-md gap-y-sm">
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
           {links.map((link) => (
             <a
               key={link.label}
               href={link.href}
               {...getLinkProps(link.href)}
-              className="whitespace-nowrap text-text-muted hover:text-on-surface transition-premium font-label-mono text-label-mono"
+              className="whitespace-nowrap font-label-mono text-xs text-text-muted transition-premium hover:text-on-surface"
             >
               {link.label}
             </a>
           ))}
         </div>
 
-        <div className="flex items-center gap-xs text-text-muted font-label-mono text-xs">
+        <div className="flex items-center gap-2 font-label-mono text-xs text-text-muted">
           <span className="w-2 h-2 rounded-full bg-primary" />
           Cloudflare Pages ready
         </div>

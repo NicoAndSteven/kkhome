@@ -183,31 +183,34 @@ const AiNavigatorPlugin = ({ config }: Props) => {
   }
 
   return (
-    <section id="ai-tools" className="space-y-md scroll-mt-24">
-      <div className="surface-panel rounded-[2px] p-md md:p-lg">
-        <div className="grid gap-md md:grid-cols-12 md:items-end">
+    <section id="ai-tools" className="space-y-5 scroll-mt-24">
+      <div className="stack-board surface-panel-strong rounded-[28px] p-5 md:p-7">
+        <div className="grid gap-6 md:grid-cols-12 md:items-end">
           <div className="md:col-span-5">
-            <span className="font-label-mono text-xs uppercase text-secondary">Navigator</span>
-            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">工具导航</h2>
-            <p className="mt-xs font-body-md text-body-md text-text-muted">
-              按目标意图检索收录的网站：转换、图片、视频音频、文档办公、素材、软件和知识资源。
+            <div className="flex items-center gap-3">
+              <span className="font-label-mono text-[10px] uppercase tracking-[0.34em] text-primary">Section 01</span>
+              <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(17,72,255,0.6),rgba(224,20,52,0.55),transparent)]" />
+            </div>
+            <h2 className="mt-3 font-headline-md text-[clamp(2.5rem,4.8vw,4.8rem)] font-semibold leading-[0.9] tracking-[-0.08em] text-on-surface">工具导航</h2>
+            <p className="mt-3 max-w-xl font-body-md text-sm leading-relaxed text-on-surface-variant">
+              把它看成一张可交互的工具海报。输入目标词，直接从转换、图片、视频音频、文档和资料里找到去处。
             </p>
           </div>
           <div className="relative md:col-span-7">
-            <Icon name="search" className="absolute left-3 top-1/2 -translate-y-1/2 text-xl text-text-muted" />
+            <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-xl text-text-muted" />
             <input
               type="search"
               value={query}
               onChange={(event) => setQuery(event.target.value)}
               placeholder="搜索工具、标签或使用场景..."
               aria-label="搜索目标工具"
-              className="surface-control w-full rounded-[2px] py-3 pl-10 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
+              className="surface-control w-full rounded-2xl py-3 pl-11 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
             />
           </div>
         </div>
 
-        <div className="mt-sm flex items-center gap-xs overflow-x-auto whitespace-nowrap pb-1">
-          <span className="shrink-0 font-label-mono text-[10px] uppercase text-text-muted">Intent</span>
+        <div className="scrollbar-quiet mt-4 flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1">
+          <span className="shrink-0 font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">Intent</span>
           {intentPrompts.slice(0, 8).map((prompt) => (
             <button
               key={prompt}
@@ -216,23 +219,23 @@ const AiNavigatorPlugin = ({ config }: Props) => {
                 setQuery(prompt)
                 setActiveCategory('all')
               }}
-              className="shrink-0 rounded border border-border-subtle px-2 py-1 font-body-md text-xs text-text-muted transition-premium hover:border-primary/35 hover:text-on-surface"
+              className="shrink-0 rounded-full border border-border-subtle px-3 py-1.5 text-xs text-text-muted transition-premium hover:border-primary/35 hover:text-on-surface"
             >
               {prompt}
             </button>
           ))}
         </div>
 
-        <div className="mt-md flex gap-xs overflow-x-auto whitespace-nowrap pb-1">
+        <div className="scrollbar-quiet mt-4 flex gap-2 overflow-x-auto whitespace-nowrap pb-1">
           {categories.map((category) => (
             <button
               key={category.id}
               type="button"
               onClick={() => setActiveCategory(category.id)}
-              className={`inline-flex shrink-0 items-center gap-xs rounded-[2px] px-sm py-2 font-body-md text-sm transition-premium ${
+              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm transition-premium ${
                 activeCategory === category.id
-                  ? 'bg-primary/12 text-primary'
-                  : 'text-text-muted hover:bg-surface-card/70 hover:text-on-surface'
+                  ? 'bg-primary/10 text-primary'
+                  : 'text-text-muted hover:bg-white hover:text-on-surface'
               }`}
             >
               <Icon name={category.icon ?? 'bookmark'} className="text-base" />
@@ -242,8 +245,8 @@ const AiNavigatorPlugin = ({ config }: Props) => {
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-sm">
-        <span className="font-label-mono text-xs uppercase text-text-muted">
+      <div className="flex items-center justify-between gap-3">
+        <span className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
           {filteredTools.length} matched / {tools.length} indexed
         </span>
         {visibleTools.length < filteredTools.length && (
@@ -251,22 +254,22 @@ const AiNavigatorPlugin = ({ config }: Props) => {
         )}
       </div>
 
-      <div className="ai-results-scroll grid gap-sm md:grid-cols-2 xl:grid-cols-3">
+      <div className="ai-results-scroll grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {visibleTools.map((tool) => (
           <button
             key={tool.id}
             type="button"
             onClick={() => openTool(tool)}
-            className="surface-item group grid gap-sm rounded-[2px] p-md text-left transition-premium hover:border-primary/35 hover:bg-surface-container/80"
+            className="surface-item group grid gap-3 rounded-[18px] p-5 text-left transition-premium hover:border-primary/35 hover:bg-white"
           >
-            <div className="flex items-start justify-between gap-md">
-              <div className="flex min-w-0 items-start gap-sm">
-                <span className="rounded-[2px] border border-border-subtle bg-background/55 p-2 text-primary" aria-hidden="true">
+            <div className="flex items-start justify-between gap-4">
+              <div className="flex min-w-0 items-start gap-3">
+                <span className="rounded-2xl border border-border-subtle bg-white/80 p-2 text-primary shadow-[0_14px_34px_-24px_var(--color-panel-shadow)]" aria-hidden="true">
                   <Icon name={tool.icon ?? 'link'} className="text-2xl" />
                 </span>
                 <span className="min-w-0">
                   <span className="block font-body-lg font-bold text-on-surface">{tool.title}</span>
-                  <span className="mt-1 block font-label-mono text-[10px] uppercase text-secondary/80">
+                  <span className="mt-1 block font-label-mono text-[10px] uppercase text-primary/70">
                     {getHostname(tool.url) || tool.sourceCategory || 'external'}
                   </span>
                   <span className="mt-xs block font-body-md text-body-md text-text-muted">
@@ -275,15 +278,15 @@ const AiNavigatorPlugin = ({ config }: Props) => {
                 </span>
               </div>
               {tool.featured && (
-                <span className="rounded border border-secondary/20 bg-secondary/10 px-2 py-1 font-label-mono text-[10px] uppercase text-secondary">
+                <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-1 font-label-mono text-[10px] uppercase text-primary">
                   Pick
                 </span>
               )}
             </div>
             {tool.tags && tool.tags.length > 0 && (
-              <div className="flex flex-wrap gap-xs">
+              <div className="flex flex-wrap gap-2">
                 {tool.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="rounded border border-border-subtle px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
+                  <span key={tag} className="rounded-full border border-border-subtle px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
                     {tag}
                   </span>
                 ))}

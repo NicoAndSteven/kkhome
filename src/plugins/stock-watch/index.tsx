@@ -60,7 +60,9 @@ const StockWatchPlugin = (_props: Props) => {
         low52w: q.fiftyTwoWeekLow,
       }))
       setStocks(mapped)
-    } catch { setError('无法连接数据服务。此功能需要 Cloudflare Pages Functions 支持，本地预览模式下不可用。') }
+    } catch {
+      setError('无法连接数据服务。此功能需要 Cloudflare Pages Functions 支持，本地预览模式下不可用。')
+    }
   }, [symbols])
 
   useEffect(() => {
@@ -73,29 +75,86 @@ const StockWatchPlugin = (_props: Props) => {
   const handleRemove = (symbol: string) => { setSymbols((p) => p.filter((s) => s !== symbol)); if (selectedStock?.symbol === symbol) setSelectedStock(null) }
 
   if (selectedStock) {
-    return <section id="stock-watch" className="h-full flex flex-col"><StockDetail stock={selectedStock} onBack={() => setSelectedStock(null)} /></section>
+    return (
+      <section id="stock-watch" className="h-full flex flex-col">
+        <div className="surface-panel rounded-2xl p-4 md:p-5">
+          <StockDetail stock={selectedStock} onBack={() => setSelectedStock(null)} />
+        </div>
+      </section>
+    )
   }
 
   return (
-    <section id="stock-watch" className="h-full flex flex-col">
-      <div className="flex items-center justify-between shrink-0">
-        <div>
-          <span className="font-label-mono text-xs uppercase text-secondary">Stock Watch</span>
-          <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">自选股</h2>
+    <section id="stock-watch" className="space-y-5">
+      <div className="stack-board surface-panel-strong rounded-[28px] p-5 md:p-7">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div>
+            <div className="flex items-center gap-3">
+              <span className="font-label-mono text-[10px] uppercase tracking-[0.34em] text-primary">Section 04</span>
+              <span className="h-px w-24 bg-[linear-gradient(90deg,rgba(17,72,255,0.6),rgba(224,20,52,0.55),transparent)]" />
+            </div>
+            <h2 className="mt-3 font-headline-md text-[clamp(2.4rem,4.8vw,4.2rem)] font-semibold leading-[0.92] tracking-[-0.08em] text-on-surface">自选股</h2>
+            <p className="mt-3 max-w-2xl font-body-md text-sm leading-relaxed text-on-surface-variant">
+              保留实时数据和图表，但把页面拉回更像金融海报的信息编排，不再像监控面板。
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={() => setSearchOpen(true)}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white transition-premium hover:opacity-90 active:scale-[0.98]"
+          >
+            <Icon name="add" className="text-base" />
+            添加自选
+          </button>
         </div>
-        <button type="button" onClick={() => setSearchOpen(true)}
-          className="inline-flex items-center gap-xs rounded-[2px] bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary transition-premium hover:opacity-90"
-        ><Icon name="add" className="text-base" />添加</button>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-3">
+          <div className="surface-item rounded-2xl p-4">
+            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">自选数量</div>
+            <div className="mt-2 font-headline-md text-3xl text-on-surface">{symbols.length}</div>
+          </div>
+          <div className="surface-item rounded-2xl p-4">
+            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">当前数据</div>
+            <div className="mt-2 font-headline-md text-3xl text-on-surface">{stocks.length}</div>
+          </div>
+          <div className="surface-item rounded-2xl p-4">
+            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">刷新间隔</div>
+            <div className="mt-2 font-headline-md text-3xl text-on-surface">30s</div>
+          </div>
+        </div>
       </div>
-      {error && <div className="mt-sm px-sm py-1 rounded-[2px] bg-error/10 border border-error/20"><span className="font-body-md text-xs text-error">{error}</span></div>}
-      <div className="flex-1 min-h-0 mt-md overflow-y-auto">
-        {stocks.length === 0 && symbols.length > 0 && <div className="flex items-center justify-center h-full"><span className="font-body-md text-sm text-text-muted">加载中...</span></div>}
-        {symbols.length === 0 && <div className="flex flex-col items-center justify-center h-full gap-sm">
-          <span className="font-body-md text-sm text-text-muted">暂无自选股</span>
-          <button type="button" onClick={() => setSearchOpen(true)} className="font-body-md text-sm text-primary hover:underline">点击添加</button>
-        </div>}
-        <div>{stocks.map((s) => <StockListItem key={s.symbol} stock={s} onClick={() => setSelectedStock(s)} onRemove={() => handleRemove(s.symbol)} />)}</div>
+
+      {error && (
+        <div className="rounded-2xl border border-[rgba(223,161,144,0.35)] bg-[rgba(223,161,144,0.12)] px-4 py-3">
+          <span className="font-body-md text-xs text-[rgb(150,95,84)]">{error}</span>
+        </div>
+      )}
+
+      <div className="min-h-0 flex-1 overflow-y-auto">
+        {stocks.length === 0 && symbols.length > 0 && (
+          <div className="flex items-center justify-center py-12">
+            <span className="font-body-md text-sm text-text-muted">加载中...</span>
+          </div>
+        )}
+        {symbols.length === 0 && (
+          <div className="surface-panel rounded-2xl p-8 text-center">
+            <span className="font-body-md text-sm text-text-muted">暂无自选股</span>
+            <div className="mt-3">
+              <button type="button" onClick={() => setSearchOpen(true)} className="text-sm font-semibold text-primary hover:underline">
+                点击添加
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="space-y-2">
+          {stocks.map((s) => (
+            <div key={s.symbol} className="surface-panel rounded-2xl p-0">
+              <StockListItem stock={s} onClick={() => setSelectedStock(s)} onRemove={() => handleRemove(s.symbol)} />
+            </div>
+          ))}
+        </div>
       </div>
+
       {searchOpen && <StockSearch onAdd={handleAdd} existingSymbols={symbols} onClose={() => setSearchOpen(false)} />}
     </section>
   )

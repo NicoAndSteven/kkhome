@@ -27,21 +27,22 @@ export default function GalleryPlugin(_props: Props) {
   const handleClose = useCallback(() => setLightboxIndex(null), [])
 
   return (
-    <section id="gallery" className="h-full flex flex-col">
-      {/* Header */}
-      <div className="shrink-0 mb-md">
-        <span className="font-label-mono text-xs uppercase text-secondary">GALLERY</span>
-        <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">视觉画廊</h2>
+    <section id="gallery" className="space-y-5">
+      <div className="surface-panel-strong rounded-2xl p-5 md:p-6">
+        <span className="font-label-mono text-[10px] uppercase tracking-[0.22em] text-primary">GALLERY</span>
+        <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">视觉画廊</h2>
+        <p className="mt-2 font-body-md text-sm leading-relaxed text-on-surface-variant">
+          用深色陈列方式展示图像内容，保留轻量的分类和灯箱浏览。
+        </p>
       </div>
 
-      {/* Category filter */}
-      <div className="shrink-0 flex gap-xs mb-md overflow-x-auto scrollbar-none">
+      <div className="flex gap-2 overflow-x-auto scrollbar-none">
         {categories.map((cat) => (
           <button
             key={cat}
             type="button"
             onClick={() => setActiveCategory(cat)}
-            className={`shrink-0 rounded-full border px-3 py-1 font-label-mono text-[10px] uppercase transition-premium ${
+            className={`shrink-0 rounded-full border px-3 py-1.5 font-label-mono text-[10px] uppercase transition-premium ${
               activeCategory === cat
                 ? 'border-primary/40 bg-primary/10 text-primary'
                 : 'border-border-subtle text-text-muted hover:border-primary/30 hover:text-on-surface'
@@ -52,9 +53,8 @@ export default function GalleryPlugin(_props: Props) {
         ))}
       </div>
 
-      {/* Masonry grid */}
       <div className="flex-1 min-h-0 overflow-y-auto">
-        <div className="columns-1 sm:columns-2 lg:columns-3 gap-sm">
+        <div className="columns-1 gap-3 sm:columns-2 lg:columns-3">
           {filtered.map((item, idx) => {
             const aspectRatio = item.width / item.height
             return (
@@ -62,7 +62,7 @@ export default function GalleryPlugin(_props: Props) {
                 key={item.id}
                 type="button"
                 onClick={() => handleOpen(idx)}
-                className="mb-sm w-full break-inside-avoid group relative overflow-hidden rounded-[2px] border border-border-subtle transition-premium hover:border-primary/30 hover:shadow-sm"
+                className="mb-3 w-full break-inside-avoid group relative overflow-hidden rounded-2xl border border-border-subtle transition-premium hover:border-primary/30 hover:bg-white/5"
               >
                 <img
                   src={item.src}
@@ -71,9 +71,8 @@ export default function GalleryPlugin(_props: Props) {
                   className="w-full object-cover transition-premium group-hover:scale-[1.02]"
                   style={{ aspectRatio: `${aspectRatio}` }}
                 />
-                {/* Hover overlay */}
-                <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-premium flex items-end">
-                  <div className="p-sm opacity-0 group-hover:opacity-100 transition-premium">
+                <div className="absolute inset-0 flex items-end bg-black/0 transition-premium group-hover:bg-black/20">
+                  <div className="p-4 opacity-0 transition-premium group-hover:opacity-100">
                     <p className="font-body-md text-xs text-white font-semibold">{item.alt}</p>
                     {item.caption && (
                       <p className="font-body-md text-[10px] text-white/70">{item.caption}</p>

@@ -12,17 +12,14 @@ interface Props {
   activeRoute: string
 }
 
-const PRIMARY_ORDER = ['ai-tools', 'wish-wall', 'cloudflare-lab', 'news', 'stock-watch'] as const
+const PRIMARY_ORDER = ['ai-tools', 'wish-wall', 'stock-watch', 'food', 'local-music'] as const
 
 const routeIcons: Record<string, string> = {
   'ai-tools': 'travel_explore',
   'wish-wall': 'rate_review',
-  'cloudflare-lab': 'cloud',
-  news: 'article',
   'stock-watch': 'bar_chart',
   food: 'bolt',
-  'ambient-music': 'mic',
-  gallery: 'auto_awesome',
+  'local-music': 'music_note',
   inbox: 'mail',
   launch: 'play_arrow',
   workbench: 'terminal',
@@ -37,20 +34,20 @@ const MobileTabBar = ({ routes, activeRoute }: Props) => {
 
   return (
     <>
-      <nav className="fixed bottom-0 left-0 right-0 z-50 h-14 bg-surface border-t border-border-subtle flex items-center justify-around px-1 pb-1 safe-area-bottom">
+      <nav className="fixed bottom-3 left-3 right-3 z-50 flex h-16 items-center justify-around rounded-[26px] border border-border-subtle bg-[linear-gradient(135deg,rgba(250,252,249,0.96),rgba(236,242,236,0.92))] px-1 pb-1 safe-area-bottom shadow-[0_28px_60px_-36px_var(--color-panel-shadow)] backdrop-blur-2xl">
         {primaryRoutes.map((route) => {
           const isActive = route.id === activeRoute
           return (
             <a
               key={route.id}
               href={route.href}
-              className={`flex flex-col items-center justify-center gap-0.5 min-w-0 px-2 py-1.5 rounded-lg transition-colors relative ${
+              className={`relative flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 transition-colors ${
                 isActive ? 'text-primary' : 'text-text-muted hover:text-on-surface'
               }`}
             >
               <Icon name={routeIcons[route.id] ?? 'link'} className="text-xl" />
-              <span className="font-label-mono text-[9px] uppercase tracking-wider">{route.label}</span>
-              {isActive && <span className="absolute -top-0.5 w-5 h-0.5 rounded-full bg-primary" />}
+              <span className="font-label-mono text-[9px] uppercase tracking-[0.2em]">{route.label}</span>
+              {isActive && <span className="absolute -top-0.5 h-0.5 w-5 rounded-full bg-[var(--color-tertiary)] shadow-[0_0_12px_rgba(217,122,99,0.35)]" />}
             </a>
           )
         })}
@@ -59,20 +56,19 @@ const MobileTabBar = ({ routes, activeRoute }: Props) => {
           <button
             type="button"
             onClick={() => setShowSheet(!showSheet)}
-            className="flex flex-col items-center justify-center gap-0.5 min-w-0 px-2 py-1.5 rounded-lg text-text-muted hover:text-on-surface transition-colors"
+            className="flex min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-2 py-1.5 text-text-muted transition-colors hover:text-on-surface"
           >
             <Icon name="more_horiz" className="text-xl" />
-            <span className="font-label-mono text-[9px] uppercase tracking-wider">更多</span>
+            <span className="font-label-mono text-[9px] uppercase tracking-[0.2em]">更多</span>
           </button>
         )}
       </nav>
 
-      {/* Overflow bottom sheet */}
       {showSheet && (
         <>
-          <div className="fixed inset-0 z-40 bg-black/10 backdrop-blur-sm" onClick={() => setShowSheet(false)} />
-          <div className="fixed bottom-14 left-0 right-0 z-50 bg-surface rounded-t-2xl border-t border-border-subtle p-5 shadow-xl animate-slide-up">
-            <div className="flex items-center justify-between mb-4">
+          <div className="fixed inset-0 z-40 bg-[rgba(91,112,101,0.22)] backdrop-blur-sm" onClick={() => setShowSheet(false)} />
+          <div className="fixed bottom-20 left-3 right-3 z-50 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(251,252,250,0.98),rgba(240,246,241,0.98))] p-5 shadow-[0_28px_72px_-38px_var(--color-panel-shadow)] animate-slide-up">
+            <div className="mb-4 flex items-center justify-between">
               <span className="font-label-mono text-xs uppercase text-text-muted">全部功能</span>
               <button type="button" onClick={() => setShowSheet(false)} className="text-text-muted hover:text-on-surface">
                 <Icon name="close" className="text-lg" />
@@ -87,7 +83,7 @@ const MobileTabBar = ({ routes, activeRoute }: Props) => {
                     href={route.href}
                     onClick={() => setShowSheet(false)}
                     className={`flex flex-col items-center gap-1.5 p-3 rounded-xl transition-colors ${
-                      isActive ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-container'
+                      isActive ? 'bg-[linear-gradient(135deg,rgba(47,98,201,0.12),rgba(217,122,99,0.12))] text-primary' : 'text-text-muted hover:bg-white'
                     }`}
                   >
                     <Icon name={routeIcons[route.id] ?? 'link'} className="text-2xl" />

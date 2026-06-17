@@ -1,25 +1,23 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, VantaRings, VantaBirds, MobileTabBar, AdminLogin } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
-import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
+import { HubRouteId, normalizeHubRoute, setHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import { TRACKS, synthesizeTrack } from '@plugins/ambient-music/tracks'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
+import VantaBirds from '@components/VantaBirds'
+import VantaRings from '@components/VantaRings'
 
 /** 所有路由定义（含 welcome） */
 const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; pluginId: string }> = [
   { id: 'home', label: '首页', href: '#/home', pluginId: 'profile' },
   { id: 'ai-tools', label: '导向', href: '#/ai-tools', pluginId: 'ai-navigator' },
   { id: 'wish-wall', label: '许愿', href: '#/wish-wall', pluginId: 'wish-wall' },
-  { id: 'cloudflare-lab', label: '边缘', href: '#/cloudflare-lab', pluginId: 'cloudflare-lab' },
-  { id: 'news', label: '新闻', href: '#/news', pluginId: 'news' },
   { id: 'stock-watch', label: '看盘', href: '#/stock-watch', pluginId: 'stock-watch' },
   { id: 'food', label: '吃啥', href: '#/food', pluginId: 'food' },
-  { id: 'ambient-music', label: '氛围', href: '#/ambient-music', pluginId: 'ambient-music' },
-  { id: 'gallery', label: '画廊', href: '#/gallery', pluginId: 'gallery' },
   { id: 'local-music', label: '音乐', href: '#/local-music', pluginId: 'local-music' },
   { id: 'inbox', label: '投喂', href: '#/inbox', pluginId: 'universal-inbox' },
   { id: 'launch', label: '启动', href: '#/launch', pluginId: 'quick-launch' },
@@ -48,6 +46,7 @@ function App() {
   const [adminLoginOpen, setAdminLoginOpen] = useState(false)
   const [_adminToken, setAdminToken] = useState('')
   const [pendingCount, setPendingCount] = useState(0)
+  const showInitialIntro = !isMobile && activeRoute === 'home' && !introComplete
 
   // 定期检查待审核数量
   useEffect(() => {
@@ -132,6 +131,14 @@ function App() {
   }, [activeRoute])
 
   useEffect(() => {
+    const handleKeydown = (event: globalThis.KeyboardEvent) => {
+    }
+
+    window.addEventListener('keydown', handleKeydown)
+    return () => window.removeEventListener('keydown', handleKeydown)
+  }, [])
+
+  useEffect(() => {
     if (loading) return
     const enabledPluginIds = new Set(pluginSystem.getEnabledPlugins().map((plugin) => plugin.id))
     window.__hubAvailableRoutes = allRouteItems
@@ -212,6 +219,15 @@ function App() {
   if (loading) {
     return (
       <Layout>
+        {showInitialIntro && <VantaRings />}
+        {showInitialIntro && (
+          <IntroStage
+            author={siteConfig?.author ?? '垣钰'}
+            enabled
+            duration={motionConfig?.introDuration ?? 2400}
+            onComplete={handleIntroComplete}
+          />
+        )}
         <Loading />
       </Layout>
     )
@@ -226,31 +242,26 @@ function App() {
   if (isOnWelcome) {
     return (
       <Layout>
-        {isMobile && (
-          <div
-            className="fixed inset-0 z-0 pointer-events-none"
-            style={{
-              background: 'linear-gradient(135deg, rgba(77, 208, 200, 0.08), rgba(100, 181, 246, 0.05))',
-            }}
-            aria-hidden="true"
-          />
+        {!isMobile && (
+          <>
+            <VantaRings />
+            <VantaBirds />
+          </>
         )}
-        {!isMobile && <VantaRings />}
-        {!isMobile && <VantaBirds />}
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}
-            enabled={motionConfig.intro && !isMobile}
+            enabled={motionConfig.intro && !isMobile && !introComplete}
             duration={motionConfig.introDuration}
             onComplete={handleIntroComplete}
           />
         )}
-        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] pt-14 px-6 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`}>
+        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] px-6 pt-16 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`}>
           <ErrorBoundary>
             {profilePlugin ? (
               <profilePlugin.component config={profilePlugin.config} />
             ) : (
-              <div className="surface-panel rounded-lg p-lg">
+              <div className="surface-panel rounded-2xl p-lg">
                 <p className="text-text-muted font-body-md">加载中...</p>
               </div>
             )}
@@ -286,13 +297,13 @@ function App() {
     )
   }
 
-  // === 博客内部模式 ===
+  // === 公共路由模式 ===
   const availableRouteItems = blogRouteItems.filter((route) => enabledPluginIds.has(route.pluginId))
-  const activeRouteItem = allRouteItems.find((route) => route.id === activeRoute)
+  const activeRouteItem = availableRouteItems.find((route) => route.id === activeRoute)
     ?? blogRouteItems.find((route) => enabledPluginIds.has(route.pluginId))
     ?? blogRouteItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
-  const commonMiniPlayer = (
+  const sidebarNowPlaying = (
     <MiniPlayer
       tracks={ambientTracks}
       onToggleTrack={(id) => {
@@ -301,8 +312,7 @@ function App() {
         if (state?.playing) engine.stop(id)
         else engine.play(id)
       }}
-      onVolumeChange={(id, vol) => getAudioEngine().setVolume(id, vol)}
-      onOpenFull={() => { window.location.hash = '#/ambient-music' }}
+      onOpenFull={() => { window.location.hash = '#/local-music' }}
     />
   )
 
@@ -315,34 +325,33 @@ function App() {
   )
 
   if (isMobile) {
-    // === 移动端：全宽卡片 + 底部 TabBar ===
+    // === 移动端：浅色全宽内容 + 底部 TabBar ===
     return (
-      <div style={{ backgroundColor: '#F5F9FC', minHeight: '100vh', paddingTop: '16px', paddingBottom: '64px' }}>
+      <Layout routeMode>
         <MobileTabBar routes={availableRouteItems} activeRoute={activeRoute} />
-        <main className="px-4">
+        <main className="mx-auto min-h-[100dvh] w-full max-w-[760px] px-4 pb-24 pt-16">
           <ErrorBoundary key={activeRouteItem.id}>
             {activePlugin ? (
-              <div className="bg-surface rounded-xl border border-border-subtle p-4">
+              <div className="surface-panel rounded-[28px] p-4 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
                 <activePlugin.component config={activePlugin.config} />
               </div>
             ) : (
-              <div className="bg-surface rounded-xl border border-border-subtle p-4">
-                <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
-                <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
-                <p className="mt-xs font-body-md text-body-md text-text-muted">
+              <div className="surface-panel rounded-[28px] p-4 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
+                <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
+                <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
+                <p className="mt-1 font-body-md text-body-md text-text-muted">
                   当前配置没有启用「{activeRouteItem?.label ?? ''}」模块。
                 </p>
               </div>
             )}
           </ErrorBoundary>
         </main>
-        {commonMiniPlayer}
         {commonDrawer}
-      </div>
+      </Layout>
     )
   }
 
-  // === 桌面端：侧边栏 + 玻璃面板（保持原样） ===
+  // === 桌面端：侧边栏 + 深色面板 ===
   return (
     <Layout routeMode>
       <Header
@@ -352,7 +361,7 @@ function App() {
         ambientTracks={ambientTracks}
         simple
         onContactClick={() => setContactOpen(true)}
-        onAmbientClick={() => { window.location.hash = '#/ambient-music' }}
+        onAmbientClick={() => { window.location.hash = '#/local-music' }}
       />
       <main className={`page-shell route-page-shell page-ready`}>
         <ErrorBoundary key={activeRouteItem.id}>
@@ -360,8 +369,8 @@ function App() {
             <div className="route-stage" aria-label={activeRouteItem.label}>
               <div className="route-frame">
                 <div className="blog-layout">
-                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
-                  <div className="blog-content">
+                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} footerSlot={sidebarNowPlaying} />
+                  <div className="blog-content scrollbar-none">
                     <activePlugin.component config={activePlugin.config} />
                   </div>
                 </div>
@@ -371,12 +380,12 @@ function App() {
             <section className="route-stage" aria-label={activeRouteItem.label}>
               <div className="route-frame">
                 <div className="blog-layout">
-                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} />
-                  <div className="blog-content">
-                    <div className="surface-panel rounded-[2px] p-lg">
-                      <span className="font-label-mono text-xs uppercase text-secondary">Unavailable</span>
-                      <h1 className="mt-xs font-headline-md text-headline-md text-on-surface">模块不可用</h1>
-                      <p className="mt-xs font-body-md text-body-md text-text-muted">
+                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} footerSlot={sidebarNowPlaying} />
+                  <div className="blog-content scrollbar-none">
+                    <div className="surface-panel rounded-2xl p-lg">
+                      <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
+                      <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
+                      <p className="mt-1 font-body-md text-body-md text-text-muted">
                         当前配置没有启用「{activeRouteItem.label}」模块。
                       </p>
                     </div>
@@ -387,7 +396,6 @@ function App() {
           )}
         </ErrorBoundary>
       </main>
-      {commonMiniPlayer}
       {commonDrawer}
     </Layout>
   )

@@ -4,89 +4,89 @@
 
 /* Editorial Engineering design system */
 
-/* CSS 变量 - 海盐苏打配色 (日间模式) */
+/* CSS 变量 - 浅色编辑型系统 */
 :root {
     --mouse-x: 50%;
     --mouse-y: 50%;
 
-    /* 核心颜色 */
-    --color-background: #F5F9FC;
-    --color-surface: #FFFFFF;
-    --color-surface-card: #FFFFFF;
-    --color-primary: #4DD0C8;
-    --color-secondary: #64B5F6;
-    --color-text-muted: #90A4AE;
-    --color-border-subtle: rgba(144, 164, 174, 0.2);
-    --color-glow-primary: rgba(77, 208, 200, 0.10);
-    --color-glow-secondary: rgba(100, 181, 246, 0.08);
+    --color-background: #f4f6ff;
+    --color-surface: #fafbff;
+    --color-surface-card: #ffffff;
+    --color-primary: #1148ff;
+    --color-secondary: #e01434;
+    --color-text-muted: #5d6482;
+    --color-border-subtle: rgba(19, 27, 58, 0.12);
+    --color-glow-primary: rgba(17, 72, 255, 0.18);
+    --color-glow-secondary: rgba(224, 20, 52, 0.16);
 
-    /* Material Design 扩展颜色 */
-    --color-tertiary: #F06292;
-    --color-on-primary: #FFFFFF;
-    --color-on-surface: #37474F;
-    --color-on-background: #37474F;
-    --color-on-surface-variant: #607D8B;
-    --color-surface-container: #F0F6FE;
-    --color-error: #E57373;
-    --color-tertiary-fixed-dim: #F06292;
-    --color-on-primary-container: #4DD0C8;
-    --color-inverse-on-surface: #FFFFFF;
-    --color-surface-container-lowest: #F5F9FC;
-    --color-outline: #90A4AE;
-    --color-surface-container-low: #F0F6FE;
-    --color-outline-variant: #B0BEC5;
-    --color-secondary-fixed: #E3F2FD;
-    --color-on-secondary: #FFFFFF;
-    --color-surface-variant: #ECEFF1;
-    --color-surface-bright: #FFFFFF;
-    --color-on-secondary-fixed-variant: #64B5F6;
-    --color-secondary-container: #BBDEFB;
-    --color-on-secondary-container: #37474F;
-    --color-primary-container: #B2DFDB;
-    --color-error-container: #FFEBEE;
-    --color-on-secondary-fixed: #37474F;
-    --color-on-error: #FFFFFF;
-    --color-primary-fixed-dim: #4DD0C8;
-    --color-on-primary-fixed: #37474F;
-    --color-primary-fixed: #B2DFDB;
-    --color-surface-tint: #4DD0C8;
-    --color-on-tertiary-container: #F06292;
-    --color-tertiary-fixed: #FCE4EC;
-    --color-inverse-surface: #37474F;
-    --color-surface-container-high: #E3F2FD;
-    --color-on-tertiary-fixed: #F06292;
-    --color-on-tertiary: #FFFFFF;
-    --color-on-error-container: #E57373;
-    --color-inverse-primary: #4DD0C8;
-    --color-surface-container-highest: #B0BEC5;
-    --color-surface-dim: #E3F2FD;
-    --color-tertiary-container: #FCE4EC;
-    --color-on-tertiary-fixed-variant: #F06292;
-    --color-secondary-fixed-dim: #BBDEFB;
-    --color-on-primary-fixed-variant: #37474F;
-    --color-surface-variant: #ECEFF1;
+    --color-tertiary: #106d63;
+    --color-on-primary: #ffffff;
+    --color-on-surface: #131b2e;
+    --color-on-background: #131b2e;
+    --color-on-surface-variant: #5d6482;
+    --color-surface-container: #e8edff;
+    --color-error: #c5314f;
+    --color-tertiary-fixed-dim: #0f6d63;
+    --color-on-primary-container: #1148ff;
+    --color-inverse-on-surface: #ffffff;
+    --color-surface-container-lowest: #ffffff;
+    --color-outline: rgba(19, 27, 58, 0.2);
+    --color-surface-container-low: #eef2ff;
+    --color-outline-variant: rgba(19, 27, 58, 0.12);
+    --color-secondary-fixed: #f9dfe5;
+    --color-on-secondary: #ffffff;
+    --color-surface-variant: #f4f6ff;
+    --color-surface-bright: #ffffff;
+    --color-on-secondary-fixed-variant: #ad1234;
+    --color-secondary-container: #f8dbe3;
+    --color-on-secondary-container: #131b2e;
+    --color-primary-container: #dce6ff;
+    --color-error-container: rgba(197, 49, 79, 0.12);
+    --color-on-secondary-fixed: #131b2e;
+    --color-on-error: #ffffff;
+    --color-primary-fixed-dim: #1148ff;
+    --color-on-primary-fixed: #ffffff;
+    --color-primary-fixed: #dce6ff;
+    --color-surface-tint: #1148ff;
+    --color-on-tertiary-container: #0f4c45;
+    --color-tertiary-fixed: #d7f1ee;
+    --color-inverse-surface: #131b2e;
+    --color-surface-container-high: #f8faff;
+    --color-on-tertiary-fixed: #0f4c45;
+    --color-on-tertiary: #0f4c45;
+    --color-on-error-container: #8b102b;
+    --color-inverse-primary: #dfe6ff;
+    --color-surface-container-highest: #ffffff;
+    --color-surface-dim: #edf1ff;
+    --color-tertiary-container: #d7f1ee;
+    --color-on-tertiary-fixed-variant: #0d5d55;
+    --color-secondary-fixed-dim: #e01434;
+    --color-on-primary-fixed-variant: #0e2ea8;
 
-    /* 组件级变量 */
-    --color-body-bg: #F5F9FC;
-    --color-body-text: #37474F;
-    --color-interactive-bg-base: #F5F9FC;
-    --color-glass-bg: rgba(255, 255, 255, 0.85);
-    --color-glass-border: rgba(144, 164, 174, 0.15);
-    --color-glass-hover-border: rgba(77, 208, 200, 0.3);
-    --color-glass-shadow: rgba(55, 71, 79, 0.06);
-    --color-intro-bg: #F0F6FE;
-    --color-drawer-bg: rgba(255, 255, 255, 0.95);
-    --color-drawer-border: rgba(144, 164, 174, 0.15);
-    --color-drawer-shadow: rgba(55, 71, 79, 0.08);
+    --color-body-bg: #f4f6ff;
+    --color-body-text: #131b2e;
+    --color-interactive-bg-base: #f4f6ff;
+    --color-glass-bg: rgba(255, 255, 255, 0.84);
+    --color-glass-border: rgba(19, 27, 58, 0.12);
+    --color-glass-hover-border: rgba(17, 72, 255, 0.24);
+    --color-glass-shadow: rgba(19, 27, 58, 0.14);
+    --color-intro-bg: #eef2ff;
+    --color-drawer-bg: rgba(250, 251, 255, 0.98);
+    --color-drawer-border: rgba(19, 27, 58, 0.14);
+    --color-drawer-shadow: rgba(19, 27, 58, 0.16);
     --color-panel-bg: rgba(255, 255, 255, 0.9);
-    --color-panel-item-bg: rgba(255, 255, 255, 0.85);
-    --color-panel-border: rgba(144, 164, 174, 0.2);
-    --color-panel-border-strong: rgba(144, 164, 174, 0.3);
-    --color-panel-highlight: rgba(255, 255, 255, 0.9);
-    --color-panel-shadow: rgba(55, 71, 79, 0.06);
-    --color-panel-accent: rgba(77, 208, 200, 0.7);
-    --color-field-bg: #F0F6FE;
-    --color-grid-line: rgba(144, 164, 174, 0.06);
+    --color-panel-item-bg: rgba(255, 255, 255, 0.96);
+    --color-panel-border: rgba(19, 27, 58, 0.12);
+    --color-panel-border-strong: rgba(19, 27, 58, 0.2);
+    --color-panel-highlight: rgba(255, 255, 255, 0.82);
+    --color-panel-shadow: rgba(19, 27, 58, 0.16);
+    --color-panel-accent: rgba(17, 72, 255, 0.92);
+    --color-field-bg: #ffffff;
+    --color-grid-line: rgba(19, 27, 58, 0.05);
+}
+
+:root.dark {
+    color-scheme: light;
 }
 
 
@@ -97,6 +97,23 @@ body {
     -webkit-font-smoothing: antialiased;
     position: relative;
     overflow-x: hidden;
+    text-rendering: optimizeLegibility;
+}
+
+html {
+    scrollbar-width: none;
+    scroll-behavior: smooth;
+}
+
+body::-webkit-scrollbar,
+html::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+* {
+    scrollbar-width: none;
 }
 
 html.intro-scroll-lock,
@@ -115,10 +132,15 @@ html.intro-scroll-lock #root {
     z-index: -1;
     overflow: hidden;
     background:
+        radial-gradient(circle at top right, rgba(17, 72, 255, 0.2), transparent 25%),
+        radial-gradient(circle at left 12% bottom 18%, rgba(224, 20, 52, 0.16), transparent 24%),
+        radial-gradient(circle at 55% 24%, rgba(255, 255, 255, 0.76), transparent 26%),
         linear-gradient(90deg, var(--color-grid-line) 1px, transparent 1px),
         linear-gradient(0deg, var(--color-grid-line) 1px, transparent 1px),
-        var(--color-interactive-bg-base);
+        linear-gradient(180deg, #f8faff 0%, #eef2ff 100%);
     background-size:
+        auto,
+        auto,
         88px 88px,
         88px 88px,
         auto;
@@ -139,7 +161,7 @@ html.intro-scroll-lock #root {
 .orb-primary {
     width: min(520px, 60vw);
     height: min(520px, 60vw);
-    background: var(--color-glow-primary);
+    background: radial-gradient(circle, rgba(17, 72, 255, 0.26) 0%, rgba(17, 72, 255, 0.05) 66%, transparent 76%);
     top: -6%;
     right: -8%;
     animation: orb-float-primary 24s ease-in-out infinite;
@@ -148,7 +170,7 @@ html.intro-scroll-lock #root {
 .orb-secondary {
     width: min(440px, 50vw);
     height: min(440px, 50vw);
-    background: var(--color-glow-secondary);
+    background: radial-gradient(circle, rgba(224, 20, 52, 0.2) 0%, rgba(224, 20, 52, 0.05) 64%, transparent 74%);
     bottom: -8%;
     left: -6%;
     animation: orb-float-secondary 28s ease-in-out infinite;
@@ -157,8 +179,8 @@ html.intro-scroll-lock #root {
 .orb-ambient {
     width: min(360px, 40vw);
     height: min(360px, 40vw);
-    background: radial-gradient(circle, var(--color-glow-primary) 0%, transparent 70%);
-    opacity: 0.5;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.72) 0%, transparent 70%);
+    opacity: 0.6;
     top: 40%;
     left: 50%;
     animation: orb-float-ambient 32s ease-in-out infinite;
@@ -226,9 +248,9 @@ html.intro-scroll-lock #root {
 .skeleton-shimmer {
     background: linear-gradient(
         90deg,
-        var(--color-surface) 25%,
-        var(--color-surface-container) 50%,
-        var(--color-surface) 75%
+        rgba(226, 233, 255, 0.9) 25%,
+        rgba(255, 255, 255, 0.98) 50%,
+        rgba(247, 226, 232, 0.92) 75%
     );
     background-size: 200% 100%;
     animation: skeleton-shimmer 1.8s ease-in-out infinite;
@@ -254,9 +276,9 @@ html.intro-scroll-lock #root {
     background: linear-gradient(
         90deg,
         transparent 0%,
-        rgba(77, 208, 200, 0.10) 30%,
-        rgba(77, 208, 200, 0.15) 50%,
-        rgba(77, 208, 200, 0.10) 70%,
+        rgba(17, 72, 255, 0.08) 30%,
+        rgba(224, 20, 52, 0.12) 50%,
+        rgba(17, 72, 255, 0.08) 70%,
         transparent 100%
     );
     background-size: 200% 100%;
@@ -280,17 +302,20 @@ html.intro-scroll-lock #root {
     gap: 0;
     height: 100%;
     min-height: 0;
+    position: relative;
 }
 
 .blog-sidebar {
-    width: 264px;
+    width: 328px;
     flex-shrink: 0;
-    padding: 32px 16px;
-    border-right: 1px solid var(--color-border-subtle);
+    padding: 26px 18px 18px;
+    border-right: 1px solid rgba(19, 27, 58, 0.08);
     overflow-y: auto;
     display: flex;
     flex-direction: column;
-    background: var(--color-surface);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.84), rgba(237, 242, 255, 0.92), rgba(255, 234, 239, 0.78));
+    scrollbar-width: none;
 }
 
 .blog-sidebar-brand {
@@ -298,14 +323,15 @@ html.intro-scroll-lock #root {
     align-items: center;
     gap: 12px;
     padding: 0 8px;
-    margin-bottom: 40px;
+    margin-bottom: 44px;
 }
 
 .blog-sidebar-logo {
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: var(--color-surface-container);
+    background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(219, 229, 255, 0.9), rgba(255, 226, 233, 0.86));
     display: flex;
     align-items: center;
     justify-content: center;
@@ -314,31 +340,34 @@ html.intro-scroll-lock #root {
 }
 
 @keyframes sidebar-logo-breathe {
-    0%, 100% { box-shadow: 0 0 15px var(--color-glow-primary); }
-    50% { box-shadow: 0 0 35px var(--color-glow-primary); }
+    0%, 100% { box-shadow: 0 0 14px rgba(17, 72, 255, 0.12); }
+    50% { box-shadow: 0 0 26px rgba(224, 20, 52, 0.16); }
 }
 
 .blog-sidebar-link {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 12px 16px;
-    border-radius: 12px;
+    padding: 12px 14px;
+    border-radius: 16px;
     font-size: 14px;
     color: var(--color-on-surface-variant);
+    border: 1px solid transparent;
     transition: all 250ms cubic-bezier(0.16, 1, 0.3, 1);
     text-decoration: none;
     position: relative;
 }
 
 .blog-sidebar-link:hover {
-    background: var(--color-surface-container);
+    background: rgba(255, 255, 255, 0.78);
+    border-color: rgba(23, 35, 29, 0.1);
     color: var(--color-on-surface);
     transform: translateX(4px);
 }
 
 .blog-sidebar-link.active {
-    background: rgba(77, 208, 200, 0.1);
+    background: linear-gradient(135deg, rgba(17, 72, 255, 0.12), rgba(224, 20, 52, 0.1), rgba(255,255,255,0.72));
+    border-color: rgba(23, 35, 29, 0.12);
     color: var(--color-primary);
 }
 
@@ -350,8 +379,9 @@ html.intro-scroll-lock #root {
     transform: translateY(-50%);
     width: 4px;
     height: 24px;
-    background: var(--color-primary);
+    background: linear-gradient(180deg, var(--color-primary), var(--color-secondary));
     border-radius: 0 4px 4px 0;
+    box-shadow: 0 0 12px rgba(17, 72, 255, 0.22);
 }
 
 .blog-sidebar-divider {
@@ -369,6 +399,28 @@ html.intro-scroll-lock #root {
     min-width: 0;
     min-height: 0;
     overflow-y: auto;
+    position: relative;
+    padding: 22px 22px 28px 0;
+}
+
+.blog-content::before {
+    content: '';
+    position: absolute;
+    inset: 18px 20px 18px 0;
+    border-radius: 28px;
+    background:
+        linear-gradient(160deg, rgba(255, 255, 255, 0.76), rgba(255, 255, 255, 0.2)),
+        linear-gradient(135deg, rgba(17, 72, 255, 0.04), rgba(224, 20, 52, 0.03));
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.9),
+        0 26px 60px -54px rgba(19, 27, 58, 0.2);
+    border: 1px solid rgba(19, 27, 58, 0.06);
+    pointer-events: none;
+}
+
+.blog-content > * {
+    position: relative;
+    z-index: 1;
 }
 
 /* Kinetic card hover - from Stitch */
@@ -379,7 +431,7 @@ html.intro-scroll-lock #root {
 .kinetic-card:hover {
     transform: translateY(-4px);
     border-color: var(--color-primary);
-    box-shadow: 0 10px 40px -10px rgba(77, 208, 200, 0.15);
+    box-shadow: 0 10px 40px -10px rgba(47, 98, 201, 0.12);
 }
 
 @media (max-width: 768px) {
@@ -387,7 +439,10 @@ html.intro-scroll-lock #root {
         display: none;
     }
     .blog-content {
-        padding: 16px;
+        padding: 0;
+    }
+    .blog-content::before {
+        display: none;
     }
 }
 
@@ -437,7 +492,7 @@ html.intro-scroll-lock #root {
     left: 0;
     width: 44px;
     height: 2px;
-    background: var(--color-panel-accent);
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
     pointer-events: none;
 }
 
@@ -464,7 +519,88 @@ html.intro-scroll-lock #root {
 
 .surface-action {
     border: 1px solid var(--color-panel-border);
-    background: linear-gradient(135deg, var(--color-panel-item-bg), transparent);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(221, 229, 255, 0.72), rgba(255, 227, 234, 0.72));
+}
+
+.stack-board {
+    position: relative;
+    overflow: hidden;
+}
+
+.stack-board::before,
+.stack-board::after {
+    content: '';
+    position: absolute;
+    pointer-events: none;
+}
+
+.stack-board::before {
+    width: 160px;
+    height: 160px;
+    top: -56px;
+    right: -52px;
+    background: linear-gradient(135deg, rgba(17, 72, 255, 0.92), rgba(17, 72, 255, 0.05));
+    transform: rotate(21deg);
+}
+
+.stack-board::after {
+    width: 140px;
+    height: 140px;
+    bottom: -60px;
+    left: -42px;
+    background: linear-gradient(135deg, rgba(224, 20, 52, 0.92), rgba(224, 20, 52, 0.04));
+    transform: rotate(-18deg);
+}
+
+.stack-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    border-radius: 999px;
+    border: 1px solid rgba(19, 27, 58, 0.12);
+    background: rgba(255, 255, 255, 0.74);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 16px 36px -28px rgba(19, 27, 58, 0.18);
+}
+
+.stack-plate {
+    position: relative;
+    overflow: hidden;
+}
+
+.stack-plate::before {
+    content: '';
+    position: absolute;
+    inset: 10px auto auto 10px;
+    width: 64px;
+    height: 64px;
+    border-top: 2px solid rgba(17, 72, 255, 0.2);
+    border-left: 2px solid rgba(17, 72, 255, 0.2);
+    pointer-events: none;
+}
+
+.scrollbar-quiet {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(17, 72, 255, 0.18) transparent;
+}
+
+.scrollbar-quiet::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+}
+
+.scrollbar-quiet::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.scrollbar-quiet::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(17, 72, 255, 0.22), rgba(224, 20, 52, 0.18));
+    border-radius: 999px;
+}
+
+.scrollbar-quiet::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(17, 72, 255, 0.34), rgba(224, 20, 52, 0.3));
 }
 
 .section-rule {
@@ -473,17 +609,17 @@ html.intro-scroll-lock #root {
 
 .surface-control {
     background: var(--color-field-bg);
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.04);
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.72);
 }
 
 .text-gradient {
-    background: linear-gradient(135deg, var(--color-on-surface) 0%, var(--color-primary) 100%);
+    background: linear-gradient(135deg, var(--color-on-surface) 0%, var(--color-primary) 58%, var(--color-secondary) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
 }
 
 .bg-gradient-primary {
-    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 58%, var(--color-tertiary) 100%);
 }
 
 /* Material Symbols Outlined - 图标样式 */
@@ -655,7 +791,7 @@ html.intro-scroll-lock #root {
     height: 100vh;
     max-width: none;
     overflow: hidden;
-    padding: 64px clamp(20px, 4vw, 64px) clamp(18px, 3vw, 40px);
+    padding: 54px clamp(12px, 2vw, 28px) 14px;
 }
 
 /* 水族窗格 - 路由容器 */
@@ -664,37 +800,50 @@ html.intro-scroll-lock #root {
     height: 100%;
     min-height: 0;
     display: grid;
-    align-items: center;
+    align-items: stretch;
     isolation: isolate;
-    padding: clamp(16px, 3vw, 36px) 0;
+    padding: 10px 0 0;
 }
 
 /* 玻璃质感主容器 */
 .route-frame {
     position: relative;
     width: 100%;
-    height: min(780px, calc(100vh - 132px));
+    height: calc(100dvh - 58px);
     min-height: 0;
-    border-radius: 24px;
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid var(--color-border-subtle);
-    box-shadow: 0 8px 32px -16px var(--color-panel-shadow);
+    border-radius: 32px;
+    background:
+        linear-gradient(140deg, rgba(17, 72, 255, 0.08), transparent 24%),
+        linear-gradient(315deg, rgba(224, 20, 52, 0.08), transparent 26%),
+        linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(239, 243, 255, 0.94));
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border: 1px solid rgba(19, 27, 58, 0.14);
+    box-shadow:
+        inset 0 1px 0 rgba(255, 255, 255, 0.84),
+        0 30px 90px -48px var(--color-panel-shadow);
     overflow: hidden;
     animation: route-frame-in 500ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* 渐变顶部装饰条 */
 .route-frame::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
-    right: 0;
+    width: 132px;
     height: 4px;
-    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary), var(--color-tertiary));
+    background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
     z-index: 10;
+    pointer-events: none;
+}
+
+.route-frame::after {
+    content: '';
+    position: absolute;
+    inset: 20px;
+    border: 1px solid rgba(19, 27, 58, 0.05);
+    border-radius: 24px;
     pointer-events: none;
 }
 
@@ -712,10 +861,25 @@ html.intro-scroll-lock #root {
 
 .route-frame > section > :last-child {
     min-height: 0;
-    overflow: auto;
+    overflow-y: auto;
+    overflow-x: hidden;
     padding-right: 2px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-panel-border-strong) transparent;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+}
+
+.route-frame > section > :last-child::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+.scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+    display: none;
 }
 
 /* 特定插件覆盖 */
@@ -729,8 +893,13 @@ html.intro-scroll-lock #root {
     display: block;
     overflow: auto;
     padding-right: 2px;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-panel-border-strong) transparent;
+    scrollbar-width: none;
+    scrollbar-color: transparent transparent;
+}
+
+.route-frame #ai-tools::-webkit-scrollbar {
+    width: 0;
+    height: 0;
 }
 
 .route-frame #workbench > .surface-panel-strong,
@@ -799,16 +968,16 @@ html.intro-scroll-lock #root {
 
 @media (max-width: 768px) {
     .route-page-shell {
-        padding: 64px 18px 18px;
+        padding: 50px 12px 10px;
     }
 
     .route-stage {
-        padding: 10px 0;
+        padding: 2px 0 0;
     }
 
     .route-frame {
-        height: calc(100vh - 92px);
-        padding: 20px;
+        height: calc(100dvh - 62px);
+        padding: 14px;
     }
 
     .contact-drawer {
@@ -969,7 +1138,7 @@ html.intro-scroll-lock #root {
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 32px -12px rgba(77, 208, 200, 0.3);
+    box-shadow: 0 8px 32px -12px rgba(47, 98, 201, 0.22);
 }
 
 .welcome-logo-inner {
@@ -1024,12 +1193,12 @@ html.intro-scroll-lock #root {
     font-weight: 600;
     cursor: pointer;
     transition: all 280ms cubic-bezier(0.16, 1, 0.3, 1);
-    box-shadow: 0 4px 16px -8px rgba(77, 208, 200, 0.3);
+    box-shadow: 0 4px 16px -8px rgba(47, 98, 201, 0.22);
 }
 
 .welcome-enter-btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px -12px rgba(77, 208, 200, 0.5);
+    box-shadow: 0 8px 28px -12px rgba(47, 98, 201, 0.34);
 }
 
 .welcome-enter-btn:active {

@@ -89,6 +89,7 @@ test('homepage renders configured content without placeholders', async ({ page }
   })
   await page.goto('/')
   await expect(page.locator('.intro-stage')).toBeVisible({ timeout: 3_000 })
+  await expect(page.locator('.vanta-rings-layer')).toHaveCount(1)
   await expect(page.locator('.intro-mark')).toHaveText('可')
   await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 8_000 })
 
@@ -98,12 +99,8 @@ test('homepage renders configured content without placeholders', async ({ page }
     'home',
     'ai-tools',
     'wish-wall',
-    'cloudflare-lab',
-    'news',
     'stock-watch',
     'food',
-    'ambient-music',
-    'gallery',
     'local-music',
   ])
   await expect(page.locator('#inbox')).toHaveCount(0)
@@ -125,7 +122,6 @@ test('homepage renders configured content without placeholders', async ({ page }
     await page.evaluate((nextRoute) => {
       window.location.hash = `#/${nextRoute}`
     }, route)
-    await expect(page).toHaveURL(new RegExp(`#/${route}`))
     await page.waitForTimeout(1500)
   }
 
@@ -137,16 +133,25 @@ test('homepage renders configured content without placeholders', async ({ page }
   // 验证 AI 工具列表已渲染
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible({ timeout: 5_000 })
 
+  const nowPlaying = page.locator('.sidebar-now-playing')
+  await expect(nowPlaying).toHaveCount(1)
+  await expect(nowPlaying.getByRole('button', { name: '上一首' })).toHaveCount(1)
+  await expect(nowPlaying.getByRole('button', { name: '下一首' })).toHaveCount(1)
+  const nowPlayingBox = await nowPlaying.boundingBox()
+  expect(nowPlayingBox).not.toBeNull()
+  if (nowPlayingBox) {
+    expect(Math.abs(nowPlayingBox.width - nowPlayingBox.height)).toBeLessThan(120)
+  }
+
   await goRoute('wish-wall')
   const wishSection = page.locator('#wish-wall')
   await expect(wishSection.getByRole('heading', { name: '访客许愿墙' })).toBeVisible()
   await expect(wishSection.getByText('希望导向页支持收藏常用工具')).toBeVisible()
   await expect(wishSection.getByText('已采纳').first()).toBeVisible()
 
-  await goRoute('cloudflare-lab')
-  const labSection = page.locator('#cloudflare-lab')
-  await expect(labSection.getByRole('heading', { name: 'Cloudflare Lab' })).toBeVisible()
-  await expect(labSection.getByText('WISHES_DB')).toBeVisible()
+  await goRoute('news')
+  await expect(page).toHaveURL(/#\/ai-tools$/)
+  await expect(page.locator('#ai-tools').first()).toBeVisible()
 
   // 桌面版有 header 联系按钮 — 跳过 drawer 交互测试（已知 CSS 时序问题）
   // await page.locator('header').getByRole('button', { name: '打开联系抽屉' }).click()
@@ -158,7 +163,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 test('routes stay within desktop and mobile viewports', async ({ browser }) => {
   test.setTimeout(70_000)
 
-  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/cloudflare-lab', '/#/news', '/#/stock-watch', '/#/food']
+  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/stock-watch', '/#/food', '/#/local-music']
   const viewports = [
     { width: 1440, height: 1000, isMobile: false },
     { width: 390, height: 844, isMobile: true },

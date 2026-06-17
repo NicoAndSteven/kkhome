@@ -37,11 +37,11 @@ const Layout = ({ children, routeMode = false }: Props) => {
   return (
     <div className={`min-h-screen bg-background text-on-background selection:bg-primary selection:text-on-primary ${routeMode ? 'route-mode' : ''}`}>
       <div className="interactive-bg fixed top-0 left-0 w-screen h-screen -z-10" />
-      <div className="orb-glow orb-primary" data-speed="0.025" aria-hidden="true" />
-      <div className="orb-glow orb-secondary" data-speed="0.018" aria-hidden="true" />
-      <div className="orb-glow orb-ambient" data-speed="0.015" aria-hidden="true" />
+      <div className="orb-glow orb-primary" data-speed="0.018" aria-hidden="true" />
+      <div className="orb-glow orb-secondary" data-speed="0.012" aria-hidden="true" />
+      <div className="orb-glow orb-ambient" data-speed="0.01" aria-hidden="true" />
 
-      <div className="w-full">
+      <div className="relative w-full">
         {children}
       </div>
     </div>

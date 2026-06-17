@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { FoodItem } from './types'
 import Icon from '../../components/Icon'
 
@@ -11,177 +11,143 @@ interface Props {
   onEdit: () => void
 }
 
-// Soft, warm segment palette — muted tones for readability
-const SEGMENT_COLORS = [
-  '#b45309', '#047857', '#1d4ed8', '#b91c1c', '#7c3aed',
-  '#0e7490', '#a21caf', '#15803d', '#c2410c', '#2563eb',
-  '#9333ea', '#be123c',
+const palette = [
+  'bg-red-500/10 text-red-300 border-red-500/20',
+  'bg-emerald-500/10 text-emerald-300 border-emerald-500/20',
+  'bg-blue-500/10 text-blue-300 border-blue-500/20',
+  'bg-amber-500/10 text-amber-300 border-amber-500/20',
+  'bg-violet-500/10 text-violet-300 border-violet-500/20',
 ]
 
 export default function FoodWheel({ items, periodLabel, periodIcon, emptyText, onSpin, onEdit }: Props) {
-  const [spinning, setSpinning] = useState(false)
-  const [rotation, setRotation] = useState(0)
   const [selected, setSelected] = useState<FoodItem | null>(null)
-  const targetRef = useRef(0)
-  const rotationRef = useRef(0)
-  // Use a non-state counter to force reset of selected after re-spin
-  const [spinCount, setSpinCount] = useState(0)
 
-  const activeItems = items.filter(i => !i.disabled)
+  const activeItems = useMemo(() => items.filter((item) => !item.disabled), [items])
 
-  const spin = useCallback(() => {
-    if (spinning || activeItems.length === 0) return
-    setSpinning(true)
-    setSelected(null)
+  const pickRandom = useCallback(() => {
+    if (activeItems.length === 0) return
+    const next = activeItems[Math.floor(Math.random() * activeItems.length)]
+    if (!next) return
+    setSelected(next)
+    onSpin(next)
+  }, [activeItems, onSpin])
 
-    const targetIndex = Math.floor(Math.random() * activeItems.length)
-    targetRef.current = targetIndex
-
-    // Double requestAnimationFrame: first frame activates transition,
-    // second frame changes rotation — guarantees transitionend fires
-    window.requestAnimationFrame(() => {
-      window.requestAnimationFrame(() => {
-        const segAngle = 360 / activeItems.length
-        const targetAngle = targetIndex * segAngle + segAngle / 2
-        const fullSpins = 3 + Math.floor(Math.random() * 4)
-        const currentRotation = rotationRef.current
-        const total = currentRotation + fullSpins * 360 + (360 - (currentRotation % 360) + targetAngle)
-        rotationRef.current = total
-        setRotation(total)
-      })
-    })
-  }, [spinning, activeItems])
-
-  const handleTransitionEnd = useCallback(() => {
-    if (!spinning) return
-    setSpinning(false)
-    setSpinCount(c => c + 1)
-    const result = activeItems[targetRef.current]
-    if (result) { setSelected(result); onSpin(result) }
-  }, [spinning, activeItems, onSpin])
-
-  // Empty state
   if (activeItems.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center h-full gap-md text-center">
-        <Icon name={periodIcon} className="text-5xl opacity-30" />
-        <p className="font-body-md text-body-md text-text-muted max-w-xs">{emptyText}</p>
-        <button type="button" onClick={onEdit}
-          className="inline-flex items-center gap-xs rounded-[2px] bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary transition-premium hover:opacity-90">
-          <Icon name="add" className="text-base" />添加选项
+      <div className="surface-panel rounded-2xl p-6 text-center">
+        <div className="mx-auto mb-4 grid h-16 w-16 place-items-center rounded-2xl border border-border-subtle bg-white/5">
+          <Icon name={periodIcon} className="text-3xl text-primary" />
+        </div>
+        <p className="mx-auto max-w-sm font-body-md text-sm text-text-muted">{emptyText}</p>
+        <button
+          type="button"
+          onClick={onEdit}
+          className="mt-4 inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-premium hover:opacity-90"
+        >
+          <Icon name="add" className="text-base" />
+          添加选项
         </button>
       </div>
     )
   }
 
-  // Single item
-  if (activeItems.length === 1) {
-    return (
-      <div className="flex flex-col items-center justify-center h-full gap-md text-center">
-        <div className="w-48 h-48 rounded-full border-2 border-primary flex items-center justify-center bg-primary/5">
-          <span className="font-headline-md text-headline-md text-primary px-md text-center">{activeItems[0].name}</span>
-        </div>
-        <p className="font-body-md text-body-md text-text-muted">只有一个选项，就是它了！</p>
-      </div>
-    )
-  }
-
-  const segAngle = 360 / activeItems.length
-  const gradParts = activeItems.map((_, i) =>
-    `${SEGMENT_COLORS[i % SEGMENT_COLORS.length]} ${i * segAngle}deg ${(i + 1) * segAngle}deg`
-  )
-  const showEvery = activeItems.length > 24 ? 2 : 1
+  const featured = selected ?? activeItems[0]
+  const chips = activeItems.slice(0, 5)
 
   return (
-    <div className="flex flex-col items-center justify-center h-full gap-lg select-none">
-      {/* Period label */}
-      <div className="flex items-center gap-xs">
-        <Icon name={periodIcon} className="text-lg" />
-        <span className="font-label-mono text-xs uppercase text-secondary">{periodLabel}</span>
-      </div>
-
-      {/* Wheel container */}
-      <div className="relative w-60 h-60 md:w-64 md:h-64">
-        {/* Pointer */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-[2px] z-10">
-          <div className="w-0 h-0 border-l-[10px] border-r-[10px] border-t-[16px] border-l-transparent border-r-transparent border-t-primary drop-shadow-md" />
-        </div>
-
-        {/* Wheel disc */}
-        <div
-          className="w-full h-full rounded-full relative"
-          style={{
-            background: `conic-gradient(${gradParts.join(', ')})`,
-            transform: `rotate(${rotation}deg)`,
-            transition: spinning ? 'transform 3s cubic-bezier(0.17, 0.67, 0.12, 0.99)' : 'none',
-            boxShadow: '0 0 0 4px var(--color-panel-border-strong), 0 6px 24px var(--color-panel-shadow)',
-          }}
-          onTransitionEnd={handleTransitionEnd}
-        >
-          {/* Segment labels */}
-          {activeItems.map((item, i) => {
-            if (i % showEvery !== 0) return null
-            const midAngle = i * segAngle + segAngle / 2
-            return (
-              <div
-                key={item.id}
-                className="absolute top-0 left-0 w-full h-full"
-                style={{ transform: `rotate(${midAngle}deg)` }}
-              >
-                <span
-                  className="absolute left-1/2 top-1 -translate-x-1/2 text-[10px] font-semibold whitespace-nowrap truncate max-w-[60px] text-center leading-tight rounded-[2px] px-1"
-                  style={{
-                    color: '#fff',
-                    textShadow: '0 1px 4px rgba(0,0,0,0.6)',
-                    backgroundColor: 'rgba(0,0,0,0.25)',
-                  }}
-                  title={item.name}
-                >
-                  {item.name}
-                </span>
-              </div>
-            )
-          })}
-        </div>
-      </div>
-
-      {/* Action buttons */}
-      <div className="flex items-center gap-sm">
-        {!selected ? (
-          <button type="button" onClick={spin} disabled={spinning}
-            className={`inline-flex items-center gap-xs rounded-[2px] px-lg py-2 font-body-md font-semibold transition-premium ${
-              spinning
-                ? 'bg-text-muted/20 text-text-muted cursor-not-allowed'
-                : 'bg-primary text-on-primary hover:opacity-90 active:scale-[0.97]'
-            }`}>
-            <Icon name="smart_display" className="text-lg" />
-            {spinning ? '转盘中…' : '转一次'}
+    <div className="grid w-full gap-4 lg:grid-cols-[1.2fr_0.8fr]">
+      <div className="surface-panel-strong rounded-3xl p-6 md:p-8">
+        <div className="flex items-center justify-between gap-3">
+          <div className="inline-flex items-center gap-2">
+            <Icon name={periodIcon} className="text-lg text-primary" />
+            <span className="font-label-mono text-[10px] uppercase tracking-[0.22em] text-primary">{periodLabel}</span>
+          </div>
+          <button
+            type="button"
+            onClick={onEdit}
+            className="rounded-full border border-border-subtle px-4 py-2 text-xs font-semibold text-text-muted transition-premium hover:border-primary/40 hover:text-on-surface"
+          >
+            编辑菜单
           </button>
-        ) : (
-          <>
-            <button type="button" onClick={spin}
-              className="inline-flex items-center gap-xs rounded-[2px] bg-primary px-lg py-2 font-body-md font-semibold text-on-primary transition-premium hover:opacity-90 active:scale-[0.97]">
-              <Icon name="smart_display" className="text-lg" />
-              换一个
-            </button>
-            <button type="button" onClick={() => setSelected(null)}
-              className="inline-flex items-center gap-xs rounded-[2px] border border-border px-lg py-2 font-body-md text-sm text-on-surface transition-premium hover:bg-surface-hover active:scale-[0.97]">
-              收起
-            </button>
-          </>
-        )}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between gap-4">
+          <div className="min-w-0">
+            <p className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">今日推荐</p>
+            <h3 className="mt-2 truncate font-headline-md text-3xl font-semibold tracking-tight text-on-surface">
+              {featured.name}
+            </h3>
+            <p className="mt-2 max-w-xl font-body-md text-sm leading-relaxed text-on-surface-variant">
+              点击下方按钮随机切换，或者从右侧菜单里挑选你今天想吃的。
+            </p>
+          </div>
+          <div className="hidden md:grid h-24 w-24 place-items-center rounded-3xl border border-border-subtle bg-primary/10">
+            <Icon name={periodIcon} className="text-4xl text-primary" />
+          </div>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+          {chips.map((item, index) => (
+            <span
+              key={item.id}
+              className={`inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs font-medium ${palette[index % palette.length]}`}
+            >
+              {item.name}
+            </span>
+          ))}
+        </div>
+
+        <div className="mt-6 flex flex-wrap items-center gap-3">
+          <button
+            type="button"
+            onClick={pickRandom}
+            className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-premium hover:opacity-90 active:scale-[0.98]"
+          >
+            <Icon name="shuffle" className="text-base" />
+            随机推荐
+          </button>
+          <button
+            type="button"
+            onClick={onEdit}
+            className="inline-flex items-center gap-2 rounded-full border border-border-subtle px-5 py-2.5 text-sm font-semibold text-on-surface transition-premium hover:border-primary/40 hover:bg-white/5 active:scale-[0.98]"
+          >
+            <Icon name="rate_review" className="text-base" />
+            管理菜单
+          </button>
+        </div>
       </div>
 
-      {/* Result card */}
-      {selected && (
-        <div key={spinCount} className="w-full max-w-xs surface-panel rounded-[2px] p-md text-center transition-premium">
-          <p className="font-label-mono text-xs text-text-muted"><Icon name={periodIcon} className="text-xs align-middle" /> 今日推荐</p>
-          <p className="mt-sm font-headline-lg text-headline-lg text-on-surface">{selected.name}</p>
-          <p className="mt-xs font-body-md text-xs text-text-muted">
-            点击「换一个」重新选择，不满意再转转
-          </p>
+      <div className="surface-panel rounded-3xl p-5 md:p-6">
+        <div className="flex items-center justify-between gap-3">
+          <h4 className="font-body-lg text-base font-semibold text-on-surface">本期菜单</h4>
+          <span className="font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">{activeItems.length} 项</span>
         </div>
-      )}
+        <div className="mt-4 space-y-2">
+          {activeItems.slice(0, 8).map((item, index) => (
+            <button
+              key={item.id}
+              type="button"
+              onClick={() => {
+                setSelected(item)
+                onSpin(item)
+              }}
+              className={`flex w-full items-center justify-between rounded-2xl border px-4 py-3 text-left transition-premium ${
+                selected?.id === item.id
+                  ? 'border-primary/30 bg-primary/10'
+                  : 'border-border-subtle bg-white/[0.04] hover:border-primary/25 hover:bg-white/[0.06]'
+              }`}
+            >
+              <div className="min-w-0">
+                <div className="truncate font-body-md text-sm font-semibold text-on-surface">{item.name}</div>
+                <div className="font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
+                  备选 {index + 1}
+                </div>
+              </div>
+              <Icon name={selected?.id === item.id ? 'check' : 'chevron_right'} className="text-base text-text-muted" />
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
   )
 }

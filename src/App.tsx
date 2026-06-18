@@ -4,7 +4,7 @@ import { plugins } from '@plugins'
 import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
-import { HubRouteId, normalizeHubRoute, setHubRoute } from '@core/routeBridge'
+import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import { TRACKS, synthesizeTrack } from '@plugins/ambient-music/tracks'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
@@ -131,7 +131,7 @@ function App() {
   }, [activeRoute])
 
   useEffect(() => {
-    const handleKeydown = (event: globalThis.KeyboardEvent) => {
+    const handleKeydown = (_event: globalThis.KeyboardEvent) => {
     }
 
     window.addEventListener('keydown', handleKeydown)

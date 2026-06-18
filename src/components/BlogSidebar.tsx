@@ -37,38 +37,20 @@ const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {
   return (
     <aside className="blog-sidebar scrollbar-quiet">
       <div className="blog-sidebar-brand">
-        <div className="blog-sidebar-logo">
-          <Icon name="fingerprint" className="text-xl text-primary" />
-        </div>
-        <div className="min-w-0">
-          <div className="font-label-mono text-[10px] uppercase tracking-[0.32em] text-primary">
-            Spatial index
+        <div className="min-w-0 flex-1">
+          <div className="font-label-mono text-[9px] uppercase tracking-[0.36em] text-primary/60">
+            Navigation
           </div>
-          <div className="mt-1 font-headline-md text-[clamp(1.6rem,2.6vw,2.7rem)] font-semibold leading-[0.92] tracking-[-0.06em] text-on-surface">
+          <div className="mt-1 font-headline-md text-[clamp(1.3rem,2vw,2rem)] font-bold leading-[0.92] tracking-[-0.05em] text-on-surface">
             KKHOME
           </div>
-          <div className="mt-2 max-w-[180px] font-body-md text-[11px] leading-relaxed text-on-surface-variant">
-            拼装界面 / 导视索引 / 互动档案
-          </div>
+          <div className="mt-2 h-[2px] w-6 rounded-full bg-gradient-to-r from-primary to-secondary" />
         </div>
       </div>
 
-      <nav className="blog-sidebar-nav" aria-label="博客导航">
-        <div className="px-3 pb-3">
-          <div className="stack-board rounded-[20px] border border-border-subtle bg-[linear-gradient(135deg,rgba(255,255,255,0.84),rgba(238,242,255,0.8),rgba(255,233,238,0.74))] px-4 py-4 shadow-[0_18px_44px_-34px_var(--color-panel-shadow)]">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <div className="font-label-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">Index</div>
-                <div className="mt-1 text-sm font-semibold text-on-surface">路线拼板</div>
-              </div>
-              <span className="font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">
-                {topRoutes.length.toString().padStart(2, '0')}
-              </span>
-            </div>
-          </div>
-        </div>
-        <div className="space-y-2">
-          {topRoutes.map((route) => {
+      <nav className="blog-sidebar-nav" aria-label="主导航">
+        <div className="space-y-1">
+          {topRoutes.map((route, i) => {
             const isActive = route.id === activeRoute
             return (
               <a
@@ -77,19 +59,14 @@ const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {
                 className={`blog-sidebar-link ${isActive ? 'active' : ''}`}
                 aria-current={isActive ? 'page' : undefined}
               >
-                <span className="font-label-mono text-[10px] uppercase tracking-[0.3em] text-text-muted">
-                  {(topRoutes.findIndex((item) => item.id === route.id) + 1).toString().padStart(2, '0')}
+                <span className="w-6 shrink-0 font-label-mono text-[9px] tabular-nums text-text-muted">
+                  {(i + 1).toString().padStart(2, '0')}
                 </span>
-                <span className="grid h-10 w-10 place-items-center rounded-[14px] border border-current/15 bg-white/74 shadow-[0_12px_28px_-24px_var(--color-panel-shadow)]">
-                  <Icon name={routeIcons[route.id] ?? 'link'} className="text-lg" />
+                <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl border transition-premium ${isActive ? 'border-primary/20 bg-primary/8' : 'border-border-subtle bg-surface-card'}`}>
+                  <Icon name={routeIcons[route.id] ?? 'link'} className="text-[15px]" />
                 </span>
-                <span className="min-w-0 flex-1">
-                  <span className="block font-headline-md text-base font-semibold tracking-[-0.04em]">
-                    {route.label}
-                  </span>
-                  <span className="block font-label-mono text-[10px] uppercase tracking-[0.24em] text-text-muted">
-                    object
-                  </span>
+                <span className="min-w-0 flex-1 font-label-mono text-[10px] uppercase tracking-[0.2em]">
+                  {route.label}
                 </span>
               </a>
             )
@@ -99,7 +76,7 @@ const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {
         {bottomRoutes.length > 0 && (
           <>
             <div className="blog-sidebar-divider" />
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               {bottomRoutes.map((route) => {
                 const isActive = route.id === activeRoute
                 return (
@@ -109,8 +86,8 @@ const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {
                     className={`blog-sidebar-link ${isActive ? 'active' : ''}`}
                     aria-current={isActive ? 'page' : undefined}
                   >
-                    <Icon name={routeIcons[route.id] ?? 'link'} className="text-lg" />
-                    <span className="font-label-mono text-xs uppercase tracking-[0.2em]">{route.label}</span>
+                    <Icon name={routeIcons[route.id] ?? 'link'} className="text-sm" />
+                    <span className="font-label-mono text-[10px] uppercase tracking-[0.2em]">{route.label}</span>
                   </a>
                 )
               })}
@@ -120,7 +97,7 @@ const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {
       </nav>
 
       {footerSlot ? (
-        <div className="mt-5 px-3">
+        <div className="mt-auto pt-4 px-2">
           {footerSlot}
         </div>
       ) : null}

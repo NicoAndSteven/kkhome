@@ -20,11 +20,11 @@ const VantaBirds = () => {
           minWidth: 200,
           scale: 1,
           scaleMobile: 1,
-          color1: 0xd76f56,
-          color2: 0x6a8d7a,
+          color1: 0x3d6ab5,
+          color2: 0x8aa8d9,
           birdSize: 1.1,
           speedLimit: 5,
-          backgroundColor: 0xebf3ec,
+          backgroundColor: 0xeef1f7,
         })
       }, 100)
     }

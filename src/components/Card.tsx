@@ -1,4 +1,5 @@
 import { ReactNode } from 'react'
+import { useTilt } from '@/hooks/useTilt'
 
 interface Props {
   children: ReactNode
@@ -7,6 +8,8 @@ interface Props {
 }
 
 const Card = ({ children, className = '', hover = true }: Props) => {
+  const tilt = useTilt({ maxTilt: 5, scale: 1.015 })
+
   return (
     <div
       className={[
@@ -14,6 +17,7 @@ const Card = ({ children, className = '', hover = true }: Props) => {
         hover ? 'cursor-pointer hover:-translate-y-1 hover:border-primary/30 hover:bg-white/6' : '',
         className,
       ].join(' ')}
+      {...tilt}
     >
       {children}
     </div>

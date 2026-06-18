@@ -25,8 +25,8 @@ const VantaRings = () => {
         minWidth: 200,
         scale: 1,
         scaleMobile: 1,
-        backgroundColor: 0xf1f4ff,
-        color: 0x1148ff,
+        backgroundColor: 0xeef1f7,
+        color: 0x002fa7,
       })
       setPhase('active')
     }, 50)

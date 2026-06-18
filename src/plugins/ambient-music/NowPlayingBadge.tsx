@@ -19,7 +19,7 @@ const NowPlayingBadge = ({ tracks, onClick }: Props) => {
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-[999px] border border-[rgba(19,27,58,0.14)] bg-[linear-gradient(145deg,rgba(255,255,255,0.9),rgba(235,241,255,0.82),rgba(255,229,236,0.78))] px-3 py-1.5 font-label-mono text-[10px] uppercase tracking-[0.26em] text-primary transition-premium hover:border-primary/25 hover:bg-white"
+      className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface/80 px-3 py-1.5 font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary backdrop-blur-sm transition-premium hover:border-primary/25 hover:bg-primary/6"
       aria-label="正在播放氛围音乐"
     >
       <span className="flex items-center gap-[1px]" aria-hidden="true">

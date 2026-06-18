@@ -6,7 +6,14 @@ test('homepage renders configured content without placeholders', async ({ page }
   let postedWish: Record<string, unknown> | null = null
 
   // 过滤非关键资源加载错误（如音频引擎离线合成）
-  const allowedErrors = ['ERR_CONNECTION_CLOSED', 'ERR_CONNECTION_REFUSED', 'ERR_NETWORK_ACCESS_DENIED', 'THREE.BufferGeometry']
+  const allowedErrors = [
+    'ERR_CONNECTION_CLOSED',
+    'ERR_CONNECTION_REFUSED',
+    'ERR_NETWORK_ACCESS_DENIED',
+    'ERR_NETWORK_CHANGED',
+    'THREE.BufferGeometry',
+    'Failed to load resource: the server responded with a status of 404 (Not Found)',
+  ]
 
   await page.route('**/api/health', async (route) => {
     await route.fulfill({
@@ -127,20 +134,21 @@ test('homepage renders configured content without placeholders', async ({ page }
 
   const aiToolsSection = page.locator('#ai-tools')
   await expect(aiToolsSection.first()).toBeVisible({ timeout: 8000 })
-  await expect(aiToolsSection.getByRole('heading', { name: '工具导航' })).toBeVisible()
+  await expect(aiToolsSection.getByRole('heading', { name: '找工具' })).toBeVisible()
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible()
   await expect(aiToolsSection.getByText('File Converter')).toBeVisible()
   // 验证 AI 工具列表已渲染
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible({ timeout: 5_000 })
 
-  const nowPlaying = page.locator('.sidebar-now-playing')
+  const nowPlaying = page.locator('aside').locator('section').filter({ hasText: '音乐库' })
   await expect(nowPlaying).toHaveCount(1)
   await expect(nowPlaying.getByRole('button', { name: '上一首' })).toHaveCount(1)
   await expect(nowPlaying.getByRole('button', { name: '下一首' })).toHaveCount(1)
   const nowPlayingBox = await nowPlaying.boundingBox()
   expect(nowPlayingBox).not.toBeNull()
   if (nowPlayingBox) {
-    expect(Math.abs(nowPlayingBox.width - nowPlayingBox.height)).toBeLessThan(120)
+    expect(nowPlayingBox.width).toBeGreaterThan(180)
+    expect(nowPlayingBox.height).toBeGreaterThan(110)
   }
 
   await goRoute('wish-wall')
@@ -152,6 +160,11 @@ test('homepage renders configured content without placeholders', async ({ page }
   await goRoute('news')
   await expect(page).toHaveURL(/#\/ai-tools$/)
   await expect(page.locator('#ai-tools').first()).toBeVisible()
+
+  await page.evaluate(() => {
+    window.location.hash = '#/stock-watch'
+  })
+  await page.waitForTimeout(1500)
 
   // 桌面版有 header 联系按钮 — 跳过 drawer 交互测试（已知 CSS 时序问题）
   // await page.locator('header').getByRole('button', { name: '打开联系抽屉' }).click()

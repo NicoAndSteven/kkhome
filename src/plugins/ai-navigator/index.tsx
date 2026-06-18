@@ -32,13 +32,13 @@ const fallbackIntentPrompts = ['文件转换器', 'PDF 转 Word', '图片压缩'
 
 const fallbackCategories: AiCategory[] = [
   { id: 'all', title: '全部', icon: 'travel_explore' },
-  { id: 'convert', title: '转换工具', icon: 'swap_horiz' },
-  { id: 'image', title: '图片处理', icon: 'auto_awesome' },
-  { id: 'video-audio', title: '视频音频', icon: 'smart_display' },
-  { id: 'document', title: '文档办公', icon: 'article' },
-  { id: 'design-assets', title: '素材设计', icon: 'bookmark' },
-  { id: 'software-system', title: '软件系统', icon: 'terminal' },
-  { id: 'knowledge', title: '知识学习', icon: 'rate_review' },
+  { id: 'convert', title: '转换', icon: 'swap_horiz' },
+  { id: 'image', title: '图片', icon: 'auto_awesome' },
+  { id: 'video-audio', title: '视频', icon: 'smart_display' },
+  { id: 'document', title: '文档', icon: 'article' },
+  { id: 'design-assets', title: '素材', icon: 'bookmark' },
+  { id: 'software-system', title: '软件', icon: 'terminal' },
+  { id: 'knowledge', title: '学习', icon: 'rate_review' },
   { id: 'ai', title: '其他', icon: 'auto_awesome' },
 ]
 
@@ -53,9 +53,6 @@ const fallbackTools: AiTool[] = [
     aliases: ['文件转换器', '格式转换', 'PDF 转 Word'],
     icon: 'swap_horiz',
     featured: true,
-    sourceTitle: '文件格式转换#Pdf#Word#Excel',
-    sourceUrl: 'https://www.30aitool.com/924.html',
-    sourceCategory: '工具',
   },
   {
     id: 'file-converter-local',
@@ -67,9 +64,6 @@ const fallbackTools: AiTool[] = [
     aliases: ['文件转换器', '本地转换', '格式转换'],
     icon: 'swap_horiz',
     featured: true,
-    sourceTitle: '格式转换本地软件大合集',
-    sourceUrl: 'https://www.30aitool.com/999.html',
-    sourceCategory: '软件',
   },
   {
     id: 'tinypng',
@@ -81,9 +75,6 @@ const fallbackTools: AiTool[] = [
     aliases: ['图片压缩', '批量压缩', 'png 压缩'],
     icon: 'auto_awesome',
     featured: true,
-    sourceTitle: '图片压缩#png压缩#批量压缩#GIF压缩',
-    sourceUrl: 'https://www.30aitool.com/376.html',
-    sourceCategory: '工具',
   },
   {
     id: 'freeconvert-video-mp3',
@@ -95,9 +86,6 @@ const fallbackTools: AiTool[] = [
     aliases: ['视频转音频', 'mp4转mp3', '音频提取'],
     icon: 'swap_horiz',
     featured: true,
-    sourceTitle: '视频转音频#转mp3#mp4转mp3',
-    sourceUrl: 'https://www.30aitool.com/3817.html',
-    sourceCategory: '工具',
   },
   {
     id: 'obs',
@@ -109,9 +97,6 @@ const fallbackTools: AiTool[] = [
     aliases: ['电脑录屏', '屏幕录制'],
     icon: 'smart_display',
     featured: true,
-    sourceTitle: '电脑录屏#屏幕录制',
-    sourceUrl: 'https://www.30aitool.com/832.html',
-    sourceCategory: '工具',
   },
 ]
 
@@ -123,33 +108,25 @@ const getHostname = (url: string) => {
   }
 }
 
-const fieldIncludes = (field: string | undefined, query: string) => (
+const fieldIncludes = (field: string | undefined, query: string) =>
   field?.toLowerCase().includes(query) ?? false
-)
 
-const listIncludes = (items: string[] | undefined, query: string) => (
+const listIncludes = (items: string[] | undefined, query: string) =>
   items?.some((item) => item.toLowerCase().includes(query)) ?? false
-)
 
 const scoreTool = (tool: AiTool, query: string) => {
   if (!query) return Number(tool.featured)
-
   const title = tool.title.toLowerCase()
   let score = 0
-
   if (title === query) score += 100
   else if (title.startsWith(query)) score += 80
   else if (title.includes(query)) score += 55
-
   if (listIncludes(tool.aliases, query)) score += 45
   if (listIncludes(tool.tags, query)) score += 35
   if (fieldIncludes(tool.description, query)) score += 18
-  if (fieldIncludes(tool.sourceTitle, query)) score += 12
   if (fieldIncludes(tool.category, query)) score += 8
-  if (fieldIncludes(tool.id, query)) score += 5
   if (fieldIncludes(getHostname(tool.url), query)) score += 5
   if (tool.featured && score > 0) score += 4
-
   return score
 }
 
@@ -178,115 +155,141 @@ const AiNavigatorPlugin = ({ config }: Props) => {
   const filteredTools = rankedTools.map((entry) => entry.tool)
   const visibleTools = query.trim() || activeCategory !== 'all' ? filteredTools : filteredTools.slice(0, 48)
 
-  const openTool = (tool: AiTool) => {
-    window.open(tool.url, '_blank', 'noopener,noreferrer')
-  }
-
   return (
-    <section id="ai-tools" className="space-y-5 scroll-mt-24">
-      <div className="stack-board surface-panel-strong rounded-[28px] p-5 md:p-7">
-        <div className="grid gap-6 md:grid-cols-12 md:items-end">
-          <div className="md:col-span-5">
-            <div className="flex items-center gap-3">
-              <span className="font-label-mono text-[10px] uppercase tracking-[0.34em] text-primary">Section 01</span>
-              <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(17,72,255,0.6),rgba(224,20,52,0.55),transparent)]" />
-            </div>
-            <h2 className="mt-3 font-headline-md text-[clamp(2.5rem,4.8vw,4.8rem)] font-semibold leading-[0.9] tracking-[-0.08em] text-on-surface">工具导航</h2>
-            <p className="mt-3 max-w-xl font-body-md text-sm leading-relaxed text-on-surface-variant">
-              把它看成一张可交互的工具海报。输入目标词，直接从转换、图片、视频音频、文档和资料里找到去处。
-            </p>
+    <section id="ai-tools" className="flex flex-col gap-4 px-5 py-5 md:px-7 md:py-6">
+
+      {/* ── Search Hero ── */}
+      <div className="space-y-3">
+        <div className="flex items-end justify-between gap-4">
+          <div>
+            <span className="font-label-mono text-[9px] uppercase tracking-[0.32em] text-primary">工具导向</span>
+            <h2 className="mt-1 font-headline-md text-[clamp(1.6rem,3vw,2.6rem)] font-bold leading-[1] tracking-[-0.05em] text-on-surface">
+              找工具
+            </h2>
           </div>
-          <div className="relative md:col-span-7">
-            <Icon name="search" className="absolute left-4 top-1/2 -translate-y-1/2 text-xl text-text-muted" />
-            <input
-              type="search"
-              value={query}
-              onChange={(event) => setQuery(event.target.value)}
-              placeholder="搜索工具、标签或使用场景..."
-              aria-label="搜索目标工具"
-              className="surface-control w-full rounded-2xl py-3 pl-11 pr-4 font-body-md text-body-md text-on-surface outline-none transition-premium focus:border-primary/60 focus:ring-1 focus:ring-primary/30"
-            />
-          </div>
+          <span className="mb-0.5 font-label-mono text-[10px] text-text-muted">{tools.length} 已收录</span>
         </div>
 
-        <div className="scrollbar-quiet mt-4 flex items-center gap-2 overflow-x-auto whitespace-nowrap pb-1">
-          <span className="shrink-0 font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">Intent</span>
+        {/* Search input */}
+        <div className="group relative">
+          <Icon
+            name="search"
+            className="absolute left-4 top-1/2 -translate-y-1/2 text-lg text-text-muted transition-colors duration-200 group-focus-within:text-primary"
+          />
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="搜索工具、标签或使用场景…"
+            aria-label="搜索目标工具"
+            className="w-full rounded-2xl border border-border-subtle bg-surface-card py-3 pl-11 pr-4 text-[15px] text-on-surface outline-none transition-all duration-200 placeholder:text-text-muted focus:border-primary/40 focus:bg-surface focus:shadow-[0_0_0_3px_rgba(8,145,178,0.1)]"
+          />
+          {query && (
+            <button
+              type="button"
+              onClick={() => setQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-full p-1 text-text-muted transition-colors hover:text-on-surface"
+              aria-label="清空搜索"
+            >
+              <Icon name="close" className="text-sm" />
+            </button>
+          )}
+        </div>
+
+        {/* Intent chips */}
+        <div className="flex flex-wrap gap-1.5">
           {intentPrompts.slice(0, 8).map((prompt) => (
             <button
               key={prompt}
               type="button"
-              onClick={() => {
-                setQuery(prompt)
-                setActiveCategory('all')
-              }}
-              className="shrink-0 rounded-full border border-border-subtle px-3 py-1.5 text-xs text-text-muted transition-premium hover:border-primary/35 hover:text-on-surface"
+              onClick={() => { setQuery(prompt); setActiveCategory('all') }}
+              className={`rounded-full border px-2.5 py-1 font-label-mono text-[10px] uppercase tracking-[0.14em] transition-all duration-150 ${
+                query === prompt
+                  ? 'border-primary/30 bg-primary/8 text-primary'
+                  : 'border-border-subtle text-text-muted hover:border-primary/20 hover:text-on-surface'
+              }`}
             >
               {prompt}
             </button>
           ))}
         </div>
+      </div>
 
-        <div className="scrollbar-quiet mt-4 flex gap-2 overflow-x-auto whitespace-nowrap pb-1">
-          {categories.map((category) => (
+      {/* ── Category Segmented Control ── */}
+      <div className="scrollbar-none overflow-x-auto">
+        <div className="flex min-w-max gap-1 rounded-2xl border border-border-subtle bg-surface-card p-1">
+          {categories.map((cat) => (
             <button
-              key={category.id}
+              key={cat.id}
               type="button"
-              onClick={() => setActiveCategory(category.id)}
-              className={`inline-flex shrink-0 items-center gap-2 rounded-full px-4 py-2 text-sm transition-premium ${
-                activeCategory === category.id
-                  ? 'bg-primary/10 text-primary'
-                  : 'text-text-muted hover:bg-white hover:text-on-surface'
+              onClick={() => setActiveCategory(cat.id)}
+              className={`inline-flex shrink-0 items-center gap-1.5 rounded-xl px-3 py-2 font-label-mono text-[10px] uppercase tracking-[0.16em] transition-all duration-200 ${
+                activeCategory === cat.id
+                  ? 'bg-primary text-white shadow-[0_4px_14px_-6px_rgba(8,145,178,0.45)]'
+                  : 'text-text-muted hover:bg-surface hover:text-on-surface'
               }`}
             >
-              <Icon name={category.icon ?? 'bookmark'} className="text-base" />
-              {category.title}
+              <Icon name={cat.icon ?? 'bookmark'} className="text-sm" />
+              {cat.title}
             </button>
           ))}
         </div>
       </div>
 
-      <div className="flex items-center justify-between gap-3">
-        <span className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
-          {filteredTools.length} matched / {tools.length} indexed
+      {/* ── Stats ── */}
+      <div className="flex items-center gap-2">
+        <span className="font-label-mono text-[10px] text-text-muted">
+          {filteredTools.length} 个结果
         </span>
         {visibleTools.length < filteredTools.length && (
-          <span className="font-body-md text-sm text-text-muted">输入目标词可继续收窄结果</span>
+          <>
+            <span className="h-3 w-px bg-border-subtle" />
+            <span className="font-label-mono text-[10px] text-text-muted">输入关键词继续收窄</span>
+          </>
         )}
       </div>
 
-      <div className="ai-results-scroll grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-        {visibleTools.map((tool) => (
+      {/* ── Tool Grid ── */}
+      <div className="ai-results-scroll grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+        {visibleTools.map((tool, i) => (
           <button
             key={tool.id}
             type="button"
-            onClick={() => openTool(tool)}
-            className="surface-item group grid gap-3 rounded-[18px] p-5 text-left transition-premium hover:border-primary/35 hover:bg-white"
+            onClick={() => window.open(tool.url, '_blank', 'noopener,noreferrer')}
+            className="group rounded-2xl border border-border-subtle bg-surface p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_8px_28px_-12px_rgba(8,145,178,0.15)]"
+            style={{ animation: `content-rise 400ms cubic-bezier(0.16,1,0.3,1) ${i * 25}ms both` }}
           >
-            <div className="flex items-start justify-between gap-4">
-              <div className="flex min-w-0 items-start gap-3">
-                <span className="rounded-2xl border border-border-subtle bg-white/80 p-2 text-primary shadow-[0_14px_34px_-24px_var(--color-panel-shadow)]" aria-hidden="true">
-                  <Icon name={tool.icon ?? 'link'} className="text-2xl" />
+            <div className="flex items-start gap-3">
+              <span
+                className="mt-0.5 grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-primary/8 text-primary transition-colors duration-200 group-hover:bg-primary/12"
+                aria-hidden="true"
+              >
+                <Icon name={tool.icon ?? 'link'} className="text-base" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="font-semibold leading-tight text-on-surface">{tool.title}</span>
+                  {tool.featured && (
+                    <span className="shrink-0 rounded-full bg-primary/8 px-1.5 py-0.5 font-label-mono text-[9px] uppercase tracking-[0.1em] text-primary">
+                      精选
+                    </span>
+                  )}
+                </div>
+                <span className="mt-0.5 block font-label-mono text-[9px] uppercase tracking-[0.14em] text-primary/60">
+                  {getHostname(tool.url) || tool.sourceCategory || 'external'}
                 </span>
-                <span className="min-w-0">
-                  <span className="block font-body-lg font-bold text-on-surface">{tool.title}</span>
-                  <span className="mt-1 block font-label-mono text-[10px] uppercase text-primary/70">
-                    {getHostname(tool.url) || tool.sourceCategory || 'external'}
-                  </span>
-                  <span className="mt-xs block font-body-md text-body-md text-text-muted">
-                    {tool.description}
-                  </span>
-                </span>
+                <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-text-muted">
+                  {tool.description}
+                </p>
               </div>
-              {tool.featured && (
-                <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-1 font-label-mono text-[10px] uppercase text-primary">
-                  Pick
-                </span>
-              )}
             </div>
             {tool.tags && tool.tags.length > 0 && (
-              <div className="flex flex-wrap gap-2">
+              <div className="mt-3 flex flex-wrap gap-1">
                 {tool.tags.slice(0, 3).map((tag) => (
-                  <span key={tag} className="rounded-full border border-border-subtle px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
+                  <span
+                    key={tag}
+                    className="rounded-full border border-border-subtle px-2 py-0.5 font-label-mono text-[9px] uppercase tracking-[0.1em] text-text-muted"
+                  >
                     {tag}
                   </span>
                 ))}
@@ -294,6 +297,17 @@ const AiNavigatorPlugin = ({ config }: Props) => {
             )}
           </button>
         ))}
+
+        {visibleTools.length === 0 && (
+          <div className="col-span-full flex flex-col items-center gap-3 py-16 text-center">
+            <span className="rounded-2xl bg-surface-card p-4 text-text-muted">
+              <Icon name="search_off" className="text-3xl" />
+            </span>
+            <p className="font-label-mono text-[11px] uppercase tracking-[0.2em] text-text-muted">
+              没有匹配结果
+            </p>
+          </div>
+        )}
       </div>
     </section>
   )

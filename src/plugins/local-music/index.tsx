@@ -205,156 +205,144 @@ const LocalMusicPlugin = () => {
 
   const approvedSongs = songs.filter(s => s.status === 'approved' && s.file)
   const pendingSongs = songs.filter(s => s.status === 'pending' || s.status === 'wish')
-  const currentIndex = currentSong ? approvedSongs.findIndex((song) => song.id === currentSong.id) : -1
   const totalSongs = approvedSongs.length
 
   return (
-    <section id="local-music" className="space-y-5">
-      <div className="stack-board surface-panel-strong rounded-[30px] p-5 md:p-7">
-        <div className="grid gap-4 xl:grid-cols-[minmax(0,1.25fr)_280px]">
-          <div className="grid gap-4">
-            <div className="stack-plate rounded-[28px] border border-border-subtle bg-[linear-gradient(145deg,rgba(255,255,255,0.95),rgba(235,241,255,0.92),rgba(255,232,238,0.84))] p-5 md:p-6">
-              <div className="flex items-center gap-3">
-                <span className="stack-chip font-label-mono text-[10px] uppercase tracking-[0.34em] text-primary">Sound archive</span>
-              </div>
-              <h2 className="mt-5 max-w-[10ch] font-headline-md text-[clamp(2.8rem,5vw,5.4rem)] font-semibold leading-[0.88] tracking-[-0.08em] text-on-surface">
-                本地音乐
-              </h2>
-              <p className="mt-4 max-w-xl font-body-md text-sm leading-relaxed text-on-surface-variant">
-                这里是声音档案墙，不是传统播放器。它更像一组被钉在墙上的节目单、编号和切换机关。
-              </p>
-            </div>
-
-            <div className="grid gap-3 lg:grid-cols-[1.2fr_0.8fr]">
-              <div className="surface-item rounded-[26px] border border-border-subtle bg-[linear-gradient(145deg,rgba(17,72,255,0.94),rgba(37,92,255,0.88))] p-5 text-white shadow-[0_28px_50px_-36px_rgba(17,72,255,0.5)]">
-                <div className="font-label-mono text-[10px] uppercase tracking-[0.28em] text-white/72">Now staging</div>
-                <div className="mt-3 flex items-end justify-between gap-4">
-                  <div className="min-w-0">
-                    <div className="truncate font-headline-md text-[clamp(1.8rem,2.8vw,2.6rem)] font-semibold leading-[0.92] tracking-[-0.06em]">
-                      {currentSong?.title ?? '等待点亮'}
-                    </div>
-                    <div className="mt-2 font-label-mono text-[11px] uppercase tracking-[0.22em] text-white/68">
-                      {currentSong?.artist ?? 'select a track'}
-                    </div>
-                  </div>
-                  <div className="rounded-[20px] border border-white/15 bg-white/10 px-4 py-3 text-right backdrop-blur-sm">
-                    <div className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-white/68">time</div>
-                    <div className="mt-1 font-label-mono text-xs text-white/84">
-                      {formatTime(duration * progress)} / {formatTime(duration)}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="surface-item rounded-[26px] border border-border-subtle bg-[linear-gradient(145deg,rgba(255,255,255,0.94),rgba(255,232,238,0.92))] p-5 shadow-[0_24px_44px_-36px_rgba(224,20,52,0.34)]">
-                <div className="font-label-mono text-[10px] uppercase tracking-[0.28em] text-secondary">Control block</div>
-                <div className="mt-4 flex items-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!currentSong) return
-                      const i = approvedSongs.findIndex(s => s.id === currentSong.id)
-                      if (i > 0) playSong(approvedSongs[i - 1])
-                    }}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-white/84 text-on-surface transition-premium hover:border-primary/40 hover:text-primary"
-                    aria-label="上一首"
-                  >
-                    <Icon name="skip_previous" className="text-base" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={togglePlay}
-                    className="inline-flex h-14 w-14 items-center justify-center rounded-full bg-[linear-gradient(135deg,#1148ff,#e01434)] text-white transition-premium hover:scale-[1.03] active:scale-[0.96]"
-                    aria-label={playing ? '暂停' : '播放'}
-                  >
-                    <Icon name={playing ? 'pause' : 'play_arrow'} className="text-xl" />
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => {
-                      if (!currentSong) return
-                      const i = approvedSongs.findIndex(s => s.id === currentSong.id)
-                      if (i >= 0 && i < approvedSongs.length - 1) playSong(approvedSongs[i + 1])
-                    }}
-                    className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-white/84 text-on-surface transition-premium hover:border-primary/40 hover:text-primary"
-                    aria-label="下一首"
-                  >
-                    <Icon name="skip_next" className="text-base" />
-                  </button>
-                </div>
-                <div className="mt-5 text-[11px] leading-relaxed text-on-surface-variant">
-                  点击列表中的曲目，或直接用这里的切歌按钮在档案里游走。
-                </div>
-              </div>
+    <section id="local-music" className="space-y-6">
+      {/* 专辑封面 Hero — 网易云风 */}
+      <div className="relative overflow-hidden rounded-[28px] surface-panel-strong p-6 md:p-8">
+        <div className="relative z-10 flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
+          <div className="shrink-0">
+            <div
+              className="overflow-hidden"
+              style={{
+                width: 180,
+                height: 180,
+                borderRadius: 20,
+                boxShadow: '0 20px 60px -20px rgba(0,47,167,0.35)',
+              }}
+            >
+              <img
+                src="/images/yuanyu.png"
+                alt="本地音乐"
+                className="h-full w-full object-cover"
+                draggable={false}
+              />
             </div>
           </div>
-
-          <div className="grid gap-3">
-            <div className="surface-item rounded-[24px] p-4">
-              <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">歌曲总数</div>
-              <div className="mt-2 font-headline-md text-[2.4rem] leading-none text-on-surface">{totalSongs}</div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <span className="font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">Sound Archive</span>
+            <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">本地音乐</h2>
+            <p className="mt-2 max-w-md font-body-md text-sm leading-relaxed text-on-surface-variant">
+              这里是声音档案墙，不是传统播放器
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
+                <span className="h-2 w-2 rounded-full bg-primary" />
+                <span className="font-label-mono text-[10px] uppercase tracking-[0.12em] text-primary">{totalSongs} 首</span>
+              </div>
+              {playing && (
+                <div className="flex items-center gap-2 rounded-full bg-green-50 px-4 py-2">
+                  <div className="flex items-end gap-[1px] h-3">
+                    {[1, 2, 3].map(b => (
+                      <div key={b} className="w-[2px] rounded-full bg-green-500" style={{ animation: `mini-bar 0.8s ease-in-out ${b * 0.15}s infinite alternate`, height: `${4 + b * 3}px` }} />
+                    ))}
+                  </div>
+                  <span className="font-label-mono text-[10px] tracking-[0.06em] text-green-600">播放中</span>
+                </div>
+              )}
             </div>
-            <div className="surface-item rounded-[24px] p-4">
-              <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">当前播放</div>
-              <div className="mt-2 font-headline-md text-[2.4rem] leading-none text-on-surface">{currentSong ? '1' : '0'}</div>
-            </div>
-            <div className="surface-item rounded-[24px] p-4">
-              <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">待上架</div>
-              <div className="mt-2 font-headline-md text-[2.4rem] leading-none text-on-surface">{pendingSongs.length}</div>
+            {/* 操作按钮 */}
+            <div className="mt-5 flex flex-wrap justify-center gap-2 md:justify-start">
+              <button
+                type="button"
+                onClick={() => setUploadMode(uploadMode === 'upload' ? 'none' : 'upload')}
+                className="inline-flex items-center gap-2 rounded-full bg-primary px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition-premium hover:opacity-90 active:scale-[0.98]"
+              >
+                <Icon name="add" className="text-sm" />
+                上传歌曲
+              </button>
+              <button
+                type="button"
+                onClick={() => setUploadMode(uploadMode === 'wish' ? 'none' : 'wish')}
+                className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-white/80 px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface transition-premium hover:border-primary/40 hover:bg-white active:scale-[0.98]"
+              >
+                <Icon name="rate_review" className="text-sm" />
+                许愿上架
+              </button>
             </div>
           </div>
-        </div>
-
-        <div className="mt-5 flex flex-wrap justify-start gap-2 lg:justify-end">
-          <button
-            type="button"
-            onClick={() => setUploadMode(uploadMode === 'upload' ? 'none' : 'upload')}
-            className="inline-flex items-center gap-2 rounded-[999px] bg-primary px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition-premium hover:opacity-90 active:scale-[0.98]"
-          >
-            <Icon name="add" className="text-sm" />
-            上传歌曲
-          </button>
-          <button
-            type="button"
-            onClick={() => setUploadMode(uploadMode === 'wish' ? 'none' : 'wish')}
-            className="inline-flex items-center gap-2 rounded-[999px] border border-border-subtle bg-white/80 px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface transition-premium hover:border-primary/40 hover:bg-white active:scale-[0.98]"
-          >
-            <Icon name="rate_review" className="text-sm" />
-            许愿上架
-          </button>
         </div>
       </div>
 
+      {/* 当前播放横栏 — 网易云底部播放器视觉 */}
+      {currentSong && (
+        <div className="surface-item rounded-2xl border border-border-subtle p-4">
+          <div className="flex items-center gap-4">
+            <div
+              className="shrink-0 overflow-hidden"
+              style={{ width: 56, height: 56, borderRadius: 12, boxShadow: '0 4px 12px -6px rgba(0,0,0,0.12)' }}
+            >
+              <img src="/images/yuanyu.png" alt={currentSong.title} className="h-full w-full object-cover" />
+            </div>
+            <div className="min-w-0 flex-1">
+              <div className="truncate font-body-md text-sm font-semibold text-on-surface">{currentSong.title}</div>
+              <div className="font-label-mono text-[10px] text-text-muted">{currentSong.artist} · {formatTime(duration * progress)} / {formatTime(duration)}</div>
+              {playing && (
+                <div className="mt-1 h-1 rounded-full bg-primary/10 overflow-hidden" style={{ width: 120 }}>
+                  <div className="h-full rounded-full bg-primary/40" style={{ width: `${progress * 100}%`, transition: 'width 0.3s linear' }} />
+                </div>
+              )}
+            </div>
+            <div className="flex items-center gap-2 shrink-0">
+              <button
+                type="button"
+                onClick={() => {
+                  if (!currentSong) return
+                  const i = approvedSongs.findIndex(s => s.id === currentSong.id)
+                  if (i > 0) playSong(approvedSongs[i - 1])
+                }}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-premium hover:text-primary"
+                aria-label="上一首"
+              >
+                <Icon name="skip_previous" className="text-base" />
+              </button>
+              <button
+                type="button"
+                onClick={togglePlay}
+                className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-white shadow-[0_4px_16px_-6px_rgba(0,47,167,0.35)] transition-premium hover:scale-[1.04] active:scale-[0.96]"
+                aria-label={playing ? '暂停' : '播放'}
+              >
+                <Icon name={playing ? 'pause' : 'play_arrow'} className="text-xl" />
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  if (!currentSong) return
+                  const i = approvedSongs.findIndex(s => s.id === currentSong.id)
+                  if (i >= 0 && i < approvedSongs.length - 1) playSong(approvedSongs[i + 1])
+                }}
+                className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-premium hover:text-primary"
+                aria-label="下一首"
+              >
+                <Icon name="skip_next" className="text-base" />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* 管理员提示 */}
       {adminToken && (
         <div className="flex items-center gap-2 rounded-[18px] border border-primary/20 bg-primary/8 px-4 py-3">
-          <span className="h-2 w-2 rounded-full bg-[rgba(223,161,144,0.95)]" />
+          <span className="h-2 w-2 rounded-full bg-primary" />
           <span className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-primary">
             管理员模式已启用，待审核内容可见
           </span>
         </div>
       )}
 
-      {currentSong && (
-        <div className="surface-panel stack-plate rounded-[28px] p-5 md:p-6">
-          <div className="flex items-end justify-between gap-3">
-            <div className="min-w-0">
-              <div className="font-label-mono text-[10px] uppercase tracking-[0.24em] text-text-muted">正在播放</div>
-              <div className="mt-1 truncate font-headline-md text-[clamp(1.5rem,2.2vw,2.2rem)] font-semibold tracking-[-0.05em] text-on-surface">{currentSong.title}</div>
-              <div className="mt-1 font-label-mono text-xs uppercase tracking-[0.18em] text-text-muted">{currentSong.artist}</div>
-            </div>
-            <div className="rounded-[18px] border border-border-subtle bg-white/74 px-4 py-3 text-right">
-              <div className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">当前段落</div>
-              <div className="mt-1 font-label-mono text-xs text-text-muted">
-                {playing ? '播放中' : '已暂停'}
-              </div>
-            </div>
-          </div>
-          <div className="mt-4 text-[11px] leading-relaxed text-on-surface-variant">
-            切歌与暂停现在集中在左侧导航下方的小方块里，这里只保留当前选中的作品说明。
-          </div>
-        </div>
-      )}
-
+      {/* 上传/许愿表单 */}
       {uploadMode === 'upload' && (
         <form onSubmit={handleUpload} className="surface-panel rounded-2xl p-5 space-y-4">
           <h3 className="font-body-lg text-lg font-semibold text-on-surface">上传歌曲</h3>
@@ -386,23 +374,72 @@ const LocalMusicPlugin = () => {
           </div>
           <input name="source" placeholder="歌曲链接（网易云/YouTube 等，选填）" className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted" />
           <input name="uploader" placeholder="你的名字（选填）" className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted" />
-          <button type="submit" className="rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-[#07130e] transition-premium hover:opacity-90">
+          <button type="submit" className="rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-on-primary transition-premium hover:opacity-90">
             提交许愿
           </button>
         </form>
       )}
 
+      {/* 歌曲列表 — 网易云歌单风格 */}
+      <div className="space-y-2">
+        {approvedSongs.map((song, idx) => {
+          const isActive = currentSong?.id === song.id
+          return (
+            <button
+              key={song.id}
+              type="button"
+              onClick={() => playSong(song)}
+              className={`w-full rounded-2xl border p-4 text-left transition-premium ${
+                isActive
+                  ? 'border-primary/30 bg-primary/5'
+                  : 'border-border-subtle bg-white/80 hover:border-primary/20 hover:bg-white'
+              }`}
+            >
+              <div className="flex items-center gap-4">
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold ${
+                  isActive && playing
+                    ? 'bg-primary text-white'
+                    : isActive
+                      ? 'bg-primary/10 text-primary'
+                      : 'bg-surface text-text-muted'
+                }`}>
+                  {isActive && playing ? (
+                    <div className="flex items-end gap-[1.5px] h-4">
+                      {[1, 2, 3].map(b => (
+                        <div key={b} className="w-[2px] rounded-full bg-white" style={{ animation: `mini-bar 0.7s ease-in-out ${b * 0.18}s infinite alternate`, height: `${4 + b * 4}px` }} />
+                      ))}
+                    </div>
+                  ) : (
+                    idx + 1
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <div className={`truncate text-sm font-semibold ${isActive ? 'text-primary' : 'text-on-surface'}`}>
+                    {song.title}
+                  </div>
+                  <div className="font-label-mono text-[10px] text-text-muted">{song.artist} · {song.uploadedBy}</div>
+                </div>
+                <div className="font-label-mono text-[10px] text-text-muted shrink-0">
+                  {isActive ? formatTime(duration * progress) : song.file ? '...' : ''}
+                </div>
+              </div>
+            </button>
+          )
+        })}
+      </div>
+
+      {/* 待审核列表（管理员可见） */}
       {adminToken && pendingSongs.length > 0 && (
         <div className="space-y-3">
           <h3 className="font-label-mono text-xs uppercase tracking-[0.2em] text-text-muted">待审核 ({pendingSongs.length})</h3>
           <div className="space-y-2">
             {pendingSongs.map(song => (
-              <div key={song.id} className="flex items-center gap-3 rounded-2xl border border-border-subtle bg-white/80 p-4 shadow-[0_18px_40px_-34px_var(--color-panel-shadow)]">
+              <div key={song.id} className="flex items-center gap-3 rounded-2xl border border-border-subtle bg-white/80 p-4">
                 <div className="min-w-0 flex-1">
                   <div className="truncate font-body-md text-sm text-on-surface">{song.title}</div>
                   <div className="font-label-mono text-[10px] text-text-muted">{song.artist} · {song.uploadedBy} · {song.status === 'wish' ? '许愿' : '待审'}</div>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 shrink-0">
                   {song.file && (
                     <button onClick={() => playSong(song)} className="rounded-full border border-border-subtle px-3 py-1.5 text-xs text-primary transition-premium hover:border-primary/40">
                       试听
@@ -411,7 +448,7 @@ const LocalMusicPlugin = () => {
                   <button onClick={() => handleApprove(song.id)} className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs text-primary transition-premium hover:bg-primary/15">
                     通过
                   </button>
-                  <button onClick={() => handleDelete(song.id)} className="rounded-full border border-[rgba(223,161,144,0.35)] bg-[rgba(223,161,144,0.12)] px-3 py-1.5 text-xs text-[rgb(150,95,84)] transition-premium hover:bg-[rgba(223,161,144,0.18)]">
+                  <button onClick={() => handleDelete(song.id)} className="rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-xs text-red-600 transition-premium hover:bg-red-100">
                     删除
                   </button>
                 </div>
@@ -421,6 +458,7 @@ const LocalMusicPlugin = () => {
         </div>
       )}
 
+      {/* 加载/错误/空状态 */}
       {loading && (
         <div className="flex items-center justify-center py-12">
           <div className="flex items-center gap-2 font-body-md text-sm text-text-muted">
@@ -443,52 +481,6 @@ const LocalMusicPlugin = () => {
           <p className="font-body-md text-text-muted">还没有歌曲，快来上传或许愿吧</p>
         </div>
       )}
-
-      <div className="grid gap-3 xl:grid-cols-2">
-        {approvedSongs.map(song => {
-          const isActive = currentSong?.id === song.id
-          return (
-            <button
-              key={song.id}
-              type="button"
-              onClick={() => playSong(song)}
-              className={`w-full rounded-[24px] border p-4 text-left transition-premium ${
-                isActive
-                  ? 'border-primary/30 bg-[linear-gradient(145deg,rgba(17,72,255,0.08),rgba(224,20,52,0.06),rgba(255,255,255,0.92))] shadow-[0_0_0_1px_rgba(17,72,255,0.12)]'
-                  : 'border-border-subtle bg-white/84 hover:border-primary/20 hover:bg-white'
-              }`}
-            >
-              <div className="flex items-center gap-3">
-                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${isActive ? 'bg-primary text-white' : 'bg-[rgba(237,243,249,0.88)] text-text-muted'}`}>
-                  {isActive && playing ? (
-                    <div className="flex items-end gap-[1.5px] h-3">
-                      {[1, 2, 3].map(b => (
-                        <div
-                          key={b}
-                          className="w-[2px] rounded-full bg-white"
-                          style={{ animation: `mini-bar 0.8s ease-in-out ${b * 0.15}s infinite alternate`, height: `${4 + b * 3}px` }}
-                        />
-                      ))}
-                    </div>
-                  ) : (
-                    <span className="font-label-mono text-xs">{String(currentIndex >= 0 ? currentIndex + 1 : approvedSongs.indexOf(song) + 1).padStart(2, '0')}</span>
-                  )}
-                </div>
-
-                <div className="min-w-0 flex-1">
-                  <div className={`truncate text-sm font-semibold ${isActive ? 'text-primary' : 'text-on-surface'}`}>{song.title}</div>
-                  <div className="font-label-mono text-[10px] text-text-muted">{song.artist}</div>
-                </div>
-
-                <div className="hidden shrink-0 text-right sm:block">
-                  <div className="font-label-mono text-[10px] text-text-muted">{song.uploadedBy}</div>
-                  <div className="font-label-mono text-[10px] text-text-muted">{formatTime(duration)}</div>
-                </div>
-              </div>
-            </button>
-          )
-        })}
-      </div>
     </section>
   )
 }

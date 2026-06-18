@@ -51,19 +51,58 @@ export default function AmbientMusicPlugin(_props: Props) {
     engine.setVolume(id, volume)
   }, [engine])
 
+  const activeCount = trackStates.filter(t => t.playing).length
+
   return (
-    <section id="ambient-music" className="space-y-5">
-      <div className="surface-panel-strong rounded-[28px] p-5 md:p-7">
-        <span className="inline-flex items-center gap-2 font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">
-          <span className="h-2 w-2 rounded-full bg-[rgba(223,161,144,0.95)]" />
-          sound layer
-        </span>
-        <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">氛围音乐</h2>
-        <p className="mt-2 max-w-2xl font-body-md text-sm leading-relaxed text-on-surface-variant">
-          用更轻的环境声给浏览过程加一层情绪，不把整站变成播放器。
-        </p>
+    <section id="ambient-music" className="space-y-6">
+      {/* Hero album section — 网易云专辑页风格 */}
+      <div className="relative overflow-hidden rounded-[28px] surface-panel-strong p-6 md:p-8">
+        <div className="relative z-10 flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
+          <div className="shrink-0">
+            <div
+              className="overflow-hidden"
+              style={{
+                width: 180,
+                height: 180,
+                borderRadius: 20,
+                boxShadow: '0 20px 60px -20px rgba(0,47,167,0.35)',
+              }}
+            >
+              <img
+                src="/images/yuanyu.png"
+                alt="氛围音乐"
+                className="h-full w-full object-cover"
+                draggable={false}
+              />
+            </div>
+          </div>
+          <div className="flex flex-col items-center text-center md:items-start md:text-left">
+            <span className="font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">Sound Layer</span>
+            <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">氛围音乐</h2>
+            <p className="mt-2 max-w-md font-body-md text-sm leading-relaxed text-on-surface-variant">
+              用环境声为浏览加一层情绪层
+            </p>
+            <div className="mt-4 flex items-center gap-3">
+              <div className="flex items-center gap-2 rounded-full bg-primary/10 px-4 py-2">
+                <span className="h-2 w-2 rounded-full bg-primary" />
+                <span className="font-label-mono text-[10px] uppercase tracking-[0.12em] text-primary">{TRACKS.length} 音源</span>
+              </div>
+              {activeCount > 0 && (
+                <div className="flex items-center gap-2 rounded-full bg-green-50 px-4 py-2">
+                  <div className="flex items-end gap-[1px] h-3">
+                    {[1, 2, 3].map(b => (
+                      <div key={b} className="w-[2px] rounded-full bg-green-500" style={{ animation: `mini-bar 0.8s ease-in-out ${b * 0.15}s infinite alternate`, height: `${4 + b * 3}px` }} />
+                    ))}
+                  </div>
+                  <span className="font-label-mono text-[10px] tracking-[0.06em] text-green-600">播放中</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
       </div>
 
+      {/* 音轨卡片网格 */}
       <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {TRACKS.map((track) => {
           const state = trackStates.find((t) => t.id === track.id)
@@ -75,75 +114,68 @@ export default function AmbientMusicPlugin(_props: Props) {
             <div
               key={track.id}
               className={`surface-item rounded-2xl p-5 transition-premium ${
-                isPlaying ? 'border-primary/30 bg-primary/5 shadow-[0_0_0_1px_rgba(111,143,184,0.12)]' : ''
+                isPlaying ? 'border-primary/30 bg-primary/5' : ''
               }`}
             >
-              <div className="mb-4 flex items-center gap-3">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl border border-border-subtle bg-white/80" style={{ boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.72)' }}>
-                  <Icon name={track.icon} className="text-xl text-primary" />
+              <div className="flex items-center gap-4">
+                <div
+                  className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl"
+                  style={{
+                    background: isPlaying
+                      ? 'linear-gradient(135deg, rgba(0,47,167,0.12), rgba(0,47,167,0.06))'
+                      : 'linear-gradient(135deg, rgba(245,247,250,0.95), rgba(235,240,255,0.85))',
+                  }}
+                >
+                  {isPlaying ? (
+                    <div className="flex items-end gap-[2px] h-5">
+                      {[1, 2, 3].map(b => (
+                        <div key={b} className="w-[2.5px] rounded-full bg-primary" style={{ animation: `mini-bar 0.7s ease-in-out ${b * 0.18}s infinite alternate`, height: `${5 + b * 5}px` }} />
+                      ))}
+                    </div>
+                  ) : (
+                    <Icon name={track.icon} className="text-2xl text-primary/70" />
+                  )}
                 </div>
-                <div className="min-w-0">
+                <div className="min-w-0 flex-1">
                   <h3 className="truncate font-body-md text-sm font-semibold text-on-surface">{track.name}</h3>
                   <span className="font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
-                    {isPlaying ? '播放中' : track.category === 'synth' ? '合成音' : '音频'}
+                    {isPlaying ? '播放中' : (track.category === 'synth' ? '合成音' : '音频')}
                   </span>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => toggleTrack(track.id)}
+                  disabled={isLoading}
+                  className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-premium ${
+                    isPlaying
+                      ? 'bg-primary text-white shadow-[0_4px_12px_-4px_rgba(0,47,167,0.3)]'
+                      : 'border border-border-subtle bg-white/80 text-text-muted hover:border-primary/30 hover:text-primary'
+                  } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
+                >
+                  <Icon name={isPlaying ? 'pause' : (isLoading ? 'hourglass_empty' : 'play_arrow')} className="text-lg" />
+                </button>
               </div>
 
               {isPlaying && (
-                <div className="mb-4 flex h-7 items-end gap-[2px]" aria-hidden="true">
-                  {Array.from({ length: 12 }, (_, i) => (
-                    <div
-                      key={i}
-                      className="w-[3px] rounded-full"
-                      style={{
-                        backgroundColor: track.color,
-                        animation: `mini-bar 0.8s ease-in-out ${i * 0.08}s infinite alternate`,
-                        height: `${4 + Math.random() * 16}px`,
-                      }}
+                <div className="mt-4 pt-4 border-t border-border-subtle/60">
+                  <div className="flex items-center gap-2">
+                    <Icon name="volume_down" className="text-xs text-text-muted shrink-0" />
+                    <input
+                      type="range"
+                      min={0}
+                      max={100}
+                      value={Math.round(volume * 100)}
+                      onChange={(e) => handleVolumeChange(track.id, Number(e.target.value) / 100)}
+                      className="h-1 flex-1 accent-primary"
+                      aria-label={`${track.name} 音量`}
                     />
-                  ))}
+                    <Icon name="volume_up" className="text-xs text-text-muted shrink-0" />
+                  </div>
                 </div>
               )}
-
-              {isPlaying && (
-                <div className="mb-4 flex items-center gap-2">
-                  <Icon name="volume_down" className="text-xs text-text-muted" />
-                  <input
-                    type="range"
-                    min={0}
-                    max={100}
-                    value={Math.round(volume * 100)}
-                    onChange={(e) => handleVolumeChange(track.id, Number(e.target.value) / 100)}
-                    className="h-1 flex-1 accent-primary"
-                    aria-label={`${track.name} 音量`}
-                  />
-                  <Icon name="volume_up" className="text-xs text-text-muted" />
-                </div>
-              )}
-
-              <button
-                type="button"
-                onClick={() => toggleTrack(track.id)}
-                disabled={isLoading}
-                className={`inline-flex w-full items-center justify-center gap-2 rounded-full px-4 py-2.5 text-sm font-semibold transition-premium ${
-                  isPlaying
-                    ? 'border border-[rgba(223,161,144,0.35)] bg-[rgba(223,161,144,0.12)] text-[rgb(150,95,84)] hover:bg-[rgba(223,161,144,0.18)]'
-                    : 'bg-primary text-on-primary hover:opacity-90'
-                } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
-              >
-                <Icon name={isPlaying ? 'stop' : 'play_arrow'} className="text-base" />
-                {isLoading ? '加载中…' : isPlaying ? '停止' : '播放'}
-              </button>
             </div>
           )
         })}
-      </div>
-
-      <div className="border-t border-border-subtle pt-4">
-        <p className="text-center font-body-md text-xs text-text-muted">
-          页面任意交互即可自动播放 · 支持同时播放多种音源混音
-        </p>
       </div>
     </section>
   )

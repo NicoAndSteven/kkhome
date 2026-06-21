@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin } from '@components'
+import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
@@ -44,7 +44,8 @@ function App() {
   const [activeRoute, setActiveRoute] = useState<HubRouteId>(() => normalizeHubRoute(window.location.hash))
   const [contactOpen, setContactOpen] = useState(false)
   const [adminLoginOpen, setAdminLoginOpen] = useState(false)
-  const [_adminToken, setAdminToken] = useState('')
+  const [adminToken, setAdminToken] = useState('')
+  const [showAdmin, setShowAdmin] = useState(false)
   const [pendingCount, setPendingCount] = useState(0)
   const showInitialIntro = !isMobile && activeRoute === 'home' && !introComplete
 
@@ -233,6 +234,11 @@ function App() {
     )
   }
 
+  // 管理后台覆盖层
+  if (showAdmin && adminToken) {
+    return <AdminPanel token={adminToken} onClose={() => { setShowAdmin(false); window.location.hash = '#/ai-tools' }} />
+  }
+
   const enabledPlugins = pluginSystem.getEnabledPlugins()
   const enabledPluginIds = new Set(enabledPlugins.map((plugin) => plugin.id))
   const isOnWelcome = activeRoute === 'home'
@@ -256,7 +262,7 @@ function App() {
             onComplete={handleIntroComplete}
           />
         )}
-        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] px-6 pt-16 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`}>
+        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] px-6 pt-16 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`} style={{ position: 'relative', zIndex: 1 }}>
           <ErrorBoundary>
             {profilePlugin ? (
               <profilePlugin.component config={profilePlugin.config} />
@@ -273,7 +279,7 @@ function App() {
           profile={profileConfig ?? undefined}
           onClose={() => setContactOpen(false)}
         />
-        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={() => { const secret = globalThis.localStorage.getItem('hub:totp-secret') || ''; setAdminToken(secret); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token: secret } })) }} />
+        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={(token) => { setAdminToken(token); sessionStorage.setItem('hub:admin-token', token); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } })); setShowAdmin(true) }} />
 
         {/* 管理员入口 — 右下角 */}
         <button

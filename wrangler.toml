@@ -20,9 +20,10 @@ pages_build_output_dir = "dist"
 binding = "MUSIC_BUCKET"
 bucket_name = "music"
 
-# 音乐墙管理员令牌 — 在 Cloudflare Pages Dashboard 中设置
+# 管理员密码 — 在 Cloudflare Pages Dashboard 中设置
 # Settings → Environment variables → Add MUSIC_ADMIN_TOKEN
-# MUSIC_ADMIN_TOKEN = "your-secret-token-here"
+# 登录时输入此密码即可获得管理员权限
+# MUSIC_ADMIN_TOKEN = "your-admin-password-here"
 
 # [[vectorize]]
 # binding = "HUB_VECTORIZE"

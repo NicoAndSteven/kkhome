@@ -38,13 +38,8 @@ async function isAdmin(request, env) {
   const auth = request.headers.get('Authorization') || ''
   const token = auth.replace(/^Bearer\s+/i, '')
   if (!token) return false
-  // 从 R2 读取管理员配置，验证 TOTP 密钥
-  try {
-    const cfg = await env.MUSIC_BUCKET.get('admin-config.json')
-    if (!cfg) return false
-    const { totpSecret } = JSON.parse(await cfg.text())
-    return token === totpSecret
-  } catch { return false }
+  // 验证 Bearer token 是否匹配环境变量中配置的管理员密钥
+  return token === (env.MUSIC_ADMIN_TOKEN || '')
 }
 
 export const onRequestOptions = () => new Response(null, {
@@ -111,14 +106,17 @@ export const onRequestPost = async ({ request, env }) => {
   const body = await request.json().catch(() => ({}))
   const { _action } = body
 
-  // 保存 TOTP 密钥到 R2
-  if (_action === 'save-totp') {
-    const { totpSecret } = body
-    if (!totpSecret) return fail('MISSING_SECRET', '缺少密钥', 400, { request, env })
-    await env.MUSIC_BUCKET.put('admin-config.json', JSON.stringify({ totpSecret }), {
-      httpMetadata: { contentType: 'application/json' },
-    })
-    return ok({ configured: true }, { request, env })
+  // 管理员密码登录验证
+  if (_action === 'login') {
+    const { password } = body
+    if (!password || !env.MUSIC_ADMIN_TOKEN) {
+      return fail('INVALID_CREDENTIALS', '密码错误', 401, { request, env })
+    }
+    if (password === env.MUSIC_ADMIN_TOKEN) {
+      // 返回 token（这里直接用密码本身作为 Bearer token，方便后续 API 鉴权）
+      return ok({ token: env.MUSIC_ADMIN_TOKEN }, { request, env })
+    }
+    return fail('INVALID_CREDENTIALS', '密码错误', 401, { request, env })
   }
 
   // 许愿上架

@@ -32,6 +32,10 @@ const LocalMusicPlugin = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
+    // 从 sessionStorage 读取已有的 token（修复页面跳转后事件丢失的问题）
+    const stored = globalThis.sessionStorage.getItem('hub:admin-token')
+    if (stored) setAdminToken(stored)
+
     const handler = (e: Event) => {
       const detail = (e as CustomEvent).detail
       if (detail?.token) setAdminToken(detail.token)

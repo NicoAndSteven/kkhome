@@ -9,6 +9,7 @@ import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
 import VantaBirds from '@components/VantaBirds'
 import VantaRings from '@components/VantaRings'
+import { MusicPlayerProvider } from './contexts/MusicPlayerContext'
 
 /** 所有路由定义（含 welcome） */
 const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; pluginId: string }> = [
@@ -369,4 +370,12 @@ function App() {
   )
 }
 
-export default App
+function AppInner() {
+  return (
+    <MusicPlayerProvider>
+      <App />
+    </MusicPlayerProvider>
+  )
+}
+
+export default AppInner

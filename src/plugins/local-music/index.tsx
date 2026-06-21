@@ -1,5 +1,6 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Icon from '../../components/Icon'
+import { useMusicPlayer } from '../../contexts/MusicPlayerContext'
 
 interface Song {
   id: string
@@ -23,16 +24,12 @@ const LocalMusicPlugin = () => {
   const [songs, setSongs] = useState<Song[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-  const [currentSong, setCurrentSong] = useState<Song | null>(null)
-  const [playing, setPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [duration, setDuration] = useState(0)
   const [uploadMode, setUploadMode] = useState<'none' | 'upload' | 'wish'>('none')
   const [adminToken, setAdminToken] = useState('')
   const [uploadProgress, setUploadProgress] = useState(0)
   const [uploading, setUploading] = useState(false)
   const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'done' | 'error'>('idle')
-  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const { currentSong, playing, progress, duration, playSong, togglePlay, playNext, setSongQueue } = useMusicPlayer()
 
   useEffect(() => {
     const stored = globalThis.sessionStorage.getItem('hub:admin-token')
@@ -55,8 +52,11 @@ const LocalMusicPlugin = () => {
 
       const res = await fetch('/api/music/songs', { headers })
       const json = await res.json()
-      if (json.ok) setSongs(json.data.songs)
-      else setError(json.error?.message || '加载失败')
+      if (json.ok) {
+        setSongs(json.data.songs)
+        const approved = json.data.songs.filter((s: Song) => s.status === 'approved' && s.file)
+        setSongQueue(approved)
+      } else setError(json.error?.message || '加载失败')
     } catch {
       setError('无法连接服务器')
     } finally {
@@ -65,73 +65,6 @@ const LocalMusicPlugin = () => {
   }, [adminToken])
 
   useEffect(() => { fetchSongs() }, [fetchSongs])
-
-  useEffect(() => {
-    const audio = new Audio()
-    audio.preload = 'metadata'
-    audioRef.current = audio
-    const onTime = () => setProgress(audio.duration ? audio.currentTime / audio.duration : 0)
-    const onMeta = () => setDuration(audio.duration)
-    const onEnd = () => { setPlaying(false); dispatchStopEvent(); playNext() }
-    audio.addEventListener('timeupdate', onTime)
-    audio.addEventListener('loadedmetadata', onMeta)
-    audio.addEventListener('ended', onEnd)
-    return () => { audio.pause(); audio.src = '' }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const dispatchPlayEvent = useCallback((song: Song, isPlaying: boolean) => {
-    window.dispatchEvent(new CustomEvent('local-music:play', {
-      detail: { title: song.title, artist: song.artist, id: song.id, playing: isPlaying },
-    }))
-  }, [])
-
-  const dispatchStopEvent = useCallback(() => {
-    window.dispatchEvent(new Event('local-music:stop'))
-  }, [])
-
-  const playSong = useCallback(async (song: Song) => {
-    const audio = audioRef.current
-    if (!audio || !song.file) return
-    setCurrentSong(song)
-    setProgress(0)
-    setDuration(0)
-    audio.src = `/api/music/stream/${song.file}`
-    try {
-      await audio.play()
-      setPlaying(true)
-      dispatchPlayEvent(song, true)
-    } catch {
-      setPlaying(false)
-      dispatchStopEvent()
-    }
-  }, [dispatchPlayEvent, dispatchStopEvent])
-
-  const togglePlay = useCallback(() => {
-    const audio = audioRef.current
-    if (!audio || !currentSong) return
-    if (playing) {
-      audio.pause()
-      setPlaying(false)
-      dispatchStopEvent()
-    } else {
-      audio.play().then(() => {
-        setPlaying(true)
-        dispatchPlayEvent(currentSong, true)
-      }).catch(() => {})
-    }
-  }, [playing, currentSong, dispatchPlayEvent, dispatchStopEvent])
-
-  const playNext = useCallback(() => {
-    const approved = songs.filter(s => s.status === 'approved' && s.file)
-    if (approved.length === 0) {
-      dispatchStopEvent()
-      return
-    }
-    const curIdx = currentSong ? approved.findIndex(s => s.id === currentSong.id) : -1
-    const next = approved[(curIdx + 1) % approved.length]
-    playSong(next)
-  }, [songs, currentSong, playSong, dispatchStopEvent])
 
   const handleUpload = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -222,9 +155,18 @@ const LocalMusicPlugin = () => {
   const approvedSongs = songs.filter(s => s.status === 'approved' && s.file)
   const totalSongs = approvedSongs.length
 
+  // 处理歌曲点击：如果点击的是当前歌曲则暂停/播放，否则播放新歌
+  const handleSongClick = useCallback((song: Song) => {
+    if (currentSong?.id === song.id) {
+      togglePlay()
+    } else {
+      playSong(song)
+    }
+  }, [currentSong, togglePlay, playSong])
+
   return (
     <section id="local-music" className="space-y-6">
-      {/* 专辑封面 Hero — 网易云风 */}
+      {/* 专辑封面 Hero */}
       <div className="relative overflow-hidden rounded-[28px] surface-panel-strong p-6 md:p-8">
         <div className="relative z-10 flex flex-col items-center gap-6 md:flex-row md:items-start md:gap-8">
           <div className="shrink-0">
@@ -290,7 +232,7 @@ const LocalMusicPlugin = () => {
         </div>
       </div>
 
-      {/* 当前播放横栏 — 网易云底部播放器视觉 */}
+      {/* 当前播放横栏 */}
       {currentSong && (
         <div className="surface-item rounded-2xl border border-border-subtle p-4">
           <div className="flex items-center gap-4">
@@ -313,9 +255,8 @@ const LocalMusicPlugin = () => {
               <button
                 type="button"
                 onClick={() => {
-                  if (!currentSong) return
-                  const i = approvedSongs.findIndex(s => s.id === currentSong.id)
-                  if (i > 0) playSong(approvedSongs[i - 1])
+                  const idx = approvedSongs.findIndex(s => s.id === currentSong.id)
+                  if (idx > 0) playSong(approvedSongs[idx - 1])
                 }}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-premium hover:text-primary"
                 aria-label="上一首"
@@ -324,7 +265,7 @@ const LocalMusicPlugin = () => {
               </button>
               <button
                 type="button"
-                onClick={togglePlay}
+                onClick={() => togglePlay()}
                 className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-primary to-secondary text-white shadow-[0_4px_16px_-6px_rgba(0,47,167,0.35)] transition-premium hover:scale-[1.04] active:scale-[0.96]"
                 aria-label={playing ? '暂停' : '播放'}
               >
@@ -332,11 +273,7 @@ const LocalMusicPlugin = () => {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (!currentSong) return
-                  const i = approvedSongs.findIndex(s => s.id === currentSong.id)
-                  if (i >= 0 && i < approvedSongs.length - 1) playSong(approvedSongs[i + 1])
-                }}
+                onClick={() => playNext(approvedSongs)}
                 className="inline-flex h-9 w-9 items-center justify-center rounded-full text-text-muted transition-premium hover:text-primary"
                 aria-label="下一首"
               >
@@ -352,7 +289,6 @@ const LocalMusicPlugin = () => {
         <form onSubmit={handleUpload} className="surface-panel rounded-2xl p-5 space-y-4">
           <h3 className="font-body-lg text-lg font-semibold text-on-surface">上传歌曲</h3>
 
-          {/* 文件选择 */}
           <input
             type="file"
             name="file"
@@ -383,7 +319,7 @@ const LocalMusicPlugin = () => {
             </div>
           )}
 
-          {/* 上传成功 — 持久显示直到用户关闭 */}
+          {/* 上传成功 */}
           {uploadStatus === 'done' && (
             <div className="flex items-center gap-3 rounded-xl bg-primary-container/60 px-4 py-3 border border-primary/10">
               <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
@@ -453,7 +389,7 @@ const LocalMusicPlugin = () => {
         </form>
       )}
 
-      {/* 歌曲列表 — 网易云歌单风格 */}
+      {/* 歌曲列表 */}
       <div className="space-y-2">
         {approvedSongs.map((song, idx) => {
           const isActive = currentSong?.id === song.id
@@ -461,14 +397,13 @@ const LocalMusicPlugin = () => {
             <button
               key={song.id}
               type="button"
-              onClick={() => playSong(song)}
+              onClick={() => handleSongClick(song)}
               className={`w-full rounded-2xl border p-4 text-left transition-premium relative overflow-hidden ${
                 isActive
                   ? 'border-primary/30 bg-primary/5'
                   : 'border-border-subtle bg-white/80 hover:border-primary/20 hover:bg-white'
               }`}
             >
-              {/* 播放中：顶部流光光晕 */}
               {isActive && playing && (
                 <span className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer-sweep_2.4s_ease-in-out_infinite]" />
               )}

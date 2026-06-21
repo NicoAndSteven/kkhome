@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Icon from './Icon'
 import QRCode from 'qrcode'
 import { verifyTOTP, generateSecret, generateOTPAuthURI } from '../lib/totp'
@@ -17,6 +17,7 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
   const [error, setError] = useState(false)
   const [totpSecret, setTotpSecret] = useState('')
   const [qrDataURL, setQrDataURL] = useState('')
+  const codeInputRef = useRef<HTMLInputElement>(null)
 
   useEffect(() => {
     const saved = globalThis.localStorage.getItem(TOTP_KEY)
@@ -32,7 +33,14 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
       QRCode.toDataURL(uri, { width: 200, margin: 1 }).then(setQrDataURL).catch(() => {})
       setPhase('setup')
     }
+    // 弹窗打开时强制聚焦隐藏输入
+    requestAnimationFrame(() => codeInputRef.current?.focus())
   }, [open])
+
+  // 切换 setup/verify 时重新聚焦输入
+  useEffect(() => {
+    requestAnimationFrame(() => codeInputRef.current?.focus())
+  }, [phase])
 
   if (!open) return null
 
@@ -118,17 +126,18 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
 
               {/* 6 位码输入 */}
               <p className="font-body-md text-sm text-text-muted mb-3">绑定完成后输入验证码</p>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-4" onClick={() => codeInputRef.current?.focus()}>
                 {[0, 1, 2, 3, 4, 5].map(i => (
-                  <div key={i} className={`flex-1 aspect-square rounded-xl border-2 flex items-center justify-center font-headline-md text-2xl text-on-surface transition-all ${code.length > i ? 'border-primary bg-primary/5' : 'border-border-subtle'}`}>
+                  <div key={i} className={`flex-1 aspect-square rounded-xl border-2 flex items-center justify-center font-headline-md text-2xl text-on-surface transition-all cursor-text ${code.length > i ? 'border-primary bg-primary/5' : 'border-border-subtle'}`}>
                     {code[i] || ''}
                   </div>
                 ))}
               </div>
               <input type="text" inputMode="numeric" pattern="[0-9]*" maxLength={6} value={code}
+                ref={codeInputRef}
                 onChange={e => { const val = e.target.value.replace(/\D/g, '').slice(0, 6); setCode(val); setError(false); if (val.length === 6) setTimeout(() => handleSubmit(), 200) }}
                 onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                className="absolute opacity-0 w-0 h-0" autoFocus />
+                className="absolute opacity-0 w-0 h-0" />
               {error && <p className="font-body-md text-xs text-error mb-3 text-center">验证码无效</p>}
               <button type="button" onClick={handleSubmit} disabled={code.length !== 6}
                 className="w-full py-3 rounded-xl bg-primary text-white font-label-mono text-xs uppercase tracking-wider hover:opacity-90 transition-all disabled:opacity-40">
@@ -144,17 +153,18 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
               <p className="font-label-mono text-[10px] text-primary mb-4">
                 <button type="button" onClick={() => setPhase('setup')} className="underline hover:no-underline">首次使用？点此设置验证器 →</button>
               </p>
-              <div className="flex items-center gap-2 mb-4">
+              <div className="flex items-center gap-2 mb-4" onClick={() => codeInputRef.current?.focus()}>
                 {[0, 1, 2, 3, 4, 5].map(i => (
-                  <div key={i} className={`flex-1 aspect-square rounded-xl border-2 flex items-center justify-center font-headline-md text-2xl text-on-surface transition-all ${code.length > i ? 'border-primary bg-primary/5' : 'border-border-subtle'}`}>
+                  <div key={i} className={`flex-1 aspect-square rounded-xl border-2 flex items-center justify-center font-headline-md text-2xl text-on-surface transition-all cursor-text ${code.length > i ? 'border-primary bg-primary/5' : 'border-border-subtle'}`}>
                     {code[i] || ''}
                   </div>
                 ))}
               </div>
               <input type="text" inputMode="numeric" pattern="[0-9]*" maxLength={6} value={code}
+                ref={codeInputRef}
                 onChange={e => { const val = e.target.value.replace(/\D/g, '').slice(0, 6); setCode(val); setError(false); if (val.length === 6) setTimeout(() => handleSubmit(), 200) }}
                 onKeyDown={e => e.key === 'Enter' && handleSubmit()}
-                className="absolute opacity-0 w-0 h-0" autoFocus />
+                className="absolute opacity-0 w-0 h-0" />
               {error && <p className="font-body-md text-xs text-error mb-3 text-center">验证码无效</p>}
               <button type="button" onClick={handleSubmit} disabled={code.length !== 6}
                 className="w-full py-3 rounded-xl bg-primary text-white font-label-mono text-xs uppercase tracking-wider hover:opacity-90 transition-all disabled:opacity-40">

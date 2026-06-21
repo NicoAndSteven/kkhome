@@ -423,6 +423,10 @@ html.intro-scroll-lock #root {
     flex-direction: column;
     background: rgba(251, 252, 254, 0.72);
     scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+.blog-sidebar::-webkit-scrollbar {
+    display: none;
 }
 
 .blog-sidebar-brand {

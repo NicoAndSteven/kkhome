@@ -35,7 +35,7 @@ const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {
   const bottomRoutes = routes.filter((r) => secondaryRoutes.includes(r.id))
 
   return (
-    <aside className="blog-sidebar scrollbar-quiet">
+    <aside className="blog-sidebar">
       <div className="blog-sidebar-brand">
         <div className="min-w-0 flex-1">
           <div className="font-label-mono text-[9px] uppercase tracking-[0.36em] text-primary/60">

@@ -72,12 +72,22 @@ const LocalMusicPlugin = () => {
     audioRef.current = audio
     const onTime = () => setProgress(audio.duration ? audio.currentTime / audio.duration : 0)
     const onMeta = () => setDuration(audio.duration)
-    const onEnd = () => { setPlaying(false); playNext() }
+    const onEnd = () => { setPlaying(false); dispatchStopEvent(); playNext() }
     audio.addEventListener('timeupdate', onTime)
     audio.addEventListener('loadedmetadata', onMeta)
     audio.addEventListener('ended', onEnd)
     return () => { audio.pause(); audio.src = '' }
   // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const dispatchPlayEvent = useCallback((song: Song, isPlaying: boolean) => {
+    window.dispatchEvent(new CustomEvent('local-music:play', {
+      detail: { title: song.title, artist: song.artist, id: song.id, playing: isPlaying },
+    }))
+  }, [])
+
+  const dispatchStopEvent = useCallback(() => {
+    window.dispatchEvent(new Event('local-music:stop'))
   }, [])
 
   const playSong = useCallback(async (song: Song) => {
@@ -90,10 +100,12 @@ const LocalMusicPlugin = () => {
     try {
       await audio.play()
       setPlaying(true)
+      dispatchPlayEvent(song, true)
     } catch {
       setPlaying(false)
+      dispatchStopEvent()
     }
-  }, [])
+  }, [dispatchPlayEvent, dispatchStopEvent])
 
   const togglePlay = useCallback(() => {
     const audio = audioRef.current
@@ -101,18 +113,25 @@ const LocalMusicPlugin = () => {
     if (playing) {
       audio.pause()
       setPlaying(false)
+      dispatchStopEvent()
     } else {
-      audio.play().then(() => setPlaying(true)).catch(() => {})
+      audio.play().then(() => {
+        setPlaying(true)
+        dispatchPlayEvent(currentSong, true)
+      }).catch(() => {})
     }
-  }, [playing, currentSong])
+  }, [playing, currentSong, dispatchPlayEvent, dispatchStopEvent])
 
   const playNext = useCallback(() => {
     const approved = songs.filter(s => s.status === 'approved' && s.file)
-    if (approved.length === 0) return
+    if (approved.length === 0) {
+      dispatchStopEvent()
+      return
+    }
     const curIdx = currentSong ? approved.findIndex(s => s.id === currentSong.id) : -1
     const next = approved[(curIdx + 1) % approved.length]
     playSong(next)
-  }, [songs, currentSong, playSong])
+  }, [songs, currentSong, playSong, dispatchStopEvent])
 
   const handleUpload = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

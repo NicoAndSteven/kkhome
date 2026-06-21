@@ -29,10 +29,12 @@ const LocalMusicPlugin = () => {
   const [duration, setDuration] = useState(0)
   const [uploadMode, setUploadMode] = useState<'none' | 'upload' | 'wish'>('none')
   const [adminToken, setAdminToken] = useState('')
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [uploading, setUploading] = useState(false)
+  const [uploadStatus, setUploadStatus] = useState<'idle' | 'uploading' | 'done' | 'error'>('idle')
   const audioRef = useRef<HTMLAudioElement | null>(null)
 
   useEffect(() => {
-    // 从 sessionStorage 读取已有的 token（修复页面跳转后事件丢失的问题）
     const stored = globalThis.sessionStorage.getItem('hub:admin-token')
     if (stored) setAdminToken(stored)
 
@@ -112,34 +114,62 @@ const LocalMusicPlugin = () => {
     playSong(next)
   }, [songs, currentSong, playSong])
 
-  const handleUpload = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleUpload = useCallback((e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     const form = e.currentTarget
     const formData = new FormData(form)
     const file = formData.get('file') as File
     if (!file || !file.name) return alert('请选择 MP3 文件')
 
-    try {
-      const headers: Record<string, string> = {}
-      if (adminToken) headers['Authorization'] = `Bearer ${adminToken}`
+    setUploading(true)
+    setUploadProgress(0)
+    setUploadStatus('uploading')
 
-      const res = await fetch('/api/music/songs', {
-        method: 'POST',
-        headers,
-        body: formData,
-      })
-      const json = await res.json()
-      if (json.ok) {
-        alert('上传成功' + (json.data.song.status === 'pending' ? '，等待审核后上架' : '，已直接上架'))
-        form.reset()
-        setUploadMode('none')
-        fetchSongs()
-      } else {
-        alert(json.error?.message || '上传失败')
+    const xhr = new XMLHttpRequest()
+
+    xhr.upload.addEventListener('progress', (evt) => {
+      if (evt.lengthComputable) {
+        setUploadProgress(Math.round((evt.loaded / evt.total) * 100))
       }
-    } catch {
-      alert('网络错误')
-    }
+    })
+
+    xhr.addEventListener('load', () => {
+      setUploading(false)
+      if (xhr.status >= 200 && xhr.status < 300) {
+        try {
+          const json = JSON.parse(xhr.responseText)
+          if (json.ok) {
+            setUploadStatus('done')
+            setTimeout(() => {
+              form.reset()
+              setUploadMode('none')
+              setUploadStatus('idle')
+              setUploadProgress(0)
+              fetchSongs()
+            }, 1800)
+          } else {
+            setUploadStatus('error')
+            setTimeout(() => setUploadStatus('idle'), 2000)
+          }
+        } catch {
+          setUploadStatus('error')
+          setTimeout(() => setUploadStatus('idle'), 2000)
+        }
+      } else {
+        setUploadStatus('error')
+        setTimeout(() => setUploadStatus('idle'), 2000)
+      }
+    })
+
+    xhr.addEventListener('error', () => {
+      setUploading(false)
+      setUploadStatus('error')
+      setTimeout(() => setUploadStatus('idle'), 2000)
+    })
+
+    xhr.open('POST', '/api/music/songs')
+    if (adminToken) xhr.setRequestHeader('Authorization', `Bearer ${adminToken}`)
+    xhr.send(formData)
   }, [adminToken, fetchSongs])
 
   const handleWish = useCallback(async (e: React.FormEvent<HTMLFormElement>) => {
@@ -176,39 +206,7 @@ const LocalMusicPlugin = () => {
     }
   }, [adminToken, fetchSongs])
 
-  const handleApprove = useCallback(async (id: string) => {
-    if (!adminToken) return alert('请先输入管理员密码')
-    try {
-      const res = await fetch('/api/music/songs', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
-        body: JSON.stringify({ id, action: 'approve' }),
-      })
-      const json = await res.json()
-      if (json.ok) fetchSongs()
-      else alert(json.error?.message || '操作失败')
-    } catch {
-      alert('网络错误')
-    }
-  }, [adminToken, fetchSongs])
-
-  const handleDelete = useCallback(async (id: string) => {
-    if (!adminToken) return alert('请先输入管理员密码')
-    if (!confirm('确定删除？')) return
-    try {
-      await fetch('/api/music/songs', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
-        body: JSON.stringify({ id, action: 'delete' }),
-      })
-      fetchSongs()
-    } catch {
-      alert('网络错误')
-    }
-  }, [adminToken, fetchSongs])
-
   const approvedSongs = songs.filter(s => s.status === 'approved' && s.file)
-  const pendingSongs = songs.filter(s => s.status === 'pending' || s.status === 'wish')
   const totalSongs = approvedSongs.length
 
   return (
@@ -336,34 +334,78 @@ const LocalMusicPlugin = () => {
         </div>
       )}
 
-      {/* 管理员提示 */}
-      {adminToken && (
-        <div className="flex items-center gap-2 rounded-[18px] border border-primary/20 bg-primary/8 px-4 py-3">
-          <span className="h-2 w-2 rounded-full bg-primary" />
-          <span className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-primary">
-            管理员模式已启用，待审核内容可见
-          </span>
-        </div>
-      )}
-
       {/* 上传/许愿表单 */}
       {uploadMode === 'upload' && (
         <form onSubmit={handleUpload} className="surface-panel rounded-2xl p-5 space-y-4">
           <h3 className="font-body-lg text-lg font-semibold text-on-surface">上传歌曲</h3>
+
+          {/* 文件选择 */}
           <input
             type="file"
             name="file"
             accept=".mp3,audio/mpeg"
             required
-            className="block w-full rounded-xl border border-dashed border-border-subtle bg-white/80 px-4 py-3 text-sm text-text-muted file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white"
+            disabled={uploading}
+            className="block w-full rounded-xl border border-dashed border-border-subtle bg-white/80 px-4 py-3 text-sm text-text-muted file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white disabled:opacity-50"
           />
           <div className="grid gap-3 md:grid-cols-2">
-            <input type="text" name="title" placeholder="歌曲名（选填）" className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted" />
-            <input type="text" name="artist" placeholder="歌手（选填）" className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted" />
+            <input type="text" name="title" placeholder="歌曲名（选填）" disabled={uploading} className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted disabled:opacity-50" />
+            <input type="text" name="artist" placeholder="歌手（选填）" disabled={uploading} className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted disabled:opacity-50" />
           </div>
-          <input type="text" name="uploader" placeholder="你的名字（选填）" className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted" />
-          <button type="submit" className="rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-white transition-premium hover:opacity-90">
-            开始上传
+          <input type="text" name="uploader" placeholder="你的名字（选填）" disabled={uploading} className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted disabled:opacity-50" />
+
+          {/* 上传进度条 */}
+          {uploadStatus === 'uploading' && (
+            <div className="space-y-1.5">
+              <div className="h-1.5 rounded-full bg-surface-container overflow-hidden">
+                <div
+                  className="h-full rounded-full bg-gradient-to-r from-primary to-secondary transition-all duration-300 ease-out"
+                  style={{ width: `${uploadProgress}%` }}
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <span className="font-label-mono text-[10px] text-primary">上传中</span>
+                <span className="font-label-mono text-[10px] text-text-muted tabular-nums">{uploadProgress}%</span>
+              </div>
+            </div>
+          )}
+
+          {/* 上传成功 */}
+          {uploadStatus === 'done' && (
+            <div className="flex items-center gap-3 rounded-xl bg-primary-container/60 px-4 py-3 border border-primary/10">
+              <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-body-md text-sm font-medium text-on-surface">上传成功</p>
+                <p className="font-label-mono text-[10px] text-text-muted">等待管理员审核后上架</p>
+              </div>
+            </div>
+          )}
+
+          {/* 上传失败 */}
+          {uploadStatus === 'error' && (
+            <div className="flex items-center gap-3 rounded-xl bg-error-container px-4 py-3 border border-error/10">
+              <div className="w-7 h-7 rounded-full bg-error flex items-center justify-center shrink-0">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M6 6l12 12M18 6L6 18" />
+                </svg>
+              </div>
+              <div>
+                <p className="font-body-md text-sm font-medium text-on-surface">上传失败</p>
+                <p className="font-label-mono text-[10px] text-text-muted">请检查文件后重试</p>
+              </div>
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={uploading}
+            className="rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-white transition-premium hover:opacity-90 disabled:opacity-40"
+          >
+            {uploading ? '上传中...' : '开始上传'}
           </button>
           <p className="font-label-mono text-[10px] text-text-muted">支持 MP3 格式，最大 20MB</p>
         </form>
@@ -431,36 +473,6 @@ const LocalMusicPlugin = () => {
           )
         })}
       </div>
-
-      {/* 待审核列表（管理员可见） */}
-      {adminToken && pendingSongs.length > 0 && (
-        <div className="space-y-3">
-          <h3 className="font-label-mono text-xs uppercase tracking-[0.2em] text-text-muted">待审核 ({pendingSongs.length})</h3>
-          <div className="space-y-2">
-            {pendingSongs.map(song => (
-              <div key={song.id} className="flex items-center gap-3 rounded-2xl border border-border-subtle bg-white/80 p-4">
-                <div className="min-w-0 flex-1">
-                  <div className="truncate font-body-md text-sm text-on-surface">{song.title}</div>
-                  <div className="font-label-mono text-[10px] text-text-muted">{song.artist} · {song.uploadedBy} · {song.status === 'wish' ? '许愿' : '待审'}</div>
-                </div>
-                <div className="flex items-center gap-2 shrink-0">
-                  {song.file && (
-                    <button onClick={() => playSong(song)} className="rounded-full border border-border-subtle px-3 py-1.5 text-xs text-primary transition-premium hover:border-primary/40">
-                      试听
-                    </button>
-                  )}
-                  <button onClick={() => handleApprove(song.id)} className="rounded-full border border-primary/20 bg-primary/10 px-3 py-1.5 text-xs text-primary transition-premium hover:bg-primary/15">
-                    通过
-                  </button>
-                  <button onClick={() => handleDelete(song.id)} className="rounded-full border border-red-200 bg-red-50 px-3 py-1.5 text-xs text-red-600 transition-premium hover:bg-red-100">
-                    删除
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
 
       {/* 加载/错误/空状态 */}
       {loading && (

@@ -140,13 +140,7 @@ const LocalMusicPlugin = () => {
           const json = JSON.parse(xhr.responseText)
           if (json.ok) {
             setUploadStatus('done')
-            setTimeout(() => {
-              form.reset()
-              setUploadMode('none')
-              setUploadStatus('idle')
-              setUploadProgress(0)
-              fetchSongs()
-            }, 1800)
+            fetchSongs()
           } else {
             setUploadStatus('error')
             setTimeout(() => setUploadStatus('idle'), 2000)
@@ -370,7 +364,7 @@ const LocalMusicPlugin = () => {
             </div>
           )}
 
-          {/* 上传成功 */}
+          {/* 上传成功 — 持久显示直到用户关闭 */}
           {uploadStatus === 'done' && (
             <div className="flex items-center gap-3 rounded-xl bg-primary-container/60 px-4 py-3 border border-primary/10">
               <div className="w-7 h-7 rounded-full bg-primary flex items-center justify-center shrink-0">
@@ -378,10 +372,17 @@ const LocalMusicPlugin = () => {
                   <path d="M5 13l4 4L19 7" />
                 </svg>
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="font-body-md text-sm font-medium text-on-surface">上传成功</p>
-                <p className="font-label-mono text-[10px] text-text-muted">等待管理员审核后上架</p>
+                <p className="font-label-mono text-[10px] text-text-muted">管理员审批后即可播放</p>
               </div>
+              <button
+                type="button"
+                onClick={() => { setUploadMode('none'); setUploadStatus('idle'); setUploadProgress(0) }}
+                className="shrink-0 w-7 h-7 rounded-full border border-border-subtle flex items-center justify-center text-text-muted hover:text-on-surface transition-premium"
+              >
+                <Icon name="close" className="text-sm" />
+              </button>
             </div>
           )}
 
@@ -393,16 +394,23 @@ const LocalMusicPlugin = () => {
                   <path d="M6 6l12 12M18 6L6 18" />
                 </svg>
               </div>
-              <div>
+              <div className="flex-1 min-w-0">
                 <p className="font-body-md text-sm font-medium text-on-surface">上传失败</p>
                 <p className="font-label-mono text-[10px] text-text-muted">请检查文件后重试</p>
               </div>
+              <button
+                type="button"
+                onClick={() => setUploadStatus('idle')}
+                className="shrink-0 w-7 h-7 rounded-full border border-border-subtle flex items-center justify-center text-text-muted hover:text-on-surface transition-premium"
+              >
+                <Icon name="close" className="text-sm" />
+              </button>
             </div>
           )}
 
           <button
             type="submit"
-            disabled={uploading}
+            disabled={uploading || uploadStatus === 'done'}
             className="rounded-full bg-primary px-5 py-2.5 text-xs font-semibold text-white transition-premium hover:opacity-90 disabled:opacity-40"
           >
             {uploading ? '上传中...' : '开始上传'}

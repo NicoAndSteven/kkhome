@@ -236,7 +236,7 @@ function App() {
 
   // 管理后台覆盖层
   if (showAdmin && adminToken) {
-    return <AdminPanel token={adminToken} onClose={() => { setShowAdmin(false); window.location.hash = '#/ai-tools' }} />
+    return <AdminPanel token={adminToken} onClose={() => { setShowAdmin(false); window.location.hash = '#/local-music' }} />
   }
 
   const enabledPlugins = pluginSystem.getEnabledPlugins()

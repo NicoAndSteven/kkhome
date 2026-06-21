@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, useRef } from 'react'
+import { useCallback, useState, useEffect } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
 import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
@@ -6,7 +6,6 @@ import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
-import { TRACKS, synthesizeTrack } from '@plugins/ambient-music/tracks'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
 import VantaBirds from '@components/VantaBirds'
 import VantaRings from '@components/VantaRings'
@@ -66,7 +65,6 @@ function App() {
     return () => clearInterval(timer)
   }, [])
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
-  const ambientInitialized = useRef(false)
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -153,43 +151,7 @@ function App() {
     return () => window.removeEventListener('homepage:open-contact', openContact)
   }, [])
 
-  // 全局交互触发氛围音乐
-  useEffect(() => {
-    if (globalThis.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    if (ambientInitialized.current) return
-
-    const engine = getAudioEngine()
-
-    const startAmbient = async () => {
-      if (ambientInitialized.current) return
-      ambientInitialized.current = true
-
-      const ctx = new globalThis.AudioContext()
-      await Promise.all(
-        TRACKS.map(async (track) => {
-          const buffer = await synthesizeTrack(ctx, track.id)
-          engine.registerTrack(track.id, buffer, 0.35)
-        })
-      )
-      ctx.close()
-
-      const hasPlayed = globalThis.sessionStorage.getItem('hub:ambient-played')
-      if (!hasPlayed) {
-        await engine.play('rain')
-        globalThis.sessionStorage.setItem('hub:ambient-played', '1')
-      }
-    }
-
-    document.addEventListener('click', startAmbient, { once: true })
-    document.addEventListener('keydown', startAmbient, { once: true })
-    document.addEventListener('touchstart', startAmbient, { once: true })
-
-    return () => {
-      document.removeEventListener('click', startAmbient)
-      document.removeEventListener('keydown', startAmbient)
-      document.removeEventListener('touchstart', startAmbient)
-    }
-  }, [])
+  // 氛围音乐由用户手动在 Ambient Music 页面触发，不自动播放
 
   // 订阅音频引擎状态
   useEffect(() => {

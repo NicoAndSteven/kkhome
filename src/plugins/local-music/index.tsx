@@ -443,14 +443,18 @@ const LocalMusicPlugin = () => {
               key={song.id}
               type="button"
               onClick={() => playSong(song)}
-              className={`w-full rounded-2xl border p-4 text-left transition-premium ${
+              className={`w-full rounded-2xl border p-4 text-left transition-premium relative overflow-hidden ${
                 isActive
                   ? 'border-primary/30 bg-primary/5'
                   : 'border-border-subtle bg-white/80 hover:border-primary/20 hover:bg-white'
               }`}
             >
-              <div className="flex items-center gap-4">
-                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold ${
+              {/* 播放中：顶部流光光晕 */}
+              {isActive && playing && (
+                <span className="absolute top-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-primary to-transparent animate-[shimmer-sweep_2.4s_ease-in-out_infinite]" />
+              )}
+              <div className="flex items-center gap-4 relative z-10">
+                <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-sm font-semibold relative ${
                   isActive && playing
                     ? 'bg-primary text-white'
                     : isActive
@@ -458,9 +462,16 @@ const LocalMusicPlugin = () => {
                       : 'bg-surface text-text-muted'
                 }`}>
                   {isActive && playing ? (
-                    <div className="flex items-end gap-[1.5px] h-4">
-                      {[1, 2, 3].map(b => (
-                        <div key={b} className="w-[2px] rounded-full bg-white" style={{ animation: `mini-bar 0.7s ease-in-out ${b * 0.18}s infinite alternate`, height: `${4 + b * 4}px` }} />
+                    <div className="flex items-end gap-[2px] h-4">
+                      {[0, 1, 2, 3, 4].map(b => (
+                        <div
+                          key={b}
+                          className="w-[2.5px] rounded-full bg-white"
+                          style={{
+                            animation: `mini-bar 0.6s ease-in-out ${b * 0.12}s infinite alternate`,
+                            height: `${5 + b * 3}px`,
+                          }}
+                        />
                       ))}
                     </div>
                   ) : (
@@ -468,13 +479,18 @@ const LocalMusicPlugin = () => {
                   )}
                 </div>
                 <div className="min-w-0 flex-1">
-                  <div className={`truncate text-sm font-semibold ${isActive ? 'text-primary' : 'text-on-surface'}`}>
+                  <div className={`truncate text-sm font-semibold flex items-center gap-2 ${
+                    isActive ? 'text-primary' : 'text-on-surface'
+                  }`}>
+                    {isActive && playing && (
+                      <span className="inline-block w-1.5 h-1.5 rounded-full bg-primary animate-pulse shrink-0" />
+                    )}
                     {song.title}
                   </div>
                   <div className="font-label-mono text-[10px] text-text-muted">{song.artist} · {song.uploadedBy}</div>
                 </div>
-                <div className="font-label-mono text-[10px] text-text-muted shrink-0">
-                  {isActive ? formatTime(duration * progress) : song.file ? '...' : ''}
+                <div className="font-label-mono text-[10px] text-text-muted shrink-0 tabular-nums">
+                  {isActive ? formatTime(duration * progress) + ' / ' + formatTime(duration) : '...'}
                 </div>
               </div>
             </button>

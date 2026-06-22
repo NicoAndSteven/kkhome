@@ -65,11 +65,13 @@ const ProfilePlugin = ({ config }: Props) => {
             <div className="absolute inset-[10%] rounded-full border border-secondary/15" />
             <div className="absolute inset-[16%] rounded-full border border-primary/6" />
 
-            <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border-[3px] border-surface shadow-[0_20px_60px_-20px_rgba(0,47,167,0.25)]">
+            <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border-[3px] border-surface shadow-[0_20px_60px_-20px_rgba(0,47,167,0.25)] bg-[#efe9e0]">
               <img
                 src="/images/yuanyu.png"
                 alt={profile.name}
-                className="h-full w-full object-cover object-center"
+                fetchPriority="high"
+                onLoad={(e) => { e.currentTarget.style.opacity = '1' }}
+                className="h-full w-full object-cover object-center opacity-0 transition-opacity duration-700"
               />
               <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 rounded-full border border-surface/30 bg-background/80 px-3 py-1 backdrop-blur-sm flex items-center gap-1.5 whitespace-nowrap shadow-sm">
                 <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />

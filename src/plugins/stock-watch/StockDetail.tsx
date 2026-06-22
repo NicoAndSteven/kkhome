@@ -67,8 +67,8 @@ const StockDetail = ({ stock, onBack }: Props) => {
       timeScale: { borderColor: gridColor, timeVisible: true, secondsVisible: false },
       width: container.clientWidth,
       height: isNarrowViewport()
-        ? Math.max(200, Math.min(280, container.clientHeight * 0.5))
-        : Math.max(280, Math.min(400, container.clientHeight)),
+        ? Math.max(160, Math.min(220, container.clientHeight * 0.35))
+        : Math.max(200, Math.min(300, container.clientHeight * 0.3)),
       handleScroll: false,
       handleScale: false,
     })
@@ -86,8 +86,8 @@ const StockDetail = ({ stock, onBack }: Props) => {
       chart.applyOptions({
         width: container.clientWidth,
         height: isNarrowViewport()
-          ? Math.max(200, Math.min(280, container.clientHeight * 0.5))
-          : Math.max(280, Math.min(400, container.clientHeight)),
+          ? Math.max(160, Math.min(220, container.clientHeight * 0.35))
+          : Math.max(200, Math.min(300, container.clientHeight * 0.3)),
       })
     })
     observer.observe(container)

@@ -49,9 +49,9 @@ const ProfilePlugin = ({ config }: Props) => {
   return (
     <section
       id="top"
-      className="relative min-h-[calc(100dvh-5rem)] overflow-hidden scroll-mt-24 pt-6 md:pt-6"
+      className="relative min-h-[calc(100dvh-5rem)] overflow-hidden scroll-mt-24 pt-6 md:pt-6 md:pb-12"
     >
-      <div className="mx-auto grid max-w-7xl items-center gap-lg md:grid-cols-12 md:gap-xl">
+      <div className="mx-auto grid max-w-7xl items-center gap-6 md:grid-cols-12 md:gap-xl">
 
         {/* ── 左侧：杂志封面文字内容 ── */}
         <div className="relative z-10 md:col-span-7 md:pr-8">
@@ -71,7 +71,7 @@ const ProfilePlugin = ({ config }: Props) => {
 
           {/* 名字 — 杂志封面大字，超粗超大的 editorial 排版 */}
           <h1
-            className="reveal font-display-lg text-[72px] leading-[0.88] tracking-tight text-on-surface md:text-[128px]"
+            className="reveal font-display-lg text-[clamp(2.8rem,11vw,4.5rem)] leading-[0.88] tracking-tight text-on-surface md:text-[128px]"
             style={{ transitionDelay: '80ms' }}
           >
             {profile.name}
@@ -141,20 +141,20 @@ const ProfilePlugin = ({ config }: Props) => {
 
           {/* 信号指标 — 杂志封底式指标行 */}
           <div
-            className="reveal mt-lg hidden gap-xs md:grid md:grid-cols-3"
+            className="reveal mt-lg grid grid-cols-3 gap-2 md:gap-xs"
             style={{ transitionDelay: '320ms' }}
           >
-            <div className="border-l-2 border-primary/20 pl-sm">
+            <div className="border-l-2 border-primary/20 pl-2 md:pl-sm">
               <span className="block font-label-mono text-[10px] uppercase tracking-[0.12em] text-secondary">01</span>
-              <span className="mt-1 block font-label-mono text-[11px] text-text-muted">{profile.location}</span>
+              <span className="mt-1 block font-label-mono text-[10px] md:text-[11px] text-text-muted">{profile.location}</span>
             </div>
-            <div className="border-l-2 border-secondary/20 pl-sm">
+            <div className="border-l-2 border-secondary/20 pl-2 md:pl-sm">
               <span className="block font-label-mono text-[10px] uppercase tracking-[0.12em] text-secondary">02</span>
-              <span className="mt-1 block font-label-mono text-[11px] text-text-muted">{profile.skills.length} 项核心技能</span>
+              <span className="mt-1 block font-label-mono text-[10px] md:text-[11px] text-text-muted">{profile.skills.length} 项核心技能</span>
             </div>
-            <div className="border-l-2 border-primary/20 pl-sm">
+            <div className="border-l-2 border-primary/20 pl-2 md:pl-sm">
               <span className="block font-label-mono text-[10px] uppercase tracking-[0.12em] text-secondary">03</span>
-              <span className="mt-1 block font-label-mono text-[11px] text-text-muted">Cloudflare Pages 静态部署</span>
+              <span className="mt-1 block font-label-mono text-[10px] md:text-[11px] text-text-muted">Cloudflare Pages 静态部署</span>
             </div>
           </div>
 
@@ -181,7 +181,7 @@ const ProfilePlugin = ({ config }: Props) => {
           style={{ transitionDelay: '120ms' }}
           aria-label="杂志封面主视觉"
         >
-          <div className="relative mx-auto flex aspect-square w-full max-w-md items-center justify-center">
+          <div className="relative mx-auto flex aspect-square w-full max-w-[240px] items-center justify-center md:max-w-md">
             {/* 装饰性背景圈层 — Kleine Blue 同心圆 */}
             <div className="absolute inset-0 rounded-full border border-primary/10" />
             <div className="absolute inset-[4%] rounded-full border-2 border-primary/8" />

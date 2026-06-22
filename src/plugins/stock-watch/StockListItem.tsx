@@ -40,7 +40,7 @@ const StockListItem = ({ stock, onClick, onRemove }: Props) => {
         </div>
       )}
       <button type="button" onClick={(e) => { e.stopPropagation(); onRemove() }}
-        className="opacity-0 group-hover:opacity-100 p-1.5 rounded-full text-text-muted hover:text-error hover:bg-error/10 transition-premium" title="移除">
+        className="opacity-40 group-hover:opacity-100 p-1.5 rounded-full text-text-muted hover:text-error hover:bg-error/10 transition-premium sm:opacity-0" title="移除">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="w-4 h-4"><path d="M6 6l12 12M18 6L6 18" /></svg>
       </button>
     </div>

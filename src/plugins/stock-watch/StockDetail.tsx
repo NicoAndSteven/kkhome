@@ -11,6 +11,11 @@ interface Props {
 const intervals: IntervalRange[] = ['1D', '5D', '1M', '3M', '1Y', '5Y']
 const fmt = (v: number | undefined | null, d = '--') => (v != null ? v.toFixed(2) : d)
 
+/** 判断当前是否为窄屏（图表相关） */
+function isNarrowViewport() {
+  return typeof window !== 'undefined' && window.innerWidth < 640
+}
+
 const StockDetail = ({ stock, onBack }: Props) => {
   const chartContainerRef = useRef<HTMLDivElement>(null)
   const [activeInterval, setActiveInterval] = useState<IntervalRange>('1D')
@@ -55,7 +60,9 @@ const StockDetail = ({ stock, onBack }: Props) => {
       rightPriceScale: { borderColor: gridColor, scaleMargins: { top: 0.08, bottom: 0.12 } },
       timeScale: { borderColor: gridColor, timeVisible: true, secondsVisible: false },
       width: container.clientWidth,
-      height: Math.max(280, Math.min(400, container.clientHeight)),
+      height: isNarrowViewport()
+        ? Math.max(200, Math.min(280, container.clientHeight * 0.5))
+        : Math.max(280, Math.min(400, container.clientHeight)),
       handleScroll: false,
       handleScale: false,
     })
@@ -70,7 +77,12 @@ const StockDetail = ({ stock, onBack }: Props) => {
     chart.timeScale().fitContent()
 
     const observer = new ResizeObserver(() => {
-      chart.applyOptions({ width: container.clientWidth, height: Math.max(280, Math.min(400, container.clientHeight)) })
+      chart.applyOptions({
+        width: container.clientWidth,
+        height: isNarrowViewport()
+          ? Math.max(200, Math.min(280, container.clientHeight * 0.5))
+          : Math.max(280, Math.min(400, container.clientHeight)),
+      })
     })
     observer.observe(container)
     return () => { observer.disconnect(); chart.remove() }
@@ -113,7 +125,7 @@ const StockDetail = ({ stock, onBack }: Props) => {
           </span>
         </div>
       )}
-      <div className="flex gap-1 py-3 shrink-0">
+      <div className="flex flex-wrap gap-1 py-3 shrink-0">
         {intervals.map((iv) => (
           <button key={iv} type="button" onClick={() => setActiveInterval(iv)}
             className={`rounded-full px-3 py-1 font-label-mono text-xs transition-premium ${activeInterval === iv ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-white/5 hover:text-on-surface'}`}
@@ -125,7 +137,7 @@ const StockDetail = ({ stock, onBack }: Props) => {
         <div ref={chartContainerRef} className="w-full h-full" />
         {!loading && chartData.length === 0 && <div className="absolute inset-0 flex items-center justify-center"><span className="font-body-md text-sm text-text-muted">暂无数据</span></div>}
       </div>
-      <div className="grid grid-cols-3 gap-x-md gap-y-1 pt-4 border-t border-border-subtle shrink-0 text-xs">
+      <div className="grid grid-cols-2 gap-x-3 gap-y-1 pt-4 border-t border-border-subtle shrink-0 text-xs md:grid-cols-3 md:gap-x-md">
         <div className="flex items-baseline justify-between gap-1"><span className="font-body-md text-text-muted">昨收</span><span className="font-label-mono text-on-surface">{fmt(stock.previousClose)}</span></div>
         <div className="flex items-baseline justify-between gap-1"><span className="font-body-md text-text-muted">开盘</span><span className="font-label-mono text-on-surface">{fmt(stock.open)}</span></div>
         <div className="flex items-baseline justify-between gap-1"><span className="font-body-md text-text-muted">最高</span><span className="font-label-mono text-on-surface">{fmt(stock.dayHigh)}</span></div>

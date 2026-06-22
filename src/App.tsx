@@ -47,7 +47,10 @@ function App() {
   const [adminToken, setAdminToken] = useState('')
   const [showAdmin, setShowAdmin] = useState(false)
   const [pendingCount, setPendingCount] = useState(0)
-  const showInitialIntro = !isMobile && activeRoute === 'home' && !introComplete
+  const systemPrefersReducedMotion = typeof window !== 'undefined'
+    ? window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    : false
+  const showInitialIntro = !systemPrefersReducedMotion && activeRoute === 'home' && !introComplete
 
   // 定期检查待审核数量
   useEffect(() => {
@@ -183,7 +186,7 @@ function App() {
   if (loading) {
     return (
       <Layout>
-        {showInitialIntro && <VantaRings />}
+        {showInitialIntro && !isMobile && <VantaRings />}
         {showInitialIntro && (
           <IntroStage
             author={siteConfig?.author ?? '垣钰'}
@@ -220,7 +223,7 @@ function App() {
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}
-            enabled={motionConfig.intro && !isMobile && !introComplete}
+            enabled={motionConfig.intro && !introComplete}
             duration={motionConfig.introDuration}
             onComplete={handleIntroComplete}
           />
@@ -294,18 +297,23 @@ function App() {
   )
 
   if (isMobile) {
-    // === 移动端：浅色全宽内容 + 底部 TabBar ===
+    // === 移动端：全宽可滚动内容 + 底部 TabBar ===
+    const tabBarHeight = 88 // tabbar(~64px) + bottom-3(12px) + bottom-gap(~12px)
     return (
       <Layout routeMode>
         <MobileTabBar routes={availableRouteItems} activeRoute={activeRoute} />
-        <main className="mx-auto min-h-[100dvh] w-full max-w-[760px] px-4 pb-24 pt-16">
+        <main
+          key={activeRouteItem.id}
+          className="route-mobile-main route-mobile-enter mx-auto w-full max-w-[760px] px-4 pt-12"
+          style={{ height: `calc(100dvh - ${tabBarHeight}px)` }}
+        >
           <ErrorBoundary key={activeRouteItem.id}>
             {activePlugin ? (
-              <div className="surface-panel rounded-[28px] p-4 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
+              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
                 <activePlugin.component config={activePlugin.config} />
               </div>
             ) : (
-              <div className="surface-panel rounded-[28px] p-4 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
+              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
                 <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
                 <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
                 <p className="mt-1 font-body-md text-body-md text-text-muted">

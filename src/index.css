@@ -1047,7 +1047,63 @@ html.intro-scroll-lock #root {
     .contact-drawer {
         width: 100vw;
     }
+
+    /* 首屏移动端减少顶部内边距 */
+    .home-page-shell {
+        padding-top: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
+
+/* 移动端路由容器 — 可滚动内容区域 */
+.route-mode .route-mobile-main {
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+}
+
+.route-mode .route-mobile-main::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+/* 移动端路由入场动画 */
+.route-mobile-enter {
+    animation: route-mobile-in 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+/* 底部安全区适配（刘海屏 / 全面屏） */
+.safe-area-bottom {
+    padding-bottom: max(4px, env(safe-area-inset-bottom, 0px));
+}
+
+.safe-area-top {
+    padding-top: env(safe-area-inset-top, 0px);
+}
+
+@keyframes route-mobile-in {
+    0% {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* 移动端内容元素级入场（延迟渐增） */
+.route-mobile-ready > * {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: content-rise 560ms cubic-bezier(0.16, 1, 0.3, 1) 80ms forwards;
+}
+
+.route-mobile-ready > *:nth-child(2) { animation-delay: 100ms; }
+.route-mobile-ready > *:nth-child(3) { animation-delay: 140ms; }
+.route-mobile-ready > *:nth-child(4) { animation-delay: 180ms; }
+.route-mobile-ready > *:nth-child(n + 5) { animation-delay: 220ms; }
 
 @media (max-height: 720px) {
     .home-next-link {

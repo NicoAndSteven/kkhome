@@ -1,33 +1,26 @@
-/* global fetch */
-
 import { fail, ok, options } from '../../_shared/api.js'
-
-const YAHOO_SEARCH_URL = 'https://query1.finance.yahoo.com/v1/finance/search'
+import { fetchYahoo } from '../../_shared/yahooFinance.js'
 
 export const onRequestOptions = (context) => options(context)
 
-export const onRequestGet = async ({ request, env }) => {
+export const onRequestGet = async ({ request }) => {
   const url = new URL(request.url)
   const query = url.searchParams.get('q') ?? ''
 
   if (!query.trim()) {
-    return fail('missing_query', 'q query param is required', 400, { request, env })
+    return fail('missing_query', '搜索关键词不能为空', 400)
   }
 
-  const yahooUrl = `${YAHOO_SEARCH_URL}?q=${encodeURIComponent(query)}`
+  const yahooUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}`
 
   try {
-    const response = await fetch(yahooUrl, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-    })
-
+    const response = await fetchYahoo(yahooUrl)
     if (!response.ok) {
-      return fail('upstream_error', `Yahoo API returned ${response.status}`, 502, { request, env })
+      return fail('upstream_error', `Yahoo API returned ${response.status}`, 502)
     }
-
     const data = await response.json()
-    return ok({ searchResult: data }, { request, env })
+    return ok({ searchResult: data })
   } catch (error) {
-    return fail('fetch_failed', error instanceof Error ? error.message : 'Failed to search stocks', 502, { request, env })
+    return fail('fetch_failed', error instanceof Error ? error.message : '搜索失败', 502)
   }
 }

@@ -1,38 +1,37 @@
-/* global fetch */
-
 import { fail, ok, options } from '../../_shared/api.js'
-
-const YAHOO_QUOTE_URL = 'https://query1.finance.yahoo.com/v7/finance/quote'
+import { fetchQuotes, refreshAuth } from '../../_shared/yahooFinance.js'
 
 export const onRequestOptions = (context) => options(context)
 
-export const onRequestPost = async ({ request, env }) => {
+export const onRequestPost = async ({ request }) => {
   let body
   try {
     body = await request.json()
   } catch {
-    return fail('invalid_json', 'Invalid JSON body', 400, { request, env })
+    return fail('invalid_json', 'Invalid JSON body', 400)
   }
 
   const symbols = Array.isArray(body.symbols) ? body.symbols.map(String) : []
   if (symbols.length === 0) {
-    return fail('missing_symbols', 'symbols array is required', 400, { request, env })
+    return fail('missing_symbols', 'symbols array is required', 400)
   }
 
-  const url = `${YAHOO_QUOTE_URL}?symbols=${symbols.join(',')}`
-
   try {
-    const response = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0' },
-    })
-
-    if (!response.ok) {
-      return fail('upstream_error', `Yahoo API returned ${response.status}`, 502, { request, env })
+    const data = await fetchQuotes(symbols)
+    if (!data?.quoteResponse?.result?.length) {
+      // 尝试刷新后重试
+      const retry = await fetchQuotes(symbols)
+      return ok({ quoteResponse: retry.quoteResponse })
     }
-
-    const data = await response.json()
-    return ok({ quoteResponse: data.quoteResponse }, { request, env })
+    return ok({ quoteResponse: data.quoteResponse })
   } catch (error) {
-    return fail('fetch_failed', error instanceof Error ? error.message : 'Failed to fetch quotes', 502, { request, env })
+    // 最后尝试一次刷新认证
+    try {
+      await refreshAuth()
+      const retry = await fetchQuotes(symbols)
+      return ok({ quoteResponse: retry.quoteResponse })
+    } catch {
+      return fail('fetch_failed', '无法获取股票数据，请稍后重试', 502)
+    }
   }
 }

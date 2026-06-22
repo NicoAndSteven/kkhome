@@ -1,4 +1,46 @@
+import { useState, useEffect } from 'react'
+
 const Loading = () => {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    setIsMobile(typeof window !== 'undefined' && window.innerWidth < 768)
+    const onResize = () => setIsMobile(window.innerWidth < 768)
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+  }, [])
+
+  if (isMobile) {
+    return (
+      <div className="mx-auto w-full max-w-[760px] space-y-5 px-4 py-6">
+        <div className="flex items-center gap-3">
+          <div className="skeleton-shimmer h-10 w-10 rounded-[14px]" />
+          <div className="space-y-2">
+            <div className="skeleton-shimmer h-3 w-20 rounded-full" />
+            <div className="skeleton-shimmer h-2.5 w-28 rounded-full" />
+          </div>
+        </div>
+
+        <div className="space-y-3">
+          <div className="skeleton-shimmer h-8 w-3/4 rounded-[16px]" />
+          <div className="skeleton-shimmer h-3 w-full max-w-[32ch] rounded-full" />
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <div className="skeleton-shimmer h-6 w-16 rounded-full" />
+          <div className="skeleton-shimmer h-6 w-20 rounded-full" />
+          <div className="skeleton-shimmer h-6 w-14 rounded-full" />
+        </div>
+
+        <div className="space-y-3">
+          {[1, 2, 3, 4].map((i) => (
+            <div key={i} className="skeleton-shimmer h-20 w-full rounded-[20px]" />
+          ))}
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="mx-auto w-full max-w-[1320px] space-y-8 px-6 py-16 md:px-10">
       <div className="flex items-center gap-4">
@@ -23,17 +65,17 @@ const Loading = () => {
         </div>
 
         <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(235,241,255,0.72))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(235,241,255,0.72))] p-5 shadow-[0_24px_58px_-42px(var(--color-panel-shadow)]">
             <div className="skeleton-shimmer h-24 w-full rounded-[22px]" />
             <div className="skeleton-shimmer h-5 w-3/4 rounded-full" />
             <div className="skeleton-shimmer h-4 w-1/2 rounded-full" />
           </div>
-          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(245,230,225,0.72))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(245,230,225,0.72))] p-5 shadow-[0_24px_58px_-42px(var(--color-panel-shadow)]">
             <div className="skeleton-shimmer h-24 w-full rounded-[22px]" />
             <div className="skeleton-shimmer h-5 w-3/4 rounded-full" />
             <div className="skeleton-shimmer h-4 w-1/2 rounded-full" />
           </div>
-          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(233,241,235,0.78))] p-5 shadow-[0_24px_58px_-42px_var(--color-panel-shadow)]">
+          <div className="space-y-3 rounded-[28px] border border-border-subtle bg-[linear-gradient(180deg,rgba(255,255,255,0.84),rgba(233,241,235,0.78))] p-5 shadow-[0_24px_58px_-42px(var(--color-panel-shadow)]">
             <div className="skeleton-shimmer h-24 w-full rounded-[22px]" />
             <div className="skeleton-shimmer h-5 w-3/4 rounded-full" />
             <div className="skeleton-shimmer h-4 w-1/2 rounded-full" />

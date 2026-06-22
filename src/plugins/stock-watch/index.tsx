@@ -61,7 +61,7 @@ const StockWatchPlugin = (_props: Props) => {
       }))
       setStocks(mapped)
     } catch {
-      setError('无法连接数据服务。此功能需要 Cloudflare Pages Functions 支持，本地预览模式下不可用。')
+      setError('网络请求失败。请确认部署到 Cloudflare Pages 后重试。')
     }
   }, [symbols])
 

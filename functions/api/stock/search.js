@@ -11,7 +11,8 @@ export const onRequestGet = async ({ request }) => {
     return fail('missing_query', '搜索关键词不能为空', 400)
   }
 
-  const yahooUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}`
+  // Yahoo Finance 搜索（带中文语言参数，部分股票会返回中文名）
+  const yahooUrl = `https://query1.finance.yahoo.com/v1/finance/search?q=${encodeURIComponent(query)}&lang=zh-CN`
 
   try {
     const response = await fetchYahoo(yahooUrl)

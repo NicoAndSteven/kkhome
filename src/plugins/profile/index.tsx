@@ -53,8 +53,40 @@ const ProfilePlugin = ({ config }: Props) => {
     >
       <div className="mx-auto grid max-w-7xl items-center gap-6 md:grid-cols-12 md:gap-xl">
 
-        {/* ── 左侧：杂志封面文字内容 ── */}
-        <div className="relative z-10 md:col-span-7 md:pr-8">
+        {/* ── 移动端顶部：头像（order-1），桌面端右侧（md:order-2） ── */}
+        <aside
+          className="reveal relative md:col-span-5 md:block order-1 md:order-2"
+          style={{ transitionDelay: '120ms' }}
+          aria-label="杂志封面主视觉"
+        >
+          <div className="relative mx-auto flex aspect-square w-full max-w-[200px] items-center justify-center md:max-w-md">
+            <div className="absolute inset-0 rounded-full border border-primary/10" />
+            <div className="absolute inset-[4%] rounded-full border-2 border-primary/8" />
+            <div className="absolute inset-[10%] rounded-full border border-secondary/15" />
+            <div className="absolute inset-[16%] rounded-full border border-primary/6" />
+
+            <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border-[3px] border-surface shadow-[0_20px_60px_-20px_rgba(0,47,167,0.25)]">
+              <img
+                src="/images/yuanyu.png"
+                alt={profile.name}
+                className="h-full w-full object-cover object-center"
+              />
+              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 rounded-full border border-surface/30 bg-background/80 px-3 py-1 backdrop-blur-sm flex items-center gap-1.5 whitespace-nowrap shadow-sm">
+                <span className="inline-block h-1.5 w-1.5 rounded-full bg-green-500 animate-pulse" />
+                <span className="font-label-mono text-[9px] text-on-surface">Available for focused builds</span>
+              </div>
+            </div>
+
+            <div className="absolute -bottom-2 -right-2 z-20 flex h-10 w-10 items-center justify-center rounded-full bg-primary text-[9px] font-bold text-on-primary shadow-[0_4px_12px_-4px_rgba(0,47,167,0.4)] md:h-12 md:w-12 md:text-[10px]">
+              <span className="font-label-mono tracking-wider">VOL.1</span>
+            </div>
+            <div className="absolute -left-3 top-[15%] z-20 h-4 w-4 rounded-full bg-primary/20 md:h-5 md:w-5" />
+            <div className="absolute right-[8%] top-[6%] z-20 h-2 w-2 rounded-full bg-secondary/25 md:h-3 md:w-3" />
+          </div>
+        </aside>
+
+        {/* ── 桌面端左侧/移动端下方：杂志封面文字内容 ── */}
+        <div className="relative z-10 md:col-span-7 md:pr-8 order-2 md:order-1">
 
           {/* 顶部标签行 — 杂志封面副标题线 */}
           <div className="mb-md flex flex-wrap items-center gap-sm reveal">
@@ -175,43 +207,6 @@ const ProfilePlugin = ({ config }: Props) => {
           )}
         </div>
 
-        {/* ── 右侧：杂志封面主视觉 ── */}
-        <aside
-          className="reveal relative md:col-span-5 md:block"
-          style={{ transitionDelay: '120ms' }}
-          aria-label="杂志封面主视觉"
-        >
-          <div className="relative mx-auto flex aspect-square w-full max-w-[240px] items-center justify-center md:max-w-md">
-            {/* 装饰性背景圈层 — Kleine Blue 同心圆 */}
-            <div className="absolute inset-0 rounded-full border border-primary/10" />
-            <div className="absolute inset-[4%] rounded-full border-2 border-primary/8" />
-            <div className="absolute inset-[10%] rounded-full border border-secondary/15" />
-            <div className="absolute inset-[16%] rounded-full border border-primary/6" />
-
-            {/* 主图片 — 大圆形裁切杂志封面风格 */}
-            <div className="relative z-10 h-[82%] w-[82%] overflow-hidden rounded-full border-[3px] border-surface shadow-[0_20px_60px_-20px_rgba(0,47,167,0.25)]">
-              <img
-                src="/images/yuanyu.png"
-                alt={profile.name}
-                className="h-full w-full object-cover object-center"
-              />
-              {/* 底部叠层标签 — 磨砂玻璃效果 */}
-              <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 rounded-full border border-surface/30 bg-background/80 px-4 py-1.5 backdrop-blur-sm flex items-center gap-2 whitespace-nowrap shadow-sm">
-                <span className="inline-block h-2 w-2 rounded-full bg-green-500 animate-pulse" />
-                <span className="font-label-mono text-[11px] text-on-surface">Available for focused builds</span>
-              </div>
-            </div>
-
-            {/* 装饰性角标 — 杂志风格的卷号/标注 */}
-            <div className="absolute -bottom-2 -right-2 z-20 flex h-12 w-12 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-on-primary shadow-[0_4px_12px_-4px_rgba(0,47,167,0.4)]">
-              <span className="font-label-mono tracking-wider">VOL.1</span>
-            </div>
-
-            {/* 装饰性 Kleine Blue 小圆点 */}
-            <div className="absolute -left-3 top-[15%] z-20 h-5 w-5 rounded-full bg-primary/20" />
-            <div className="absolute right-[8%] top-[6%] z-20 h-3 w-3 rounded-full bg-secondary/25" />
-          </div>
-        </aside>
       </div>
 
       {/* 底部导航 */}

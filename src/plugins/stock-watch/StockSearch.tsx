@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { Icon } from '@components'
 import { YahooSearchQuote } from './types'
+import { searchByChineseName, getChineseName } from './stockNameMap'
 
 interface Props {
   onAdd: (symbol: string, name: string) => void
@@ -19,19 +20,66 @@ const StockSearch = ({ onAdd, existingSymbols, onClose }: Props) => {
   useEffect(() => { inputRef.current?.focus() }, [])
 
   const search = useCallback(async (q: string) => {
-    if (!q.trim()) { setResults([]); setError(''); return }
+    const trimmed = q.trim()
+    if (!trimmed) { setResults([]); setError(''); return }
+
     setLoading(true)
     setError('')
+
+    // 1. 先从本地中文名索引匹配
+    const localMatches = searchByChineseName(trimmed)
+
     try {
-      const res = await fetch(`/api/stock/search?q=${encodeURIComponent(q)}`)
+      const res = await fetch(`/api/stock/search?q=${encodeURIComponent(trimmed)}`)
       const json = await res.json()
-      if (!json.ok) { setError(json.error?.message || 'Search failed'); setResults([]); return }
-      setResults((json.data.searchResult?.quotes ?? []).filter(
+      if (!json.ok) { setError(json.error?.message || '搜索失败'); setResults([]); return }
+
+      const apiResults = (json.data.searchResult?.quotes ?? []).filter(
         (r: YahooSearchQuote) => r.quoteType === 'EQUITY' || r.quoteType === 'ETF',
-      ))
-    } catch { setError('Network error'); setResults([]) }
+      ) as YahooSearchQuote[]
+
+      // 如果有中文匹配且 API 未覆盖，补充中文匹配的结果
+      if (localMatches.length > 0) {
+        const apiSymbols = new Set(apiResults.map((r) => r.symbol))
+        for (const symbol of localMatches) {
+          if (!apiSymbols.has(symbol)) {
+            apiResults.push({
+              symbol,
+              shortname: getChineseName(symbol) || symbol,
+              exchange: 'CN',
+              quoteType: 'EQUITY',
+            })
+          }
+        }
+      }
+
+      setResults(apiResults)
+    } catch {
+      // API 不可用时，至少展示中文名匹配结果
+      if (localMatches.length > 0) {
+        setResults(localMatches.map((symbol) => ({
+          symbol,
+          shortname: getChineseName(symbol) || symbol,
+          exchange: '本地',
+          quoteType: 'EQUITY' as const,
+        })))
+      } else {
+        setError('网络错误')
+        setResults([])
+      }
+    }
     finally { setLoading(false) }
   }, [])
+
+  /** 中文名 + 英文名 + 代码的展示文本 */
+  const formatItemName = (item: YahooSearchQuote): string => {
+    const displayName = item.shortname || item.longname || item.symbol
+    const cn = getChineseName(item.symbol)
+    if (cn && !displayName.includes(cn)) {
+      return `${cn} (${displayName})`
+    }
+    return displayName
+  }
 
   const handleChange = (value: string) => {
     setQuery(value)
@@ -46,7 +94,7 @@ const StockSearch = ({ onAdd, existingSymbols, onClose }: Props) => {
         <div className="flex items-center gap-3 border-b border-border-subtle px-4 py-3">
           <Icon name="search" className="text-text-muted text-lg" />
           <input ref={inputRef} type="text" value={query} onChange={(e) => handleChange(e.target.value)}
-            placeholder="搜索股票代码或名称 (US/HK/A-shares)"
+            placeholder="搜索股票代码、中文名或英文名…"
             className="flex-1 bg-transparent font-body-md text-body-md text-on-surface outline-none placeholder:text-text-muted" />
           <button type="button" onClick={onClose} className="rounded-full p-1.5 text-text-muted hover:bg-white/6 hover:text-on-surface transition-premium">
             <Icon name="close" className="text-lg" />
@@ -67,7 +115,7 @@ const StockSearch = ({ onAdd, existingSymbols, onClose }: Props) => {
               >
                 <div className="flex items-center gap-md min-w-0">
                   <span className="font-label-mono text-sm text-primary shrink-0">{symbol}</span>
-                  <span className="font-body-md text-sm text-on-surface truncate">{name}</span>
+                  <span className="font-body-md text-sm text-on-surface truncate">{formatItemName(item)}</span>
                 </div>
                 <div className="flex items-center gap-xs shrink-0">
                   <span className="font-label-mono text-xs text-text-muted">{item.exchange}</span>

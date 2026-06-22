@@ -2,6 +2,7 @@ import { useEffect, useRef, useState, useCallback } from 'react'
 import { createChart, ColorType, CandlestickSeries } from 'lightweight-charts'
 import { Icon } from '@components'
 import { WatchlistStock, ChartDataPoint, IntervalRange, INTERVAL_MAP } from './types'
+import { getChineseName } from './stockNameMap'
 
 interface Props {
   stock: WatchlistStock
@@ -24,6 +25,8 @@ const StockDetail = ({ stock, onBack }: Props) => {
 
   const fetchChart = useCallback(async (range: IntervalRange) => {
     const { interval: yahooInterval, range: yahooRange } = INTERVAL_MAP[range]
+    // 日线/周线 → yyyy-mm-dd；分钟线 → Unix timestamp (number)
+    const isDailyOrAbove = yahooInterval === '1d' || yahooInterval === '1wk'
     setLoading(true)
     try {
       const res = await fetch(`/api/stock/chart?symbol=${stock.symbol}&range=${yahooRange}&interval=${yahooInterval}`)
@@ -37,7 +40,10 @@ const StockDetail = ({ stock, onBack }: Props) => {
       const points: ChartDataPoint[] = []
       for (let i = 0; i < timestamps.length; i++) {
         if (opens[i] != null && highs[i] != null && lows[i] != null && closes[i] != null) {
-          points.push({ time: timestamps[i].toString(), open: opens[i]!, high: highs[i]!, low: lows[i]!, close: closes[i]! })
+          const time: string | number = isDailyOrAbove
+            ? new Date(timestamps[i] * 1000).toISOString().slice(0, 10) // yyyy-mm-dd
+            : timestamps[i] // number — Unix timestamp in seconds
+          points.push({ time, open: opens[i]!, high: highs[i]!, low: lows[i]!, close: closes[i]! })
         }
       }
       setChartData(points)
@@ -68,9 +74,9 @@ const StockDetail = ({ stock, onBack }: Props) => {
     })
 
     const candleSeries = chart.addSeries(CandlestickSeries, {
-      upColor: '#22c55e', downColor: '#ef4444',
-      borderUpColor: '#22c55e', borderDownColor: '#ef4444',
-      wickUpColor: '#22c55e', wickDownColor: '#ef4444',
+      upColor: '#ef4444', downColor: '#22c55e',
+      borderUpColor: '#ef4444', borderDownColor: '#22c55e',
+      wickUpColor: '#ef4444', wickDownColor: '#22c55e',
       priceFormat: { type: 'price', precision: 2, minMove: 0.01 },
     })
     candleSeries.setData(chartData as any)
@@ -88,7 +94,7 @@ const StockDetail = ({ stock, onBack }: Props) => {
     return () => { observer.disconnect(); chart.remove() }
   }, [chartData])
 
-  const changeColor = stock.change >= 0 ? 'text-primary' : 'text-red-400'
+  const changeColor = stock.change >= 0 ? 'text-red-500' : 'text-green-600'
   const isPre = stock.marketState === 'PRE'
   const isPost = stock.marketState === 'POST'
   const extLabel = isPre ? '盘前' : isPost ? '盘后' : null
@@ -107,7 +113,9 @@ const StockDetail = ({ stock, onBack }: Props) => {
             <h2 className="font-headline-md text-headline-md text-on-surface truncate">{stock.symbol}</h2>
             {extLabel && <span className="rounded-full border border-primary/20 bg-primary/10 px-2 py-0.5 font-label-mono text-[10px] uppercase text-primary">{extLabel}</span>}
           </div>
-          <p className="font-body-md text-sm text-text-muted truncate">{stock.name}</p>
+          <p className="font-body-md text-sm text-text-muted truncate" title={stock.name}>
+            {getChineseName(stock.symbol) ?? stock.name}
+          </p>
         </div>
         <div className="text-right">
           <div className={`font-label-mono text-lg ${changeColor}`}>{fmt(stock.price)}</div>
@@ -119,8 +127,8 @@ const StockDetail = ({ stock, onBack }: Props) => {
       {extLabel && extPrice != null && extChange != null && (
         <div className="flex items-center gap-3 px-0 py-3 border-b border-border-subtle shrink-0">
           <span className="font-label-mono text-xs text-text-muted">{extLabel}</span>
-          <span className={`font-label-mono text-sm ${extChange >= 0 ? 'text-primary' : 'text-red-400'}`}>{fmt(extPrice)}</span>
-          <span className={`font-label-mono text-xs ${extChange >= 0 ? 'text-primary' : 'text-red-400'}`}>
+          <span className={`font-label-mono text-sm ${extChange >= 0 ? 'text-red-500' : 'text-green-600'}`}>{fmt(extPrice)}</span>
+          <span className={`font-label-mono text-xs ${extChange >= 0 ? 'text-red-500' : 'text-green-600'}`}>
             {extChange >= 0 ? '+' : ''}{fmt(extChange)} ({extChangePct != null ? (extChangePct >= 0 ? '+' : '') + extChangePct.toFixed(2) : '--'}%)
           </span>
         </div>

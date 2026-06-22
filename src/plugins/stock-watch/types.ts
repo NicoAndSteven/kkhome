@@ -65,7 +65,7 @@ export interface WatchlistStock {
 }
 
 export interface ChartDataPoint {
-  time: string
+  time: string | number
   open: number
   high: number
   low: number

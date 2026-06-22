@@ -1,185 +1,114 @@
 import { useState, useEffect, useCallback, useRef } from 'react'
 import { PluginRuntimeConfig } from '@core/types'
 import { Icon } from '@components'
-import { WatchlistStock, YahooQuoteResult } from './types'
-import StockListItem from './StockListItem'
+import { FundInfo, FundWithQuotes, FundHoldingQuote, WatchlistStock } from './types'
+import { readLocalFunds, writeLocalFunds, fetchAllFundQuotes } from './fundDataService'
+import FundCard from './FundCard'
+import FundImport from './FundImport'
 import StockDetail from './StockDetail'
-import StockSearch from './StockSearch'
 
 interface Props { config?: PluginRuntimeConfig }
 
-const STORAGE_KEY = 'hub:stock-watchlist'
 const REFRESH_INTERVAL_MS = 30_000
-const DEFAULT_SYMBOLS: string[] = ['AAPL', 'NVDA', 'TSLA', 'MSFT', 'GOOGL', 'AMD']
-
-/** 从 localStorage 读取本地兜底 */
-const readLocalSymbols = (): string[] => {
-  try {
-    const s = globalThis.localStorage.getItem(STORAGE_KEY)
-    return s ? JSON.parse(s) : DEFAULT_SYMBOLS
-  } catch {
-    return DEFAULT_SYMBOLS
-  }
-}
-
-const writeLocalSymbols = (symbols: string[]) => {
-  globalThis.localStorage.setItem(STORAGE_KEY, JSON.stringify(symbols))
-}
-
-/** 从 API 同步远程自选股列表 */
-const fetchRemoteSymbols = async (): Promise<string[] | null> => {
-  try {
-    const res = await fetch('/api/stock/watchlist')
-    if (!res.ok) return null
-    const json = await res.json()
-    if (!json.ok) return null
-    const items: Array<{ symbol: string }> = json.data?.watchlist ?? []
-    return items.map((item) => item.symbol)
-  } catch {
-    return null
-  }
-}
 
 const StockWatchPlugin = (_props: Props) => {
-  const [symbols, setSymbols] = useState<string[]>(readLocalSymbols)
-  const [stocks, setStocks] = useState<WatchlistStock[]>([])
+  const [funds, setFunds] = useState<FundInfo[]>(readLocalFunds)
+  const [fundsWithQuotes, setFundsWithQuotes] = useState<FundWithQuotes[]>([])
   const [selectedStock, setSelectedStock] = useState<WatchlistStock | null>(null)
-  const [searchOpen, setSearchOpen] = useState(false)
+  const [importOpen, setImportOpen] = useState(false)
   const [error, setError] = useState('')
-  const [syncMessage, setSyncMessage] = useState('')
+  const [dataReady, setDataReady] = useState(false)
   const tickRef = useRef<ReturnType<typeof setInterval>>()
 
-  // 启动时尝试从服务端拉取自选股列表
-  useEffect(() => {
-    let cancelled = false
-    fetchRemoteSymbols().then((remote) => {
-      if (cancelled) return
-      if (remote && remote.length > 0) {
-        setSymbols(remote)
-        writeLocalSymbols(remote)
-        setSyncMessage('')
-      } else if (remote && remote.length === 0) {
-        // 服务端无数据，用本地作为初始同步
-        setSyncMessage('')
-      } else {
-        // API 不可用，使用本地兜底
-        setSyncMessage('本地模式')
-      }
-    })
-    return () => { cancelled = true }
-  }, [])
+  // 计算汇总统计
+  const totalFunds = funds.length
+  const totalHoldings = funds.reduce((acc, f) => acc + f.topHoldings.length, 0)
 
-  // symbols 变化时写入 localStorage 兜底
-  useEffect(() => { writeLocalSymbols(symbols) }, [symbols])
+  // funds 变化时写入 localStorage
+  useEffect(() => { writeLocalFunds(funds) }, [funds])
 
-  // 同步 symbols 到远程
-  const syncToRemote = useCallback(async (newSymbols: string[]) => {
-    try {
-      // 把本地全量同步到远程（全量替换模式）
-      // 先获取远程 list
-      const remoteRes = await fetch('/api/stock/watchlist')
-      if (!remoteRes.ok) return
-      const remoteJson = await remoteRes.json()
-      if (!remoteJson.ok) return
-      const remoteItems: Array<{ symbol: string }> = remoteJson.data?.watchlist ?? []
-      const remoteSymbols = new Set(remoteItems.map((r) => r.symbol))
-      const localSet = new Set(newSymbols)
-
-      // 删除远程多余
-      for (const item of remoteItems) {
-        if (!localSet.has(item.symbol)) {
-          await fetch(`/api/stock/watchlist?symbol=${item.symbol}`, { method: 'DELETE' })
-        }
-      }
-      // 新增本地有但远程没有的
-      for (const sym of newSymbols) {
-        if (!remoteSymbols.has(sym)) {
-          await fetch('/api/stock/watchlist', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ symbol: sym }),
-          })
-        }
-      }
-    } catch {
-      // 静默失败，localStorage 兜底
+  // 获取所有持仓股的行情数据
+  const refreshAllQuotes = useCallback(async () => {
+    if (funds.length === 0) {
+      setFundsWithQuotes([])
+      setDataReady(true)
+      return
     }
-  }, [])
-
-  const fetchQuotes = useCallback(async () => {
-    if (symbols.length === 0) { setStocks([]); return }
     try {
-      const res = await fetch('/api/stock/quote', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ symbols }),
-      })
-      const json = await res.json()
-      if (!json.ok) { setError(json.error?.message || '获取失败'); return }
+      const data = await fetchAllFundQuotes(funds)
+      setFundsWithQuotes(data)
       setError('')
-      const results = (json.data?.quoteResponse?.result ?? []) as YahooQuoteResult['quoteResponse']['result']
-      const mapped: WatchlistStock[] = results.map((q) => ({
-        symbol: q.symbol,
-        name: q.shortName || q.longName || q.symbol,
-        price: q.regularMarketPrice ?? 0,
-        change: q.regularMarketChange ?? 0,
-        changePercent: q.regularMarketChangePercent ?? 0,
-        preMarketPrice: q.preMarketPrice,
-        preMarketChange: q.preMarketChange,
-        preMarketChangePercent: q.preMarketChangePercent,
-        postMarketPrice: q.postMarketPrice,
-        postMarketChange: q.postMarketChange,
-        postMarketChangePercent: q.postMarketChangePercent,
-        marketState: q.marketState,
-        previousClose: q.regularMarketPreviousClose ?? 0,
-        open: q.regularMarketOpen ?? 0,
-        dayHigh: q.regularMarketDayHigh ?? 0,
-        dayLow: q.regularMarketDayLow ?? 0,
-        volume: q.regularMarketVolume ?? 0,
-        marketCap: q.marketCap,
-        high52w: q.fiftyTwoWeekHigh,
-        low52w: q.fiftyTwoWeekLow,
-      }))
-      setStocks(mapped)
     } catch {
-      setError('网络请求失败。已部署到 Cloudflare Pages 后重试。')
+      setError('获取行情数据失败')
+    } finally {
+      setDataReady(true)
     }
-  }, [symbols])
+  }, [funds])
 
+  // 初始加载 + 定时刷新
   useEffect(() => {
-    fetchQuotes()
-    tickRef.current = setInterval(fetchQuotes, REFRESH_INTERVAL_MS)
+    refreshAllQuotes()
+    tickRef.current = setInterval(refreshAllQuotes, REFRESH_INTERVAL_MS)
     return () => { if (tickRef.current) clearInterval(tickRef.current) }
-  }, [fetchQuotes])
+  }, [refreshAllQuotes])
 
-  const handleAdd = async (symbol: string, _name?: string) => {
-    const next = symbols.includes(symbol) ? symbols : [...symbols, symbol]
-    setSymbols(next)
-    syncToRemote(next)
+  // 导入基金
+  const handleImportFund = (fund: FundInfo) => {
+    setFunds((prev) => {
+      if (prev.some((f) => f.code === fund.code)) return prev
+      return [...prev, fund]
+    })
   }
 
-  const handleRemove = async (symbol: string) => {
-    const next = symbols.filter((s) => s !== symbol)
-    setSymbols(next)
-    if (selectedStock?.symbol === symbol) setSelectedStock(null)
-    // 同步到远程
-    try {
-      await fetch(`/api/stock/watchlist?symbol=${symbol}`, { method: 'DELETE' })
-    } catch { /* 静默 */ }
+  // 删除基金
+  const handleDeleteFund = (code: string) => {
+    setFunds((prev) => prev.filter((f) => f.code !== code))
+    setFundsWithQuotes((prev) => prev.filter((f) => f.code !== code))
   }
 
+  // 点击持仓股 → 进入详情
+  const handleSelectStock = (holding: FundHoldingQuote) => {
+    setSelectedStock({
+      symbol: holding.symbol,
+      name: holding.name,
+      price: holding.price,
+      change: holding.change,
+      changePercent: holding.changePercent,
+      preMarketPrice: holding.preMarketPrice,
+      preMarketChange: holding.preMarketChange,
+      preMarketChangePercent: holding.preMarketChangePercent,
+      postMarketPrice: holding.postMarketPrice,
+      postMarketChange: holding.postMarketChange,
+      postMarketChangePercent: holding.postMarketChangePercent,
+      marketState: holding.marketState ?? 'CLOSED',
+      previousClose: holding.previousClose ?? 0,
+      open: 0,
+      dayHigh: 0,
+      dayLow: 0,
+      volume: 0,
+    })
+  }
+
+  // StockDetail 返回
+  const handleBackFromDetail = () => {
+    setSelectedStock(null)
+  }
+
+  // ── 详情页面 ──
   if (selectedStock) {
     return (
       <section id="stock-watch" className="h-full flex flex-col">
         <div className="surface-panel rounded-2xl p-4 md:p-5">
-          <StockDetail stock={selectedStock} onBack={() => setSelectedStock(null)} />
+          <StockDetail stock={selectedStock} onBack={handleBackFromDetail} />
         </div>
       </section>
     )
   }
 
+  // ── 主页面：基金持仓看板 ──
   return (
     <section id="stock-watch" className="space-y-5">
+      {/* 头部 */}
       <div className="stack-board surface-panel-strong rounded-[28px] p-5 md:p-7">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
@@ -187,29 +116,32 @@ const StockWatchPlugin = (_props: Props) => {
               <span className="font-label-mono text-[10px] uppercase tracking-[0.34em] text-primary">Section 04</span>
               <span className="h-px w-24 bg-[linear-gradient(90deg,rgba(17,72,255,0.6),rgba(224,20,52,0.55),transparent)]" />
             </div>
-            <h2 className="mt-3 font-headline-md text-[clamp(2.4rem,4.8vw,4.2rem)] font-semibold leading-[0.92] tracking-[-0.08em] text-on-surface">自选股</h2>
+            <h2 className="mt-3 font-headline-md text-[clamp(2.4rem,4.8vw,4.2rem)] font-semibold leading-[0.92] tracking-[-0.08em] text-on-surface">
+              QDII 看盘
+            </h2>
             <p className="mt-3 max-w-2xl font-body-md text-sm leading-relaxed text-on-surface-variant">
-              保留实时数据和图表，但把页面拉回更像金融海报的信息编排，不再像监控面板。
+              基金重仓股实时行情看板。美股盘前盘后数据自动更新。
             </p>
           </div>
           <button
             type="button"
-            onClick={() => setSearchOpen(true)}
+            onClick={() => setImportOpen(true)}
             className="inline-flex items-center gap-2 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white transition-premium hover:opacity-90 active:scale-[0.98]"
           >
             <Icon name="add" className="text-base" />
-            添加自选
+            导入基金
           </button>
         </div>
 
+        {/* 统计卡片 */}
         <div className="mt-5 grid gap-3 sm:grid-cols-3">
           <div className="surface-item rounded-2xl p-4">
-            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">自选数量</div>
-            <div className="mt-2 font-headline-md text-3xl text-on-surface">{symbols.length}</div>
+            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">基金数量</div>
+            <div className="mt-2 font-headline-md text-3xl text-on-surface">{totalFunds}</div>
           </div>
           <div className="surface-item rounded-2xl p-4">
-            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">当前数据</div>
-            <div className="mt-2 font-headline-md text-3xl text-on-surface">{stocks.length}</div>
+            <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">持仓总数</div>
+            <div className="mt-2 font-headline-md text-3xl text-on-surface">{totalHoldings}</div>
           </div>
           <div className="surface-item rounded-2xl p-4">
             <div className="font-label-mono text-[10px] uppercase tracking-wider text-text-muted">刷新间隔</div>
@@ -218,44 +150,59 @@ const StockWatchPlugin = (_props: Props) => {
         </div>
       </div>
 
+      {/* 错误提示 */}
       {error && (
         <div className="rounded-2xl border border-[rgba(223,161,144,0.35)] bg-[rgba(223,161,144,0.12)] px-4 py-3">
           <span className="font-body-md text-xs text-[rgb(150,95,84)]">{error}</span>
         </div>
       )}
 
-      {syncMessage && (
-        <div className="rounded-2xl border border-[rgba(8,145,178,0.25)] bg-[rgba(8,145,178,0.08)] px-4 py-2">
-          <span className="font-body-md text-xs text-primary">{syncMessage}</span>
+      {/* 加载状态 */}
+      {!dataReady && funds.length > 0 && (
+        <div className="flex items-center justify-center py-12">
+          <span className="font-body-md text-sm text-text-muted">加载行情数据...</span>
         </div>
       )}
 
-      <div className="min-h-0 flex-1 overflow-y-auto">
-        {stocks.length === 0 && symbols.length > 0 && (
-          <div className="flex items-center justify-center py-12">
-            <span className="font-body-md text-sm text-text-muted">加载中...</span>
-          </div>
-        )}
-        {symbols.length === 0 && (
-          <div className="surface-panel rounded-2xl p-8 text-center">
-            <span className="font-body-md text-sm text-text-muted">暂无自选股</span>
-            <div className="mt-3">
-              <button type="button" onClick={() => setSearchOpen(true)} className="text-sm font-semibold text-primary hover:underline">
-                点击添加
-              </button>
-            </div>
-          </div>
-        )}
-        <div className="space-y-2">
-          {stocks.map((s) => (
-            <div key={s.symbol} className="surface-panel rounded-2xl p-0">
-              <StockListItem stock={s} onClick={() => setSelectedStock(s)} onRemove={() => handleRemove(s.symbol)} />
-            </div>
+      {/* 空状态 */}
+      {dataReady && funds.length === 0 && (
+        <div className="surface-panel rounded-2xl p-8 text-center">
+          <Icon name="account_tree" className="text-3xl text-text-muted/40 mx-auto mb-3" />
+          <p className="font-body-md text-sm text-text-muted mb-1">暂无基金数据</p>
+          <p className="font-body-md text-xs text-text-muted/60 mb-4">导入 QDII 基金，查看其重仓股实时行情</p>
+          <button
+            type="button"
+            onClick={() => setImportOpen(true)}
+            className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white transition-premium hover:opacity-90 active:scale-[0.98]"
+          >
+            <Icon name="add" className="text-sm" />
+            导入基金
+          </button>
+        </div>
+      )}
+
+      {/* 基金卡片列表 */}
+      {funds.length > 0 && (
+        <div className="space-y-3">
+          {fundsWithQuotes.map((fwq) => (
+            <FundCard
+              key={fwq.code}
+              fund={fwq}
+              onSelectStock={handleSelectStock}
+              onDeleteFund={handleDeleteFund}
+            />
           ))}
         </div>
-      </div>
+      )}
 
-      {searchOpen && <StockSearch onAdd={handleAdd} existingSymbols={symbols} onClose={() => setSearchOpen(false)} />}
+      {/* 导入基金弹窗 */}
+      {importOpen && (
+        <FundImport
+          onImport={handleImportFund}
+          existingCodes={funds.map((f) => f.code)}
+          onClose={() => setImportOpen(false)}
+        />
+      )}
     </section>
   )
 }

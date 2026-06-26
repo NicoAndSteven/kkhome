@@ -62,7 +62,7 @@ const LocalMusicPlugin = () => {
     } finally {
       setLoading(false)
     }
-  }, [adminToken])
+  }, [adminToken, setSongQueue])
 
   useEffect(() => { fetchSongs() }, [fetchSongs])
 
@@ -77,7 +77,7 @@ const LocalMusicPlugin = () => {
     setUploadProgress(0)
     setUploadStatus('uploading')
 
-    const xhr = new XMLHttpRequest()
+    const xhr = new globalThis.XMLHttpRequest()
 
     xhr.upload.addEventListener('progress', (evt) => {
       if (evt.lengthComputable) {

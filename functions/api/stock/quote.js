@@ -24,7 +24,7 @@ export const onRequestPost = async ({ request }) => {
       return ok({ quoteResponse: retry.quoteResponse })
     }
     return ok({ quoteResponse: data.quoteResponse })
-  } catch (error) {
+  } catch {
     // 最后尝试一次刷新认证
     try {
       await refreshAuth()

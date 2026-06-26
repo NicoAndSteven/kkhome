@@ -114,7 +114,7 @@ export async function fetchQuotes(symbols) {
         const data = await resp.json()
         if (data?.quoteResponse?.result?.length) return data
       }
-    } catch {} // swallow and fall through to v8
+    } catch { /* 静默处理，降级到 v8 */ }
   }
 
   // 降级：用 v8/chart 逐个拉取

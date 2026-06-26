@@ -111,7 +111,7 @@ export const onRequestPost = async ({ request }) => {
 
     // GBK 编码 → UTF-8
     const buffer = await resp.arrayBuffer()
-    const decoder = new TextDecoder('gbk')
+    const decoder = new globalThis.TextDecoder('gbk')
     const html = decoder.decode(buffer)
 
     if (!html || html.length < 50) {
@@ -143,7 +143,7 @@ export const onRequestPost = async ({ request }) => {
         })
         if (infoResp.ok) {
           const infoBuffer = await infoResp.arrayBuffer()
-          const infoHtml = new TextDecoder('gbk').decode(infoBuffer)
+          const infoHtml = new globalThis.TextDecoder('gbk').decode(infoBuffer)
 
           // 基金名称：通常在 h1 或 title 中
           const nameMatch = infoHtml.match(/<h1[^>]*class="fundDetail-tit"[^>]*>([^<]+)</)

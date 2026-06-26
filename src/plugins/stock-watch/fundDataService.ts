@@ -128,7 +128,7 @@ export function mergeFundWithQuotes(fund: FundInfo, quotes: FundHoldingQuote[]):
   let totalWeight = 0
   let upCount = 0
   let downCount = 0
-  let unchangedCount = 0
+  let _unchangedCount = 0
 
   for (const hq of holdingQuotes) {
     if (hq.changePercent !== 0 && hq.weight > 0) {
@@ -137,7 +137,7 @@ export function mergeFundWithQuotes(fund: FundInfo, quotes: FundHoldingQuote[]):
     }
     if (hq.changePercent > 0) upCount++
     else if (hq.changePercent < 0) downCount++
-    else unchangedCount++
+    else _unchangedCount++
   }
 
   return {

@@ -6,7 +6,6 @@ import { Plugin, PluginConfig, PluginRuntimeConfig } from './types'
  */
 class PluginSystem {
   private plugins: Map<string, Plugin> = new Map()
-  private initialized: boolean = false
 
   /**
    * 注册插件
@@ -99,22 +98,11 @@ class PluginSystem {
    * 初始化插件系统
    */
   async initialize(): Promise<void> {
-    if (this.initialized) {
-      return
-    }
-    this.initialized = true
-  }
-
-  /**
-   * 检查是否已初始化
-   */
-  isInitialized(): boolean {
-    return this.initialized
+    // PluginSystem is a registration hub — no initialization needed
   }
 
   reset(): void {
     this.plugins.clear()
-    this.initialized = false
   }
 }
 

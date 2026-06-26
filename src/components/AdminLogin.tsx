@@ -20,7 +20,7 @@ const AdminLogin = ({ open, onClose, onAuth }: Props) => {
       setError('')
       setLoading(false)
       setSuccess(false)
-      requestAnimationFrame(() => inputRef.current?.focus())
+      globalThis.requestAnimationFrame(() => inputRef.current?.focus())
     }
   }, [open])
 

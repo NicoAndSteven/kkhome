@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect } from 'react'
+import { useCallback, useState, useEffect, Suspense } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
 import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
@@ -42,6 +42,14 @@ function App() {
   const [introComplete, setIntroComplete] = useState(false)
   const isMobile = useIsMobile()
   const [activeRoute, setActiveRoute] = useState<HubRouteId>(() => normalizeHubRoute(window.location.hash))
+  // intro 安全兜底：6 秒后无论 IntroStage 是否完成都显示内容
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      if (!introComplete) setIntroComplete(true)
+    }, 6000)
+    return () => clearTimeout(timer)
+  }, [introComplete])
+
   const [contactOpen, setContactOpen] = useState(false)
   const [adminLoginOpen, setAdminLoginOpen] = useState(false)
   const [adminToken, setAdminToken] = useState('')
@@ -134,14 +142,6 @@ function App() {
   }, [activeRoute])
 
   useEffect(() => {
-    const handleKeydown = (_event: globalThis.KeyboardEvent) => {
-    }
-
-    window.addEventListener('keydown', handleKeydown)
-    return () => window.removeEventListener('keydown', handleKeydown)
-  }, [])
-
-  useEffect(() => {
     if (loading) return
     const enabledPluginIds = new Set(pluginSystem.getEnabledPlugins().map((plugin) => plugin.id))
     window.__hubAvailableRoutes = allRouteItems
@@ -223,7 +223,7 @@ function App() {
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}
-            enabled={motionConfig.intro && !introComplete}
+            enabled={motionConfig.intro && !isMobile && !introComplete}
             duration={motionConfig.introDuration}
             onComplete={handleIntroComplete}
           />
@@ -231,7 +231,9 @@ function App() {
         <main className={`page-shell home-page-shell mx-auto max-w-[1480px] px-6 pt-16 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`} style={{ position: 'relative', zIndex: 1 }}>
           <ErrorBoundary>
             {profilePlugin ? (
-              <profilePlugin.component config={profilePlugin.config} />
+              <Suspense fallback={<div className="surface-panel rounded-2xl p-lg"><p className="text-text-muted font-body-md">加载中...</p></div>}>
+                <profilePlugin.component config={profilePlugin.config} />
+              </Suspense>
             ) : (
               <div className="surface-panel rounded-2xl p-lg">
                 <p className="text-text-muted font-body-md">加载中...</p>
@@ -245,7 +247,7 @@ function App() {
           profile={profileConfig ?? undefined}
           onClose={() => setContactOpen(false)}
         />
-        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={(token) => { setAdminToken(token); sessionStorage.setItem('hub:admin-token', token); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } })); setShowAdmin(true) }} />
+        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={(token) => { setAdminToken(token); globalThis.sessionStorage.setItem('hub:admin-token', token); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } })); setShowAdmin(true) }} />
 
         {/* 管理员入口 — 右下角 */}
         <button
@@ -309,11 +311,13 @@ function App() {
         >
           <ErrorBoundary key={activeRouteItem.id}>
             {activePlugin ? (
-              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
-                <activePlugin.component config={activePlugin.config} />
+              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)] route-content-in">
+                <Suspense fallback={<div className="py-8 text-center text-text-muted font-body-md">加载中...</div>}>
+                  <activePlugin.component config={activePlugin.config} />
+                </Suspense>
               </div>
             ) : (
-              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)]">
+              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)] route-content-in">
                 <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
                 <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
                 <p className="mt-1 font-body-md text-body-md text-text-muted">
@@ -343,12 +347,14 @@ function App() {
       <main className={`page-shell route-page-shell page-ready`}>
         <ErrorBoundary key={activeRouteItem.id}>
           {activePlugin ? (
-            <div className="route-stage" aria-label={activeRouteItem.label}>
+            <div className="route-stage route-content-in" aria-label={activeRouteItem.label}>
               <div className="route-frame">
                 <div className="blog-layout">
                   <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} footerSlot={sidebarNowPlaying} />
                   <div className="blog-content scrollbar-none">
-                    <activePlugin.component config={activePlugin.config} />
+                    <Suspense fallback={<div className="px-6 py-12 text-text-muted font-body-md">加载中...</div>}>
+                      <activePlugin.component config={activePlugin.config} />
+                    </Suspense>
                   </div>
                 </div>
               </div>

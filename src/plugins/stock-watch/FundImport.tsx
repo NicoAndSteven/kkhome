@@ -37,7 +37,16 @@ const FundImport = ({ onImport, existingCodes, onClose }: Props) => {
         setError(json.error?.message || '获取基金数据失败')
         return
       }
-      setPreview(json.data.fund)
+      const { fund } = json.data
+      setPreview({
+        code: fund.code,
+        name: fund.name,
+        size: fund.size,
+        quarter: fund.quarter,
+        type: fund.type,
+        topHoldings: fund.holdings ?? [],
+        updatedAt: new Date().toISOString(),
+      })
     } catch {
       setError('网络请求失败，请稍后重试')
     } finally {

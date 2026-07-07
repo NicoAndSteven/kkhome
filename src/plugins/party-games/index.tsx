@@ -2,7 +2,9 @@ import { useState } from 'react'
 import { PluginRuntimeConfig } from '@core/types'
 import CreateRoomSheet from './components/CreateRoomSheet'
 import JoinRoomSheet from './components/JoinRoomSheet'
-import { PartyGameMode, PartyRoomSettings } from './types'
+import WaitingRoomView from './components/WaitingRoomView'
+import { getDefaultWordPair } from './content'
+import { LocalPartyRoom, PartyGameMode, PartyRoomSettings } from './types'
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -16,21 +18,60 @@ const readDefaultMaxPlayers = (config?: PluginRuntimeConfig) => (
   typeof config?.maxPlayers === 'number' ? config.maxPlayers : 6
 )
 
+const createRoomCode = () => Math.random().toString(36).slice(2, 6).toUpperCase()
+
 const PartyGamesPlugin = ({ config }: Props) => {
   const [createOpen, setCreateOpen] = useState(false)
   const [joinOpen, setJoinOpen] = useState(false)
-  const [message, setMessage] = useState('')
+  const [room, setRoom] = useState<LocalPartyRoom | null>(null)
   const defaultMode = readDefaultMode(config)
   const defaultMaxPlayers = readDefaultMaxPlayers(config)
 
   const createLocalRoom = (nickname: string, settings: PartyRoomSettings) => {
+    setRoom({
+      code: createRoomCode(),
+      settings,
+      players: [{ id: 'host', nickname, host: true, status: 'online' }],
+      phase: 'waiting',
+      currentSpeakerIndex: 0,
+      selectedWordPair: getDefaultWordPair(),
+      selectedCard: null,
+    })
     setCreateOpen(false)
-    setMessage(`已为 ${nickname} 准备 ${settings.maxPlayers} 人房间`)
   }
 
   const joinLocalRoom = (nickname: string, code: string) => {
+    setRoom({
+      code,
+      settings: {
+        mode: 'undercover',
+        maxPlayers: 6,
+        allowLateJoin: true,
+        wordCategory: '生活',
+        punishmentMode: 'random',
+      },
+      players: [
+        { id: 'host', nickname: '房主', host: true, status: 'online' },
+        { id: 'guest', nickname, host: false, status: 'online' },
+      ],
+      phase: 'waiting',
+      currentSpeakerIndex: 0,
+      selectedWordPair: getDefaultWordPair(),
+      selectedCard: null,
+    })
     setJoinOpen(false)
-    setMessage(`${nickname} 准备加入 ${code}`)
+  }
+
+  if (room?.phase === 'waiting') {
+    return (
+      <section id="party-games" className="space-y-5 scroll-mt-24">
+        <WaitingRoomView
+          room={room}
+          onStart={() => setRoom({ ...room, phase: 'word' })}
+          onLeave={() => setRoom(null)}
+        />
+      </section>
+    )
   }
 
   return (
@@ -60,7 +101,6 @@ const PartyGamesPlugin = ({ config }: Props) => {
             加入房间
           </button>
         </div>
-        {message && <p className="mt-4 text-sm text-white/62">{message}</p>}
       </div>
 
       <CreateRoomSheet

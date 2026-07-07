@@ -13,4 +13,4 @@ database_id = "0993bece-5500-41e7-9b2f-4bde874e8073"
 
 [[migrations]]
 tag = "v1"
-new_classes = ["PartyRoom"]
+new_sqlite_classes = ["PartyRoom"]

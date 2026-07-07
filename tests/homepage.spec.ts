@@ -1,4 +1,15 @@
+import { existsSync, readFileSync } from 'node:fs'
 import { expect, test } from '@playwright/test'
+
+const readAdminPassword = () => {
+  for (const path of ['.env.local', '.env']) {
+    if (!existsSync(path)) continue
+    const content = readFileSync(path, 'utf8')
+    const match = content.match(/^VITE_DEV_ADMIN_PASSWORD=(.+)$/m)
+    if (match?.[1]) return match[1].trim()
+  }
+  return 'test-admin-token'
+}
 
 test('homepage renders configured content without placeholders', async ({ page }) => {
   test.setTimeout(60_000)
@@ -263,6 +274,7 @@ test('party games mobile flow exposes room setup and punishment states', async (
 
 test('admin panel exposes party question bank management', async ({ page }) => {
   test.setTimeout(60_000)
+  const adminPassword = readAdminPassword()
 
   await page.route('**/api/music/songs', async (route) => {
     if (route.request().method() === 'POST') {
@@ -328,13 +340,218 @@ test('admin panel exposes party question bank management', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' })
   await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 8_000 })
   await page.locator('button[aria-label="管理员"]').click()
-  await page.getByPlaceholder('管理员密码').fill('test-admin-token')
+  await page.getByPlaceholder('管理员密码').fill(adminPassword)
   await page.getByRole('button', { name: '进入管理' }).click()
 
   await expect(page.getByRole('heading', { name: '管理后台' })).toBeVisible()
   await page.getByRole('button', { name: /聚会题库/ }).click()
   await expect(page.getByRole('heading', { name: '聚会题库' })).toBeVisible()
   await expect(page.getByText('苹果 / 梨')).toBeVisible()
+  await page.getByRole('button', { name: /真心话大冒险/ }).click()
   await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toBeVisible()
   await expect(page.getByRole('button', { name: '新增题目' })).toBeVisible()
+})
+
+test('admin party question bank supports filtering and status toggles', async ({ page }) => {
+  test.setTimeout(60_000)
+  const adminPassword = readAdminPassword()
+
+  const wordItems = [
+    {
+      id: 'fruit-apple-pear',
+      civilianWord: '苹果',
+      undercoverWord: '梨',
+      category: '生活',
+      difficulty: 'easy',
+      enabled: true,
+      createdAt: '2026-07-07T00:00:00.000Z',
+      updatedAt: '2026-07-07T00:00:00.000Z',
+    },
+    {
+      id: 'animal-cat-dog',
+      civilianWord: '猫',
+      undercoverWord: '狗',
+      category: '动物',
+      difficulty: 'normal',
+      enabled: false,
+      createdAt: '2026-07-07T00:00:00.000Z',
+      updatedAt: '2026-07-07T00:00:00.000Z',
+    },
+  ]
+
+  const cardItems = [
+    {
+      id: 'truth-recent-laugh',
+      type: 'truth',
+      content: '最近一次笑到停不下来是因为什么？',
+      category: '轻松',
+      intensity: 'soft',
+      enabled: true,
+      createdAt: '2026-07-07T00:00:00.000Z',
+      updatedAt: '2026-07-07T00:00:00.000Z',
+    },
+    {
+      id: 'dare-host-voice',
+      type: 'dare',
+      content: '用主持人的语气宣布下一轮开始。',
+      category: '表演',
+      intensity: 'normal',
+      enabled: false,
+      createdAt: '2026-07-07T00:00:00.000Z',
+      updatedAt: '2026-07-07T00:00:00.000Z',
+    },
+  ]
+
+  await page.route('**/api/music/songs', async (route) => {
+    if (route.request().method() === 'POST') {
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, data: { token: 'test-admin-token' } }),
+      })
+      return
+    }
+
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { songs: [] } }),
+    })
+  })
+
+  await page.route('**/api/party/content/undercover', async (route) => {
+    if (route.request().method() === 'PUT') {
+      const next = await route.request().postDataJSON() as typeof wordItems[number]
+      const index = wordItems.findIndex((item) => item.id === next.id)
+      if (index >= 0) {
+        wordItems[index] = {
+          ...wordItems[index],
+          ...next,
+          updatedAt: '2026-07-07T01:00:00.000Z',
+        }
+      }
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, data: { item: wordItems[index] } }),
+      })
+      return
+    }
+
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { items: wordItems } }),
+    })
+  })
+
+  await page.route('**/api/party/content/undercover/*', async (route) => {
+    const id = route.request().url().split('/').pop() ?? ''
+    const next = await route.request().postDataJSON() as Partial<typeof wordItems[number]>
+    const index = wordItems.findIndex((item) => item.id === id)
+    if (index >= 0) {
+      wordItems[index] = {
+        ...wordItems[index],
+        ...next,
+        id,
+        updatedAt: '2026-07-07T01:00:00.000Z',
+      }
+    }
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { item: wordItems[index] } }),
+    })
+  })
+
+  await page.route('**/api/party/content/truth-or-dare', async (route) => {
+    if (route.request().method() === 'PUT') {
+      const next = await route.request().postDataJSON() as typeof cardItems[number]
+      const index = cardItems.findIndex((item) => item.id === next.id)
+      if (index >= 0) {
+        cardItems[index] = {
+          ...cardItems[index],
+          ...next,
+          updatedAt: '2026-07-07T01:00:00.000Z',
+        }
+      }
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, data: { item: cardItems[index] } }),
+      })
+      return
+    }
+
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { items: cardItems } }),
+    })
+  })
+
+  await page.route('**/api/party/content/truth-or-dare/*', async (route) => {
+    const id = route.request().url().split('/').pop() ?? ''
+    const next = await route.request().postDataJSON() as Partial<typeof cardItems[number]>
+    const index = cardItems.findIndex((item) => item.id === id)
+    if (index >= 0) {
+      cardItems[index] = {
+        ...cardItems[index],
+        ...next,
+        id,
+        updatedAt: '2026-07-07T01:00:00.000Z',
+      }
+    }
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { item: cardItems[index] } }),
+    })
+  })
+
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+  await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 8_000 })
+  await page.locator('button[aria-label="管理员"]').click()
+  await page.getByPlaceholder('管理员密码').fill(adminPassword)
+  await page.getByRole('button', { name: '进入管理' }).click()
+
+  await page.getByRole('button', { name: /聚会题库/ }).click()
+  await expect(page.getByText('苹果 / 梨')).toBeVisible()
+  await expect(page.getByText('猫 / 狗')).toBeVisible()
+
+  await page.getByLabel('状态筛选').selectOption('disabled')
+  await expect(page.getByText('猫 / 狗')).toBeVisible()
+  await expect(page.getByText('苹果 / 梨')).toHaveCount(0)
+
+  await page.getByLabel('状态筛选').selectOption('all')
+  await page.getByLabel('难度筛选').selectOption('easy')
+  await expect(page.getByText('苹果 / 梨')).toBeVisible()
+  await expect(page.getByText('猫 / 狗')).toHaveCount(0)
+
+  await page.getByLabel('难度筛选').selectOption('all')
+  await page.getByLabel('分类筛选').selectOption('动物')
+  await expect(page.getByText('猫 / 狗')).toBeVisible()
+  await expect(page.getByText('苹果 / 梨')).toHaveCount(0)
+
+  await page.getByLabel('状态筛选').selectOption('all')
+  await page.getByLabel('分类筛选').selectOption('all')
+  await page.getByRole('button', { name: '停用 苹果 / 梨' }).click()
+  await expect(page.getByText('苹果 / 梨')).toBeVisible()
+  await expect(page.getByText('生活 · 简单 · 停用')).toBeVisible()
+
+  await page.getByRole('button', { name: /真心话大冒险/ }).click()
+  await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toBeVisible()
+  await expect(page.getByText('用主持人的语气宣布下一轮开始。')).toBeVisible()
+
+  await page.getByLabel('类型筛选').selectOption('dare')
+  await expect(page.getByText('用主持人的语气宣布下一轮开始。')).toBeVisible()
+  await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toHaveCount(0)
+
+  await page.getByLabel('类型筛选').selectOption('all')
+  await page.getByLabel('分类筛选').selectOption('表演')
+  await expect(page.getByText('用主持人的语气宣布下一轮开始。')).toBeVisible()
+  await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toHaveCount(0)
+
+  await page.getByLabel('分类筛选').selectOption('all')
+  await page.getByLabel('强度筛选').selectOption('soft')
+  await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toBeVisible()
+  await expect(page.getByText('用主持人的语气宣布下一轮开始。')).toHaveCount(0)
+
+  await page.getByLabel('强度筛选').selectOption('all')
+  await page.getByLabel('状态筛选').selectOption('disabled')
+  await expect(page.getByText('用主持人的语气宣布下一轮开始。')).toBeVisible()
+  await page.getByRole('button', { name: '启用 用主持人的语气宣布下一轮开始。' }).click()
+  await expect(page.getByText('当前筛选下没有真心话大冒险题目。')).toBeVisible()
 })

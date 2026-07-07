@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Icon from './Icon'
+import PartyContentAdmin from './PartyContentAdmin'
 
 interface Song {
   id: string
@@ -17,7 +18,7 @@ interface Props {
   onClose: () => void
 }
 
-type TabId = 'pending' | 'approved' | 'wish'
+type TabId = 'pending' | 'approved' | 'wish' | 'party'
 
 const AdminPanel = ({ token, onClose }: Props) => {
   const [songs, setSongs] = useState<Song[]>([])
@@ -131,6 +132,7 @@ const AdminPanel = ({ token, onClose }: Props) => {
           { id: 'pending' as TabId, label: '待审核', count: counts.pending },
           { id: 'wish' as TabId, label: '许愿', count: counts.wish },
           { id: 'approved' as TabId, label: '已上架', count: counts.approved },
+          { id: 'party' as TabId, label: '聚会题库', count: 0 },
         ]).map(t => (
           <button
             key={t.id}
@@ -143,13 +145,17 @@ const AdminPanel = ({ token, onClose }: Props) => {
             }`}
           >
             {t.label}
-            <span className="ml-2">({t.count})</span>
+            {t.id !== 'party' && <span className="ml-2">({t.count})</span>}
           </button>
         ))}
       </div>
 
       {/* 内容区 */}
       <div className="flex-1 overflow-y-auto px-6 py-6">
+        {tab === 'party' ? (
+          <PartyContentAdmin token={token} />
+        ) : (
+          <>
         {loading && (
           <div className="flex items-center justify-center py-24">
             <div className="flex items-center gap-2 font-body-md text-sm text-text-muted">
@@ -247,6 +253,8 @@ const AdminPanel = ({ token, onClose }: Props) => {
               </div>
             ))}
           </div>
+        )}
+          </>
         )}
       </div>
     </div>

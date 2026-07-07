@@ -191,7 +191,7 @@ test('rejects unsafe or invalid payloads', async () => {
 })
 
 test('cors headers allow admin authorization header', () => {
-  const headers = createCorsHeaders(new Request('https://example.com'))
+  const headers = createCorsHeaders(new globalThis.Request('https://example.com'))
 
   assert.match(headers['Access-Control-Allow-Headers'], /Authorization/)
 })

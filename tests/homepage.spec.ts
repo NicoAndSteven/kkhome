@@ -260,3 +260,81 @@ test('party games mobile flow exposes room setup and punishment states', async (
   await expect(section.getByText('真心话大冒险', { exact: true })).toBeVisible()
   await expect(section.getByText('选择一种惩罚')).toBeVisible()
 })
+
+test('admin panel exposes party question bank management', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  await page.route('**/api/music/songs', async (route) => {
+    if (route.request().method() === 'POST') {
+      await route.fulfill({
+        contentType: 'application/json',
+        body: JSON.stringify({ ok: true, data: { token: 'test-admin-token' } }),
+      })
+      return
+    }
+
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { songs: [] } }),
+    })
+  })
+
+  await page.route('**/api/party/content/undercover', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        ok: true,
+        data: {
+          items: [
+            {
+              id: 'fruit-apple-pear',
+              civilianWord: '苹果',
+              undercoverWord: '梨',
+              category: '生活',
+              difficulty: 'easy',
+              enabled: true,
+              createdAt: '2026-07-07T00:00:00.000Z',
+              updatedAt: '2026-07-07T00:00:00.000Z',
+            },
+          ],
+        },
+      }),
+    })
+  })
+
+  await page.route('**/api/party/content/truth-or-dare', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({
+        ok: true,
+        data: {
+          items: [
+            {
+              id: 'truth-recent-laugh',
+              type: 'truth',
+              content: '最近一次笑到停不下来是因为什么？',
+              category: '轻松',
+              intensity: 'soft',
+              enabled: true,
+              createdAt: '2026-07-07T00:00:00.000Z',
+              updatedAt: '2026-07-07T00:00:00.000Z',
+            },
+          ],
+        },
+      }),
+    })
+  })
+
+  await page.goto('/', { waitUntil: 'domcontentloaded' })
+  await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 8_000 })
+  await page.locator('button[aria-label="管理员"]').click()
+  await page.getByPlaceholder('管理员密码').fill('test-admin-token')
+  await page.getByRole('button', { name: '进入管理' }).click()
+
+  await expect(page.getByRole('heading', { name: '管理后台' })).toBeVisible()
+  await page.getByRole('button', { name: /聚会题库/ }).click()
+  await expect(page.getByRole('heading', { name: '聚会题库' })).toBeVisible()
+  await expect(page.getByText('苹果 / 梨')).toBeVisible()
+  await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toBeVisible()
+  await expect(page.getByRole('button', { name: '新增题目' })).toBeVisible()
+})

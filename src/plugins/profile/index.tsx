@@ -69,7 +69,7 @@ const ProfilePlugin = ({ config }: Props) => {
               <img
                 src="/images/yuanyu.png"
                 alt={profile.name}
-                fetchPriority="high"
+                loading="eager"
                 onLoad={(e) => { e.currentTarget.style.opacity = '1' }}
                 className="h-full w-full object-cover object-center opacity-0 transition-opacity duration-700"
               />

@@ -5,6 +5,7 @@ import CloudflareLabPlugin from './cloudflare-lab'
 import NewsPlugin from './news'
 import StockWatchPlugin from './stock-watch'
 import FoodPlugin from './food'
+import PartyGamesPlugin from './party-games'
 import AmbientMusicPlugin from './ambient-music'
 import GalleryPlugin from './gallery'
 import LocalMusicPlugin from './local-music'
@@ -75,6 +76,14 @@ export const plugins: Plugin[] = [
     enabled: true,
     order: 7,
     component: FoodPlugin,
+  },
+  {
+    id: 'party-games',
+    name: '聚会游戏',
+    version: '1.0.0',
+    enabled: true,
+    order: 8,
+    component: PartyGamesPlugin,
   },
   {
     id: 'ambient-music',
@@ -155,6 +164,7 @@ export {
   NewsPlugin,
   StockWatchPlugin,
   FoodPlugin,
+  PartyGamesPlugin,
   AmbientMusicPlugin,
   GalleryPlugin,
   LocalMusicPlugin,

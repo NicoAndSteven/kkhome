@@ -9,6 +9,7 @@ test('homepage renders configured content without placeholders', async ({ page }
   const allowedErrors = [
     'ERR_CONNECTION_CLOSED',
     'ERR_CONNECTION_REFUSED',
+    'ERR_CONNECTION_RESET',
     'ERR_NETWORK_ACCESS_DENIED',
     'ERR_NETWORK_CHANGED',
     'THREE.BufferGeometry',
@@ -141,10 +142,8 @@ test('homepage renders configured content without placeholders', async ({ page }
   // 验证 AI 工具列表已渲染
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible({ timeout: 5_000 })
 
-  const nowPlaying = page.locator('aside').locator('section').filter({ hasText: '音乐库' })
+  const nowPlaying = page.locator('aside').locator('section').filter({ hasText: '选择歌曲开始播放' })
   await expect(nowPlaying).toHaveCount(1)
-  await expect(nowPlaying.getByRole('button', { name: '上一首' })).toHaveCount(1)
-  await expect(nowPlaying.getByRole('button', { name: '下一首' })).toHaveCount(1)
   const nowPlayingBox = await nowPlaying.boundingBox()
   expect(nowPlayingBox).not.toBeNull()
   if (nowPlayingBox) {

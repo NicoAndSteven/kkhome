@@ -5,6 +5,7 @@
     "browserLab": false,
     "fileDrop": false,
     "realtimePresence": false,
+    "partyGames": true,
     "automationCenter": false,
     "publicApiToolbox": false,
     "adminConsole": false
@@ -26,6 +27,12 @@
       "id": "realtime-presence",
       "title": "实时访客空间",
       "requires": ["Durable Objects"],
+      "enabled": false
+    },
+    {
+      "id": "party-games",
+      "title": "聚会游戏房间",
+      "requires": ["D1", "Durable Objects"],
       "enabled": false
     },
     {

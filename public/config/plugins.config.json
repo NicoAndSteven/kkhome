@@ -7,6 +7,16 @@
       "config": {}
     },
     {
+      "id": "party-games",
+      "enabled": true,
+      "order": 8,
+      "config": {
+        "defaultMode": "undercover",
+        "minPlayers": 3,
+        "maxPlayers": 6
+      }
+    },
+    {
       "id": "universal-inbox",
       "enabled": false,
       "order": 4,

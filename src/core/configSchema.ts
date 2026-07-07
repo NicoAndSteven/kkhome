@@ -224,6 +224,12 @@ const newsConfigSchema = z.object({
   defaultCountry: z.string().min(1).optional(),
 })
 
+const partyGamesConfigSchema = z.object({
+  defaultMode: z.enum(['undercover', 'truth-or-dare']).catch('undercover').default('undercover'),
+  minPlayers: z.number().int().min(3).max(12).catch(3).default(3),
+  maxPlayers: z.number().int().min(3).max(12).catch(6).default(6),
+})
+
 const pluginConfigSchema = z.object({
   id: z.string().min(1),
   enabled: z.boolean().default(true),
@@ -264,6 +270,7 @@ const parsePluginRuntimeConfig = (id: string, config: unknown): Record<string, u
     'wish-wall': wishWallConfigSchema,
     'cloudflare-lab': cloudflareLabConfigSchema,
     news: newsConfigSchema,
+    'party-games': partyGamesConfigSchema,
   }
   const parser = parsers[id]
 
@@ -283,6 +290,7 @@ export const getDefaultPluginConfigs = (): PluginConfig[] => [
   { id: 'ai-navigator', enabled: true, order: 3 },
   { id: 'cloudflare-lab', enabled: true, order: 4 },
   { id: 'news', enabled: true, order: 5 },
+  { id: 'party-games', enabled: true, order: 8 },
   { id: 'universal-inbox', enabled: false, order: 6 },
   { id: 'collections', enabled: false, order: 6 },
   { id: 'quick-launch', enabled: false, order: 7 },

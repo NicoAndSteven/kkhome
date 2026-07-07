@@ -18,6 +18,7 @@ const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; plugin
   { id: 'wish-wall', label: '许愿', href: '#/wish-wall', pluginId: 'wish-wall' },
   { id: 'stock-watch', label: '看盘', href: '#/stock-watch', pluginId: 'stock-watch' },
   { id: 'food', label: '吃啥', href: '#/food', pluginId: 'food' },
+  { id: 'party-games', label: '游戏', href: '#/party-games', pluginId: 'party-games' },
   { id: 'local-music', label: '音乐', href: '#/local-music', pluginId: 'local-music' },
   { id: 'inbox', label: '投喂', href: '#/inbox', pluginId: 'universal-inbox' },
   { id: 'launch', label: '启动', href: '#/launch', pluginId: 'quick-launch' },

@@ -108,6 +108,7 @@ test('homepage renders configured content without placeholders', async ({ page }
     'wish-wall',
     'stock-watch',
     'food',
+    'party-games',
     'local-music',
   ])
   await expect(page.locator('#inbox')).toHaveCount(0)
@@ -166,6 +167,12 @@ test('homepage renders configured content without placeholders', async ({ page }
   })
   await page.waitForTimeout(1500)
 
+  await goRoute('party-games')
+  const partyGamesSection = page.locator('#party-games')
+  await expect(partyGamesSection.getByRole('heading', { name: '聚会游戏' })).toBeVisible()
+  await expect(partyGamesSection.getByRole('button', { name: '创建房间' })).toBeVisible()
+  await expect(partyGamesSection.getByRole('button', { name: '加入房间' })).toBeVisible()
+
   // 桌面版有 header 联系按钮 — 跳过 drawer 交互测试（已知 CSS 时序问题）
   // await page.locator('header').getByRole('button', { name: '打开联系抽屉' }).click()
   // await expect(page.getByRole('dialog', { name: '联系我' })).toBeVisible({ timeout: 8_000 })
@@ -176,7 +183,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 test('routes stay within desktop and mobile viewports', async ({ browser }) => {
   test.setTimeout(70_000)
 
-  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/stock-watch', '/#/food', '/#/local-music']
+  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/stock-watch', '/#/food', '/#/party-games', '/#/local-music']
   const viewports = [
     { width: 1440, height: 1000, isMobile: false },
     { width: 390, height: 844, isMobile: true },
@@ -221,4 +228,36 @@ test('routes stay within desktop and mobile viewports', async ({ browser }) => {
 
     await page.close()
   }
+})
+
+test('party games mobile flow exposes room setup and punishment states', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/#/party-games')
+  await page.waitForTimeout(2500)
+
+  const section = page.locator('#party-games')
+  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible()
+
+  await section.getByRole('button', { name: '创建房间' }).click()
+  await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()
+  await expect(page.getByLabel('最多人数')).toHaveValue('6')
+  await page.getByRole('button', { name: '增加人数' }).click()
+  await expect(page.getByLabel('最多人数')).toHaveValue('7')
+  await page.getByRole('button', { name: '确认创建' }).click()
+
+  await expect(section.getByText('房间码')).toBeVisible()
+  await expect(section.getByText('1 / 7')).toBeVisible()
+  await section.getByRole('button', { name: '开始游戏' }).click()
+
+  await expect(section.getByText('长按查看你的词')).toBeVisible()
+  await section.getByRole('button', { name: '进入发言' }).click()
+  await expect(section.getByText('当前发言')).toBeVisible()
+  await section.getByRole('button', { name: '进入投票' }).click()
+  await expect(section.getByText('选择你怀疑的人')).toBeVisible()
+  await section.getByRole('button', { name: '揭晓结果' }).click()
+  await expect(section.getByText('平民胜利')).toBeVisible()
+  await section.getByRole('button', { name: '抽惩罚' }).click()
+  await expect(section.getByText('真心话大冒险')).toBeVisible()
 })

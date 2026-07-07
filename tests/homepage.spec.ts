@@ -258,6 +258,6 @@ test('party games mobile flow exposes room setup and punishment states', async (
   await section.getByRole('button', { name: '揭晓结果' }).click()
   await expect(section.getByText('平民胜利')).toBeVisible()
   await section.getByRole('button', { name: '抽惩罚' }).click()
-  await expect(section.getByText('真心话大冒险')).toBeVisible()
+  await expect(section.getByText('真心话大冒险', { exact: true })).toBeVisible()
   await expect(section.getByText('选择一种惩罚')).toBeVisible()
 })

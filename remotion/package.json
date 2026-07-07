@@ -1,0 +1,22 @@
+{
+  "name": "kkhome-party-remotion",
+  "private": true,
+  "version": "0.0.1",
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "render:still": "remotion still src/index.ts PartyInvite out/party-invite.png",
+    "render:recap": "remotion still src/index.ts PartyRecap out/party-recap.png"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.485"
+  },
+  "devDependencies": {
+    "@remotion/cli": "4.0.485",
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "typescript": "5.6.3"
+  }
+}

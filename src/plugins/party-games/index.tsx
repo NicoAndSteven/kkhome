@@ -3,6 +3,7 @@ import { PluginRuntimeConfig } from '@core/types'
 import CreateRoomSheet from './components/CreateRoomSheet'
 import JoinRoomSheet from './components/JoinRoomSheet'
 import WaitingRoomView from './components/WaitingRoomView'
+import UndercoverRoundView from './components/UndercoverRoundView'
 import { getDefaultWordPair } from './content'
 import { LocalPartyRoom, PartyGameMode, PartyRoomSettings } from './types'
 
@@ -69,6 +70,17 @@ const PartyGamesPlugin = ({ config }: Props) => {
           room={room}
           onStart={() => setRoom({ ...room, phase: 'word' })}
           onLeave={() => setRoom(null)}
+        />
+      </section>
+    )
+  }
+
+  if (room && room.phase !== 'waiting' && room.phase !== 'punishment') {
+    return (
+      <section id="party-games" className="space-y-5 scroll-mt-24">
+        <UndercoverRoundView
+          room={room}
+          onPhaseChange={(phase) => setRoom({ ...room, phase })}
         />
       </section>
     )

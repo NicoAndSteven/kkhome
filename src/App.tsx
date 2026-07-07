@@ -78,6 +78,12 @@ function App() {
     return () => clearInterval(timer)
   }, [])
   const [ambientTracks, setAmbientTracks] = useState<TrackState[]>([])
+  const handleAdminAuth = useCallback((token: string) => {
+    setAdminToken(token)
+    globalThis.sessionStorage.setItem('hub:admin-token', token)
+    window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } }))
+    setShowAdmin(true)
+  }, [])
 
   useEffect(() => {
     const initializeApp = async () => {
@@ -170,6 +176,29 @@ function App() {
     window.dispatchEvent(new Event('intro-complete'))
   }, [])
 
+  const commonAdminEntry = (
+    <>
+      <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={handleAdminAuth} />
+      <button
+        type="button"
+        onClick={() => setAdminLoginOpen(true)}
+        className="fixed bottom-6 right-6 z-50 h-10 w-10 rounded-full border border-border-subtle bg-surface/60 text-text-muted opacity-60 backdrop-blur-md transition-all hover:border-primary/30 hover:text-primary hover:opacity-100 flex items-center justify-center"
+        aria-label="管理员"
+        title="管理员"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+          <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+          <path d="M7 11V7a5 5 0 0 1 10 0v4" />
+        </svg>
+        {pendingCount > 0 && (
+          <span className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full bg-error text-[9px] font-bold text-white shadow-lg">
+            {pendingCount > 9 ? '9+' : pendingCount}
+          </span>
+        )}
+      </button>
+    </>
+  )
+
   // Reveal 动画
   useEffect(() => {
     const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
@@ -248,26 +277,7 @@ function App() {
           profile={profileConfig ?? undefined}
           onClose={() => setContactOpen(false)}
         />
-        <AdminLogin open={adminLoginOpen} onClose={() => setAdminLoginOpen(false)} onAuth={(token) => { setAdminToken(token); globalThis.sessionStorage.setItem('hub:admin-token', token); window.dispatchEvent(new CustomEvent('admin-auth', { detail: { token } })); setShowAdmin(true) }} />
-
-        {/* 管理员入口 — 右下角 */}
-        <button
-          type="button"
-          onClick={() => setAdminLoginOpen(true)}
-          className="fixed bottom-6 right-6 z-50 w-10 h-10 rounded-full bg-surface/60 backdrop-blur-md border border-border-subtle flex items-center justify-center text-text-muted hover:text-primary hover:border-primary/30 transition-all opacity-60 hover:opacity-100"
-          aria-label="管理员"
-          title="管理员"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-            <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-          </svg>
-          {pendingCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-error text-white text-[9px] font-bold flex items-center justify-center shadow-lg">
-              {pendingCount > 9 ? '9+' : pendingCount}
-            </span>
-          )}
-        </button>
+        {commonAdminEntry}
       </Layout>
     )
   }
@@ -329,6 +339,7 @@ function App() {
           </ErrorBoundary>
         </main>
         {commonDrawer}
+        {commonAdminEntry}
       </Layout>
     )
   }
@@ -381,6 +392,7 @@ function App() {
         </ErrorBoundary>
       </main>
       {commonDrawer}
+      {commonAdminEntry}
     </Layout>
   )
 }

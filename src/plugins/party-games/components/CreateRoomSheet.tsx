@@ -6,13 +6,15 @@ interface Props {
   open: boolean
   defaultMode: PartyGameMode
   defaultMaxPlayers: number
+  submitting?: boolean
+  externalError?: string
   onClose: () => void
   onCreate: (nickname: string, settings: PartyRoomSettings) => void
 }
 
 const clampPlayers = (value: number) => Math.min(12, Math.max(3, value))
 
-const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, onClose, onCreate }: Props) => {
+const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = false, externalError = '', onClose, onCreate }: Props) => {
   const [nickname, setNickname] = useState('房主')
   const [mode, setMode] = useState<PartyGameMode>(defaultMode)
   const [maxPlayers, setMaxPlayers] = useState(clampPlayers(defaultMaxPlayers))
@@ -122,10 +124,10 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, onClose, onCrea
           </div>
         </div>
 
-        {message && <p className="mt-3 text-sm text-[#fca5a5]">{message}</p>}
+        {(message || externalError) && <p className="mt-3 text-sm text-[#fca5a5]">{message || externalError}</p>}
 
-        <button type="submit" className="mt-5 w-full rounded-full bg-[#f4d35e] px-5 py-3 text-sm font-bold text-[#141715]">
-          确认创建
+        <button type="submit" disabled={submitting} className="mt-5 w-full rounded-full bg-[#f4d35e] px-5 py-3 text-sm font-bold text-[#141715] disabled:opacity-60">
+          {submitting ? '处理中...' : '确认创建'}
         </button>
       </form>
     </>

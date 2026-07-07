@@ -243,6 +243,43 @@ test('routes stay within desktop and mobile viewports', async ({ browser }) => {
 test('party games mobile flow exposes room setup and punishment states', async ({ page }) => {
   test.setTimeout(60_000)
 
+  await page.route('**/api/party/rooms', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      status: 201,
+      body: JSON.stringify({
+        ok: true,
+        data: {
+          room: {
+            code: 'ABCD',
+            settings: {
+              mode: 'undercover',
+              maxPlayers: 7,
+              allowLateJoin: true,
+              wordCategory: '生活',
+              punishmentMode: 'random',
+            },
+            players: [
+              { id: 'host', nickname: '房主', host: true, status: 'online' },
+            ],
+            phase: 'waiting',
+            capacity: {
+              current: 1,
+              max: 7,
+            },
+          },
+          session: {
+            playerId: 'host',
+            host: true,
+          },
+        },
+        meta: {
+          timestamp: '2026-07-07T00:00:00.000Z',
+        },
+      }),
+    })
+  })
+
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
@@ -270,6 +307,37 @@ test('party games mobile flow exposes room setup and punishment states', async (
   await section.getByRole('button', { name: '抽惩罚' }).click()
   await expect(section.getByText('真心话大冒险', { exact: true })).toBeVisible()
   await expect(section.getByText('选择一种惩罚')).toBeVisible()
+})
+
+test('party games join room surfaces backend errors', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  await page.route('**/api/party/rooms/*/join', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      status: 409,
+      body: JSON.stringify({
+        ok: false,
+        error: {
+          code: 'room_full',
+          message: 'room is full',
+        },
+        meta: {
+          timestamp: '2026-07-07T00:00:00.000Z',
+        },
+      }),
+    })
+  })
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
+
+  const section = page.locator('#party-games')
+  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  await section.getByRole('button', { name: '加入房间' }).click()
+  await page.getByRole('dialog', { name: '加入房间' }).getByLabel('房间码').fill('ABCD')
+  await page.getByRole('dialog', { name: '加入房间' }).getByRole('button', { name: '加入', exact: true }).click()
+  await expect(page.getByRole('dialog', { name: '加入房间' }).getByText('room is full')).toBeVisible()
 })
 
 test('admin panel exposes party question bank management', async ({ page }) => {
@@ -350,6 +418,21 @@ test('admin panel exposes party question bank management', async ({ page }) => {
   await page.getByRole('button', { name: /真心话大冒险/ }).click()
   await expect(page.getByText('最近一次笑到停不下来是因为什么？')).toBeVisible()
   await expect(page.getByRole('button', { name: '新增题目' })).toBeVisible()
+})
+
+test('admin entry stays reachable on public routes', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
+  await expect(page.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  await expect(page.locator('button[aria-label="管理员"]')).toBeVisible()
+})
+
+test('desktop sidebar exposes party games route', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  await page.goto('/#/ai-tools', { waitUntil: 'domcontentloaded' })
+  await expect(page.locator('aside').getByRole('link', { name: /游戏/ })).toBeVisible()
 })
 
 test('admin party question bank supports filtering and status toggles', async ({ page }) => {

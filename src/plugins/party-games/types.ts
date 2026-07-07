@@ -28,6 +28,12 @@ export interface TruthOrDareCard {
   intensity: CardIntensity
 }
 
+export interface PartyResult {
+  eliminatedId: string
+  eliminatedRole: 'civilian' | 'undercover'
+  winner: 'civilians' | 'undercover'
+}
+
 export interface PartyRoomSettings {
   mode: PartyGameMode
   maxPlayers: number
@@ -42,6 +48,11 @@ export interface LocalPartyRoom {
   players: PartyPlayer[]
   phase: UndercoverPhase
   currentSpeakerIndex: number
+  currentSpeakerId?: string | null
   selectedWordPair: UndercoverWordPair
   selectedCard: TruthOrDareCard | null
+  privateWord?: string | null
+  privateRole?: 'civilian' | 'undercover' | null
+  result?: PartyResult | null
+  punishmentTargetId?: string | null
 }

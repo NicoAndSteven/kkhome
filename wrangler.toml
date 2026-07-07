@@ -36,5 +36,7 @@ bucket_name = "music"
 # binding = "AI"
 
 # [[durable_objects.bindings]]
-# name = "HUB_ROOM"
-# class_name = "HubRoom"
+[[durable_objects.bindings]]
+name = "PARTY_ROOMS"
+class_name = "PartyRoom"
+script_name = "kkhome-party-rooms"

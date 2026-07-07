@@ -20,6 +20,7 @@ const routeIcons: Record<string, string> = {
   'wish-wall': 'rate_review',
   'stock-watch': 'bar_chart',
   food: 'bolt',
+  'party-games': 'sports_score',
   inbox: 'mail',
   launch: 'play_arrow',
   workbench: 'terminal',
@@ -27,7 +28,7 @@ const routeIcons: Record<string, string> = {
   scratchpad: 'data_object',
 }
 
-const primaryRoutes = ['ai-tools', 'wish-wall', 'stock-watch', 'food', 'local-music']
+const primaryRoutes = ['ai-tools', 'wish-wall', 'stock-watch', 'food', 'party-games', 'local-music']
 const secondaryRoutes = ['inbox', 'launch', 'workbench', 'collections', 'scratchpad']
 
 const BlogSidebar = ({ routes, activeRoute, footerSlot }: Props) => {

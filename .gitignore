@@ -11,6 +11,7 @@ test-results
 
 # 生产
 build
+remotion/out
 
 # 杂项
 .DS_Store

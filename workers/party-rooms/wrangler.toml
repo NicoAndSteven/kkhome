@@ -1,0 +1,16 @@
+name = "kkhome-party-rooms"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[[durable_objects.bindings]]
+name = "PARTY_ROOM"
+class_name = "PartyRoom"
+
+[[d1_databases]]
+binding = "WISHES_DB"
+database_name = "kkhome_wishes"
+database_id = "0993bece-5500-41e7-9b2f-4bde874e8073"
+
+[[migrations]]
+tag = "v1"
+new_classes = ["PartyRoom"]

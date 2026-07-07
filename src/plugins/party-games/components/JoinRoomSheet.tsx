@@ -3,11 +3,13 @@ import { Icon } from '@components'
 
 interface Props {
   open: boolean
+  submitting?: boolean
+  externalError?: string
   onClose: () => void
   onJoin: (nickname: string, code: string) => void
 }
 
-const JoinRoomSheet = ({ open, onClose, onJoin }: Props) => {
+const JoinRoomSheet = ({ open, submitting = false, externalError = '', onClose, onJoin }: Props) => {
   const [nickname, setNickname] = useState('玩家')
   const [code, setCode] = useState('')
   const [message, setMessage] = useState('')
@@ -71,10 +73,10 @@ const JoinRoomSheet = ({ open, onClose, onJoin }: Props) => {
           />
         </label>
 
-        {message && <p className="mt-3 text-sm text-[#fca5a5]">{message}</p>}
+        {(message || externalError) && <p className="mt-3 text-sm text-[#fca5a5]">{message || externalError}</p>}
 
-        <button type="submit" className="mt-5 w-full rounded-full bg-white px-5 py-3 text-sm font-bold text-[#141715]">
-          加入
+        <button type="submit" disabled={submitting} className="mt-5 w-full rounded-full bg-white px-5 py-3 text-sm font-bold text-[#141715] disabled:opacity-60">
+          {submitting ? '处理中...' : '加入'}
         </button>
       </form>
     </>

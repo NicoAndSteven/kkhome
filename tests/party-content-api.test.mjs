@@ -1,5 +1,6 @@
 import assert from 'node:assert/strict'
 import test from 'node:test'
+import { createCorsHeaders } from '../functions/_shared/api.js'
 import {
   createPartyContent,
   listPartyContent,
@@ -187,4 +188,10 @@ test('rejects unsafe or invalid payloads', async () => {
     }),
     /content must be 4-80 chars/,
   )
+})
+
+test('cors headers allow admin authorization header', () => {
+  const headers = createCorsHeaders(new Request('https://example.com'))
+
+  assert.match(headers['Access-Control-Allow-Headers'], /Authorization/)
 })

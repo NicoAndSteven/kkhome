@@ -7,7 +7,7 @@ export const createCorsHeaders = (request, env = {}) => {
   return {
     'Access-Control-Allow-Origin': allowedOrigin && requestOrigin === allowedOrigin ? allowedOrigin : '*',
     'Access-Control-Allow-Methods': 'GET,POST,OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
+    'Access-Control-Allow-Headers': 'Content-Type, Authorization',
   }
 }
 

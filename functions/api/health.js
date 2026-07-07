@@ -20,6 +20,7 @@ export const onRequestGet = ({ request, env }) => {
     bindings,
     features: {
       wishes: bindings.WISHES_DB,
+      partyContent: bindings.WISHES_DB,
       featureFlags: bindings.HUB_KV,
       fileArtifacts: bindings.HUB_BUCKET,
       semanticSearch: bindings.HUB_VECTORIZE && bindings.AI,

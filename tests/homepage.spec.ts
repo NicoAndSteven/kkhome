@@ -195,7 +195,7 @@ test('routes stay within desktop and mobile viewports', async ({ browser }) => {
     })
 
     for (const route of routes) {
-      await page.goto(route)
+      await page.goto(route, { waitUntil: 'domcontentloaded' })
       if (route === '/') {
         // 桌面端有 intro-stage，移动端直接显示欢迎页
         if (!viewport.isMobile) {
@@ -233,11 +233,10 @@ test('party games mobile flow exposes room setup and punishment states', async (
   test.setTimeout(60_000)
 
   await page.setViewportSize({ width: 390, height: 844 })
-  await page.goto('/#/party-games')
-  await page.waitForTimeout(2500)
+  await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
   const section = page.locator('#party-games')
-  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible()
+  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
 
   await section.getByRole('button', { name: '创建房间' }).click()
   await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()

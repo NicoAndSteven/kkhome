@@ -78,7 +78,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
     )
   }
 
-  if (room && room.phase !== 'waiting' && room.phase !== 'punishment') {
+  if (room && room.phase !== 'punishment') {
     return (
       <section id="party-games" className="space-y-5 scroll-mt-24">
         <UndercoverRoundView

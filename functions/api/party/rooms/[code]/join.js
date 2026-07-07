@@ -1,5 +1,5 @@
-import { fail, ok, options } from '../../../_shared/api.js'
-import { joinPartyRoom } from '../../../_shared/partyRooms.js'
+import { fail, ok, options } from '../../../../_shared/api.js'
+import { joinPartyRoom } from '../../../../_shared/partyRooms.js'
 
 const requireRoomsNamespace = (env) => env.PARTY_ROOMS ?? null
 

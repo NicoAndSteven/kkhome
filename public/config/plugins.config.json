@@ -512,7 +512,7 @@
           },
           {
             "id": "github-com-nicejade-markdown-online-editor",
-            "title": "GitHub 地址",
+            "title": "Markdown Online Editor",
             "category": "document",
             "url": "https://github.com/nicejade/markdown-online-editor",
             "description": "用于 Markdown 编辑、排版、语法查询或内容卡片生成。",
@@ -556,7 +556,7 @@
           },
           {
             "id": "v-douyin-com-vsfwsgf4hf0",
-            "title": "V",
+            "title": "Markdown 编辑工具（抖音）",
             "category": "document",
             "url": "https://v.douyin.com/vSFwsgf4HF0/",
             "description": "用于 Markdown 编辑、排版、语法查询或内容卡片生成。",
@@ -775,37 +775,6 @@
             "sourceCategory": "工具"
           },
           {
-            "id": "neatdownloadmanager-com-index-php-en",
-            "title": "Neatdownloadmanager",
-            "category": "image",
-            "url": "https://www.neatdownloadmanager.com/index.php/en/",
-            "description": "用于图片编辑、生成、排版或视觉处理。",
-            "tags": [
-              "工具",
-              "网站视频下载",
-              "音频下载",
-              "图片下载",
-              "音乐下载",
-              "视频号下载"
-            ],
-            "aliases": [
-              "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
-              "Neatdownloadmanager",
-              "neatdownloadmanager",
-              "工具",
-              "网站视频下载",
-              "音频下载",
-              "图片下载",
-              "音乐下载",
-              "视频号下载"
-            ],
-            "icon": "auto_awesome",
-            "featured": false,
-            "sourceTitle": "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
-            "sourceUrl": "https://www.30aitool.com/397.html",
-            "sourceCategory": "工具"
-          },
-          {
             "id": "doubao-com-chat-create-image",
             "title": "Doubao",
             "category": "image",
@@ -958,7 +927,7 @@
           },
           {
             "id": "zh-recompressor-com",
-            "title": "Zh",
+            "title": "Recompressor",
             "category": "image",
             "url": "https://zh.recompressor.com/",
             "description": "用于图片压缩、GIF 处理或图片体积优化。",
@@ -1009,7 +978,7 @@
           },
           {
             "id": "zh-bgsub-com-webapp",
-            "title": "Zh",
+            "title": "BgSub",
             "category": "image",
             "url": "https://zh.bgsub.com/webapp/",
             "description": "用于抠图、去背景或透明图片处理。",
@@ -1305,7 +1274,7 @@
           },
           {
             "id": "github-com-obsproject-obs-studio",
-            "title": "Github",
+            "title": "OBS Studio",
             "category": "video-audio",
             "url": "https://github.com/obsproject/obs-studio",
             "description": "用于屏幕录制、视频采集或录屏标注。",
@@ -1476,7 +1445,7 @@
           },
           {
             "id": "github-com-tichau-fileconverter",
-            "title": "GitHub 地址",
+            "title": "File Converter",
             "category": "convert",
             "url": "https://github.com/Tichau/FileConverter",
             "description": "用于文件格式转换、批量转换或本地转换。",
@@ -3892,7 +3861,7 @@
           },
           {
             "id": "fffuel-co-tttexture",
-            "title": "\udf2btttexture-真实纹理",
+            "title": "fffuel tttexture",
             "category": "document",
             "url": "https://fffuel.co/tttexture/",
             "description": "用于演示文稿模板、PPT 素材或在线制作。",
@@ -3906,35 +3875,6 @@
             "aliases": [
               "背景图素材#自定义#免费生成#PPT必备",
               "\udf2btttexture-真实纹理",
-              "fffuel",
-              "资源",
-              "背景图素材",
-              "自定义",
-              "免费生成",
-              "PPT必备"
-            ],
-            "icon": "article",
-            "featured": false,
-            "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
-            "sourceUrl": "https://www.30aitool.com/885.html",
-            "sourceCategory": "资源"
-          },
-          {
-            "id": "fffuel-co-tttexture",
-            "title": "Fffuel",
-            "category": "document",
-            "url": "https://www.fffuel.co/tttexture/",
-            "description": "用于演示文稿模板、PPT 素材或在线制作。",
-            "tags": [
-              "资源",
-              "背景图素材",
-              "自定义",
-              "免费生成",
-              "PPT必备"
-            ],
-            "aliases": [
-              "背景图素材#自定义#免费生成#PPT必备",
-              "Fffuel",
               "fffuel",
               "资源",
               "背景图素材",
@@ -5188,7 +5128,7 @@
           },
           {
             "id": "github-com-bluepointlilac-contextmenumanager",
-            "title": "Github",
+            "title": "ContextMenuManager",
             "category": "productivity",
             "url": "https://github.com/BluePointLilac/ContextMenuManager",
             "description": "用于提升日常操作效率、批量处理、截图、卡片或自动化工作流。",
@@ -5210,7 +5150,7 @@
           },
           {
             "id": "github-com-barry-ran-qtscrcpy",
-            "title": "Github",
+            "title": "QtScrcpy",
             "category": "software-system",
             "url": "https://github.com/barry-ran/QtScrcpy",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -5360,7 +5300,7 @@
           },
           {
             "id": "hibitsoft-ir-uninstaller-html",
-            "title": "官网下载",
+            "title": "HiBit Uninstaller",
             "category": "download",
             "url": "https://www.hibitsoft.ir/Uninstaller.html",
             "description": "用于下载、采集、管理或提取网页媒体资源。",
@@ -5382,7 +5322,7 @@
           },
           {
             "id": "iobit-com-en-advanceduninstaller-php",
-            "title": "官网下载",
+            "title": "IObit Uninstaller",
             "category": "download",
             "url": "https://www.iobit.com/en/advanceduninstaller.php",
             "description": "用于下载、采集、管理或提取网页媒体资源。",
@@ -5404,7 +5344,7 @@
           },
           {
             "id": "geekuninstaller-com",
-            "title": "官网下载",
+            "title": "Geek Uninstaller",
             "category": "download",
             "url": "https://geekuninstaller.com/",
             "description": "用于下载、采集、管理或提取网页媒体资源。",
@@ -5426,7 +5366,7 @@
           },
           {
             "id": "martau-com-zh-cn",
-            "title": "官方地址",
+            "title": "Total Uninstall",
             "category": "software-system",
             "url": "https://www.martau.com/zh-CN/",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -5448,7 +5388,7 @@
           },
           {
             "id": "github-com-klocman-bulk-crap-uninstaller",
-            "title": "官方地址",
+            "title": "Bulk Crap Uninstaller",
             "category": "software-system",
             "url": "https://github.com/Klocman/Bulk-Crap-Uninstaller",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -5520,7 +5460,7 @@
           },
           {
             "id": "360totalsecurity-com-zh-cn-360zip",
-            "title": "官网下载",
+            "title": "360 Zip",
             "category": "image",
             "url": "https://www.360totalsecurity.com/zh-cn/360zip/",
             "description": "用于图片压缩、GIF 处理或图片体积优化。",
@@ -5551,7 +5491,7 @@
           },
           {
             "id": "bandisoft-com-bandizip",
-            "title": "官网下载",
+            "title": "Bandizip",
             "category": "image",
             "url": "https://www.bandisoft.com/bandizip/",
             "description": "用于图片压缩、GIF 处理或图片体积优化。",
@@ -5582,7 +5522,7 @@
           },
           {
             "id": "7-zip-org",
-            "title": "官网下载",
+            "title": "7-Zip",
             "category": "image",
             "url": "https://www.7-zip.org/",
             "description": "用于图片压缩、GIF 处理或图片体积优化。",
@@ -5613,7 +5553,7 @@
           },
           {
             "id": "winrar-com-cn",
-            "title": "官网下载",
+            "title": "WinRAR",
             "category": "image",
             "url": "https://www.winrar.com.cn/",
             "description": "用于图片压缩、GIF 处理或图片体积优化。",
@@ -5760,7 +5700,7 @@
           },
           {
             "id": "zh-snipaste-com",
-            "title": "Zh",
+            "title": "Snipaste",
             "category": "image",
             "url": "https://zh.snipaste.com/",
             "description": "用于图片压缩、GIF 处理或图片体积优化。",
@@ -6036,7 +5976,7 @@
           },
           {
             "id": "tbtool-cn",
-            "title": "官网下载",
+            "title": "图吧工具箱",
             "category": "download",
             "url": "https://www.tbtool.cn/",
             "description": "用于下载、采集、管理或提取网页媒体资源。",
@@ -6086,7 +6026,7 @@
           },
           {
             "id": "github-com-ql-win-quicklook",
-            "title": "Github",
+            "title": "QuickLook",
             "category": "software-system",
             "url": "https://github.com/QL-Win/QuickLook",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -6109,7 +6049,7 @@
           },
           {
             "id": "github-com-superdms-hsfreezer-hidden-in-the-snow",
-            "title": "Github",
+            "title": "HsFreezer",
             "category": "productivity",
             "url": "https://github.com/superDMS/HsFreezer-Hidden-in-the-snow-",
             "description": "用于提升日常操作效率、批量处理、截图、卡片或自动化工作流。",
@@ -6441,7 +6381,7 @@
           },
           {
             "id": "zh-ifixit-com-guide",
-            "title": "Zh",
+            "title": "iFixit 指南",
             "category": "knowledge",
             "url": "https://zh.ifixit.com/Guide",
             "description": "用于学习资料、信息源、指南、博客或知识查询。",
@@ -7429,7 +7369,7 @@
           },
           {
             "id": "microsoftedge-microsoft-com-addons-detail-e5-ad-a6-e6-9c-af-e8-b5-84-e",
-            "title": "AI搜索插件",
+            "title": "学术资源全网搜索",
             "category": "productivity",
             "url": "https://microsoftedge.microsoft.com/addons/detail/%E5%AD%A6%E6%9C%AF%E8%B5%84%E6%BA%90%E5%85%A8%E7%BD%91%E6%90%9C%E7%B4%A2/jinddgjhfchibbpdohnllegfjllidhpk",
             "description": "用于提升日常操作效率、批量处理、截图、卡片或自动化工作流。",
@@ -7957,7 +7897,7 @@
           },
           {
             "id": "github-com-imdema-freemove",
-            "title": "Github",
+            "title": "FreeMove",
             "category": "software-system",
             "url": "https://github.com/imDema/FreeMove",
             "description": "用于电脑维护、驱动、清理或系统问题处理。",
@@ -8334,27 +8274,6 @@
             "sourceCategory": "电脑课"
           },
           {
-            "id": "microsoftedge-microsoft-com-addons-detail-e5-ad-a6-e6-9c-af-e8-b5-84-e",
-            "title": "批量AI搜索的",
-            "category": "productivity",
-            "url": "https://microsoftedge.microsoft.com/addons/detail/%E5%AD%A6%E6%9C%AF%E8%B5%84%E6%BA%90%E5%85%A8%E7%BD%91%E6%90%9C%E7%B4%A2/jinddgjhfchibbpdohnllegfjllidhpk?hl=zh-CN",
-            "description": "用于提升日常操作效率、批量处理、截图、卡片或自动化工作流。",
-            "tags": [
-              "电脑课"
-            ],
-            "aliases": [
-              "【第二课】：浏览器插件&小技巧",
-              "批量AI搜索的",
-              "microsoftedge",
-              "电脑课"
-            ],
-            "icon": "bolt",
-            "featured": false,
-            "sourceTitle": "【第二课】：浏览器插件&小技巧",
-            "sourceUrl": "https://www.30aitool.com/3933.html",
-            "sourceCategory": "电脑课"
-          },
-          {
             "id": "microsoftedge-microsoft-com-addons-detail-e5-b0-8f-e7-ba-a2-e4-b9-a6-e",
             "title": "小红书笔记下载助手",
             "category": "download",
@@ -8419,7 +8338,7 @@
           },
           {
             "id": "neatdownloadmanager-com-index-php-en",
-            "title": "官网下载",
+            "title": "Neat Download Manager",
             "category": "download",
             "url": "https://neatdownloadmanager.com/index.php/en/",
             "description": "用于下载、采集、管理或提取网页媒体资源。",
@@ -8440,7 +8359,7 @@
           },
           {
             "id": "potplayer-tv",
-            "title": "官网下载",
+            "title": "PotPlayer",
             "category": "download",
             "url": "https://potplayer.tv/",
             "description": "用于下载、采集、管理或提取网页媒体资源。",
@@ -8482,7 +8401,7 @@
           },
           {
             "id": "github-com-coodesker-coodesker-desktop",
-            "title": "开源",
+            "title": "Coodesker Desktop",
             "category": "software-system",
             "url": "https://github.com/coodesker/coodesker-desktop",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -8524,7 +8443,7 @@
           },
           {
             "id": "apps-microsoft-com-detail-xp89dcgq3k6vld-hl-zh-cn-gl-cn",
-            "title": "Apps",
+            "title": "Microsoft PowerToys（商店）",
             "category": "software-system",
             "url": "https://apps.microsoft.com/detail/xp89dcgq3k6vld?hl=zh-CN&gl=CN",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -8545,7 +8464,7 @@
           },
           {
             "id": "github-com-microsoft-powertoys",
-            "title": "Github",
+            "title": "Microsoft PowerToys",
             "category": "software-system",
             "url": "https://github.com/microsoft/PowerToys",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",
@@ -8628,7 +8547,7 @@
           },
           {
             "id": "github-com",
-            "title": "Github",
+            "title": "GitHub 开源社区",
             "category": "software-system",
             "url": "https://github.com/",
             "description": "用于电脑软件、系统维护、效率增强或本地工具安装。",

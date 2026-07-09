@@ -55,4 +55,12 @@ export interface LocalPartyRoom {
   privateRole?: 'civilian' | 'undercover' | null
   result?: PartyResult | null
   punishmentTargetId?: string | null
+  descriptions?: DescriptionEntry[]
+}
+
+export interface DescriptionEntry {
+  playerId: string
+  playerName: string
+  content: string
+  timestamp: number
 }

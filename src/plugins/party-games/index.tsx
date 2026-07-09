@@ -1,6 +1,6 @@
 /* global WebSocket */
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { PluginRuntimeConfig } from '@core/types'
 import CreateRoomSheet from './components/CreateRoomSheet'
 import JoinRoomSheet from './components/JoinRoomSheet'
@@ -8,7 +8,45 @@ import WaitingRoomView from './components/WaitingRoomView'
 import UndercoverRoundView from './components/UndercoverRoundView'
 import TruthOrDarePanel from './components/TruthOrDarePanel'
 import { getDefaultWordPair, truthOrDareCards } from './content'
-import { LocalPartyRoom, PartyGameMode, PartyRoomSettings } from './types'
+import { useLocalGame } from './useLocalGame'
+import { DescriptionEntry, LocalPartyRoom, PartyGameMode, PartyRoomSettings } from './types'
+
+// ── 浮动背景粒子 ──────────────────────────────────
+
+const FLOATING_EMOJIS = ['🎈', '✨', '🌟', '🎉', '🎊', '🎯', '🎲', '🃏', '🎭', '💫', '⭐', '🌈', '🪅', '🎪', '🎠']
+
+const FloatingParticles = () => {
+  const particles = useMemo(() =>
+    Array.from({ length: 12 }, (_, i) => ({
+      id: i,
+      emoji: FLOATING_EMOJIS[i % FLOATING_EMOJIS.length],
+      left: `${(i * 8 + 3) % 92}%`,
+      delay: `${(i * 0.7) % 5}s`,
+      duration: `${4 + (i % 3) * 2}s`,
+      size: i % 3 === 0 ? 'text-lg' : i % 3 === 1 ? 'text-xl' : 'text-sm',
+    })),
+  [])
+
+  return (
+    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
+      {particles.map((p) => (
+        <span
+          key={p.id}
+          className={`absolute ${p.size} opacity-20`}
+          style={{
+            left: p.left,
+            animation: `party-float ${p.duration} ease-in-out ${p.delay} infinite`,
+            bottom: '-20px',
+          }}
+        >
+          {p.emoji}
+        </span>
+      ))}
+    </div>
+  )
+}
+
+// ── 类型 ────────────────────────────────────────────
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -29,6 +67,10 @@ interface PartyRoomSession {
   playerId: string
   host: boolean
 }
+
+type GameMode = 'online' | 'local'
+
+// ── 工具函数 ────────────────────────────────────────
 
 const readDefaultMode = (config?: PluginRuntimeConfig): PartyGameMode => (
   config?.defaultMode === 'truth-or-dare' ? 'truth-or-dare' : 'undercover'
@@ -53,9 +95,28 @@ const toLocalRoom = (summary: PartyRoomSummary): LocalPartyRoom => ({
   privateRole: null,
 })
 
+// ── 随机名字 ────────────────────────────────────────
+
+const RANDOM_NAMES = [
+  '小明', '小红', '小刚', '小丽', '阿杰', '阿花', '大壮', '小美',
+  '老王', '小李', '大白', '小黑', '豆豆', '球球', '乐乐', '欢欢',
+  '闪电', '暴风', '奶茶', '可乐', '西瓜', '芒果', '布丁', '果冻',
+]
+
+const pickRandomName = (used: Set<string>): string => {
+  const available = RANDOM_NAMES.filter((n) => !used.has(n))
+  if (available.length === 0) return `玩家${used.size + 1}`
+  return available[Math.floor(Math.random() * available.length)]
+}
+
+// ── 主组件 ──────────────────────────────────────────
+
 const PartyGamesPlugin = ({ config }: Props) => {
   const defaultMode = readDefaultMode(config)
   const defaultMaxPlayers = readDefaultMaxPlayers(config)
+
+  // 在线模式状态
+  const [gameMode, setGameMode] = useState<GameMode>('local')
   const [createOpen, setCreateOpen] = useState(false)
   const [joinOpen, setJoinOpen] = useState(false)
   const [room, setRoom] = useState<LocalPartyRoom | null>(null)
@@ -64,9 +125,15 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const [submitting, setSubmitting] = useState(false)
   const [roomError, setRoomError] = useState('')
   const [connectionState, setConnectionState] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle')
+  const [onlineDescriptions, setOnlineDescriptions] = useState<DescriptionEntry[]>([])
   const socketRef = useRef<WebSocket | null>(null)
   const roomCode = room?.code ?? null
   const sessionPlayerId = session?.playerId ?? null
+
+  // 本地模式引擎
+  const localGame = useLocalGame()
+
+  // ── 在线模式：API ──────────────────────────────
 
   const createOnlineRoom = async (nickname: string, settings: PartyRoomSettings) => {
     setSubmitting(true)
@@ -110,19 +177,17 @@ const PartyGamesPlugin = ({ config }: Props) => {
     }
   }
 
+  // ── 在线模式：WebSocket ─────────────────────────
+
   useEffect(() => {
-    if (!roomCode || !sessionPlayerId) return undefined
+    if (!roomCode || !sessionPlayerId || gameMode !== 'online') return undefined
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     const socket = new WebSocket(`${protocol}//${window.location.host}/api/party/rooms/${roomCode}/connect?playerId=${encodeURIComponent(sessionPlayerId)}`)
     socketRef.current = socket
     setConnectionState('connecting')
 
-    socket.addEventListener('open', () => {
-      setConnectionState('connected')
-      setRoomError('')
-    })
-
+    socket.addEventListener('open', () => { setConnectionState('connected'); setRoomError('') })
     socket.addEventListener('message', (event) => {
       try {
         const payload = JSON.parse(String(event.data || '{}'))
@@ -135,230 +200,287 @@ const PartyGamesPlugin = ({ config }: Props) => {
           })
         }
         if (payload.type === 'private_state') {
-          setRoom((current) => (current ? {
-            ...current,
-            privateWord: payload.privateWord ?? null,
-            privateRole: payload.role ?? null,
-          } : current))
+          setRoom((current) => (current ? { ...current, privateWord: payload.privateWord ?? null, privateRole: payload.role ?? null } : current))
         }
-      } catch {
-        setRoomError('房间状态同步失败')
-      }
+      } catch { setRoomError('房间状态同步失败') }
     })
+    socket.addEventListener('close', () => { setConnectionState('disconnected'); if (socketRef.current === socket) socketRef.current = null })
+    socket.addEventListener('error', () => { setConnectionState('disconnected'); setRoomError('房间连接已断开') })
+    return () => { if (socketRef.current === socket) socketRef.current = null; socket.close() }
+  }, [roomCode, sessionPlayerId, gameMode])
 
-    socket.addEventListener('close', () => {
-      setConnectionState('disconnected')
-      if (socketRef.current === socket) socketRef.current = null
-    })
+  // ── 在线模式：操作 ──────────────────────────────
 
-    socket.addEventListener('error', () => {
-      setConnectionState('disconnected')
-      setRoomError('房间连接已断开')
-    })
-
-    return () => {
-      if (socketRef.current === socket) socketRef.current = null
-      socket.close()
-    }
-  }, [roomCode, sessionPlayerId])
-
-  const leaveRoom = () => {
-    socketRef.current?.close()
-    socketRef.current = null
-    setRoom(null)
-    setSession(null)
-    setConnectionState('idle')
-    setRoomError('')
-  }
-
-  const startRoom = () => {
-    const socket = socketRef.current
-    if (socket?.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify({ type: 'start_game' }))
-      return
-    }
-    setRoom((current) => (current ? { ...current, phase: 'word' } : current))
-  }
-
+  const leaveOnlineRoom = () => { socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError(''); setOnlineDescriptions([]) }
+  const startOnlineRoom = () => { const s = socketRef.current; if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify({ type: 'start_game' })); return }; setRoom((c) => (c ? { ...c, phase: 'word' } : c)) }
   const sendRoomEvent = (payload: Record<string, unknown>) => {
-    const socket = socketRef.current
-    if (socket?.readyState === WebSocket.OPEN) {
-      socket.send(JSON.stringify(payload))
-      return
-    }
-
+    const s = socketRef.current
+    if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify(payload)); return }
     setRoom((current) => {
       if (!current) return current
-      if (payload.type === 'next_speaker') {
-        if (current.phase === 'word') return { ...current, phase: 'speaking', currentSpeakerId: current.players[0]?.id ?? null }
-        if (current.phase === 'speaking') {
-          const currentIndex = current.players.findIndex((player) => player.id === current.currentSpeakerId)
-          const nextPlayer = current.players[currentIndex + 1]
-          if (nextPlayer) return { ...current, currentSpeakerId: nextPlayer.id }
-          return { ...current, phase: 'voting' }
-        }
-        return current
-      }
-      if (payload.type === 'submit_vote') {
-        return { ...current, phase: 'result', result: { eliminatedId: String(payload.suspectId || ''), eliminatedRole: 'undercover', winner: 'civilians' }, punishmentTargetId: String(payload.suspectId || '') }
-      }
-      if (payload.type === 'finish_vote') {
-        return { ...current, phase: 'result', result: { eliminatedId: current.players[0]?.id ?? 'host', eliminatedRole: 'undercover', winner: 'civilians' }, punishmentTargetId: current.players[0]?.id ?? 'host' }
-      }
-      if (payload.type === 'move_to_punishment') {
-        return { ...current, phase: 'punishment' }
-      }
-      if (payload.type === 'draw_punishment') {
-        return { ...current, phase: 'punishment', selectedCard: truthOrDareCards.find((card) => payload.choice === 'random' || card.type === payload.choice) ?? truthOrDareCards[0] }
-      }
-      if (payload.type === 'complete_punishment') {
-        return current.settings.mode === 'truth-or-dare'
-          ? { ...current, selectedCard: null, punishmentTargetId: current.players[1]?.id ?? current.players[0]?.id ?? null }
-          : { ...current, phase: 'waiting', selectedCard: null, result: null, punishmentTargetId: null }
-      }
+      if (payload.type === 'next_speaker') { if (current.phase === 'word') return { ...current, phase: 'speaking', currentSpeakerId: current.players[0]?.id ?? null }; if (current.phase === 'speaking') { const ci = current.players.findIndex((p) => p.id === current.currentSpeakerId); const np = current.players[ci + 1]; if (np) return { ...current, currentSpeakerId: np.id }; return { ...current, phase: 'voting' } }; return current }
+      if (payload.type === 'submit_vote') return { ...current, phase: 'result', result: { eliminatedId: String(payload.suspectId || ''), eliminatedRole: 'undercover', winner: 'civilians' }, punishmentTargetId: String(payload.suspectId || '') }
+      if (payload.type === 'finish_vote') return { ...current, phase: 'result', result: { eliminatedId: current.players[0]?.id ?? 'host', eliminatedRole: 'undercover', winner: 'civilians' }, punishmentTargetId: current.players[0]?.id ?? 'host' }
+      if (payload.type === 'move_to_punishment') return { ...current, phase: 'punishment' }
+      if (payload.type === 'draw_punishment') return { ...current, phase: 'punishment', selectedCard: truthOrDareCards.find((card) => payload.choice === 'random' || card.type === payload.choice) ?? truthOrDareCards[0] }
+      if (payload.type === 'complete_punishment') return current.settings.mode === 'truth-or-dare' ? { ...current, selectedCard: null, punishmentTargetId: current.players[1]?.id ?? current.players[0]?.id ?? null } : { ...current, phase: 'waiting', selectedCard: null, result: null, punishmentTargetId: null }
       return current
     })
   }
 
   const copyInvite = async () => {
-    if (!room) return
-    const inviteUrl = `${window.location.origin}/#/party-games?room=${room.code}`
-    try {
-      await navigator.clipboard.writeText(inviteUrl)
-    } catch {
-      setRoomError('复制邀请失败')
-    }
+    const r = room ?? localGame.room; if (!r) return
+    try { await navigator.clipboard.writeText(`${window.location.origin}/#/party-games?room=${r.code}`) } catch { setRoomError('复制邀请失败') }
   }
 
-  if (room?.phase === 'waiting') {
-    return (
-      <section id="party-games" className="space-y-5 scroll-mt-24">
+  // ── 本地模式：合成 ──────────────────────────────
+
+  const effectiveRoom = gameMode === 'local' ? localGame.room : room
+  const effectiveIsHost = gameMode === 'local' ? localGame.isHost : Boolean(session?.host)
+  const hasRoom = effectiveRoom !== null
+
+  const handleCreateLocal = (nickname: string, settings: PartyRoomSettings) => { setRoomError(''); try { const r = localGame.createLocalRoom(nickname, settings); setRoom(r.room); setCreateOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '创建失败') } }
+  const handleJoinLocal = (nickname: string, code: string) => { setRoomError(''); try { const r = localGame.joinLocalRoom(nickname, code); setRoom(r.room); localGame.switchToPlayer(r.playerId); setJoinOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '加入失败') } }
+  const handleCreate = (nickname: string, settings: PartyRoomSettings) => { gameMode === 'local' ? handleCreateLocal(nickname, settings) : void createOnlineRoom(nickname, settings) }
+  const handleJoin = (nickname: string, code: string) => { gameMode === 'local' ? handleJoinLocal(nickname, code) : void joinOnlineRoom(nickname, code) }
+  const handleLeave = () => { gameMode === 'local' ? localGame.resetGame() : leaveOnlineRoom() }
+
+  // ── 内容渲染 ────────────────────────────────────
+
+  const descs = gameMode === 'local' ? (effectiveRoom?.descriptions ?? []) : onlineDescriptions
+  const pid = gameMode === 'local' ? localGame.currentPlayerId : sessionPlayerId
+
+  const renderGameContent = () => {
+    if (!effectiveRoom) return null
+
+    if (effectiveRoom.phase === 'waiting') {
+      return (
         <WaitingRoomView
-          room={room}
-          connectionLabel={
-            connectionState === 'connected'
-              ? '已连接'
-              : connectionState === 'connecting'
-                ? '连接中...'
-                : connectionState === 'disconnected'
-                  ? '连接中断'
-                  : '未连接'
-          }
-          canStart={Boolean(session?.host)}
-          onStart={startRoom}
+          room={effectiveRoom}
+          connectionLabel={gameMode === 'local' ? '📱 本地模式' : connectionState === 'connected' ? '已连接' : connectionState === 'connecting' ? '连接中...' : connectionState === 'disconnected' ? '连接中断' : '未连接'}
+          canStart={effectiveIsHost}
+          onStart={gameMode === 'local' ? () => localGame.startLocalGame() : startOnlineRoom}
           onCopyInvite={() => { void copyInvite() }}
-          onLeave={leaveRoom}
+          onLeave={handleLeave}
+          showModeBadge={gameMode === 'local'}
         />
-        {roomError && <p className="text-sm text-[#fca5a5]">{roomError}</p>}
-      </section>
-    )
-  }
+      )
+    }
 
-  if (room && room.phase !== 'punishment') {
-    return (
-      <section id="party-games" className="space-y-5 scroll-mt-24">
+    if (effectiveRoom.phase !== 'punishment') {
+      return (
         <UndercoverRoundView
-          room={room}
-          isHost={Boolean(session?.host)}
+          room={effectiveRoom}
+          isHost={effectiveIsHost}
+          currentPlayerId={pid}
+          descriptions={descs}
+          onDescription={(content) => {
+            if (gameMode === 'local') { localGame.submitDescription(content); return }
+            setOnlineDescriptions((prev) => [...prev, { playerId: pid ?? '', playerName: effectiveRoom.players.find((p) => p.id === pid)?.nickname ?? '玩家', content, timestamp: Date.now() }])
+          }}
           onAdvance={() => {
-            if (room.phase === 'result') {
-              sendRoomEvent({ type: 'move_to_punishment' })
+            if (gameMode === 'local') {
+              if (effectiveRoom.phase === 'word') localGame.advanceToSpeaking()
+              else if (effectiveRoom.phase === 'speaking') localGame.nextSpeaker()
+              else if (effectiveRoom.phase === 'voting') localGame.revealResult()
+              else if (effectiveRoom.phase === 'result') localGame.moveToPunishment()
               return
             }
-            if (room.phase === 'voting' && sessionPlayerId) {
-              sendRoomEvent({ type: 'finish_vote' })
-              return
-            }
+            if (effectiveRoom.phase === 'result') { sendRoomEvent({ type: 'move_to_punishment' }); return }
+            if (effectiveRoom.phase === 'voting' && sessionPlayerId) { sendRoomEvent({ type: 'finish_vote' }); return }
             sendRoomEvent({ type: 'next_speaker' })
           }}
-          onVote={(suspectId) => sendRoomEvent({ type: 'submit_vote', suspectId })}
+          onVote={(suspectId) => { gameMode === 'local' ? localGame.submitVote(suspectId) : sendRoomEvent({ type: 'submit_vote', suspectId }) }}
         />
-      </section>
+      )
+    }
+
+    // punishment phase
+    const target = effectiveRoom.players.find((p) => p.id === effectiveRoom.punishmentTargetId)?.nickname ?? effectiveRoom.players[0]?.nickname ?? '玩家'
+    return (
+      <TruthOrDarePanel
+        targetName={target}
+        card={effectiveRoom.selectedCard ?? null}
+        onDraw={(choice) => { gameMode === 'local' ? localGame.drawPunishment(choice) : sendRoomEvent({ type: 'draw_punishment', choice }) }}
+        onDone={() => { gameMode === 'local' ? localGame.completePunishment() : sendRoomEvent({ type: 'complete_punishment' }) }}
+      />
     )
   }
 
-  if (room?.phase === 'punishment') {
-    const target = room.players.find((player) => player.id === room.punishmentTargetId)?.nickname ?? room.players[0]?.nickname ?? '玩家'
+  // ── 游戏内全屏覆盖层 ────────────────────────────
+
+  if (hasRoom) {
     return (
-      <section id="party-games" className="space-y-5 scroll-mt-24">
-        <TruthOrDarePanel
-          targetName={target}
-          card={room.selectedCard ?? null}
-          onDraw={(choice) => sendRoomEvent({ type: 'draw_punishment', choice })}
-          onDone={() => sendRoomEvent({ type: 'complete_punishment' })}
-        />
-      </section>
+      <>
+        {/* 全屏覆盖层 */}
+        <div className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-gradient-to-b from-amber-50 via-orange-50/60 to-rose-50">
+          {/* 浮动背景 */}
+          <FloatingParticles />
+
+          {/* 顶部栏 */}
+          <div className="relative z-10 shrink-0 px-4 pt-[max(12px,env(safe-area-inset-top))]">
+            {/* 本地模式：玩家切换栏 */}
+            {gameMode === 'local' && (
+              <LocalModeBar
+                room={effectiveRoom!}
+                currentPlayerId={localGame.currentPlayerId}
+                onSwitchPlayer={localGame.switchToPlayer}
+                onAddPlayer={(nickname) => { try { localGame.joinLocalRoom(nickname, effectiveRoom!.code) } catch { /* noop */ } }}
+                isHost={localGame.isHost}
+                compact={effectiveRoom!.phase !== 'waiting'}
+              />
+            )}
+          </div>
+
+          {/* 滚动内容区 */}
+          <div className="relative z-10 flex-1 overflow-y-auto px-4 pb-[max(24px,env(safe-area-inset-bottom))]">
+            <div className="mx-auto w-full max-w-lg py-4">
+              {renderGameContent()}
+              {roomError && <p className="mt-3 rounded-2xl bg-red-50 px-4 py-3 text-center text-sm font-medium text-red-500">{roomError}</p>}
+            </div>
+          </div>
+        </div>
+
+        {/* 弹窗仍需要渲染 */}
+        <CreateRoomSheet open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
+        <JoinRoomSheet open={joinOpen} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
+      </>
     )
   }
+
+  // ── 首页（非全屏） ──────────────────────────────
 
   return (
-    <section id="party-games" className="space-y-5 scroll-mt-24">
-      <div className="rounded-[28px] border border-border-subtle bg-[#151817] p-5 text-white">
-        <div className="flex items-center justify-between gap-3">
-          <span className="rounded-full border border-white/10 bg-white/8 px-3 py-1 text-xs font-semibold text-white/64">
-            {selectedMode === 'undercover' ? '谁是卧底' : '真心话大冒险'}
-          </span>
-          <span className="text-xs font-semibold text-white/48">最多 {defaultMaxPlayers} 人</span>
-        </div>
-        <h2 className="mt-4 font-headline-md text-3xl font-semibold tracking-tight">聚会游戏</h2>
-        <p className="mt-2 font-body-md text-sm text-white/70">谁是卧底和真心话大冒险。</p>
-        <div className="mt-4 grid grid-cols-2 rounded-2xl bg-white/8 p-1">
+    <section id="party-games" className="space-y-5 scroll-mt-24 px-1">
+      {/* 模式切换 */}
+      <div className="mx-auto flex max-w-xs rounded-2xl bg-gray-100 p-1">
+        {([
+          ['local', '📱 本地测试'],
+          ['online', '🌐 在线联机'],
+        ] as const).map(([id, label]) => (
           <button
+            key={id}
             type="button"
-            onClick={() => setSelectedMode('undercover')}
-            className={`rounded-xl px-3 py-2 text-sm font-semibold ${selectedMode === 'undercover' ? 'bg-white text-[#151817]' : 'text-white/70'}`}
+            onClick={() => setGameMode(id as GameMode)}
+            className={`party-tap-highlight flex-1 rounded-xl px-4 py-2 text-sm font-semibold transition-all duration-200 ${gameMode === id ? 'bg-white text-gray-900 shadow-[0_1px_4px_rgba(0,0,0,0.08)]' : 'text-gray-500'}`}
           >
-            谁是卧底
+            {label}
           </button>
-          <button
-            type="button"
-            onClick={() => setSelectedMode('truth-or-dare')}
-            className={`rounded-xl px-3 py-2 text-sm font-semibold ${selectedMode === 'truth-or-dare' ? 'bg-white text-[#151817]' : 'text-white/70'}`}
-          >
-            真心话大冒险
-          </button>
-        </div>
-        <div className="mt-5 grid gap-3">
-          <button
-            type="button"
-            onClick={() => setCreateOpen(true)}
-            disabled={submitting}
-            className="rounded-full bg-white px-4 py-3 text-sm font-semibold text-[#151817] disabled:opacity-60"
-          >
-            {submitting ? '处理中...' : '创建房间'}
-          </button>
-          <button
-            type="button"
-            onClick={() => setJoinOpen(true)}
-            disabled={submitting}
-            className="rounded-full border border-white/20 px-4 py-3 text-sm font-semibold text-white disabled:opacity-60"
-          >
-            加入房间
-          </button>
-        </div>
-        {roomError && <p className="mt-3 text-sm text-[#fca5a5]">{roomError}</p>}
-        {selectedMode === 'truth-or-dare' && (
-          <p className="mt-3 text-xs text-white/55">真心话大冒险会先创建在线房间，独立抽卡流程放在后续阶段接入。</p>
-        )}
+        ))}
       </div>
 
-      <CreateRoomSheet
-        open={createOpen}
-        defaultMode={selectedMode}
-        defaultMaxPlayers={defaultMaxPlayers}
-        submitting={submitting}
-        externalError={createOpen ? roomError : ''}
-        onClose={() => setCreateOpen(false)}
-        onCreate={(nickname, settings) => { void createOnlineRoom(nickname, settings) }}
-      />
-      <JoinRoomSheet
-        open={joinOpen}
-        submitting={submitting}
-        externalError={joinOpen ? roomError : ''}
-        onClose={() => setJoinOpen(false)}
-        onJoin={(nickname, code) => { void joinOnlineRoom(nickname, code) }}
-      />
+      {/* 主卡片 */}
+      <div className="party-anim-card overflow-hidden rounded-[32px] bg-gradient-to-br from-amber-400 via-orange-400 to-rose-500 p-[1.5px] shadow-[0_8px_40px_-12px_rgba(251,146,60,0.35)]">
+        <div className="rounded-[30px] bg-white/95 px-5 py-6 backdrop-blur-sm">
+          <div className="flex items-center justify-between gap-3">
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700">
+              <span className="text-base leading-none">{selectedMode === 'undercover' ? '🕵️' : '🎲'}</span>
+              {selectedMode === 'undercover' ? '谁是卧底' : '真心话大冒险'}
+            </span>
+            <span className="text-xs font-medium text-gray-400">最多 {defaultMaxPlayers} 人</span>
+          </div>
+
+          <h2 className="mt-4 text-3xl font-bold tracking-tight text-gray-900">聚会游戏</h2>
+          <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
+            {gameMode === 'local' ? '单设备离线模式：添加玩家后传手机轮流操作。' : '和朋友一起玩谁是卧底和真心话大冒险。'}
+          </p>
+
+          <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl bg-gray-100 p-1.5">
+            <button type="button" onClick={() => setSelectedMode('undercover')} className={`party-tap-highlight rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-all duration-200 ${selectedMode === 'undercover' ? 'bg-white text-gray-900 shadow-[0_2px_8px_rgba(0,0,0,0.08)]' : 'text-gray-500 active:bg-white/50'}`}>🕵️ 谁是卧底</button>
+            <button type="button" onClick={() => setSelectedMode('truth-or-dare')} className={`party-tap-highlight rounded-xl px-3.5 py-2.5 text-sm font-semibold transition-all duration-200 ${selectedMode === 'truth-or-dare' ? 'bg-white text-gray-900 shadow-[0_2px_8px_rgba(0,0,0,0.08)]' : 'text-gray-500 active:bg-white/50'}`}>🎲 真心话大冒险</button>
+          </div>
+
+          <div className="mt-5 grid gap-2.5">
+            <button type="button" onClick={() => setCreateOpen(true)} disabled={submitting} className="party-tap-highlight party-btn-press w-full rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.4)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(251,146,60,0.5)] disabled:opacity-50">
+              {submitting ? '处理中...' : '🏠  创建房间'}
+            </button>
+            <button type="button" onClick={() => setJoinOpen(true)} disabled={submitting} className="party-tap-highlight party-btn-press w-full rounded-2xl border-2 border-gray-200 bg-white px-4 py-3.5 text-base font-semibold text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 disabled:opacity-50">
+              🔗 加入房间
+            </button>
+          </div>
+
+          {roomError && <div className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-500">{roomError}</div>}
+
+          {gameMode === 'local' && (
+            <div className="mt-4 rounded-2xl bg-blue-50 px-4 py-3">
+              <p className="text-xs font-semibold text-blue-600">💡 本地测试模式</p>
+              <ul className="mt-1.5 space-y-1 text-xs text-blue-500">
+                <li>· 创建房间后，用「随机添加」按钮添加模拟玩家</li>
+                <li>· 通过顶部切换器切换当前操作玩家（传手机）</li>
+                <li>· 谁是卧底需要至少 3 名玩家，真心话大冒险 2 人即可</li>
+                <li>· 进入游戏后全屏沉浸式体验</li>
+              </ul>
+            </div>
+          )}
+
+          {gameMode === 'online' && selectedMode === 'truth-or-dare' && (
+            <p className="mt-4 text-center text-xs text-gray-400">真心话大冒险会先创建在线房间，方便多人轮流参与。</p>
+          )}
+        </div>
+      </div>
+
+      <CreateRoomSheet open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
+      <JoinRoomSheet open={joinOpen} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
     </section>
+  )
+}
+
+// ── 本地模式：顶部操作栏 ──────────────────────────
+
+interface LocalModeBarProps {
+  room: LocalPartyRoom
+  currentPlayerId: string | null
+  onSwitchPlayer: (playerId: string) => void
+  onAddPlayer: (nickname: string) => void
+  isHost: boolean
+  compact?: boolean
+}
+
+const LocalModeBar = ({ room, currentPlayerId, onSwitchPlayer, onAddPlayer, isHost, compact = false }: LocalModeBarProps) => {
+  const usedNames = new Set(room.players.map((p) => p.nickname))
+  const canAdd = room.players.length < room.settings.maxPlayers
+  const handleAddRandom = () => onAddPlayer(pickRandomName(usedNames))
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center gap-2 rounded-2xl bg-white/90 px-3 py-2 shadow-[0_1px_6px_rgba(0,0,0,0.06)] backdrop-blur-sm">
+        <span className="shrink-0 rounded-lg bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-600">📱 本地</span>
+
+        {!compact && (
+          <>
+            <span className="text-xs text-gray-400">当前：</span>
+            <select value={currentPlayerId ?? ''} onChange={(e) => onSwitchPlayer(e.target.value)} className="flex-1 rounded-lg bg-gray-50 px-2 py-1 text-sm font-semibold text-gray-900 outline-none">
+              {room.players.map((p) => (<option key={p.id} value={p.id}>{p.nickname}{p.host ? ' 👑' : ''}</option>))}
+            </select>
+          </>
+        )}
+
+        {compact && (
+          <div className="flex flex-1 items-center gap-1.5 overflow-x-auto">
+            {room.players.map((p) => (
+              <button key={p.id} type="button" onClick={() => onSwitchPlayer(p.id)} className={`party-tap-highlight shrink-0 rounded-full px-2.5 py-1 text-xs font-semibold transition-all ${p.id === currentPlayerId ? 'bg-blue-500 text-white shadow-[0_2px_6px_rgba(59,130,246,0.3)]' : 'bg-gray-100 text-gray-500'}`}>
+                {p.nickname}{p.host ? '👑' : ''}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {!compact && isHost && canAdd && (
+          <button type="button" onClick={handleAddRandom} className="party-tap-highlight shrink-0 rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-100 active:bg-blue-200">+ 随机添加</button>
+        )}
+        {!compact && isHost && !canAdd && room.players.length > 0 && (
+          <span className="shrink-0 text-xs text-gray-400">已满员</span>
+        )}
+
+        <button type="button" onClick={() => window.location.reload()} className="party-tap-highlight shrink-0 rounded-lg bg-red-50 px-2 py-1 text-xs font-semibold text-red-400">退出</button>
+      </div>
+
+      {compact && (
+        <p className="text-center text-[11px] text-gray-400">
+          👆 当前：<span className="font-semibold text-gray-600">{room.players.find((p) => p.id === currentPlayerId)?.nickname ?? '—'}</span> — 点击切换
+        </p>
+      )}
+    </div>
   )
 }
 

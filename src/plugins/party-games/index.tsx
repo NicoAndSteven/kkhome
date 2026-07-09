@@ -6,7 +6,7 @@ import CreateRoomSheet from './components/CreateRoomSheet'
 import JoinRoomSheet from './components/JoinRoomSheet'
 import WaitingRoomView from './components/WaitingRoomView'
 import UndercoverRoundView from './components/UndercoverRoundView'
-import TruthOrDarePanel from './components/TruthOrDarePanel'
+import TruthOrDareGameView from './components/TruthOrDareGameView'
 import { getDefaultWordPair, truthOrDareCards } from './content'
 import { useLocalGame } from './useLocalGame'
 import { DescriptionEntry, LocalPartyRoom, PartyGameMode, PartyRoomSettings } from './types'
@@ -267,42 +267,54 @@ const PartyGamesPlugin = ({ config }: Props) => {
       )
     }
 
-    if (effectiveRoom.phase !== 'punishment') {
+    // ── 真心话大冒险：专用游戏视图 ──
+    if (effectiveRoom.settings.mode === 'truth-or-dare') {
       return (
-        <UndercoverRoundView
+        <TruthOrDareGameView
           room={effectiveRoom}
           isHost={effectiveIsHost}
           currentPlayerId={pid}
-          descriptions={descs}
-          onDescription={(content) => {
-            if (gameMode === 'local') { localGame.submitDescription(content); return }
-            setOnlineDescriptions((prev) => [...prev, { playerId: pid ?? '', playerName: effectiveRoom.players.find((p) => p.id === pid)?.nickname ?? '玩家', content, timestamp: Date.now() }])
+          onDraw={(choice) => {
+            if (gameMode === 'local') { localGame.drawPunishment(choice); return }
+            sendRoomEvent({ type: 'draw_punishment', choice })
           }}
-          onAdvance={() => {
-            if (gameMode === 'local') {
-              if (effectiveRoom.phase === 'word') localGame.advanceToSpeaking()
-              else if (effectiveRoom.phase === 'speaking') localGame.nextSpeaker()
-              else if (effectiveRoom.phase === 'voting') localGame.revealResult()
-              else if (effectiveRoom.phase === 'result') localGame.moveToPunishment()
-              return
-            }
-            if (effectiveRoom.phase === 'result') { sendRoomEvent({ type: 'move_to_punishment' }); return }
-            if (effectiveRoom.phase === 'voting' && sessionPlayerId) { sendRoomEvent({ type: 'finish_vote' }); return }
-            sendRoomEvent({ type: 'next_speaker' })
+          onDone={() => {
+            if (gameMode === 'local') { localGame.completePunishment(); return }
+            sendRoomEvent({ type: 'complete_punishment' })
           }}
-          onVote={(suspectId) => { gameMode === 'local' ? localGame.submitVote(suspectId) : sendRoomEvent({ type: 'submit_vote', suspectId }) }}
+          onRedraw={() => {
+            if (gameMode === 'local') { localGame.drawPunishment('random'); return }
+            sendRoomEvent({ type: 'draw_punishment', choice: 'random' })
+          }}
+          playerNames={new Map(effectiveRoom.players.map((p) => [p.id, p.nickname]))}
         />
       )
     }
 
-    // punishment phase
-    const target = effectiveRoom.players.find((p) => p.id === effectiveRoom.punishmentTargetId)?.nickname ?? effectiveRoom.players[0]?.nickname ?? '玩家'
+    // ── 谁是卧底：推理游戏视图 ──
     return (
-      <TruthOrDarePanel
-        targetName={target}
-        card={effectiveRoom.selectedCard ?? null}
-        onDraw={(choice) => { gameMode === 'local' ? localGame.drawPunishment(choice) : sendRoomEvent({ type: 'draw_punishment', choice }) }}
-        onDone={() => { gameMode === 'local' ? localGame.completePunishment() : sendRoomEvent({ type: 'complete_punishment' }) }}
+      <UndercoverRoundView
+        room={effectiveRoom}
+        isHost={effectiveIsHost}
+        currentPlayerId={pid}
+        descriptions={descs}
+        onDescription={(content) => {
+          if (gameMode === 'local') { localGame.submitDescription(content); return }
+          setOnlineDescriptions((prev) => [...prev, { playerId: pid ?? '', playerName: effectiveRoom.players.find((p) => p.id === pid)?.nickname ?? '玩家', content, timestamp: Date.now() }])
+        }}
+        onAdvance={() => {
+          if (gameMode === 'local') {
+            if (effectiveRoom.phase === 'word') localGame.advanceToSpeaking()
+            else if (effectiveRoom.phase === 'speaking') localGame.nextSpeaker()
+            else if (effectiveRoom.phase === 'voting') localGame.revealResult()
+            else if (effectiveRoom.phase === 'result') localGame.moveToPunishment()
+            return
+          }
+          if (effectiveRoom.phase === 'result') { sendRoomEvent({ type: 'move_to_punishment' }); return }
+          if (effectiveRoom.phase === 'voting' && sessionPlayerId) { sendRoomEvent({ type: 'finish_vote' }); return }
+          sendRoomEvent({ type: 'next_speaker' })
+        }}
+        onVote={(suspectId) => { gameMode === 'local' ? localGame.submitVote(suspectId) : sendRoomEvent({ type: 'submit_vote', suspectId }) }}
       />
     )
   }

@@ -148,6 +148,26 @@ export const useLocalGame = () => {
     if (!state) return
 
     const { room: r } = state
+    const isTruthOrDare = r.settings.mode === 'truth-or-dare'
+
+    // 真心话大冒险：直接进入惩罚/抽卡阶段
+    if (isTruthOrDare) {
+      const playerCount = r.players.length
+      if (playerCount < 2) return // 真心话大冒险最少 2 人
+
+      const updated: LocalPartyRoom = {
+        ...r,
+        phase: 'punishment',
+        selectedCard: null,
+        punishmentTargetId: r.players[0]?.id ?? null,
+        players: [...r.players],
+      }
+      state.room = updated
+      setRoom(updated)
+      return
+    }
+
+    // 谁是卧底：分配身份和词语
     const playerCount = r.players.length
     if (playerCount < 3) return // 最少 3 人
 

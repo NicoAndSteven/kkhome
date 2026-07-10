@@ -32,12 +32,14 @@ export const createInitialPartyRoomState = ({ code, nickname, settings }) => ({
   ],
   roles: {},
   words: {},
+  descriptions: [],
   currentSpeakerIndex: 0,
   votes: {},
   result: null,
   selectedCard: null,
   punishmentTargetId: null,
   truthOrDareTurnIndex: 0,
+  connectTokens: {},
 })
 
 export const joinPartyRoomState = (room, nickname) => {
@@ -99,9 +101,16 @@ export const assignUndercoverRound = (room, wordPair) => {
   room.punishmentTargetId = null
   room.roles = {}
   room.words = {}
+  room.descriptions = []
 
+  // Fisher-Yates shuffle so undercover is not always the last player
+  for (let i = activePlayers.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[activePlayers[i], activePlayers[j]] = [activePlayers[j], activePlayers[i]]
+  }
+  const undercoverIndex = activePlayers.length - 1
   activePlayers.forEach((player, index) => {
-    const undercover = index === activePlayers.length - 1
+    const undercover = index === undercoverIndex
     room.roles[player.id] = undercover ? 'undercover' : 'civilian'
     room.words[player.id] = undercover ? wordPair.undercoverWord : wordPair.civilianWord
   })
@@ -131,6 +140,7 @@ export const advanceSpeaking = (room) => {
   if (room.phase === 'word') {
     room.phase = 'speaking'
     room.currentSpeakerIndex = 0
+    room.descriptions = []
     return room
   }
 
@@ -147,6 +157,22 @@ export const advanceSpeaking = (room) => {
   }
 
   room.phase = 'voting'
+  return room
+}
+
+export const submitPartyDescription = (room, playerId, playerName, content) => {
+  if (room.phase !== 'speaking') {
+    const error = new Error('room is not in speaking phase')
+    error.status = 409
+    throw error
+  }
+  if (!room.descriptions) room.descriptions = []
+  room.descriptions.push({
+    playerId,
+    playerName,
+    content: String(content || '').slice(0, 200),
+    timestamp: Date.now(),
+  })
   return room
 }
 
@@ -171,6 +197,11 @@ export const submitPartyVote = (room, voterId, suspectId) => {
 }
 
 export const revealPartyVotingResult = (room) => {
+  // Idempotent guard: if already revealed (auto-reveal + manual finish_vote race),
+  // return current state unchanged. Still throw for other illegal phases (e.g. word/speaking).
+  if (room.phase === 'result' && room.result) {
+    return room
+  }
   if (room.phase !== 'voting') {
     const error = new Error('room is not in voting phase')
     error.status = 409
@@ -181,13 +212,27 @@ export const revealPartyVotingResult = (room) => {
   for (const suspectId of Object.values(room.votes)) {
     counts[suspectId] = (counts[suspectId] || 0) + 1
   }
-  const [eliminatedId] = Object.entries(counts).sort((left, right) => right[1] - left[1])[0] || []
-  if (!eliminatedId) {
+  const sorted = Object.entries(counts).sort((left, right) => right[1] - left[1])
+  if (sorted.length === 0) {
     const error = new Error('no votes submitted')
     error.status = 409
     throw error
   }
 
+  // Explicit tie-breaking: no one is eliminated, game continues with a new round
+  if (sorted.length >= 2 && sorted[0][1] === sorted[1][1]) {
+    room.phase = 'result'
+    room.result = {
+      eliminatedId: null,
+      eliminatedRole: null,
+      gameEnded: false,
+      winner: null,
+    }
+    room.punishmentTargetId = null
+    return room
+  }
+
+  const [eliminatedId] = sorted[0]
   const eliminatedRole = room.roles[eliminatedId]
   const remainingRoles = Object.entries(room.roles)
     .filter(([playerId]) => playerId !== eliminatedId)
@@ -195,18 +240,29 @@ export const revealPartyVotingResult = (room) => {
   const undercoverRemaining = remainingRoles.filter((role) => role === 'undercover').length
   const civilianRemaining = remainingRoles.filter((role) => role === 'civilian').length
 
-  let winner = 'civilians'
-  if (eliminatedRole !== 'undercover' && undercoverRemaining >= civilianRemaining) {
+  // Determine if the game truly ends with this elimination.
+  // gameEnded = true only when a winner can be definitively declared.
+  // gameEnded = false means the eliminated player is out but the game continues
+  // (e.g. a civilian was voted out, the undercover is still alive, next round starts).
+  let gameEnded = false
+  let winner = null
+
+  if (eliminatedRole === 'undercover' && undercoverRemaining === 0) {
+    // All undercovers eliminated — civilians win, game over
+    gameEnded = true
+    winner = 'civilians'
+  } else if (eliminatedRole !== 'undercover' && undercoverRemaining >= civilianRemaining) {
+    // Civilian eliminated and undercover now outnumbers or equals civilians — undercover wins
+    gameEnded = true
     winner = 'undercover'
   }
-  if (eliminatedRole === 'undercover' && undercoverRemaining === 0) {
-    winner = 'civilians'
-  }
+  // else: civilian eliminated but undercover still minority — gameEnded=false, winner=null, continue
 
   room.phase = 'result'
   room.result = {
     eliminatedId,
     eliminatedRole,
+    gameEnded,
     winner,
   }
   room.punishmentTargetId = eliminatedId
@@ -214,6 +270,18 @@ export const revealPartyVotingResult = (room) => {
 }
 
 export const moveToPunishment = (room) => {
+  // Tie result: no one to punish — skip directly back to waiting for a new round
+  if (room.result && room.result.eliminatedId === null) {
+    room.phase = 'waiting'
+    room.roles = {}
+    room.words = {}
+    room.votes = {}
+    room.result = null
+    room.selectedCard = null
+    room.punishmentTargetId = null
+    return room
+  }
+
   room.phase = 'punishment'
   room.selectedCard = null
   if (!room.punishmentTargetId) {
@@ -235,6 +303,20 @@ export const completePunishment = (room) => {
     return room
   }
 
+  // Undercover mode: check whether the game truly ended or continues to next round
+  if (room.result && room.result.gameEnded === false) {
+    // Game continues: go to speaking for the next round (same roles/words, cleared votes/descriptions)
+    room.phase = 'speaking'
+    room.currentSpeakerIndex = 0
+    room.votes = {}
+    room.descriptions = []
+    room.result = null
+    room.selectedCard = null
+    room.punishmentTargetId = null
+    return room
+  }
+
+  // Game ended: full reset to waiting
   room.phase = 'waiting'
   room.roles = {}
   room.words = {}
@@ -243,6 +325,36 @@ export const completePunishment = (room) => {
   room.selectedCard = null
   room.punishmentTargetId = null
   return room
+}
+
+export const resetRoomToWaiting = (room) => {
+  room.phase = 'waiting'
+  room.roles = {}
+  room.words = {}
+  room.votes = {}
+  room.descriptions = []
+  room.currentSpeakerIndex = 0
+  room.result = null
+  room.selectedCard = null
+  room.punishmentTargetId = null
+  room.truthOrDareTurnIndex = 0
+  return room
+}
+
+export const issueConnectToken = (room, playerId, token) => {
+  if (!room.connectTokens) room.connectTokens = {}
+  room.connectTokens[playerId] = token
+  return room
+}
+
+export const validateConnectToken = (room, playerId, token) => {
+  const stored = room.connectTokens?.[playerId]
+  if (!stored || stored !== String(token || '')) {
+    const error = new Error('invalid or missing connect token')
+    error.status = 401
+    throw error
+  }
+  return true
 }
 
 export const getPartyRoomSummary = (room) => ({
@@ -263,4 +375,5 @@ export const getPartyRoomSummary = (room) => ({
   result: room.result,
   punishmentTargetId: room.punishmentTargetId,
   selectedCard: room.selectedCard,
+  descriptions: room.descriptions ?? [],
 })

@@ -31,6 +31,6 @@
       "@config/*": ["src/config/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "functions/_shared"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

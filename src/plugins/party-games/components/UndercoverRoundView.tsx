@@ -10,6 +10,7 @@ interface Props {
   onAdvance: () => void
   onVote: (suspectId: string) => void
   onDescription?: (content: string) => void
+  onPlayAgain?: () => void
   descriptions?: DescriptionEntry[]
   currentPlayerId?: string | null
 }
@@ -20,6 +21,7 @@ const UndercoverRoundView = ({
   onAdvance,
   onVote,
   onDescription,
+  onPlayAgain,
   descriptions = [],
   currentPlayerId,
 }: Props) => {
@@ -232,32 +234,67 @@ const UndercoverRoundView = ({
   }
 
   // ── 结果阶段 ──
+  const gameEnded = room.result?.gameEnded === true
+  const isTie = room.result?.eliminatedId === null
   const isUndercoverWin = room.result?.winner === 'undercover'
-  const eliminatedPlayer = room.players.find((p) => p.id === room.result?.eliminatedId)
+  const eliminatedPlayer = isTie ? null : room.players.find((p) => p.id === room.result?.eliminatedId)
+
+  // Shell → gameEnded: red/green for final; not gameEnded: amber for "game continues"; tie: gray
+  const shellBorder = isTie
+    ? 'from-gray-200/80 via-slate-100/40 to-gray-200/60'
+    : gameEnded
+      ? (isUndercoverWin
+          ? 'from-red-200/80 via-rose-100/40 to-pink-200/60'
+          : 'from-emerald-200/80 via-green-100/40 to-teal-200/60')
+      : 'from-amber-200/80 via-orange-100/40 to-yellow-200/60'
+
+  const iconBg = isTie
+    ? 'bg-gradient-to-br from-gray-100 to-slate-100'
+    : gameEnded
+      ? (isUndercoverWin
+          ? 'bg-gradient-to-br from-red-100 to-rose-100'
+          : 'bg-gradient-to-br from-emerald-100 to-green-100')
+      : 'bg-gradient-to-br from-amber-100 to-orange-100'
+
+  const titleCls = isTie
+    ? 'text-gray-500'
+    : gameEnded
+      ? (isUndercoverWin ? 'text-red-500' : 'text-emerald-500')
+      : 'text-amber-600'
+
+  const titleText = isTie
+    ? '平票！'
+    : gameEnded
+      ? (isUndercoverWin ? '卧底胜利！' : '平民胜利！')
+      : '淘汰结算'
+
+  const subtitleText = isTie
+    ? '票数相同，本局作废——重新开始后将分配新的身份和词语'
+    : gameEnded
+      ? (isUndercoverWin ? '卧底成功隐藏到了最后！' : '卧底被成功找出，游戏结束！')
+      : '卧底仍然存活——游戏继续，进入下一轮发言'
+
+  const advanceLabel = isTie
+    ? '🔄 票数相同，重新开始'
+    : gameEnded
+      ? '🎲 进入惩罚环节'
+      : '⚡ 进入惩罚环节，然后继续游戏'
 
   return (
     <div className="space-y-4">
       <PhaseStepper phase={room.phase} />
 
-      <Shell className={isUndercoverWin
-        ? 'from-red-200/80 via-rose-100/40 to-pink-200/60'
-        : 'from-emerald-200/80 via-green-100/40 to-teal-200/60'
-      }>
+      <Shell className={shellBorder}>
         {/* 结果展示 */}
         <div className="text-center">
-          <div className={`animate-[party-pop-in_0.5s_cubic-bezier(0.16,1,0.3,1)_both] mx-auto flex size-20 items-center justify-center rounded-full ${
-            isUndercoverWin
-              ? 'bg-gradient-to-br from-red-100 to-rose-100'
-              : 'bg-gradient-to-br from-emerald-100 to-green-100'
-          }`}>
-            <span className="text-4xl">{isUndercoverWin ? '🕵️' : '🎉'}</span>
+          <div className={`animate-[party-pop-in_0.5s_cubic-bezier(0.16,1,0.3,1)_both] mx-auto flex size-20 items-center justify-center rounded-full ${iconBg}`}>
+            <span className="text-4xl">{isTie ? '🤝' : gameEnded ? (isUndercoverWin ? '🕵️' : '🎉') : '🔄'}</span>
           </div>
-          <h2 className={`mt-3 text-3xl font-bold ${isUndercoverWin ? 'text-red-500' : 'text-emerald-500'}`}>
-            {isUndercoverWin ? '卧底胜利！' : '平民胜利！'}
-          </h2>
+          <h2 className={`mt-3 text-3xl font-bold ${titleCls}`}>{titleText}</h2>
+          <p className="mt-2 text-sm text-gray-400">{subtitleText}</p>
         </div>
 
-        {/* 被淘汰玩家 */}
+        {/* 被淘汰玩家（平票时不存在） */}
         {eliminatedPlayer && (
           <div className="mt-4 rounded-2xl bg-gray-50 px-4 py-4">
             <p className="text-center text-sm text-gray-500">
@@ -279,11 +316,11 @@ const UndercoverRoundView = ({
           </div>
         )}
 
-        {/* 玩家座位（标记淘汰） */}
+        {/* 玩家座位 */}
         <div className="mt-4">
           <PlayerSeats
             players={room.players}
-            eliminatedId={room.result?.eliminatedId}
+            eliminatedId={room.result?.eliminatedId ?? undefined}
             compact
           />
         </div>
@@ -294,7 +331,21 @@ const UndercoverRoundView = ({
             onClick={onAdvance}
             className="party-tap-highlight party-btn-press mt-5 w-full rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 px-5 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.35)] transition-all duration-200"
           >
-            🎲 进入惩罚环节
+            {advanceLabel}
+          </button>
+        )}
+
+        {!isHost && gameEnded && (
+          <p className="mt-4 text-center text-xs text-gray-400">等待房主操作</p>
+        )}
+
+        {gameEnded && onPlayAgain && (
+          <button
+            type="button"
+            onClick={onPlayAgain}
+            className="party-tap-highlight party-btn-press mt-3 w-full rounded-2xl bg-gradient-to-r from-purple-500 to-indigo-600 px-5 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(139,92,246,0.35)] transition-all duration-200"
+          >
+            🔄 再来一局
           </button>
         )}
       </Shell>

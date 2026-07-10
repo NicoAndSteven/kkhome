@@ -1,18 +1,22 @@
 /* global WebSocketPair */
 
 import {
+  advanceSpeaking,
   completePunishment,
   createInitialPartyRoomState,
   disconnectPartyPlayer,
   drawPunishmentCard,
   getPartyRoomSummary,
+  issueConnectToken,
   joinPartyRoomState,
   moveToPunishment,
   reconnectPartyPlayer,
+  resetRoomToWaiting,
   revealPartyVotingResult,
   startPartyGame,
+  submitPartyDescription,
   submitPartyVote,
-  advanceSpeaking,
+  validateConnectToken,
 } from '../../../functions/_shared/partyRoomState.js'
 import { pickTruthOrDareCard, pickUndercoverWordPair } from '../../../functions/_shared/partyRoomContent.js'
 
@@ -87,8 +91,10 @@ export class PartyRoom {
       nickname: body.nickname,
       settings: body.settings,
     })
+    const connectToken = crypto.randomUUID()
+    issueConnectToken(this.room, 'host', connectToken)
     await this.persistRoom()
-    return Response.json({ ok: true, data: { room: this.getSummary(), session: { playerId: 'host', host: true } } })
+    return Response.json({ ok: true, data: { room: this.getSummary(), session: { playerId: 'host', host: true, connectToken } } })
   }
 
   async joinRoom(body) {
@@ -99,9 +105,11 @@ export class PartyRoom {
 
     try {
       const { player } = joinPartyRoomState(this.room, body.nickname)
+      const connectToken = crypto.randomUUID()
+      issueConnectToken(this.room, player.id, connectToken)
       await this.persistRoom()
       this.broadcastState()
-      return Response.json({ ok: true, data: { room: this.getSummary(), session: { playerId: player.id, host: false } } })
+      return Response.json({ ok: true, data: { room: this.getSummary(), session: { playerId: player.id, host: false, connectToken } } })
     } catch (error) {
       return Response.json({ ok: false, error: { code: 'join_failed', message: error.message } }, { status: error.status || 400 })
     }
@@ -123,10 +131,28 @@ export class PartyRoom {
 
     const url = new URL(request.url)
     const playerId = url.searchParams.get('playerId') || ''
+    const connectToken = url.searchParams.get('connectToken') || ''
+
+    // Validate connect token before accepting the connection
+    try {
+      validateConnectToken(this.room, playerId, connectToken)
+    } catch (error) {
+      return Response.json({ ok: false, error: { code: 'unauthorized', message: error.message } }, { status: 401 })
+    }
+
     try {
       reconnectPartyPlayer(this.room, playerId)
     } catch (error) {
       return Response.json({ ok: false, error: { code: 'player_not_found', message: error.message } }, { status: error.status || 404 })
+    }
+
+    // Close any existing connection for the same playerId to prevent silent parallel eavesdropping
+    for (const [existingSocket, meta] of this.sockets.entries()) {
+      if (meta.playerId === playerId) {
+        try { existingSocket.send(JSON.stringify({ type: 'kicked', reason: 'reconnected_elsewhere' })) } catch { /* already closed */ }
+        try { existingSocket.close() } catch { /* already closed */ }
+        this.sockets.delete(existingSocket)
+      }
     }
 
     const pair = new WebSocketPair()
@@ -176,6 +202,13 @@ export class PartyRoom {
       return
     }
 
+    if (payload.type === 'submit_description') {
+      submitPartyDescription(this.room, playerId, player.nickname, String(payload.content || ''))
+      await this.persistRoom()
+      this.broadcastState()
+      return
+    }
+
     if (payload.type === 'submit_vote') {
       submitPartyVote(this.room, playerId, String(payload.suspectId || ''))
       const activeCount = this.room.players.filter((entry) => entry.status === 'online').length
@@ -212,6 +245,13 @@ export class PartyRoom {
 
     if (payload.type === 'move_to_punishment' && player.host) {
       moveToPunishment(this.room)
+      await this.persistRoom()
+      this.broadcastState()
+      return
+    }
+
+    if (payload.type === 'reset_to_waiting' && player.host) {
+      resetRoomToWaiting(this.room)
       await this.persistRoom()
       this.broadcastState()
     }

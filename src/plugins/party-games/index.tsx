@@ -61,11 +61,13 @@ interface PartyRoomSummary {
   result?: LocalPartyRoom['result']
   punishmentTargetId?: string | null
   selectedCard?: LocalPartyRoom['selectedCard']
+  descriptions?: DescriptionEntry[]
 }
 
 interface PartyRoomSession {
   playerId: string
   host: boolean
+  connectToken: string
 }
 
 type GameMode = 'online' | 'local'
@@ -93,6 +95,11 @@ const toLocalRoom = (summary: PartyRoomSummary): LocalPartyRoom => ({
   punishmentTargetId: summary.punishmentTargetId ?? null,
   privateWord: null,
   privateRole: null,
+  descriptions: summary.descriptions ?? [],
+  roles: {},
+  words: {},
+  votes: {},
+  truthOrDareTurnIndex: 0,
 })
 
 // ── 随机名字 ────────────────────────────────────────
@@ -125,10 +132,10 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const [submitting, setSubmitting] = useState(false)
   const [roomError, setRoomError] = useState('')
   const [connectionState, setConnectionState] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle')
-  const [onlineDescriptions, setOnlineDescriptions] = useState<DescriptionEntry[]>([])
   const socketRef = useRef<WebSocket | null>(null)
   const roomCode = room?.code ?? null
   const sessionPlayerId = session?.playerId ?? null
+  const sessionConnectToken = session?.connectToken ?? ''
 
   // 本地模式引擎
   const localGame = useLocalGame()
@@ -183,7 +190,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
     if (!roomCode || !sessionPlayerId || gameMode !== 'online') return undefined
 
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
-    const socket = new WebSocket(`${protocol}//${window.location.host}/api/party/rooms/${roomCode}/connect?playerId=${encodeURIComponent(sessionPlayerId)}`)
+    const socket = new WebSocket(`${protocol}//${window.location.host}/api/party/rooms/${roomCode}/connect?playerId=${encodeURIComponent(sessionPlayerId)}&connectToken=${encodeURIComponent(sessionConnectToken)}`)
     socketRef.current = socket
     setConnectionState('connecting')
 
@@ -202,6 +209,10 @@ const PartyGamesPlugin = ({ config }: Props) => {
         if (payload.type === 'private_state') {
           setRoom((current) => (current ? { ...current, privateWord: payload.privateWord ?? null, privateRole: payload.role ?? null } : current))
         }
+        if (payload.type === 'kicked') {
+          setRoomError('你在其他设备打开了这个房间，当前连接已断开')
+          leaveOnlineRoom()
+        }
       } catch { setRoomError('房间状态同步失败') }
     })
     socket.addEventListener('close', () => { setConnectionState('disconnected'); if (socketRef.current === socket) socketRef.current = null })
@@ -211,7 +222,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
   // ── 在线模式：操作 ──────────────────────────────
 
-  const leaveOnlineRoom = () => { socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError(''); setOnlineDescriptions([]) }
+  const leaveOnlineRoom = () => { socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError('') }
   const startOnlineRoom = () => { const s = socketRef.current; if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify({ type: 'start_game' })); return }; setRoom((c) => (c ? { ...c, phase: 'word' } : c)) }
   const sendRoomEvent = (payload: Record<string, unknown>) => {
     const s = socketRef.current
@@ -247,7 +258,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
   // ── 内容渲染 ────────────────────────────────────
 
-  const descs = gameMode === 'local' ? (effectiveRoom?.descriptions ?? []) : onlineDescriptions
+  const descs = effectiveRoom?.descriptions ?? []
   const pid = gameMode === 'local' ? localGame.currentPlayerId : sessionPlayerId
 
   const renderGameContent = () => {
@@ -300,7 +311,8 @@ const PartyGamesPlugin = ({ config }: Props) => {
         descriptions={descs}
         onDescription={(content) => {
           if (gameMode === 'local') { localGame.submitDescription(content); return }
-          setOnlineDescriptions((prev) => [...prev, { playerId: pid ?? '', playerName: effectiveRoom.players.find((p) => p.id === pid)?.nickname ?? '玩家', content, timestamp: Date.now() }])
+          const s = socketRef.current
+          if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify({ type: 'submit_description', content })) }
         }}
         onAdvance={() => {
           if (gameMode === 'local') {
@@ -315,6 +327,11 @@ const PartyGamesPlugin = ({ config }: Props) => {
           sendRoomEvent({ type: 'next_speaker' })
         }}
         onVote={(suspectId) => { gameMode === 'local' ? localGame.submitVote(suspectId) : sendRoomEvent({ type: 'submit_vote', suspectId }) }}
+        onPlayAgain={() => {
+          if (gameMode === 'local') { localGame.playAgain(); return }
+          const s = socketRef.current
+          if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify({ type: 'reset_to_waiting' })) }
+        }}
       />
     )
   }

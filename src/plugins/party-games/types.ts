@@ -29,9 +29,10 @@ export interface TruthOrDareCard {
 }
 
 export interface PartyResult {
-  eliminatedId: string
-  eliminatedRole: 'civilian' | 'undercover'
-  winner: 'civilians' | 'undercover'
+  eliminatedId: string | null
+  eliminatedRole: 'civilian' | 'undercover' | null
+  gameEnded: boolean
+  winner: 'civilians' | 'undercover' | null
 }
 
 export interface PartyRoomSettings {
@@ -49,6 +50,13 @@ export interface LocalPartyRoom {
   phase: UndercoverPhase
   currentSpeakerIndex: number
   currentSpeakerId?: string | null
+  // Fields required by shared state machine (partyRoomState.js)
+  // In online mode these are DO-private; in local mode they live on the room object.
+  roles: Record<string, 'civilian' | 'undercover'>
+  words: Record<string, string>
+  votes: Record<string, string>
+  truthOrDareTurnIndex: number
+  // UI-facing state
   selectedWordPair: UndercoverWordPair
   selectedCard: TruthOrDareCard | null
   privateWord?: string | null

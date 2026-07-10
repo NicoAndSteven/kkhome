@@ -21,7 +21,7 @@ export const onRequestGet = async ({ request, env, params }) => {
   const id = rooms.idFromName(code)
   const stub = rooms.get(id)
   const url = new URL(request.url)
-  const targetUrl = `https://party.internal/rooms/connect?playerId=${encodeURIComponent(url.searchParams.get('playerId') || '')}`
+  const targetUrl = `https://party.internal/rooms/connect?playerId=${encodeURIComponent(url.searchParams.get('playerId') || '')}&connectToken=${encodeURIComponent(url.searchParams.get('connectToken') || '')}`
 
   return stub.fetch(new Request(targetUrl, request))
 }

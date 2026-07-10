@@ -78,9 +78,8 @@ const readDefaultMode = (config?: PluginRuntimeConfig): PartyGameMode => (
   config?.defaultMode === 'truth-or-dare' ? 'truth-or-dare' : 'undercover'
 )
 
-const readDefaultMaxPlayers = (config?: PluginRuntimeConfig) => (
-  typeof config?.maxPlayers === 'number' ? config.maxPlayers : 6
-)
+const readDefaultMaxPlayers = (mode?: PartyGameMode) =>
+  mode === 'truth-or-dare' ? 4 : 6
 
 const toLocalRoom = (summary: PartyRoomSummary): LocalPartyRoom => ({
   code: summary.code,
@@ -120,7 +119,7 @@ const pickRandomName = (used: Set<string>): string => {
 
 const PartyGamesPlugin = ({ config }: Props) => {
   const defaultMode = readDefaultMode(config)
-  const defaultMaxPlayers = readDefaultMaxPlayers(config)
+  const defaultMaxPlayers = readDefaultMaxPlayers(defaultMode)
 
   // 在线模式状态
   const [gameMode, setGameMode] = useState<GameMode>('local')
@@ -401,15 +400,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
       {/* 主卡片 */}
       <div className="party-anim-card overflow-hidden rounded-[32px] bg-gradient-to-br from-amber-400 via-orange-400 to-rose-500 p-[1.5px] shadow-[0_8px_40px_-12px_rgba(251,146,60,0.35)]">
         <div className="rounded-[30px] bg-white/95 px-5 py-6 backdrop-blur-sm">
-          <div className="flex items-center justify-between gap-3">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-amber-50 px-3 py-1.5 text-xs font-semibold text-amber-700">
-              <span className="text-base leading-none">{selectedMode === 'undercover' ? '🕵️' : '🎲'}</span>
-              {selectedMode === 'undercover' ? '谁是卧底' : '真心话大冒险'}
-            </span>
-            <span className="text-xs font-medium text-gray-400">最多 {defaultMaxPlayers} 人</span>
-          </div>
-
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-gray-900">聚会游戏</h2>
+          <h2 className="text-3xl font-bold tracking-tight text-gray-900">聚会游戏</h2>
           <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
             {gameMode === 'local' ? '单设备离线模式：添加玩家后传手机轮流操作。' : '和朋友一起玩谁是卧底和真心话大冒险。'}
           </p>

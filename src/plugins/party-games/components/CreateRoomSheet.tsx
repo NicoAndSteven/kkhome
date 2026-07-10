@@ -17,7 +17,6 @@ const clampPlayers = (value: number, m: PartyGameMode) => Math.min(12, Math.max(
 
 const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = false, externalError = '', onClose, onCreate }: Props) => {
   const [nickname, setNickname] = useState('房主')
-  const [mode, setMode] = useState<PartyGameMode>(defaultMode)
   const [maxPlayers, setMaxPlayers] = useState(clampPlayers(defaultMaxPlayers, defaultMode))
   const [punishmentMode, setPunishmentMode] = useState<PunishmentMode>('random')
   const [message, setMessage] = useState('')
@@ -33,7 +32,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
     }
 
     onCreate(normalizedNickname, {
-      mode,
+      mode: defaultMode,
       maxPlayers,
       allowLateJoin: true,
       wordCategory: '生活',
@@ -58,7 +57,12 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
 
         <div className="flex items-start justify-between gap-4">
           <div>
-            <h3 className="text-2xl font-bold text-gray-900">✨ 创建房间</h3>
+            <div className="flex items-center gap-2">
+              <h3 className="text-2xl font-bold text-gray-900">✨ 创建房间</h3>
+              <span className={`rounded-full px-2.5 py-0.5 text-xs font-bold ${defaultMode === 'undercover' ? 'bg-amber-100 text-amber-700' : 'bg-pink-100 text-pink-700'}`}>
+                {defaultMode === 'undercover' ? '🕵️ 谁是卧底' : '🎲 真心话大冒险'}
+              </span>
+            </div>
             <p className="mt-1 text-sm text-gray-500">设置游戏参数，朋友输入房间码即可加入。</p>
           </div>
           <button
@@ -83,32 +87,6 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
           />
         </label>
 
-        {/* 游戏模式（已在首页选择，此处显示当前模式，点击可切换） */}
-        <div className="mt-4 flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4">
-          <div>
-            <span className="text-xs font-semibold uppercase tracking-[0.1em] text-gray-400">游戏模式</span>
-            <span className="mt-1.5 block text-lg font-bold text-gray-900">
-              {mode === 'undercover' ? '🕵️ 谁是卧底' : '🎲 真心话大冒险'}
-            </span>
-          </div>
-          <div className="flex gap-1.5">
-            {(['undercover', 'truth-or-dare'] as const).map((id) => (
-              <button
-                key={id}
-                type="button"
-                onClick={() => { setMode(id); setMaxPlayers((v) => clampPlayers(v, id)) }}
-                className={`party-tap-highlight rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all duration-200 ${
-                  mode === id
-                    ? 'bg-purple-100 text-purple-700'
-                    : 'bg-white text-gray-400 hover:text-gray-600'
-                }`}
-              >
-                {id === 'undercover' ? '🕵️' : '🎲'}
-              </button>
-            ))}
-          </div>
-        </div>
-
         {/* 人数选择 */}
         <div className="mt-4 flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4">
           <div>
@@ -119,7 +97,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
             <button
               type="button"
               aria-label="减少人数"
-              onClick={() => setMaxPlayers((value) => clampPlayers(value - 1, mode))}
+              onClick={() => setMaxPlayers((value) => clampPlayers(value - 1, defaultMode))}
               className="party-tap-highlight flex size-11 items-center justify-center rounded-xl border-2 border-gray-200 bg-white text-gray-500 transition-all duration-200 hover:border-gray-300 active:scale-95 active:bg-gray-100"
             >
               <Icon name="chevron_left" />
@@ -127,7 +105,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
             <button
               type="button"
               aria-label="增加人数"
-              onClick={() => setMaxPlayers((value) => clampPlayers(value + 1, mode))}
+              onClick={() => setMaxPlayers((value) => clampPlayers(value + 1, defaultMode))}
               className="party-tap-highlight flex size-11 items-center justify-center rounded-xl border-2 border-gray-200 bg-white text-gray-500 transition-all duration-200 hover:border-gray-300 active:scale-95 active:bg-gray-100"
             >
               <Icon name="chevron_right" />

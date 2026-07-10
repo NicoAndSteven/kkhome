@@ -7,9 +7,16 @@
     <meta name="description" content="全栈开发工程师个人主页" />
     <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Geist:wght@600;700&display=swap" rel="stylesheet"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+    <script>
+      // Only load Vanta/Three.js (~400KB) on desktop; skip on mobile to save bandwidth & CPU
+      (function() {
+        if (window.innerWidth < 768 || /Mobi|Android/i.test(navigator.userAgent)) return;
+        ['https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js',
+         'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.rings.min.js',
+         'https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js']
+          .forEach(function(u){var s=document.createElement('script');s.src=u;s.async=true;document.head.appendChild(s)})
+      })();
+    </script>
     <link rel="preload" href="/images/yuanyu.png" as="image" fetchpriority="high" />
     <!-- 建议将 /images/yuanyu.png 转为 WebP 缩小体积（当前 2MB）：convert yuanyu.png yuanyu.webp -->
     <title>垣钰 | 个人主页</title>

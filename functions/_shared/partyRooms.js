@@ -26,8 +26,8 @@ const normalizeSettings = (value = {}) => {
     ? cleanText(value.punishmentMode)
     : 'random'
 
-  if (!Number.isInteger(maxPlayers) || maxPlayers < 3 || maxPlayers > 12) {
-    throw new Error('maxPlayers must be 3-12')
+  if (!Number.isInteger(maxPlayers) || maxPlayers < 2 || maxPlayers > 12) {
+    throw new Error('maxPlayers must be 2-12')
   }
 
   ensureLength('wordCategory', wordCategory, 1, 16)

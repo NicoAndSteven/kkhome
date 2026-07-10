@@ -17,7 +17,7 @@ export const createInitialPartyRoomState = ({ code, nickname, settings }) => ({
   code,
   settings: {
     mode: normalizeMode(settings.mode),
-    maxPlayers: clamp(Number(settings.maxPlayers) || 6, 3, 12),
+    maxPlayers: clamp(Number(settings.maxPlayers) || 6, 2, 12),
     allowLateJoin: settings.allowLateJoin !== false,
     wordCategory: String(settings.wordCategory || '生活'),
     punishmentMode: normalizePunishmentMode(settings.punishmentMode),
@@ -126,6 +126,11 @@ export const startPartyGame = (room, options = {}) => {
   }
 
   if (room.settings.mode === 'truth-or-dare') {
+    if (room.players.length < 2) {
+      const error = new Error('truth or dare requires at least 2 players')
+      error.status = 409
+      throw error
+    }
     room.phase = 'punishment'
     room.truthOrDareTurnIndex = 0
     room.punishmentTargetId = room.players[0]?.id ?? null

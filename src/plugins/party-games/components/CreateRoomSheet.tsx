@@ -12,12 +12,13 @@ interface Props {
   onCreate: (nickname: string, settings: PartyRoomSettings) => void
 }
 
-const clampPlayers = (value: number) => Math.min(12, Math.max(3, value))
+const minForMode = (m: PartyGameMode) => m === 'undercover' ? 3 : 2
+const clampPlayers = (value: number, m: PartyGameMode) => Math.min(12, Math.max(minForMode(m), value))
 
 const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = false, externalError = '', onClose, onCreate }: Props) => {
   const [nickname, setNickname] = useState('房主')
   const [mode, setMode] = useState<PartyGameMode>(defaultMode)
-  const [maxPlayers, setMaxPlayers] = useState(clampPlayers(defaultMaxPlayers))
+  const [maxPlayers, setMaxPlayers] = useState(clampPlayers(defaultMaxPlayers, defaultMode))
   const [punishmentMode, setPunishmentMode] = useState<PunishmentMode>('random')
   const [message, setMessage] = useState('')
 
@@ -82,25 +83,27 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
           />
         </label>
 
-        {/* 游戏模式 */}
-        <div className="mt-4 grid gap-2">
-          <span className="text-xs font-semibold uppercase tracking-[0.1em] text-gray-400">游戏模式</span>
-          <div className="grid grid-cols-2 gap-2 rounded-2xl bg-gray-100 p-1.5">
-            {[
-              ['undercover', '🕵️ 谁是卧底'],
-              ['truth-or-dare', '🎲 真心话大冒险'],
-            ].map(([id, label]) => (
+        {/* 游戏模式（已在首页选择，此处显示当前模式，点击可切换） */}
+        <div className="mt-4 flex items-center justify-between rounded-2xl bg-gray-50 px-4 py-4">
+          <div>
+            <span className="text-xs font-semibold uppercase tracking-[0.1em] text-gray-400">游戏模式</span>
+            <span className="mt-1.5 block text-lg font-bold text-gray-900">
+              {mode === 'undercover' ? '🕵️ 谁是卧底' : '🎲 真心话大冒险'}
+            </span>
+          </div>
+          <div className="flex gap-1.5">
+            {(['undercover', 'truth-or-dare'] as const).map((id) => (
               <button
                 key={id}
                 type="button"
-                onClick={() => setMode(id as PartyGameMode)}
-                className={`party-tap-highlight rounded-xl px-3 py-2.5 text-sm font-semibold transition-all duration-200 ${
+                onClick={() => { setMode(id); setMaxPlayers((v) => clampPlayers(v, id)) }}
+                className={`party-tap-highlight rounded-lg px-2.5 py-1.5 text-xs font-semibold transition-all duration-200 ${
                   mode === id
-                    ? 'bg-white text-gray-900 shadow-[0_2px_8px_rgba(0,0,0,0.08)]'
-                    : 'text-gray-500 active:bg-white/50'
+                    ? 'bg-purple-100 text-purple-700'
+                    : 'bg-white text-gray-400 hover:text-gray-600'
                 }`}
               >
-                {label}
+                {id === 'undercover' ? '🕵️' : '🎲'}
               </button>
             ))}
           </div>
@@ -116,7 +119,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
             <button
               type="button"
               aria-label="减少人数"
-              onClick={() => setMaxPlayers((value) => clampPlayers(value - 1))}
+              onClick={() => setMaxPlayers((value) => clampPlayers(value - 1, mode))}
               className="party-tap-highlight flex size-11 items-center justify-center rounded-xl border-2 border-gray-200 bg-white text-gray-500 transition-all duration-200 hover:border-gray-300 active:scale-95 active:bg-gray-100"
             >
               <Icon name="chevron_left" />
@@ -124,7 +127,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
             <button
               type="button"
               aria-label="增加人数"
-              onClick={() => setMaxPlayers((value) => clampPlayers(value + 1))}
+              onClick={() => setMaxPlayers((value) => clampPlayers(value + 1, mode))}
               className="party-tap-highlight flex size-11 items-center justify-center rounded-xl border-2 border-gray-200 bg-white text-gray-500 transition-all duration-200 hover:border-gray-300 active:scale-95 active:bg-gray-100"
             >
               <Icon name="chevron_right" />

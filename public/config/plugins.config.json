@@ -12,7 +12,7 @@
       "order": 8,
       "config": {
         "defaultMode": "undercover",
-        "minPlayers": 3,
+        "minPlayers": 2,
         "maxPlayers": 6
       }
     },

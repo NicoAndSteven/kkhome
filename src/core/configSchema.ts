@@ -226,8 +226,8 @@ const newsConfigSchema = z.object({
 
 const partyGamesConfigSchema = z.object({
   defaultMode: z.enum(['undercover', 'truth-or-dare']).catch('undercover').default('undercover'),
-  minPlayers: z.number().int().min(3).max(12).catch(3).default(3),
-  maxPlayers: z.number().int().min(3).max(12).catch(6).default(6),
+  minPlayers: z.number().int().min(2).max(12).catch(3).default(3),
+  maxPlayers: z.number().int().min(2).max(12).catch(6).default(6),
 })
 
 const pluginConfigSchema = z.object({

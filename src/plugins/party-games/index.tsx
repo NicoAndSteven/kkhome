@@ -79,7 +79,9 @@ const readDefaultMode = (config?: PluginRuntimeConfig): PartyGameMode => (
 )
 
 const readDefaultMaxPlayers = (mode?: PartyGameMode) =>
-  mode === 'truth-or-dare' ? 4 : 6
+  mode === 'truth-or-dare' ? 2 : 6
+
+// ── 主组件 ──────────────────────────────────────────
 
 const toLocalRoom = (summary: PartyRoomSummary): LocalPartyRoom => ({
   code: summary.code,
@@ -119,7 +121,6 @@ const pickRandomName = (used: Set<string>): string => {
 
 const PartyGamesPlugin = ({ config }: Props) => {
   const defaultMode = readDefaultMode(config)
-  const defaultMaxPlayers = readDefaultMaxPlayers(defaultMode)
 
   // 在线模式状态
   const [gameMode, setGameMode] = useState<GameMode>('local')
@@ -128,6 +129,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const [room, setRoom] = useState<LocalPartyRoom | null>(null)
   const [session, setSession] = useState<PartyRoomSession | null>(null)
   const [selectedMode, setSelectedMode] = useState<PartyGameMode>(defaultMode)
+  const defaultMaxPlayers = readDefaultMaxPlayers(selectedMode)
   const [submitting, setSubmitting] = useState(false)
   const [roomError, setRoomError] = useState('')
   const [connectionState, setConnectionState] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle')

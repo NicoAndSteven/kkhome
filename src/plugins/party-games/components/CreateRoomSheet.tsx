@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Icon } from '@components'
 import { PartyGameMode, PartyRoomSettings, PunishmentMode } from '../types'
 
@@ -20,6 +20,18 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
   const [maxPlayers, setMaxPlayers] = useState(clampPlayers(defaultMaxPlayers, defaultMode))
   const [punishmentMode, setPunishmentMode] = useState<PunishmentMode>('random')
   const [message, setMessage] = useState('')
+
+  // Reset state when the sheet opens — prevents stale values from
+  // a previous session carrying over (e.g. maxPlayers from undercover
+  // mode bleeding into a truth-or-dare session).
+  useEffect(() => {
+    if (open) {
+      setMaxPlayers(clampPlayers(defaultMaxPlayers, defaultMode))
+      setPunishmentMode('random')
+      setNickname('房主')
+      setMessage('')
+    }
+  }, [open, defaultMaxPlayers, defaultMode])
 
   if (!open) return null
 
@@ -113,7 +125,8 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
           </div>
         </div>
 
-        {/* 惩罚模式 */}
+        {/* 输家惩罚 — 仅谁是卧底模式需要（真心话大冒险本身就是惩罚机制） */}
+        {defaultMode === 'undercover' && (
         <div className="mt-4 grid gap-2">
           <span className="text-xs font-semibold uppercase tracking-[0.1em] text-gray-400">输家惩罚</span>
           <div className="grid grid-cols-4 gap-2">
@@ -138,6 +151,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
             ))}
           </div>
         </div>
+        )}
 
         {(message || externalError) && (
           <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-500">{message || externalError}</p>

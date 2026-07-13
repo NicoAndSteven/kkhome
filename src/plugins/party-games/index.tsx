@@ -131,10 +131,27 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const [submitting, setSubmitting] = useState(false)
   const [roomError, setRoomError] = useState('')
   const [connectionState, setConnectionState] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle')
+  const [inviteRoomCode, setInviteRoomCode] = useState('')
   const socketRef = useRef<WebSocket | null>(null)
   const roomCode = room?.code ?? null
   const sessionPlayerId = session?.playerId ?? null
   const sessionConnectToken = session?.connectToken ?? ''
+
+  // ── 邀请链接检测：?room=CODE ──────────────────────
+  useEffect(() => {
+    const match = window.location.hash.match(/[?&]room=([A-Z0-9]{4,6})/i)
+    if (match) {
+      const code = match[1].toUpperCase()
+      setInviteRoomCode(code)
+      setGameMode('online')
+      setJoinOpen(true)
+      // Clear param from hash to prevent re-trigger on refresh
+      const cleaned = window.location.hash.replace(/[?&]room=[A-Z0-9]{4,6}/i, '').replace(/\?$/, '')
+      if (cleaned !== window.location.hash) {
+        window.location.hash = cleaned || '#/party-games'
+      }
+    }
+  }, [])
 
   // 本地模式引擎
   const localGame = useLocalGame()
@@ -249,6 +266,13 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const effectiveIsHost = gameMode === 'local' ? localGame.isHost : Boolean(session?.host)
   const hasRoom = effectiveRoom !== null
 
+  const minPlayersForMode = effectiveRoom?.settings.mode === 'undercover' ? 3 : 2
+  const playerCount = effectiveRoom?.players.length ?? 0
+  const canStart = effectiveIsHost && playerCount >= minPlayersForMode
+  const startHint = effectiveIsHost
+    ? `至少需要 ${minPlayersForMode} 名玩家才能开始（当前 ${playerCount} 人）`
+    : '只有房主可以开始游戏'
+
   const handleCreateLocal = (nickname: string, settings: PartyRoomSettings) => { setRoomError(''); try { const r = localGame.createLocalRoom(nickname, settings); setRoom(r.room); setCreateOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '创建失败') } }
   const handleJoinLocal = (nickname: string, code: string) => { setRoomError(''); try { const r = localGame.joinLocalRoom(nickname, code); setRoom(r.room); localGame.switchToPlayer(r.playerId); setJoinOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '加入失败') } }
   const handleCreate = (nickname: string, settings: PartyRoomSettings) => { gameMode === 'local' ? handleCreateLocal(nickname, settings) : void createOnlineRoom(nickname, settings) }
@@ -268,7 +292,8 @@ const PartyGamesPlugin = ({ config }: Props) => {
         <WaitingRoomView
           room={effectiveRoom}
           connectionLabel={gameMode === 'local' ? '📱 本地模式' : connectionState === 'connected' ? '已连接' : connectionState === 'connecting' ? '连接中...' : connectionState === 'disconnected' ? '连接中断' : '未连接'}
-          canStart={effectiveIsHost}
+          canStart={canStart}
+          startHint={startHint}
           onStart={gameMode === 'local' ? () => localGame.startLocalGame() : startOnlineRoom}
           onCopyInvite={() => { void copyInvite() }}
           onLeave={handleLeave}
@@ -371,7 +396,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
         {/* 弹窗仍需要渲染 */}
         <CreateRoomSheet open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
-        <JoinRoomSheet open={joinOpen} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
+        <JoinRoomSheet open={joinOpen} defaultCode={inviteRoomCode} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
       </>
     )
   }
@@ -440,7 +465,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
       </div>
 
       <CreateRoomSheet open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
-      <JoinRoomSheet open={joinOpen} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
+      <JoinRoomSheet open={joinOpen} defaultCode={inviteRoomCode} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
     </section>
   )
 }

@@ -7,6 +7,7 @@ interface Props {
   room: LocalPartyRoom
   connectionLabel: string
   canStart: boolean
+  startHint?: string
   onStart: () => void
   onCopyInvite: () => void
   onLeave: () => void
@@ -29,7 +30,7 @@ const STATUS_DOT: Record<string, string> = {
   '📱 本地模式': 'bg-blue-400',
 }
 
-const WaitingRoomView = ({ room, connectionLabel, canStart, onStart, onCopyInvite, onLeave, showModeBadge = false }: Props) => {
+const WaitingRoomView = ({ room, connectionLabel, canStart, startHint, onStart, onCopyInvite, onLeave, showModeBadge = false }: Props) => {
   const [copied, setCopied] = useState(false)
 
   const handleCopy = () => {
@@ -118,7 +119,7 @@ const WaitingRoomView = ({ room, connectionLabel, canStart, onStart, onCopyInvit
           </button>
 
           {!canStart && (
-            <p className="mt-3 text-center text-xs text-gray-400">只有房主可以开始游戏</p>
+            <p className="mt-3 text-center text-xs text-gray-400">{startHint || '只有房主可以开始游戏'}</p>
           )}
         </div>
       </div>

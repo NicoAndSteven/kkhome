@@ -1,18 +1,28 @@
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { Icon } from '@components'
 
 interface Props {
   open: boolean
+  defaultCode?: string
   submitting?: boolean
   externalError?: string
   onClose: () => void
   onJoin: (nickname: string, code: string) => void
 }
 
-const JoinRoomSheet = ({ open, submitting = false, externalError = '', onClose, onJoin }: Props) => {
+const JoinRoomSheet = ({ open, defaultCode = '', submitting = false, externalError = '', onClose, onJoin }: Props) => {
   const [nickname, setNickname] = useState('玩家')
   const [code, setCode] = useState('')
   const [message, setMessage] = useState('')
+
+  // Sync code when sheet opens — supports invite link pre-fill
+  useEffect(() => {
+    if (open) {
+      setCode(defaultCode || '')
+      setNickname('玩家')
+      setMessage('')
+    }
+  }, [open, defaultCode])
 
   if (!open) return null
 

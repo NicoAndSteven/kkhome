@@ -134,6 +134,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const [roomError, setRoomError] = useState('')
   const [connectionState, setConnectionState] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle')
   const [inviteRoomCode, setInviteRoomCode] = useState('')
+  const [createSheetKey, setCreateSheetKey] = useState(0)
   const socketRef = useRef<WebSocket | null>(null)
   const roomCode = room?.code ?? null
   const sessionPlayerId = session?.playerId ?? null
@@ -397,7 +398,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
         </div>
 
         {/* 弹窗仍需要渲染 */}
-        <CreateRoomSheet open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
+        <CreateRoomSheet key={createSheetKey} open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
         <JoinRoomSheet open={joinOpen} defaultCode={inviteRoomCode} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
       </>
     )
@@ -438,7 +439,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
           </div>
 
           <div className="mt-5 grid gap-2.5">
-            <button type="button" onClick={() => setCreateOpen(true)} disabled={submitting} className="party-tap-highlight party-btn-press w-full rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.4)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(251,146,60,0.5)] disabled:opacity-50">
+            <button type="button" onClick={() => { setCreateSheetKey(k => k + 1); setCreateOpen(true) }} disabled={submitting} className="party-tap-highlight party-btn-press w-full rounded-2xl bg-gradient-to-r from-amber-400 to-orange-500 px-4 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.4)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(251,146,60,0.5)] disabled:opacity-50">
               {submitting ? '处理中...' : '🏠  创建房间'}
             </button>
             <button type="button" onClick={() => setJoinOpen(true)} disabled={submitting} className="party-tap-highlight party-btn-press w-full rounded-2xl border-2 border-gray-200 bg-white px-4 py-3.5 text-base font-semibold text-gray-700 transition-all duration-200 hover:border-gray-300 hover:bg-gray-50 disabled:opacity-50">
@@ -466,7 +467,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
         </div>
       </div>
 
-      <CreateRoomSheet open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
+      <CreateRoomSheet key={createSheetKey} open={createOpen} defaultMode={selectedMode} defaultMaxPlayers={defaultMaxPlayers} submitting={submitting} externalError={createOpen ? roomError : ''} onClose={() => setCreateOpen(false)} onCreate={handleCreate} />
       <JoinRoomSheet open={joinOpen} defaultCode={inviteRoomCode} submitting={submitting} externalError={joinOpen ? roomError : ''} onClose={() => setJoinOpen(false)} onJoin={handleJoin} />
     </section>
   )

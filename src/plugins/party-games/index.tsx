@@ -165,12 +165,16 @@ const PartyGamesPlugin = ({ config }: Props) => {
     setSubmitting(true)
     setRoomError('')
     try {
+      // eslint-disable-next-line no-console
+      console.log('[party-games] POST /api/party/rooms — settings.maxPlayers =', settings.maxPlayers, '| mode =', settings.mode)
       const response = await fetch('/api/party/rooms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nickname, settings }),
       })
       const json = await response.json()
+      // eslint-disable-next-line no-console
+      console.log('[party-games] API response — room.settings.maxPlayers =', json?.data?.room?.settings?.maxPlayers, '| ok =', json?.ok)
       if (!json.ok) throw new Error(json.error?.message || '创建房间失败')
       setRoom(toLocalRoom(json.data.room))
       setSession(json.data.session)
@@ -278,7 +282,14 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
   const handleCreateLocal = (nickname: string, settings: PartyRoomSettings) => { setRoomError(''); try { const r = localGame.createLocalRoom(nickname, settings); setRoom(r.room); setCreateOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '创建失败') } }
   const handleJoinLocal = (nickname: string, code: string) => { setRoomError(''); try { const r = localGame.joinLocalRoom(nickname, code); setRoom(r.room); localGame.switchToPlayer(r.playerId); setJoinOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '加入失败') } }
-  const handleCreate = (nickname: string, settings: PartyRoomSettings) => { gameMode === 'local' ? handleCreateLocal(nickname, settings) : void createOnlineRoom(nickname, settings) }
+  const handleCreate = (nickname: string, settings: PartyRoomSettings) => {
+    // Defensive: re-clamp maxPlayers from the mode in case state is stale
+    const safeSettings = {
+      ...settings,
+      maxPlayers: Math.min(12, Math.max(settings.mode === 'undercover' ? 3 : 2, settings.maxPlayers)),
+    }
+    if (gameMode === 'local') { handleCreateLocal(nickname, safeSettings) } else { void createOnlineRoom(nickname, safeSettings) }
+  }
   const handleJoin = (nickname: string, code: string) => { gameMode === 'local' ? handleJoinLocal(nickname, code) : void joinOnlineRoom(nickname, code) }
   const handleLeave = () => { gameMode === 'local' ? localGame.resetGame() : leaveOnlineRoom() }
 

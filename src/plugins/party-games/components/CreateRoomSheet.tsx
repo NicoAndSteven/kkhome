@@ -21,17 +21,20 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
   const [punishmentMode, setPunishmentMode] = useState<PunishmentMode>('random')
   const [message, setMessage] = useState('')
 
-  // Reset state when the sheet opens — prevents stale values from
-  // a previous session carrying over (e.g. maxPlayers from undercover
-  // mode bleeding into a truth-or-dare session).
-  // useLayoutEffect fires synchronously before paint, so the user never
-  // sees the stale value and can't accidentally submit with it.
+  // Reset state when the sheet opens, and keep the人数上限 in sync with the
+  // selected mode while the sheet is open. This avoids stale capacity carrying
+  // over when the mode changes behind the modal.
   useLayoutEffect(() => {
     if (open) {
-      setMaxPlayers(clampPlayers(defaultMaxPlayers, defaultMode))
       setPunishmentMode('random')
       setNickname('房主')
       setMessage('')
+    }
+  }, [open])
+
+  useLayoutEffect(() => {
+    if (open) {
+      setMaxPlayers(clampPlayers(defaultMaxPlayers, defaultMode))
     }
   }, [open, defaultMaxPlayers, defaultMode])
 
@@ -158,6 +161,12 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
         {(message || externalError) && (
           <p className="mt-4 rounded-xl bg-red-50 px-4 py-2.5 text-center text-sm font-medium text-red-500">{message || externalError}</p>
         )}
+
+        {/* 提交前摘要：让用户确认即将提交的参数 */}
+        <p className="mt-4 text-center text-xs text-gray-400">
+          创建「{defaultMode === 'undercover' ? '谁是卧底' : '真心话大冒险'}」房间 · {maxPlayers} 人上限
+          {defaultMode === 'undercover' ? ` · 惩罚: ${punishmentMode === 'off' ? '关闭' : punishmentMode === 'truth' ? '真心话' : punishmentMode === 'dare' ? '大冒险' : '随机'}` : ''}
+        </p>
 
         <button
           type="submit"

@@ -288,7 +288,7 @@ test('party games mobile flow exposes room setup and punishment states', async (
 
   await section.getByRole('button', { name: '创建房间' }).click()
   await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()
-  await expect(page.getByLabel('最多人数')).toHaveValue('6')
+  await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('6', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: '增加人数' }).click()
   await expect(page.getByLabel('最多人数')).toHaveValue('7')
   await page.getByRole('button', { name: '确认创建' }).click()
@@ -307,6 +307,73 @@ test('party games mobile flow exposes room setup and punishment states', async (
   await section.getByRole('button', { name: '抽惩罚' }).click()
   await expect(section.getByText('真心话大冒险', { exact: true })).toBeVisible()
   await expect(section.getByText('选择一种惩罚')).toBeVisible()
+})
+
+test('party games keeps create-room capacity in sync when mode changes while the sheet is open', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  let postedSettings: Record<string, unknown> | null = null
+
+  await page.route('**/api/party/rooms', async (route) => {
+    const body = await route.request().postDataJSON() as Record<string, unknown>
+    postedSettings = body.settings as Record<string, unknown>
+    await route.fulfill({
+      contentType: 'application/json',
+      status: 201,
+      body: JSON.stringify({
+        ok: true,
+        data: {
+          room: {
+            code: 'ABCD',
+            settings: body.settings,
+            players: [
+              { id: 'host', nickname: '房主', host: true, status: 'online' },
+            ],
+            phase: 'waiting',
+            capacity: {
+              current: 1,
+              max: (body.settings as { maxPlayers?: number } | undefined)?.maxPlayers ?? 0,
+            },
+          },
+          session: {
+            playerId: 'host',
+            host: true,
+          },
+        },
+        meta: {
+          timestamp: '2026-07-07T00:00:00.000Z',
+        },
+      }),
+    })
+  })
+
+  await page.setViewportSize({ width: 390, height: 844 })
+  await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
+
+  const section = page.locator('#party-games')
+  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+
+  await section.getByRole('button', { name: '创建房间' }).click()
+  await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()
+  await expect(page.getByLabel('最多人数')).toHaveValue('6')
+
+  await page.getByRole('button', { name: '减少人数' }).click()
+  await page.getByRole('button', { name: '减少人数' }).click()
+  await page.getByRole('button', { name: '减少人数' }).click()
+  await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('3', { exact: true })).toBeVisible()
+
+  await page.evaluate(() => {
+    const button = [...document.querySelectorAll('button')].find((el) => el.textContent?.includes('真心话大冒险'))
+    button?.click()
+  })
+  await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('2', { exact: true })).toBeVisible()
+
+  await page.getByRole('button', { name: '确认创建' }).click()
+  await expect(section.getByText('1 / 2')).toBeVisible()
+  expect(postedSettings).toMatchObject({
+    mode: 'truth-or-dare',
+    maxPlayers: 2,
+  })
 })
 
 test('party games join room surfaces backend errors', async ({ page }) => {

@@ -1,4 +1,4 @@
-import { FormEvent, useEffect, useState } from 'react'
+import { FormEvent, useLayoutEffect, useState } from 'react'
 import { Icon } from '@components'
 import { PartyGameMode, PartyRoomSettings, PunishmentMode } from '../types'
 
@@ -24,7 +24,9 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
   // Reset state when the sheet opens — prevents stale values from
   // a previous session carrying over (e.g. maxPlayers from undercover
   // mode bleeding into a truth-or-dare session).
-  useEffect(() => {
+  // useLayoutEffect fires synchronously before paint, so the user never
+  // sees the stale value and can't accidentally submit with it.
+  useLayoutEffect(() => {
     if (open) {
       setMaxPlayers(clampPlayers(defaultMaxPlayers, defaultMode))
       setPunishmentMode('random')

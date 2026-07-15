@@ -252,6 +252,11 @@ const PartyGamesPlugin = ({ config }: Props) => {
         if (payload.type === 'private_state') {
           setRoom((current) => (current ? { ...current, privateWord: payload.privateWord ?? null, privateRole: payload.role ?? null } : current))
         }
+        if (payload.type === 'error') {
+          // eslint-disable-next-line no-console
+          console.warn('[party-games] Server error:', payload.message)
+          setRoomError(payload.message || '服务器处理失败')
+        }
         if (payload.type === 'kicked') {
           setRoomError('你在其他设备打开了这个房间，当前连接已断开')
           leaveOnlineRoom()
@@ -266,7 +271,20 @@ const PartyGamesPlugin = ({ config }: Props) => {
   // ── 在线模式：操作 ──────────────────────────────
 
   const leaveOnlineRoom = () => { socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError('') }
-  const startOnlineRoom = () => { const s = socketRef.current; if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify({ type: 'start_game' })); return }; setRoom((c) => (c ? { ...c, phase: 'word' } : c)) }
+  const startOnlineRoom = () => {
+    const s = socketRef.current
+    if (s?.readyState === WebSocket.OPEN) {
+      s.send(JSON.stringify({ type: 'start_game' }))
+      return
+    }
+    setRoomError('连接未就绪，请稍后再试')
+    // Fallback: start locally so the button isn't dead — use the correct phase per mode
+    setRoom((c) => {
+      if (!c) return c
+      const phase = c.settings.mode === 'undercover' ? 'word' : 'punishment'
+      return { ...c, phase, punishmentTargetId: phase === 'punishment' ? c.players[0]?.id ?? null : c.punishmentTargetId, selectedCard: null }
+    })
+  }
   const sendRoomEvent = (payload: Record<string, unknown>) => {
     const s = socketRef.current
     if (s?.readyState === WebSocket.OPEN) { s.send(JSON.stringify(payload)); return }

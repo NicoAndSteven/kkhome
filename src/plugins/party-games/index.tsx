@@ -273,17 +273,17 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const leaveOnlineRoom = () => { socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError('') }
   const startOnlineRoom = () => {
     const s = socketRef.current
-    if (s?.readyState === WebSocket.OPEN) {
+    if (!s) {
+      setRoomError('WebSocket 未初始化，请刷新页面重试')
+      return
+    }
+    if (s.readyState === WebSocket.OPEN) {
       s.send(JSON.stringify({ type: 'start_game' }))
       return
     }
-    setRoomError('连接未就绪，请稍后再试')
-    // Fallback: start locally so the button isn't dead — use the correct phase per mode
-    setRoom((c) => {
-      if (!c) return c
-      const phase = c.settings.mode === 'undercover' ? 'word' : 'punishment'
-      return { ...c, phase, punishmentTargetId: phase === 'punishment' ? c.players[0]?.id ?? null : c.punishmentTargetId, selectedCard: null }
-    })
+    // WebSocket exists but isn't open — show the actual state
+    const states = ['CONNECTING', 'OPEN', 'CLOSING', 'CLOSED']
+    setRoomError(`连接未就绪 (${states[s.readyState] ?? s.readyState})，请稍后再试`)
   }
   const sendRoomEvent = (payload: Record<string, unknown>) => {
     const s = socketRef.current

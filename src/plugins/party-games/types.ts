@@ -40,6 +40,8 @@ export interface PartyRoomSettings {
   maxPlayers: number
   allowLateJoin: boolean
   wordCategory: string
+  cardCategory: string
+  cardIntensity: string
   punishmentMode: PunishmentMode
 }
 

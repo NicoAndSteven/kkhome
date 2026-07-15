@@ -165,8 +165,10 @@ export class PartyRoom {
       try {
         const payload = JSON.parse(String(event.data || '{}'))
         await this.handleSocketMessage(playerId, payload)
-      } catch {
-        server.send(JSON.stringify({ type: 'error', message: 'invalid_event' }))
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.error('[party-rooms] handleSocketMessage error:', error)
+        server.send(JSON.stringify({ type: 'error', message: error?.message || 'invalid_event' }))
       }
     })
 
@@ -188,8 +190,12 @@ export class PartyRoom {
     if (!player) return
 
     if (payload.type === 'start_game' && player.host) {
-      const wordPair = await pickUndercoverWordPair(this.env.WISHES_DB, this.room.settings.wordCategory)
-      startPartyGame(this.room, { wordPair })
+      if (this.room.settings.mode === 'undercover') {
+        const wordPair = await pickUndercoverWordPair(this.env.WISHES_DB, this.room.settings.wordCategory)
+        startPartyGame(this.room, { wordPair })
+      } else {
+        startPartyGame(this.room)
+      }
       await this.persistRoom()
       this.broadcastState()
       return
@@ -229,7 +235,10 @@ export class PartyRoom {
 
     if (payload.type === 'draw_punishment') {
       if (this.room.phase !== 'punishment') moveToPunishment(this.room)
-      const card = await pickTruthOrDareCard(this.env.WISHES_DB, payload.choice || 'random')
+      const card = await pickTruthOrDareCard(this.env.WISHES_DB, payload.choice || 'random', {
+        category: this.room.settings.cardCategory || null,
+        intensity: this.room.settings.cardIntensity || null,
+      })
       drawPunishmentCard(this.room, card)
       await this.persistRoom()
       this.broadcastState()

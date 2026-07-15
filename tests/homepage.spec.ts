@@ -280,6 +280,11 @@ test('party games mobile flow exposes room setup and punishment states', async (
     })
   })
 
+  // Block WebSocket connections so they don't interfere
+  await page.route('**/api/party/rooms/*/connect', async (route) => {
+    await route.abort()
+  })
+
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
@@ -290,23 +295,24 @@ test('party games mobile flow exposes room setup and punishment states', async (
   await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()
   await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('6', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: '增加人数' }).click()
-  await expect(page.getByLabel('最多人数')).toHaveValue('7')
+  await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('7', { exact: true })).toBeVisible()
   await page.getByRole('button', { name: '确认创建' }).click()
 
-  await expect(section.getByText('房间码')).toBeVisible()
-  await expect(section.getByText('1 / 7')).toBeVisible()
-  await section.getByRole('button', { name: '开始游戏' }).click()
+  // Waiting room is in a full-screen overlay, not inside #party-games
+	await expect(page.getByText('房间码')).toBeVisible()
+  await expect(page.getByText('1 / 7')).toBeVisible()
+  await page.getByRole('button', { name: '开始游戏' }).click()
 
-  await expect(section.getByText('长按查看你的词')).toBeVisible()
-  await section.getByRole('button', { name: '进入发言' }).click()
-  await expect(section.getByText('当前发言')).toBeVisible()
-  await section.getByRole('button', { name: '进入投票' }).click()
-  await expect(section.getByText('选择你怀疑的人')).toBeVisible()
-  await section.getByRole('button', { name: '揭晓结果' }).click()
-  await expect(section.getByText('平民胜利')).toBeVisible()
-  await section.getByRole('button', { name: '抽惩罚' }).click()
-  await expect(section.getByText('真心话大冒险', { exact: true })).toBeVisible()
-  await expect(section.getByText('选择一种惩罚')).toBeVisible()
+  await expect(page.getByText('长按查看你的词')).toBeVisible()
+  await page.getByRole('button', { name: '进入发言' }).click()
+  await expect(page.getByText('当前发言')).toBeVisible()
+  await page.getByRole('button', { name: '进入投票' }).click()
+  await expect(page.getByText('选择你怀疑的人')).toBeVisible()
+  await page.getByRole('button', { name: '揭晓结果' }).click()
+  await expect(page.getByText('平民胜利')).toBeVisible()
+  await page.getByRole('button', { name: '抽惩罚' }).click()
+  await expect(page.getByText('真心话大冒险', { exact: true })).toBeVisible()
+  await expect(page.getByText('选择一种惩罚')).toBeVisible()
 })
 
 test('party games keeps create-room capacity in sync when mode changes while the sheet is open', async ({ page }) => {
@@ -347,15 +353,24 @@ test('party games keeps create-room capacity in sync when mode changes while the
     })
   })
 
+  // Block WebSocket connections so they don't interfere
+  await page.route('**/api/party/rooms/*/connect', async (route) => {
+    await route.abort()
+  })
+
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
   const section = page.locator('#party-games')
   await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
 
+  // Switch to online mode so the API mock is triggered
+  await section.getByRole('button', { name: '在线联机' }).click()
+  await page.waitForTimeout(200)
+
   await section.getByRole('button', { name: '创建房间' }).click()
   await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()
-  await expect(page.getByLabel('最多人数')).toHaveValue('6')
+  await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('6', { exact: true })).toBeVisible()
 
   await page.getByRole('button', { name: '减少人数' }).click()
   await page.getByRole('button', { name: '减少人数' }).click()
@@ -369,7 +384,7 @@ test('party games keeps create-room capacity in sync when mode changes while the
   await expect(page.getByRole('dialog', { name: '创建房间' }).getByText('2', { exact: true })).toBeVisible()
 
   await page.getByRole('button', { name: '确认创建' }).click()
-  await expect(section.getByText('1 / 2')).toBeVisible()
+  await expect(page.getByText('1 / 2')).toBeVisible()
   expect(postedSettings).toMatchObject({
     mode: 'truth-or-dare',
     maxPlayers: 2,
@@ -396,14 +411,23 @@ test('party games join room surfaces backend errors', async ({ page }) => {
     })
   })
 
+  // Block WebSocket connections so they don't interfere
+  await page.route('**/api/party/rooms/*/connect', async (route) => {
+    await route.abort()
+  })
+
   await page.setViewportSize({ width: 390, height: 844 })
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
   const section = page.locator('#party-games')
   await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  // Switch to online mode so the API mock is triggered
+  await section.getByRole('button', { name: '在线联机' }).click()
+  await page.waitForTimeout(200)
+
   await section.getByRole('button', { name: '加入房间' }).click()
   await page.getByRole('dialog', { name: '加入房间' }).getByLabel('房间码').fill('ABCD')
-  await page.getByRole('dialog', { name: '加入房间' }).getByRole('button', { name: '加入', exact: true }).click()
+  await page.getByRole('dialog', { name: '加入房间' }).getByRole('button', { name: '🚀 加入房间' }).click()
   await expect(page.getByRole('dialog', { name: '加入房间' }).getByText('room is full')).toBeVisible()
 })
 

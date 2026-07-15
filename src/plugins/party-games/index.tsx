@@ -283,12 +283,11 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const handleCreateLocal = (nickname: string, settings: PartyRoomSettings) => { setRoomError(''); try { const r = localGame.createLocalRoom(nickname, settings); setRoom(r.room); setCreateOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '创建失败') } }
   const handleJoinLocal = (nickname: string, code: string) => { setRoomError(''); try { const r = localGame.joinLocalRoom(nickname, code); setRoom(r.room); localGame.switchToPlayer(r.playerId); setJoinOpen(false) } catch (e) { setRoomError(e instanceof Error ? e.message : '加入失败') } }
   const handleCreate = (nickname: string, settings: PartyRoomSettings) => {
-    // Defensive: re-clamp maxPlayers from the mode in case state is stale
-    const safeSettings = {
-      ...settings,
-      maxPlayers: Math.min(12, Math.max(settings.mode === 'undercover' ? 3 : 2, settings.maxPlayers)),
-    }
-    if (gameMode === 'local') { handleCreateLocal(nickname, safeSettings) } else { void createOnlineRoom(nickname, safeSettings) }
+    // CreateRoomSheet already clamps maxPlayers via clampPlayers(), so the
+    // value arriving here is mode-appropriate. Avoid a second re-clamp because
+    // it can accidentally lift the count (e.g. truth-or-dare → 3 when mode
+    // detection picks the wrong branch).
+    if (gameMode === 'local') { handleCreateLocal(nickname, settings) } else { void createOnlineRoom(nickname, settings) }
   }
   const handleJoin = (nickname: string, code: string) => { gameMode === 'local' ? handleJoinLocal(nickname, code) : void joinOnlineRoom(nickname, code) }
   const handleLeave = () => { gameMode === 'local' ? localGame.resetGame() : leaveOnlineRoom() }

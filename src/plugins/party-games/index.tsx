@@ -221,8 +221,14 @@ const PartyGamesPlugin = ({ config }: Props) => {
   // ── 在线模式：WebSocket ─────────────────────────
 
   useEffect(() => {
-    if (!roomCode || !sessionPlayerId || gameMode !== 'online') return undefined
+    if (!roomCode || !sessionPlayerId || gameMode !== 'online') {
+      // eslint-disable-next-line no-console
+      console.log('[party-games] WS skip: roomCode=', roomCode, 'sessionPlayerId=', sessionPlayerId, 'gameMode=', gameMode)
+      return undefined
+    }
 
+    // eslint-disable-next-line no-console
+    console.log('[party-games] WS connecting: roomCode=', roomCode, 'playerId=', sessionPlayerId)
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     const socket = new WebSocket(`${protocol}//${window.location.host}/api/party/rooms/${roomCode}/connect?playerId=${encodeURIComponent(sessionPlayerId)}&connectToken=${encodeURIComponent(sessionConnectToken)}`)
     socketRef.current = socket

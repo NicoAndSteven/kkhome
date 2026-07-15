@@ -176,7 +176,18 @@ const PartyGamesPlugin = ({ config }: Props) => {
       // eslint-disable-next-line no-console
       console.log('[party-games] API response — room.settings.maxPlayers =', json?.data?.room?.settings?.maxPlayers, '| ok =', json?.ok)
       if (!json.ok) throw new Error(json.error?.message || '创建房间失败')
-      setRoom(toLocalRoom(json.data.room))
+
+      // Safety net: the DO worker may clamp maxPlayers (legacy code uses floor=3).
+      // If the server returns a different value, correct it client-side and warn.
+      const room = json.data.room
+      if (room && room.settings && room.settings.maxPlayers !== settings.maxPlayers) {
+        // eslint-disable-next-line no-console
+        console.warn('[party-games] Server maxPlayers mismatch: sent', settings.maxPlayers, 'got', room.settings.maxPlayers, '- correcting client-side')
+        room.settings.maxPlayers = settings.maxPlayers
+        if (room.capacity) room.capacity.max = settings.maxPlayers
+      }
+
+      setRoom(toLocalRoom(room))
       setSession(json.data.session)
       setCreateOpen(false)
     } catch (error) {
@@ -223,7 +234,16 @@ const PartyGamesPlugin = ({ config }: Props) => {
         const payload = JSON.parse(String(event.data || '{}'))
         if (payload.type === 'room_state' && payload.room) {
           setRoom((current) => {
-            const next = toLocalRoom(payload.room)
+            // Safety net: the DO may broadcast a stale maxPlayers (legacy clamp floor=3).
+            // Keep the client-side maxPlayers from initial room creation.
+            const serverRoom = payload.room
+            if (current && serverRoom.settings && serverRoom.settings.maxPlayers !== current.settings.maxPlayers) {
+              // eslint-disable-next-line no-console
+              console.warn('[party-games] WS room_state maxPlayers mismatch: client has', current.settings.maxPlayers, 'server sent', serverRoom.settings.maxPlayers, '- keeping client value')
+              serverRoom.settings.maxPlayers = current.settings.maxPlayers
+              if (serverRoom.capacity) serverRoom.capacity.max = current.settings.maxPlayers
+            }
+            const next = toLocalRoom(serverRoom)
             if (current?.privateWord) next.privateWord = current.privateWord
             if (current?.privateRole) next.privateRole = current.privateRole
             return next

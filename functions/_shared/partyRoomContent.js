@@ -84,8 +84,7 @@ export const pickTruthOrDareCard = async (db, requestedType = 'random', opts = {
   const where = conditions.join(' AND ')
   const sql = `SELECT id, type, content, category, intensity FROM party_truth_or_dare_cards WHERE ${where} ORDER BY RANDOM() LIMIT 1`
 
-  let stmt = db.prepare(sql)
-  for (const p of params) stmt = stmt.bind(p)
+  const stmt = params.length > 0 ? db.prepare(sql).bind(...params) : db.prepare(sql)
   const row = await stmt.first()
 
   if (!row) {

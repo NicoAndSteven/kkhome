@@ -73,6 +73,10 @@ const PartyContentAdmin = ({ token }: Props) => {
   const [cardTypeFilter, setCardTypeFilter] = useState<CardTypeFilter>('all')
   const [cardCategoryFilter, setCardCategoryFilter] = useState('all')
   const [cardIntensityFilter, setCardIntensityFilter] = useState<IntensityFilter>('all')
+  const [bulkJson, setBulkJson] = useState('')
+  const [bulkImporting, setBulkImporting] = useState(false)
+  const [bulkResult, setBulkResult] = useState('')
+  const [bulkOpen, setBulkOpen] = useState(false)
 
   const authHeaders = useMemo(() => ({
     'Content-Type': 'application/json',
@@ -230,6 +234,36 @@ const PartyContentAdmin = ({ token }: Props) => {
     } finally {
       setOperatingId(null)
     }
+  }
+
+  const runBulkImport = async () => {
+    setBulkImporting(true)
+    setBulkResult('')
+    let items
+    try {
+      items = JSON.parse(bulkJson)
+      if (!Array.isArray(items)) throw new Error('请输入一个 JSON 数组')
+    } catch (parseError) {
+      setBulkResult(`JSON 解析失败: ${parseError instanceof Error ? parseError.message : '格式错误'}`)
+      setBulkImporting(false)
+      return
+    }
+
+    const endpoint = tab === 'undercover' ? '/api/party/content/undercover' : '/api/party/content/truth-or-dare'
+    let ok = 0; const errors: string[] = []
+    for (let i = 0; i < items.length; i++) {
+      try {
+        const res = await fetch(endpoint, { method: 'POST', headers: authHeaders, body: JSON.stringify(items[i]) })
+        const json = await res.json()
+        if (json.ok) ok++; else errors.push(`[${i}] ${json.error?.message || '失败'}`)
+      } catch (fetchError) {
+        errors.push(`[${i}] ${fetchError instanceof Error ? fetchError.message : '网络错误'}`)
+      }
+    }
+    setBulkResult(`导入完成: ${ok}/${items.length} 成功${errors.length > 0 ? `, ${errors.length} 失败` : ''}`)
+    if (errors.length > 0 && errors.length <= 5) setBulkResult((prev) => prev + '\n' + errors.join('\n'))
+    setBulkImporting(false)
+    if (ok > 0) { setBulkJson(''); await fetchContent() }
   }
 
   const editWord = (item: UndercoverAdminItem) => {
@@ -594,6 +628,47 @@ const PartyContentAdmin = ({ token }: Props) => {
             </button>
           </form>
         )}
+
+        {/* 批量导入 */}
+        <div className="mt-5 border-t border-border-subtle pt-4">
+          <button
+            type="button"
+            onClick={() => setBulkOpen(!bulkOpen)}
+            className="flex w-full items-center justify-between text-sm font-semibold text-text-muted hover:text-on-surface"
+          >
+            <span>📋 批量导入</span>
+            <span>{bulkOpen ? '▾' : '▸'}</span>
+          </button>
+          {bulkOpen && (
+            <div className="mt-3 space-y-2">
+              <p className="text-xs text-text-muted">
+                粘贴 JSON 数组，每项格式与新增表单一致。
+                {tab === 'undercover'
+                  ? ' 例: [{"civilianWord":"苹果","undercoverWord":"梨","category":"食物","difficulty":"easy","enabled":true}]'
+                  : ' 例: [{"type":"truth","content":"你最想实现的愿望？","category":"轻松","intensity":"soft","enabled":true}]'}
+              </p>
+              <textarea
+                value={bulkJson}
+                onChange={(event) => setBulkJson(event.target.value)}
+                placeholder='[{"civilianWord":"...", ...}]'
+                className="min-h-32 w-full rounded-xl border border-border-subtle bg-surface-container px-3 py-2 font-mono text-xs"
+              />
+              <button
+                type="button"
+                onClick={() => { void runBulkImport() }}
+                disabled={bulkImporting || !bulkJson.trim()}
+                className="flex w-full items-center justify-center gap-2 rounded-full bg-primary px-4 py-2.5 text-sm font-semibold text-white disabled:opacity-50"
+              >
+                {bulkImporting ? '⏳ 导入中...' : '📥 批量导入'}
+              </button>
+              {bulkResult && (
+                <p className={`whitespace-pre-wrap rounded-xl p-2 text-xs ${bulkResult.includes('失败') ? 'bg-red-50 text-red-600' : 'bg-emerald-50 text-emerald-600'}`}>
+                  {bulkResult}
+                </p>
+              )}
+            </div>
+          )}
+        </div>
       </aside>
     </div>
   )

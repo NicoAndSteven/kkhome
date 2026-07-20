@@ -61,12 +61,21 @@ export const pickTruthOrDareCard = async (db, requestedType = 'random', opts = {
   const type = ['truth', 'dare'].includes(requestedType) ? requestedType : null
   const category = opts.category ?? null
   const intensity = opts.intensity ?? null
+  const excludeIds = Array.isArray(opts.excludeIds) && opts.excludeIds.length > 0 ? opts.excludeIds : []
 
   const fallbackFiltered = (items) => {
     let filtered = items
     if (type) filtered = filtered.filter((item) => item.type === type)
     if (category) filtered = filtered.filter((item) => item.category === category)
     if (intensity) filtered = filtered.filter((item) => item.intensity === intensity)
+    if (excludeIds.length > 0) filtered = filtered.filter((item) => !excludeIds.includes(item.id))
+    if (filtered.length === 0 && excludeIds.length > 0) {
+      // All matching cards exhausted — recycle: remove exclusion filter
+      filtered = items
+      if (type) filtered = filtered.filter((item) => item.type === type)
+      if (category) filtered = filtered.filter((item) => item.category === category)
+      if (intensity) filtered = filtered.filter((item) => item.intensity === intensity)
+    }
     return filtered.length > 0 ? filtered : items
   }
 
@@ -74,19 +83,39 @@ export const pickTruthOrDareCard = async (db, requestedType = 'random', opts = {
     return randomItem(fallbackFiltered(fallbackCards)) ?? fallbackCards[0]
   }
 
-  // Build dynamic query with optional filters
+  // Build dynamic query with optional filters + exclusion
   const conditions = ['enabled = 1']
   const params = []
   if (type) { conditions.push('type = ?'); params.push(type) }
   if (category) { conditions.push('category = ?'); params.push(category) }
   if (intensity) { conditions.push('intensity = ?'); params.push(intensity) }
+  // Add NOT IN for up to 50 excluded IDs (D1 supports variable ? placeholders)
+  const exclude = excludeIds.slice(0, 50)
+  if (exclude.length > 0) {
+    const placeholders = exclude.map(() => '?').join(', ')
+    conditions.push(`id NOT IN (${placeholders})`)
+    params.push(...exclude)
+  }
 
   const where = conditions.join(' AND ')
-  const sql = `SELECT id, type, content, category, intensity FROM party_truth_or_dare_cards WHERE ${where} ORDER BY RANDOM() LIMIT 1`
+  const sql = `SELECT id, type, content, category, intensity FROM party_truth_or_dare_cards WHERE ${where} ORDER BY RANDOM() LIMIT 3`
 
   const stmt = params.length > 0 ? db.prepare(sql).bind(...params) : db.prepare(sql)
-  const row = await stmt.first()
+  const result = await stmt.all()
+  const rows = result?.results ?? []
 
+  // If nothing found with exclusion, retry without exclusion (recycle)
+  if (rows.length === 0 && exclude.length > 0) {
+    const retryConditions = conditions.slice(0, -1) // remove the NOT IN
+    const retryParams = params.slice(0, params.length - exclude.length)
+    const retryWhere = retryConditions.join(' AND ')
+    const retrySql = `SELECT id, type, content, category, intensity FROM party_truth_or_dare_cards WHERE ${retryWhere} ORDER BY RANDOM() LIMIT 1`
+    const retryStmt = retryParams.length > 0 ? db.prepare(retrySql).bind(...retryParams) : db.prepare(retrySql)
+    const retryRow = await retryStmt.first()
+    if (retryRow) rows.push(retryRow)
+  }
+
+  const row = rows[0]
   if (!row) {
     return randomItem(fallbackFiltered(fallbackCards)) ?? fallbackCards[0]
   }
@@ -105,8 +134,8 @@ export const pickTruthOrDareCard = async (db, requestedType = 'random', opts = {
 // Hardcoded categories that match the migration content.
 // These are returned when D1 is unavailable; when D1 is available we
 // query distinct categories from the live tables.
-const UNDERCOVER_CATEGORIES = ['食物', '饮品', '地点', '物品', '交通', '职业', '动物', '影视', '运动', '自然', '品牌', '网络热梗']
-const TRUTH_OR_DARE_CATEGORIES = ['轻松', '社交', '刺激', '互动', '表演', '搞怪', '情侣', '默契挑战', '脑洞', '才艺展示']
+const UNDERCOVER_CATEGORIES = ['食物', '饮品', '地点', '物品', '交通', '职业', '动物', '影视', '运动', '自然', '品牌', '网络热梗', '节日', '游戏', '音乐', '文学', '科技']
+const TRUTH_OR_DARE_CATEGORIES = ['轻松', '社交', '刺激', '互动', '表演', '搞怪', '情侣', '默契挑战', '脑洞', '才艺展示', '回忆杀', '快问快答']
 const INTENSITY_OPTIONS = ['soft', 'normal', 'spicy']
 
 export const listUndercoverCategories = async (db) => {

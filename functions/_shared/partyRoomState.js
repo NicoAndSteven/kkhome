@@ -41,6 +41,7 @@ export const createInitialPartyRoomState = ({ code, nickname, settings }) => ({
   selectedCard: null,
   punishmentTargetId: null,
   truthOrDareTurnIndex: 0,
+  drawnCardIds: [],
   connectTokens: {},
 })
 
@@ -137,6 +138,7 @@ export const startPartyGame = (room, options = {}) => {
     room.truthOrDareTurnIndex = 0
     room.punishmentTargetId = room.players[0]?.id ?? null
     room.selectedCard = null
+    room.drawnCardIds = []
     return room
   }
 
@@ -299,6 +301,10 @@ export const moveToPunishment = (room) => {
 
 export const drawPunishmentCard = (room, card) => {
   room.selectedCard = card
+  if (card?.id) {
+    if (!Array.isArray(room.drawnCardIds)) room.drawnCardIds = []
+    room.drawnCardIds.push(card.id)
+  }
   return room
 }
 
@@ -345,6 +351,7 @@ export const resetRoomToWaiting = (room) => {
   room.selectedCard = null
   room.punishmentTargetId = null
   room.truthOrDareTurnIndex = 0
+  room.drawnCardIds = []
   return room
 }
 

@@ -238,8 +238,13 @@ export class PartyRoom {
       const card = await pickTruthOrDareCard(this.env.WISHES_DB, payload.choice || 'random', {
         category: this.room.settings.cardCategory || null,
         intensity: this.room.settings.cardIntensity || null,
+        excludeIds: Array.isArray(this.room.drawnCardIds) ? this.room.drawnCardIds : [],
       })
       drawPunishmentCard(this.room, card)
+      if (this.room.drawnCardIds && this.room.drawnCardIds.length > 60) {
+        // Prevent unbounded growth: recycle when we've drawn most cards
+        this.room.drawnCardIds = this.room.drawnCardIds.slice(-20)
+      }
       await this.persistRoom()
       this.broadcastState()
       return

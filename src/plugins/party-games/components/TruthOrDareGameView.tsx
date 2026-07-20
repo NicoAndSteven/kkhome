@@ -32,15 +32,14 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
   return (
     <div className="space-y-4">
       {/* 游戏标题区 */}
-      <div className="overflow-hidden rounded-[32px] bg-gradient-to-br from-rose-200/60 via-pink-100/40 to-purple-200/60 p-[1.5px] shadow-[0_8px_48px_-16px_rgba(200,80,160,0.15)]">
-        <div className="rounded-[30px] bg-white px-4 py-5">
+      <div className="overflow-hidden rounded-[28px] border border-orange-200/60 bg-white shadow-[0_2px_24px_-8px_rgba(251,146,60,0.12)] px-4 py-5">
           {/* 标题 */}
           <div className="text-center">
-            <span className="inline-flex items-center gap-1.5 rounded-full bg-pink-50 px-3 py-1 text-xs font-bold text-pink-500">
-              🎲 真心话大冒险
+            <span className="inline-flex items-center gap-1.5 rounded-full bg-orange-50 px-3 py-1 text-xs font-bold text-orange-500">
+              真心话大冒险
             </span>
             <h2 className="mt-3 text-2xl font-bold text-gray-900">
-              轮到 <span className="text-pink-500">{targetPlayer?.nickname ?? '玩家'}</span>
+              轮到 <span className="text-orange-500">{targetPlayer?.nickname ?? '玩家'}</span>
             </h2>
           </div>
 
@@ -70,9 +69,9 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
                   <span className={`rounded-full px-3 py-1 text-xs font-bold ${
                     card.type === 'truth'
                       ? 'bg-blue-100 text-blue-600'
-                      : 'bg-orange-100 text-orange-600'
+                      : 'bg-amber-100 text-amber-700'
                   }`}>
-                    {card.type === 'truth' ? '💬 真心话' : '⚡ 大冒险'}
+                    {card.type === 'truth' ? '真心话' : '大冒险'}
                   </span>
                   {(() => { const t = getIntensityTag(card.intensity); return <span className={`rounded-full px-2.5 py-1 text-xs font-semibold ${t.cls}`}>{t.label}</span> })()}
                 </div>
@@ -80,8 +79,8 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
                 {/* 卡片内容 */}
                 <div className={`mt-4 rounded-[24px] p-6 text-center ${
                   card.type === 'truth'
-                    ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-violet-50'
-                    : 'bg-gradient-to-br from-orange-50 via-rose-50 to-red-50'
+                    ? 'bg-gradient-to-br from-blue-50 via-indigo-50 to-sky-50'
+                    : 'bg-gradient-to-br from-amber-50 via-orange-50 to-rose-50'
                 }`}>
                   <p className="text-2xl font-bold leading-relaxed text-gray-900">{card.content}</p>
                 </div>
@@ -92,16 +91,16 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
                     <button
                       type="button"
                       onClick={onDone}
-                      className="party-tap-highlight party-btn-press rounded-2xl bg-gradient-to-r from-emerald-400 to-green-500 px-5 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(52,211,153,0.35)] transition-all duration-200"
+                      className="rounded-2xl bg-gradient-to-r from-emerald-400 to-green-500 px-5 py-3.5 text-base font-semibold text-white shadow-[0_4px_16px_-4px_rgba(52,211,153,0.35)] transition-all duration-200 active:scale-[0.97]"
                     >
-                      ✅ 完成
+                      完成
                     </button>
                     <button
                       type="button"
                       onClick={onRedraw}
-                      className="party-tap-highlight party-btn-press rounded-2xl border-2 border-gray-200 bg-white px-5 py-3.5 text-base font-semibold text-gray-600 transition-all duration-200 hover:bg-gray-50"
+                      className="rounded-2xl border-2 border-gray-200 bg-white px-5 py-3.5 text-base font-semibold text-gray-600 transition-all duration-200 hover:bg-gray-50 active:scale-[0.97]"
                     >
-                      🔄 换一题
+                      换一题
                     </button>
                   </div>
                 )}
@@ -110,9 +109,9 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
                     <button
                       type="button"
                       onClick={onDone}
-                      className="party-tap-highlight party-btn-press w-full rounded-2xl bg-gradient-to-r from-gray-400 to-gray-500 px-5 py-3.5 text-base font-semibold text-white transition-all duration-200"
+                      className="w-full rounded-2xl bg-gradient-to-r from-gray-400 to-gray-500 px-5 py-3.5 text-base font-semibold text-white transition-all duration-200 active:scale-[0.97]"
                     >
-                      ➡️ 下一位
+                      下一位
                     </button>
                   </div>
                 )}
@@ -134,25 +133,25 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
                     <button
                       type="button"
                       onClick={() => onDraw('truth')}
-                      className="party-tap-highlight party-btn-press rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 px-4 py-5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(99,102,241,0.3)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(99,102,241,0.45)]"
+                      className="rounded-2xl bg-gradient-to-br from-blue-400 to-indigo-500 px-4 py-5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(99,102,241,0.3)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(99,102,241,0.45)] active:scale-[0.97]"
                     >
-                      <span className="block text-3xl mb-1">💬</span>
+                      <span className="block text-lg mb-1 font-bold">?</span>
                       真心话
                     </button>
                     <button
                       type="button"
                       onClick={() => onDraw('dare')}
-                      className="party-tap-highlight party-btn-press rounded-2xl bg-gradient-to-br from-orange-400 to-red-500 px-4 py-5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.3)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(251,146,60,0.45)]"
+                      className="rounded-2xl bg-gradient-to-br from-amber-400 to-orange-500 px-4 py-5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(251,146,60,0.3)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(251,146,60,0.45)] active:scale-[0.97]"
                     >
-                      <span className="block text-3xl mb-1">⚡</span>
+                      <span className="block text-lg mb-1 font-bold">!</span>
                       大冒险
                     </button>
                     <button
                       type="button"
                       onClick={() => onDraw('random')}
-                      className="party-tap-highlight party-btn-press rounded-2xl bg-gradient-to-br from-purple-400 to-pink-500 px-4 py-5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(168,85,247,0.3)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(168,85,247,0.45)]"
+                      className="rounded-2xl bg-gradient-to-br from-gray-400 to-gray-600 px-4 py-5 text-sm font-semibold text-white shadow-[0_4px_16px_-4px_rgba(100,100,100,0.25)] transition-all duration-200 hover:shadow-[0_6px_20px_-4px_rgba(100,100,100,0.4)] active:scale-[0.97]"
                     >
-                      <span className="block text-3xl mb-1">🎰</span>
+                      <span className="block text-lg mb-1 font-bold">~</span>
                       随机
                     </button>
                   </div>
@@ -160,21 +159,20 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
 
                 {!isMyTurn && isHost && (
                   <div className="flex justify-center gap-2">
-                    <button type="button" onClick={() => onDraw('truth')} className="party-tap-highlight rounded-xl bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-600">代抽：真心话</button>
-                    <button type="button" onClick={() => onDraw('dare')} className="party-tap-highlight rounded-xl bg-orange-50 px-4 py-2 text-xs font-semibold text-orange-600">代抽：大冒险</button>
-                    <button type="button" onClick={() => onDraw('random')} className="party-tap-highlight rounded-xl bg-purple-50 px-4 py-2 text-xs font-semibold text-purple-600">代抽：随机</button>
+                    <button type="button" onClick={() => onDraw('truth')} className="rounded-xl bg-blue-50 px-4 py-2 text-xs font-semibold text-blue-600 transition-colors hover:bg-blue-100 active:scale-95">代抽：真心话</button>
+                    <button type="button" onClick={() => onDraw('dare')} className="rounded-xl bg-amber-50 px-4 py-2 text-xs font-semibold text-amber-700 transition-colors hover:bg-amber-100 active:scale-95">代抽：大冒险</button>
+                    <button type="button" onClick={() => onDraw('random')} className="rounded-xl bg-gray-100 px-4 py-2 text-xs font-semibold text-gray-600 transition-colors hover:bg-gray-200 active:scale-95">代抽：随机</button>
                   </div>
                 )}
               </div>
             )}
           </div>
         </div>
-      </div>
 
       {/* 玩家座位 + 进度 */}
       <div className="overflow-hidden rounded-[28px] bg-white/80 px-4 py-4 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
         <div className="mb-3 flex items-center justify-between">
-          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-gray-400">🪑 玩家顺序</span>
+          <span className="text-xs font-semibold uppercase tracking-[0.12em] text-gray-400">玩家顺序</span>
           <span className="text-xs text-gray-400">
             已完成 {completedCount} / {room.players.length} 人
           </span>
@@ -194,9 +192,9 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
               key={i}
               className={`h-1 w-8 rounded-full transition-all duration-300 ${
                 i < completedCount
-                  ? 'bg-pink-300'
+                  ? 'bg-amber-300'
                   : i === completedCount
-                    ? 'bg-pink-400 animate-pulse'
+                    ? 'bg-amber-400 animate-pulse'
                     : 'bg-gray-200'
               }`}
             />

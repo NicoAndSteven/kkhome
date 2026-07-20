@@ -14,8 +14,8 @@ interface Props {
 
 // Hardcoded fallback categories — used when API is unavailable.
 // MUST stay in sync with D:\kkhome\functions\_shared\partyRoomContent.js
-const FALLBACK_UNDERCOVER_CATEGORIES = ['食物', '饮品', '地点', '物品', '交通', '职业', '动物', '影视', '运动', '自然', '品牌', '网络热梗']
-const FALLBACK_TRUTHDARE_CATEGORIES = ['轻松', '社交', '刺激', '互动', '表演', '搞怪', '情侣', '默契挑战', '脑洞', '才艺展示']
+const FALLBACK_UNDERCOVER_CATEGORIES = ['食物', '饮品', '地点', '物品', '交通', '职业', '动物', '影视', '运动', '自然', '品牌', '网络热梗', '节日', '游戏', '音乐', '文学', '科技']
+const FALLBACK_TRUTHDARE_CATEGORIES = ['轻松', '社交', '刺激', '互动', '表演', '搞怪', '情侣', '默契挑战', '脑洞', '才艺展示', '回忆杀', '快问快答']
 const INTENSITY_OPTIONS = [
   { value: '', label: '不限' },
   { value: 'soft', label: '🌸 轻松' },

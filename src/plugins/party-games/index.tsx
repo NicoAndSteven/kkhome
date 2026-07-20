@@ -72,6 +72,33 @@ interface PartyRoomSession {
 
 type GameMode = 'online' | 'local'
 
+interface SavedPartySession {
+  roomCode: string
+  playerId: string
+  host: boolean
+  connectToken: string
+  mode: PartyGameMode
+}
+
+const PARTY_SESSION_KEY = 'kkhome_party_session'
+const savePartySession = (s: SavedPartySession) => { try { sessionStorage.setItem(PARTY_SESSION_KEY, JSON.stringify(s)) } catch { /* noop */ } }
+const loadPartySession = (): SavedPartySession | null => { try { const raw = sessionStorage.getItem(PARTY_SESSION_KEY); return raw ? JSON.parse(raw) : null } catch { return null } }
+const clearPartySession = () => { try { sessionStorage.removeItem(PARTY_SESSION_KEY) } catch { /* noop */ } }
+
+// Minimal room placeholder used during reconnection to trigger the WS effect.
+// The server pushes the real room_state on connect.
+const RECONNECT_PLACEHOLDER: Partial<LocalPartyRoom> = {
+  settings: { mode: 'truth-or-dare', maxPlayers: 6, allowLateJoin: true, wordCategory: '', cardCategory: '', cardIntensity: '', punishmentMode: 'random' },
+  phase: 'waiting',
+  players: [],
+  descriptions: [],
+  roles: {},
+  words: {},
+  votes: {},
+  truthOrDareTurnIndex: 0,
+  currentSpeakerIndex: 0,
+}
+
 // ── 工具函数 ────────────────────────────────────────
 
 const readDefaultMode = (config?: PluginRuntimeConfig): PartyGameMode => (
@@ -133,6 +160,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
   const [submitting, setSubmitting] = useState(false)
   const [roomError, setRoomError] = useState('')
   const [connectionState, setConnectionState] = useState<'idle' | 'connecting' | 'connected' | 'disconnected'>('idle')
+  const [reconnecting, setReconnecting] = useState(false)
   const [inviteRoomCode, setInviteRoomCode] = useState('')
   const [createSheetKey, setCreateSheetKey] = useState(0)
   const socketRef = useRef<WebSocket | null>(null)
@@ -154,6 +182,20 @@ const PartyGamesPlugin = ({ config }: Props) => {
         window.location.hash = cleaned || '#/party-games'
       }
     }
+  }, [])
+
+  // ── 刷新恢复：sessionStorage 自动重连 ────────────
+
+  useEffect(() => {
+    const saved = loadPartySession()
+    if (!saved) return
+    // Only auto-reconnect if not already in a room (don't override active session)
+    if (roomCode || session) return
+    setGameMode('online')
+    setSession({ playerId: saved.playerId, host: saved.host, connectToken: saved.connectToken })
+    setRoom({ ...RECONNECT_PLACEHOLDER, code: saved.roomCode } as LocalPartyRoom)
+    setReconnecting(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // 本地模式引擎
@@ -190,6 +232,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
       setRoom(toLocalRoom(room))
       setSession(json.data.session)
       setCreateOpen(false)
+      savePartySession({ roomCode: room.code, playerId: json.data.session.playerId, host: json.data.session.host, connectToken: json.data.session.connectToken, mode: settings.mode })
     } catch (error) {
       setRoomError(error instanceof Error ? error.message : '在线房间服务暂不可用')
     } finally {
@@ -211,6 +254,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
       setRoom(toLocalRoom(json.data.room))
       setSession(json.data.session)
       setJoinOpen(false)
+      savePartySession({ roomCode: code, playerId: json.data.session.playerId, host: json.data.session.host, connectToken: json.data.session.connectToken, mode: json.data.room?.settings?.mode ?? 'truth-or-dare' })
     } catch (error) {
       setRoomError(error instanceof Error ? error.message : '在线房间服务暂不可用')
     } finally {
@@ -239,6 +283,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
       try {
         const payload = JSON.parse(String(event.data || '{}'))
         if (payload.type === 'room_state' && payload.room) {
+          setReconnecting(false)
           setRoom((current) => {
             // Safety net: the DO may broadcast a stale maxPlayers (legacy clamp floor=3).
             // Keep the client-side maxPlayers from initial room creation.
@@ -276,7 +321,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
   // ── 在线模式：操作 ──────────────────────────────
 
-  const leaveOnlineRoom = () => { socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError('') }
+  const leaveOnlineRoom = () => { clearPartySession(); socketRef.current?.close(); socketRef.current = null; setRoom(null); setSession(null); setConnectionState('idle'); setRoomError(''); setReconnecting(false) }
   const startOnlineRoom = () => {
     const s = socketRef.current
     if (!s) {
@@ -426,6 +471,20 @@ const PartyGamesPlugin = ({ config }: Props) => {
         <div className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-gradient-to-b from-amber-50 via-orange-50/60 to-rose-50">
           {/* 浮动背景 */}
           <FloatingParticles />
+
+          {/* 重连中遮罩 */}
+          {reconnecting && (
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm">
+              <div className="flex flex-col items-center gap-4">
+                <div className="flex gap-1.5">
+                  <span className="size-3 animate-bounce rounded-full bg-amber-400 [animation-delay:0ms]" />
+                  <span className="size-3 animate-bounce rounded-full bg-orange-400 [animation-delay:150ms]" />
+                  <span className="size-3 animate-bounce rounded-full bg-rose-400 [animation-delay:300ms]" />
+                </div>
+                <p className="text-sm font-semibold text-gray-500">正在恢复房间...</p>
+              </div>
+            </div>
+          )}
 
           {/* 顶部栏 */}
           <div className="relative z-10 shrink-0 px-4 pt-[max(12px,env(safe-area-inset-top))]">

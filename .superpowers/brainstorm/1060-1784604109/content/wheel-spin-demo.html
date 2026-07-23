@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>转盘方案对比 - 可旋转演示</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Geist', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    background: #f8f9fc;
+    color: #1a1a2e;
+    padding: 40px 24px;
+    min-height: 100vh;
+  }
+  h2 { font-size: 28px; font-weight: 700; margin-bottom: 4px; letter-spacing: -0.02em; }
+  .subtitle { color: #8a8e9a; font-size: 14px; margin-bottom: 32px; }
+
+  .compare-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+  @media (max-width: 768px) {
+    .compare-grid { grid-template-columns: 1fr; }
+  }
+
+  .wheel-card {
+    background: white;
+    border-radius: 24px;
+    padding: 32px 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 8px 24px rgba(0,0,0,0.06);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  .wheel-card h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a1a2e;
+    text-align: center;
+  }
+  .wheel-card .tag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 20px;
+    margin-left: 6px;
+  }
+  .tag-a { background: #E8EDFE; color: #002FA7; }
+  .tag-b { background: #FEF3C7; color: #92400E; }
+
+  .wheel-container {
+    position: relative;
+    width: 300px;
+    height: 300px;
+  }
+
+  .wheel-disc {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    position: relative;
+    transition: transform 4s cubic-bezier(0.12, 0.84, 0.22, 1.02);
+  }
+  .wheel-disc.spinning {
+    transition: transform 4s cubic-bezier(0.12, 0.84, 0.22, 1.02);
+  }
+
+  /* Outer ring tick marks */
+  .tick-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+
+  /* Center hub */
+  .center-hub {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: white;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.12);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    z-index: 10;
+  }
+
+  /* Pointer */
+  .pointer {
+    position: absolute;
+    top: -16px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 20;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+  }
+
+  /* Segment label */
+  .seg-label {
+    position: absolute;
+    left: 50%;
+    top: 14px;
+    transform: translateX(-50%);
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+    text-align: center;
+    max-width: 70px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    pointer-events: none;
+  }
+
+  .spin-btn {
+    padding: 12px 36px;
+    border-radius: 100px;
+    border: none;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    letter-spacing: 0.02em;
+  }
+  .spin-btn:active { transform: scale(0.96); }
+  .spin-btn-a {
+    background: #002FA7;
+    color: white;
+  }
+  .spin-btn-a:hover { background: #0025A0; }
+  .spin-btn-a:disabled { background: #ccc; cursor: not-allowed; }
+
+  .spin-btn-b {
+    background: linear-gradient(135deg, #FF6B35, #F7931E);
+    color: white;
+  }
+  .spin-btn-b:hover { opacity: 0.9; }
+  .spin-btn-b:disabled { background: #ccc; cursor: not-allowed; }
+
+  .result-badge {
+    padding: 10px 24px;
+    border-radius: 16px;
+    font-size: 18px;
+    font-weight: 700;
+    animation: resultPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+    text-align: center;
+  }
+  .result-badge-a { background: #E8EDFE; color: #002FA7; }
+  .result-badge-b { background: #FEF3C7; color: #92400E; }
+
+  @keyframes resultPop {
+    0% { transform: scale(0.3); opacity: 0; }
+    100% { transform: scale(1); opacity: 1; }
+  }
+
+  .pros-cons-row {
+    display: flex;
+    gap: 12px;
+    font-size: 12px;
+    width: 100%;
+  }
+  .pro-tag { background: #ecfdf5; color: #065f46; padding: 2px 8px; border-radius: 4px; }
+  .con-tag { background: #fef2f2; color: #991b1b; padding: 2px 8px; border-radius: 4px; }
+
+  /* Ticks */
+  .tick {
+    position: absolute;
+    top: 2px;
+    left: 50%;
+    width: 2px;
+    height: 8px;
+    background: currentColor;
+    transform-origin: 0 148px;
+    opacity: 0.3;
+  }
+
+  .inset-ring {
+    position: absolute;
+    inset: 6px;
+    border-radius: 50%;
+    pointer-events: none;
+  }
+</style>
+</head>
+<body>
+
+<h2>🎯 中午转盘 — 方案 A vs B — 真实旋转演示</h2>
+<p class="subtitle">点击下方按钮试试旋转效果。注意观察：颜色、文字可读性、指针、停止后的感觉</p>
+
+<div class="compare-grid">
+
+  <!-- ============ 方案 A：克莱因蓝渐变 ============ -->
+  <div class="wheel-card" id="card-a">
+    <h3>方案 A — 克莱因蓝渐变扇区 <span class="tag tag-a">设计系统统一</span></h3>
+
+    <div class="wheel-container" id="container-a">
+      <!-- Pointer -->
+      <div class="pointer">
+        <svg width="28" height="22" viewBox="0 0 28 22">
+          <polygon points="14,22 0,0 28,0" fill="#002FA7"/>
+        </svg>
+      </div>
+      <!-- Wheel -->
+      <div class="wheel-disc" id="wheel-a" style="background: conic-gradient(from 0deg, #F4F6FD 0deg 51deg, #E8EDFE 51deg 102deg, #F0F4FF 102deg 153deg, #DCE3FC 153deg 204deg, #F4F6FD 204deg 255deg, #E8EDFE 255deg 306deg, #F0F4FF 306deg 360deg); box-shadow: 0 0 0 5px white, 0 0 0 7px rgba(0,47,167,0.10), 0 4px 24px rgba(0,47,167,0.10);">
+        <div class="seg-label" style="transform: translateX(-50%) rotate(26deg); transform-origin: 50% 136px; color: #002FA7;">沙县小吃</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(77deg); transform-origin: 50% 136px; color: #002FA7;">黄焖鸡</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(128deg); transform-origin: 50% 136px; color: #002FA7;">兰州拉面</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(179deg); transform-origin: 50% 136px; color: #002FA7;">麦当劳</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(230deg); transform-origin: 50% 136px; color: #002FA7;">麻辣烫</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(281deg); transform-origin: 50% 136px; color: #002FA7;">螺蛳粉</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(332deg); transform-origin: 50% 136px; color: #002FA7;">煲仔饭</div>
+        <!-- Inset ring -->
+        <div style="position:absolute;inset:6px;border-radius:50%;border:1.5px dashed rgba(0,47,167,0.10);pointer-events:none;"></div>
+        <!-- Center hub -->
+        <div class="center-hub" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);">☀️</div>
+      </div>
+    </div>
+
+    <button class="spin-btn spin-btn-a" id="btn-a" onclick="spinWheel('a')">🎯 转一次</button>
+    <div id="result-a"></div>
+    <div class="pros-cons-row">
+      <span class="pro-tag">✓ 设计系统统一</span>
+      <span class="pro-tag">✓ 文字清晰可读</span>
+      <span class="con-tag">✗ 兴奋感偏弱</span>
+      <span class="con-tag">✗ 扇区辨识度低</span>
+    </div>
+  </div>
+
+  <!-- ============ 方案 B：高对比多彩扇区 ============ -->
+  <div class="wheel-card" id="card-b">
+    <h3>方案 B — 高对比多彩扇区 <span class="tag tag-b">视觉冲击</span></h3>
+
+    <div class="wheel-container" id="container-b">
+      <!-- Pointer -->
+      <div class="pointer">
+        <svg width="28" height="22" viewBox="0 0 28 22">
+          <polygon points="14,22 0,0 28,0" fill="#002FA7"/>
+        </svg>
+      </div>
+      <!-- Wheel -->
+      <div class="wheel-disc" id="wheel-b" style="background: conic-gradient(from 0deg, #FF6B6B 0deg 51deg, #4ECDC4 51deg 102deg, #FFD93D 102deg 153deg, #6C5CE7 153deg 204deg, #FF8A5C 204deg 255deg, #45B7D1 255deg 306deg, #F8B500 306deg 360deg); box-shadow: 0 0 0 5px #1a1a2e, 0 0 0 8px #FFD700, 0 4px 24px rgba(0,0,0,0.15);">
+        <div class="seg-label" style="transform: translateX(-50%) rotate(26deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">沙县小吃</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(77deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">黄焖鸡</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(128deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">兰州拉面</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(179deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">麦当劳</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(230deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">麻辣烫</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(281deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">螺蛳粉</div>
+        <div class="seg-label" style="transform: translateX(-50%) rotate(332deg); transform-origin: 50% 136px; color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.4);">煲仔饭</div>
+        <!-- Gold rim -->
+        <div style="position:absolute;inset:4px;border-radius:50%;border:3px solid rgba(255,215,0,0.4);pointer-events:none;"></div>
+        <!-- Tick marks -->
+        <div style="position:absolute;inset:-3px;border-radius:50%;border:2px dashed rgba(255,255,255,0.4);pointer-events:none;"></div>
+        <!-- Center hub -->
+        <div class="center-hub" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a2e;color:white;">🍜</div>
+        <!-- Bulb dots around edge -->
+        <div style="position:absolute;inset:-8px;pointer-events:none;">
+          <div style="position:absolute;top:0;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:#FFD700;box-shadow:0 0 6px #FFD700;"></div>
+          <div style="position:absolute;top:50%;right:0;margin-top:-3px;width:6px;height:6px;border-radius:50%;background:#FFD700;box-shadow:0 0 6px #FFD700;"></div>
+          <div style="position:absolute;bottom:0;left:50%;margin-left:-3px;width:6px;height:6px;border-radius:50%;background:#FFD700;box-shadow:0 0 6px #FFD700;"></div>
+          <div style="position:absolute;top:50%;left:0;margin-top:-3px;width:6px;height:6px;border-radius:50%;background:#FFD700;box-shadow:0 0 6px #FFD700;"></div>
+        </div>
+      </div>
+    </div>
+
+    <button class="spin-btn spin-btn-b" id="btn-b" onclick="spinWheel('b')">🎰 转一次</button>
+    <div id="result-b"></div>
+    <div class="pros-cons-row">
+      <span class="pro-tag">✓ 视觉冲击力强</span>
+      <span class="pro-tag">✓ 仪式感足</span>
+      <span class="con-tag">✗ 跟设计系统不搭</span>
+      <span class="con-tag">✗ 暗色模式下需重调</span>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const FOODS = ['沙县小吃','黄焖鸡','兰州拉面','麦当劳','麻辣烫','螺蛳粉','煲仔饭'];
+  const SEG = 360 / FOODS.length;
+
+  // Colors for each scheme
+  const colorsA = ['#F4F6FD', '#E8EDFE', '#F0F4FF', '#DCE3FC', '#F4F6FD', '#E8EDFE', '#F0F4FF'];
+  const colorsB = ['#FF6B6B', '#4ECDC4', '#FFD93D', '#6C5CE7', '#FF8A5C', '#45B7D1', '#F8B500'];
+
+  let ra = 0, rb = 0;
+  let spinningA = false, spinningB = false;
+
+  function buildConicGradient(colors) {
+    const parts = colors.map((c, i) => `${c} ${i*SEG}deg ${(i+1)*SEG}deg`);
+    return `conic-gradient(from 0deg, ${parts.join(', ')})`;
+  }
+
+  function rebuildLabels(wheel, colors) {
+    // Remove old labels
+    wheel.querySelectorAll('.seg-label').forEach(el => el.remove());
+    const isLight = colors[0] === colorsA[0];
+    FOODS.forEach((name, i) => {
+      const midAngle = i * SEG + SEG / 2;
+      const label = document.createElement('div');
+      label.className = 'seg-label';
+      label.style.transform = `translateX(-50%) rotate(${midAngle}deg)`;
+      label.style.transformOrigin = '50% 136px';
+      label.textContent = name;
+      if (isLight) {
+        label.style.color = '#002FA7';
+      } else {
+        label.style.color = 'white';
+        label.style.textShadow = '0 1px 3px rgba(0,0,0,0.4)';
+      }
+      wheel.appendChild(label);
+    });
+  }
+
+  function buildTicks(wheel, numTicks) {
+    // remove old ticks
+    wheel.querySelectorAll('.seg-tick').forEach(el => el.remove());
+    for (let i = 0; i < numTicks; i++) {
+      const angle = i * SEG;
+      const tick = document.createElement('div');
+      tick.className = 'seg-tick';
+      tick.style.cssText = `position:absolute;top:8px;left:50%;width:1.5px;height:10px;background:rgba(0,47,167,0.2);transform-origin:0 142px;transform:rotate(${angle}deg);pointer-events:none;`;
+      wheel.appendChild(tick);
+    }
+  }
+
+  function spinWheel(scheme) {
+    const wheel = document.getElementById('wheel-' + scheme);
+    const btn = document.getElementById('btn-' + scheme);
+    const resDiv = document.getElementById('result-' + scheme);
+    const isLight = scheme === 'a';
+
+    if (isLight ? spinningA : spinningB) return;
+    if (isLight) spinningA = true; else spinningB = true;
+
+    resDiv.innerHTML = '';
+    btn.disabled = true;
+    btn.textContent = '转盘中...';
+
+    const targetIdx = Math.floor(Math.random() * FOODS.length);
+    const targetAngle = 360 - (targetIdx * SEG + SEG / 2); // pointer at top
+    const spins = 4 + Math.floor(Math.random() * 3); // 4-6 full spins
+    const currentR = isLight ? ra : rb;
+    const total = currentR + spins * 360 + ((targetAngle - (currentR % 360)) + 360) % 360;
+
+    if (isLight) ra = total; else rb = total;
+
+    wheel.style.transition = 'transform 4s cubic-bezier(0.12, 0.84, 0.22, 1.02)';
+    wheel.style.transform = `rotate(${total}deg)`;
+
+    wheel.addEventListener('transitionend', function handler() {
+      wheel.removeEventListener('transitionend', handler);
+      if (isLight) spinningA = false; else spinningB = false;
+      btn.disabled = false;
+      btn.textContent = isLight ? '🎯 转一次' : '🎰 转一次';
+
+      // Animate result
+      const food = FOODS[targetIdx];
+      const cls = isLight ? 'result-badge result-badge-a' : 'result-badge result-badge-b';
+      resDiv.innerHTML = `<div class="${cls}">🎉 ${food}</div>`;
+    }, { once: true });
+  }
+</script>
+
+</body>
+</html>

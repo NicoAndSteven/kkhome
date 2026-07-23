@@ -88,6 +88,7 @@ export default function FoodPlugin(_props: Props) {
 
       <FoodWheel
         key={activePeriod}
+        mode={activePeriod}
         items={wheelItems}
         periodLabel={activePeriod === 'noon' ? '中午 · 公司附近' : '晚上 · 在家做'}
         periodIcon={activePeriod === 'noon' ? 'light_mode' : 'dark_mode'}

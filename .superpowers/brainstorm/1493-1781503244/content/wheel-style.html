@@ -1,0 +1,82 @@
+<h2>中午转盘 — 视觉风格方向</h2>
+<p class="subtitle">旧版转盘问题：颜色太暗、文字跟着转看不清、扁平无层次。以下是三种改进方向。</p>
+
+<div class="options" data-multiselect>
+  <div class="option" data-choice="tertiary-light" onclick="toggleSelect(this)">
+    <div class="letter">A</div>
+    <div class="content">
+      <h3>克莱因蓝渐变扇区 · 轻量优雅</h3>
+      <p>扇区颜色用克莱因蓝 + 浅蓝 + 白色交替，浅底深字，文字不随转盘旋转（固定在扇区上方用 pointer-events 穿透）。外圈加 tick marks，中心放 logo/emoji。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="dark-segments" onclick="toggleSelect(this)">
+    <div class="letter">B</div>
+    <div class="content">
+      <h3>高对比暗色扇区 · 视觉冲击</h3>
+      <p>每个扇区用不同的高饱和颜色，白字，扇区间加白色分隔线。模仿真实幸运转盘的华丽感。文字仍固定在扇区中段。</p>
+    </div>
+  </div>
+  <div class="option" data-choice="minimal-ring" onclick="toggleSelect(this)">
+    <div class="letter">C</div>
+    <div class="content">
+      <h3>极简刻度环 · 指针旋转</h3>
+      <p>转盘本身不旋转，而是一个发光指针在外圈旋转。选项文字排列在环内，选中项高亮放大。转盘静态 + 指针动态。</p>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>旧版 vs 目标对比</h3>
+  <div class="split">
+    <div class="mockup">
+      <div class="mockup-header">旧版（已废弃）</div>
+      <div class="mockup-body">
+        <div style="text-align:center;padding:20px;">
+          <div style="width:180px;height:180px;border-radius:50%;margin:0 auto;background:conic-gradient(#006c7a 0deg 60deg,#c2410c 60deg 120deg,#d97706 120deg 180deg,#0891b2 180deg 240deg,#7c3aed 240deg 300deg,#059669 300deg 360deg);position:relative;">
+            <div style="position:absolute;top:-12px;left:50%;margin-left:-10px;width:0;height:0;border-left:10px solid transparent;border-right:10px solid transparent;border-top:16px solid #002FA7;"></div>
+            <div style="position:absolute;top:15px;left:50%;margin-left:-20px;color:white;font-size:10px;font-weight:bold;width:40px;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.5);">沙县</div>
+            <div style="position:absolute;top:15px;left:50%;margin-left:-20px;color:white;font-size:10px;font-weight:bold;width:40px;text-align:center;text-shadow:0 1px 3px rgba(0,0,0,0.5);transform:rotate(60deg);transform-origin:50% 50%;">兰州</div>
+          </div>
+          <p style="margin-top:12px;color:#dc2626;font-size:13px;font-weight:600;">❌ 暗色糊在一起 · 文字旋转看不清 · 扁平无层次</p>
+        </div>
+      </div>
+    </div>
+    <div class="mockup">
+      <div class="mockup-header">目标方向 A — 克莱因蓝渐变</div>
+      <div class="mockup-body">
+        <div style="text-align:center;padding:20px;background:#f8f9fc;">
+          <div style="width:200px;height:200px;border-radius:50%;margin:0 auto;background:conic-gradient(#E8EDFE 0deg 60deg,#F0F4FF 60deg 120deg,#DCE3FC 120deg 180deg,#E8EDFE 180deg 240deg,#F0F4FF 240deg 300deg,#DCE3FC 300deg 360deg);box-shadow:0 0 0 6px white,0 0 0 8px rgba(0,47,167,0.15),0 8px 32px rgba(0,47,167,0.12);position:relative;">
+            <div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at center,white 35%,transparent 35.5%);"></div>
+            <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:white;border-radius:50%;width:48px;height:48px;box-shadow:0 2px 8px rgba(0,0,0,0.08);display:flex;align-items:center;justify-content:center;font-size:22px;">🍜</div>
+            <div style="position:absolute;top:-14px;left:50%;margin-left:-8px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:14px solid #002FA7;filter:drop-shadow(0 2px 4px rgba(0,47,167,0.3));"></div>
+            <!-- tick marks -->
+            <div style="position:absolute;inset:6px;border-radius:50%;border:2px dashed rgba(0,47,167,0.12);"></div>
+          </div>
+          <p style="margin-top:12px;color:#002FA7;font-size:13px;font-weight:600;">✓ 设计系统色板 · 分层有深度 · 文字可读</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <h3>关键决策点</h3>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    <tr style="border-bottom:1px solid rgba(0,0,0,0.06);">
+      <td style="padding:10px 12px;font-weight:600;">扇区配色</td>
+      <td style="padding:10px 12px;">方案 A：克莱因蓝系渐变（白/浅蓝交替）| 方案 B：多彩高饱和 | 方案 C：无扇区，纯刻度环</td>
+    </tr>
+    <tr style="border-bottom:1px solid rgba(0,0,0,0.06);">
+      <td style="padding:10px 12px;font-weight:600;">文字策略</td>
+      <td style="padding:10px 12px;">文字固定在扇区外侧不随转盘旋转（用 absolute + 反旋转抵消），还是放弃标签只在外圈显示名字？</td>
+    </tr>
+    <tr style="border-bottom:1px solid rgba(0,0,0,0.06);">
+      <td style="padding:10px 12px;font-weight:600;">指针样式</td>
+      <td style="padding:10px 12px;">CSS 三角箭头 | SVG 拟物指针 | 发光光柱</td>
+    </tr>
+    <tr>
+      <td style="padding:10px 12px;font-weight:600;">开奖仪式感</td>
+      <td style="padding:10px 12px;">转盘停止后 → 中心弹出结果卡片 + 缩放动画 | 粒子/光晕扩散 | 底部抽屉滑入</td>
+    </tr>
+  </table>
+</div>

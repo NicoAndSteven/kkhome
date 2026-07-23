@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FoodItem, EveningData } from './types'
-import { saveNoonItems, saveEveningData, genId } from './utils'
+import { addNoonItem, renameNoonItem, deleteNoonItem, saveEveningData, genId } from './utils'
 import { getRecipeGroups, getFlatRecipes } from './recipes'
 import Icon from '../../components/Icon'
 
@@ -23,6 +23,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
   const [editName, setEditName] = useState('')
   const [collapsedCats, setCollapsedCats] = useState<Record<string, boolean>>({})
   const [searchQuery, setSearchQuery] = useState('')
+  const [noonBusy, setNoonBusy] = useState(false)
 
   // Sync props to local state when drawer opens
   useEffect(() => {
@@ -32,6 +33,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
       setSearchQuery('')
       setEditId(null)
       setNewItemName('')
+      setNoonBusy(false)
     }
   }, [open, noonItems, eveningData])
 
@@ -39,23 +41,55 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
   const flatRecipes = getFlatRecipes()
 
   const handleSave = () => {
-    saveNoonItems(localNoon)
     saveEveningData(localEvening)
     onSave(localNoon, localEvening)
     onClose()
   }
 
-  const addItem = () => {
+  // ── Noon operations — call shared API immediately ──
+
+  const handleAddNoon = async () => {
+    const name = newItemName.trim()
+    if (!name || noonBusy) return
+    setNoonBusy(true)
+    const item = await addNoonItem(name)
+    if (item) {
+      setLocalNoon(prev => [...prev, item])
+      setNewItemName('')
+    }
+    setNoonBusy(false)
+  }
+
+  const handleDeleteNoon = async (id: string) => {
+    if (noonBusy) return
+    setNoonBusy(true)
+    const ok = await deleteNoonItem(id)
+    if (ok) {
+      setLocalNoon(prev => prev.filter(i => i.id !== id))
+    }
+    setNoonBusy(false)
+  }
+
+  const confirmEdit = async () => {
+    if (!editId || !editName.trim() || noonBusy) return
+    setNoonBusy(true)
+    const ok = await renameNoonItem(editId, editName.trim())
+    if (ok) {
+      setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i))
+    }
+    setEditId(null)
+    setNoonBusy(false)
+  }
+
+  // ── Evening operations — localStorage, deferred save ──
+
+  const addEveningItem = () => {
     const name = newItemName.trim()
     if (!name) return
-    if (tab === 'noon') {
-      setLocalNoon(prev => [...prev, { id: genId(), name, source: 'user' }])
-    } else {
-      setLocalEvening(prev => ({
-        ...prev,
-        custom: [...prev.custom, { id: genId(), name, source: 'user' as const }],
-      }))
-    }
+    setLocalEvening(prev => ({
+      ...prev,
+      custom: [...prev.custom, { id: genId(), name, source: 'user' as const }],
+    }))
     setNewItemName('')
   }
 
@@ -66,12 +100,6 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
         ? prev.disabledIds.filter(id => id !== builtinId)
         : [...prev.disabledIds, builtinId],
     }))
-  }
-
-  const confirmEdit = () => {
-    if (!editId || !editName.trim()) return
-    setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i))
-    setEditId(null)
   }
 
   const toggleCategory = (cat: string) => {
@@ -116,11 +144,11 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
           <input
             type="text" value={newItemName}
             onChange={e => setNewItemName(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && addItem()}
-            placeholder={tab === 'noon' ? '添加餐厅或菜品...' : '添加自定义菜名...'}
+            onKeyDown={e => e.key === 'Enter' && (tab === 'noon' ? handleAddNoon() : addEveningItem())}
+            placeholder={tab === 'noon' ? '添加餐厅或菜品...（共享列表）' : '添加自定义菜名...'}
             className="flex-1 surface-control rounded-[2px] px-sm py-2 font-body-md text-sm text-on-surface outline-none focus:border-primary transition-premium"
           />
-          <button type="button" onClick={addItem}
+          <button type="button" onClick={tab === 'noon' ? handleAddNoon : addEveningItem}
             className="inline-flex items-center gap-xs rounded-[2px] bg-primary px-sm py-2 font-body-md text-sm font-semibold text-on-primary hover:opacity-90 transition-premium shrink-0">
             <Icon name="add" className="text-base" />添加
           </button>
@@ -164,7 +192,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
                           className="text-text-muted hover:text-on-surface transition-premium shrink-0">
                           <Icon name="rate_review" className="text-lg" />
                         </button>
-                        <button type="button" onClick={() => setLocalNoon(prev => prev.filter(i => i.id !== item.id))}
+                        <button type="button" onClick={() => handleDeleteNoon(item.id)}
                           className="text-text-muted hover:text-error transition-premium shrink-0">
                           <Icon name="delete" className="text-lg" />
                         </button>

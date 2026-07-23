@@ -1,10 +1,73 @@
 import { FoodItem, Period, EveningData } from './types'
 
 const STORAGE_KEYS = {
-  NOON: 'hub:food-noon',
   EVENING: 'hub:food-evening',
   TODAY: 'hub:food-today',
+  NOON_FALLBACK: 'hub:food-noon',
 } as const
+
+// ── Noon items — shared API (D1-backed), localStorage fallback ──
+
+export async function loadNoonItems(): Promise<FoodItem[]> {
+  try {
+    const res = await fetch('/api/food/noon')
+    if (!res.ok) throw new Error('API unavailable')
+    const payload = await res.json() as { ok: boolean; data?: { items?: Array<{ id: string; name: string; createdAt: string }> } }
+    const items = payload?.data?.items
+    if (Array.isArray(items) && items.length > 0) {
+      // Map API shape → FoodItem (source is always 'user' for shared noon items)
+      const mapped: FoodItem[] = items.map((i) => ({ id: i.id, name: i.name, source: 'user' as const }))
+      // Update fallback cache so offline reads still have data
+      localStorage.setItem(STORAGE_KEYS.NOON_FALLBACK, JSON.stringify(mapped))
+      return mapped
+    }
+  } catch { /* fall through to fallback */ }
+
+  // Fallback: read from localStorage (offline / API not deployed yet)
+  try {
+    const raw = localStorage.getItem(STORAGE_KEYS.NOON_FALLBACK)
+    return raw ? (JSON.parse(raw) as FoodItem[]) : []
+  } catch { return [] }
+}
+
+export async function addNoonItem(name: string): Promise<FoodItem | null> {
+  try {
+    const res = await fetch('/api/food/noon', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    })
+    if (!res.ok) return null
+    const payload = await res.json() as { ok: boolean; data?: { item?: { id: string; name: string; createdAt: string } } }
+    const item = payload?.data?.item
+    if (item) return { id: item.id, name: item.name, source: 'user' as const }
+    return null
+  } catch { return null }
+}
+
+export async function renameNoonItem(id: string, name: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/food/noon', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, name }),
+    })
+    return res.ok
+  } catch { return false }
+}
+
+export async function deleteNoonItem(id: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/food/noon', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+    return res.ok
+  } catch { return false }
+}
+
+// ── Time helpers (Beijing time) ──
 
 /** Get current hour in Beijing time (Asia/Shanghai) — 0-23 */
 export function getBeijingHour(): number {
@@ -31,17 +94,6 @@ export function getBeijingDate(): string {
 /** 13:00 = evening boundary */
 export function getCurrentPeriod(): Period {
   return getBeijingHour() < 13 ? 'noon' : 'evening'
-}
-
-export function loadNoonItems(): FoodItem[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEYS.NOON)
-    return raw ? (JSON.parse(raw) as FoodItem[]) : []
-  } catch { return [] }
-}
-
-export function saveNoonItems(items: FoodItem[]): void {
-  localStorage.setItem(STORAGE_KEYS.NOON, JSON.stringify(items))
 }
 
 export function loadEveningData(): EveningData {

@@ -96,15 +96,83 @@ export function getCurrentPeriod(): Period {
   return getBeijingHour() < 13 ? 'noon' : 'evening'
 }
 
-export function loadEveningData(): EveningData {
+// ── Evening items — shared API (D1-backed), localStorage fallback ──
+
+interface EveningApiResponse {
+  custom: Array<{ id: string; name: string; createdAt: string }>
+  disabledIds: string[]
+}
+
+export async function loadEveningData(): Promise<EveningData> {
+  try {
+    const res = await fetch('/api/food/evening')
+    if (!res.ok) throw new Error('API unavailable')
+    const payload = await res.json() as { ok: boolean; data?: EveningApiResponse }
+    const data = payload?.data
+    if (data) {
+      const result: EveningData = {
+        custom: data.custom.map((i) => ({ id: i.id, name: i.name, source: 'user' as const })),
+        disabledIds: data.disabledIds,
+      }
+      // Update fallback cache
+      localStorage.setItem(STORAGE_KEYS.EVENING, JSON.stringify(result))
+      return result
+    }
+  } catch { /* fall through to fallback */ }
+
+  // Fallback: read from localStorage
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.EVENING)
     return raw ? (JSON.parse(raw) as EveningData) : { custom: [], disabledIds: [] }
   } catch { return { custom: [], disabledIds: [] } }
 }
 
-export function saveEveningData(data: EveningData): void {
-  localStorage.setItem(STORAGE_KEYS.EVENING, JSON.stringify(data))
+export async function addEveningItem(name: string): Promise<FoodItem | null> {
+  try {
+    const res = await fetch('/api/food/evening', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name }),
+    })
+    if (!res.ok) return null
+    const payload = await res.json() as { ok: boolean; data?: { item?: { id: string; name: string; createdAt: string } } }
+    const item = payload?.data?.item
+    if (item) return { id: item.id, name: item.name, source: 'user' as const }
+    return null
+  } catch { return null }
+}
+
+export async function renameEveningItem(id: string, name: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/food/evening', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id, name }),
+    })
+    return res.ok
+  } catch { return false }
+}
+
+export async function deleteEveningItem(id: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/food/evening', {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id }),
+    })
+    return res.ok
+  } catch { return false }
+}
+
+export async function toggleEveningRecipe(recipeId: string): Promise<boolean> {
+  try {
+    const res = await fetch('/api/food/evening', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ recipeId }),
+    })
+    return res.ok
+  } catch { return false }
 }
 
 export function loadTodayResult(): { item: FoodItem; period: Period } | null {

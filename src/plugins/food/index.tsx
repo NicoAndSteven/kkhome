@@ -13,15 +13,18 @@ export default function FoodPlugin(_props: Props) {
   const [period, setPeriod] = useState<Period>(getCurrentPeriod())
   const [previewPeriod, setPreviewPeriod] = useState<Period | null>(null)
   const [noonItems, setNoonItems] = useState<FoodItem[]>([])
-  const [eveningData, setEveningData] = useState<EveningData>(() => loadEveningData())
+  const [eveningData, setEveningData] = useState<EveningData>({ custom: [], disabledIds: [] })
   const [todayResult, setTodayResult] = useState<{ item: FoodItem; period: Period } | null>(() => loadTodayResult())
   const [managerOpen, setManagerOpen] = useState(false)
 
-  // Load shared noon items from API on mount (with localStorage fallback)
+  // Load shared noon & evening items from API on mount (with localStorage fallback)
   useEffect(() => {
     let cancelled = false
-    loadNoonItems().then((items) => {
-      if (!cancelled) setNoonItems(items)
+    Promise.all([loadNoonItems(), loadEveningData()]).then(([noon, evening]) => {
+      if (!cancelled) {
+        setNoonItems(noon)
+        setEveningData(evening)
+      }
     })
     return () => { cancelled = true }
   }, [])

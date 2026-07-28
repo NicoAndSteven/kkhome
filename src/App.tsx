@@ -1,4 +1,4 @@
-import { useCallback, useState, useEffect, Suspense } from 'react'
+import { useCallback, useState, useEffect, useRef, Suspense } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
 import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
@@ -6,6 +6,7 @@ import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
+import { synthesizeTrack } from '@plugins/ambient-music/tracks'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
 import VantaBirds from '@components/VantaBirds'
 import VantaRings from '@components/VantaRings'
@@ -29,11 +30,6 @@ const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; plugin
 
 /** 博客内部路由（不含 welcome） */
 const blogRouteItems = allRouteItems.filter(r => r.id !== 'home')
-
-/** 首个有效路由 */
-function firstRoute(routes: typeof blogRouteItems, enabled: Set<string>): string {
-  return routes.find(r => enabled.has(r.pluginId))?.href ?? '#/ai-tools'
-}
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -126,27 +122,23 @@ function App() {
     description?.setAttribute('content', siteConfig.description)
   }, [siteConfig])
 
-  // 路由变化监听：如果在博客内部访问 #/home，跳转到第一个有效路由
+  // 路由变化监听
   useEffect(() => {
     const handleHashChange = () => {
       const route = normalizeHubRoute(window.location.hash)
-      const enabledPluginIds = new Set(pluginSystem.getEnabledPlugins().map((p) => p.id))
-
-      // 在博客内部（非 welcome），如果访问 home 则重定向到第一个有效路由
-      if (route === 'home' && activeRoute !== 'home') {
-        const target = firstRoute(blogRouteItems, enabledPluginIds)
-        window.location.hash = target
-        return
-      }
-
       setActiveRoute(route)
       window.scrollTo({ top: 0, left: 0, behavior: 'auto' })
+    }
+
+    // 初始化时如果不在 home 且 hash 为空，跳转到第一个有效路由
+    if (!window.location.hash || window.location.hash === '#/' || window.location.hash === '#/home' || window.location.hash === '') {
+      // 首次加载，保持在 home
     }
 
     handleHashChange()
     window.addEventListener('hashchange', handleHashChange)
     return () => window.removeEventListener('hashchange', handleHashChange)
-  }, [activeRoute])
+  }, [])
 
   useEffect(() => {
     if (loading) return
@@ -162,14 +154,58 @@ function App() {
     return () => window.removeEventListener('homepage:open-contact', openContact)
   }, [])
 
-  // 氛围音乐由用户手动在 Ambient Music 页面触发，不自动播放
-
   // 订阅音频引擎状态
   useEffect(() => {
     const engine = getAudioEngine()
     const unsub = engine.subscribe(setAmbientTracks)
     return unsub
   }, [])
+
+  // 首页自动播放氛围音乐（intro 完成后或首次用户交互时触发）
+  const autoPlayRef = useRef(false)
+  useEffect(() => {
+    if (loading) return
+    const engine = getAudioEngine()
+
+    const tryAutoPlay = async () => {
+      if (autoPlayRef.current) return
+      autoPlayRef.current = true
+
+      await new Promise(r => setTimeout(r, 800))
+
+      try {
+        const ctx = new AudioContext()
+        const buffer = await synthesizeTrack(ctx, 'rain', 4)
+        engine.registerTrack('rain', buffer, 0.25) // 低音量 25%
+        await engine.play('rain', 2000) // 2 秒淡入
+        ctx.close()
+      } catch {
+        // 浏览器阻止自动播放，等用户首次交互
+      }
+    }
+
+    // intro 完成后尝试；否则监听 intro-complete
+    if (introComplete) {
+      tryAutoPlay()
+    } else {
+      const onIntroDone = () => tryAutoPlay()
+      window.addEventListener('intro-complete', onIntroDone, { once: true })
+      return () => window.removeEventListener('intro-complete', onIntroDone)
+    }
+
+    // 兜底：首次用户交互（touch/click）触发
+    const onFirstInteraction = () => {
+      tryAutoPlay()
+      document.removeEventListener('click', onFirstInteraction)
+      document.removeEventListener('touchstart', onFirstInteraction)
+    }
+    document.addEventListener('click', onFirstInteraction, { once: true })
+    document.addEventListener('touchstart', onFirstInteraction, { once: true })
+    return () => {
+      document.removeEventListener('click', onFirstInteraction)
+      document.removeEventListener('touchstart', onFirstInteraction)
+    }
+  }, [loading, introComplete])
 
   const handleIntroComplete = useCallback(() => {
     setIntroComplete(true)

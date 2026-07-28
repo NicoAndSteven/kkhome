@@ -12,9 +12,10 @@ interface Props {
   activeRoute: string
 }
 
-const PRIMARY_ORDER = ['ai-tools', 'wish-wall', 'stock-watch', 'food', 'party-games'] as const
+const PRIMARY_ORDER = ['home', 'ai-tools', 'wish-wall', 'food', 'party-games'] as const
 
 const routeIcons: Record<string, string> = {
+  home: 'home',
   'ai-tools': 'travel_explore',
   'wish-wall': 'rate_review',
   'stock-watch': 'bar_chart',

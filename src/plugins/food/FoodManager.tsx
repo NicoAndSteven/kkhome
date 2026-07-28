@@ -25,6 +25,14 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
   const [searchQuery, setSearchQuery] = useState('')
   const [noonBusy, setNoonBusy] = useState(false)
   const [eveningBusy, setEveningBusy] = useState(false)
+  const [toast, setToast] = useState('')
+
+  // Auto-dismiss toast
+  useEffect(() => {
+    if (!toast) return
+    const t = setTimeout(() => setToast(''), 2000)
+    return () => clearTimeout(t)
+  }, [toast])
 
   // Sync props to local state when drawer opens
   useEffect(() => {
@@ -36,6 +44,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
       setNewItemName('')
       setNoonBusy(false)
       setEveningBusy(false)
+      setToast('')
     }
   }, [open, noonItems, eveningData])
 
@@ -59,16 +68,23 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     if (item) {
       setLocalNoon(prev => [...prev, item])
       setNewItemName('')
+      setToast(`已添加「${name}」`)
+      try { navigator.vibrate?.(15) } catch { /* */ }
+    } else {
+      setToast('添加失败，请稍后重试')
     }
     setNoonBusy(false)
   }
 
   const handleDeleteNoon = async (id: string) => {
     if (noonBusy) return
+    const name = localNoon.find(i => i.id === id)?.name ?? ''
     setNoonBusy(true)
     const ok = await deleteNoonItem(id)
     if (ok) {
       setLocalNoon(prev => prev.filter(i => i.id !== id))
+      setToast(`已删除「${name}」`)
+      try { navigator.vibrate?.(10) } catch { /* */ }
     }
     setNoonBusy(false)
   }
@@ -79,6 +95,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     const ok = await renameNoonItem(editId, editName.trim())
     if (ok) {
       setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i))
+      setToast(`已重命名`)
     }
     setEditId(null)
     setNoonBusy(false)
@@ -94,16 +111,23 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     if (item) {
       setLocalEvening(prev => ({ ...prev, custom: [...prev.custom, item] }))
       setNewItemName('')
+      setToast(`已添加「${name}」`)
+      try { navigator.vibrate?.(15) } catch { /* */ }
+    } else {
+      setToast('添加失败，请稍后重试')
     }
     setEveningBusy(false)
   }
 
   const handleDeleteEvening = async (id: string) => {
     if (eveningBusy) return
+    const name = localEvening.custom.find(i => i.id === id)?.name ?? ''
     setEveningBusy(true)
     const ok = await deleteEveningItem(id)
     if (ok) {
       setLocalEvening(prev => ({ ...prev, custom: prev.custom.filter(i => i.id !== id) }))
+      setToast(`已删除「${name}」`)
+      try { navigator.vibrate?.(10) } catch { /* */ }
     }
     setEveningBusy(false)
   }
@@ -113,12 +137,14 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     setEveningBusy(true)
     const ok = await toggleEveningRecipe(builtinId)
     if (ok) {
+      const wasDisabled = localEvening.disabledIds.includes(builtinId)
       setLocalEvening(prev => ({
         ...prev,
-        disabledIds: prev.disabledIds.includes(builtinId)
+        disabledIds: wasDisabled
           ? prev.disabledIds.filter(id => id !== builtinId)
           : [...prev.disabledIds, builtinId],
       }))
+      setToast(wasDisabled ? '已启用该菜谱' : '已禁用该菜谱')
     }
     setEveningBusy(false)
   }
@@ -139,10 +165,28 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
             <span className="font-label-mono text-xs text-primary">FOOD MANAGER</span>
             <h2 className="font-headline-md text-headline-md text-on-surface mt-xs">管理菜单</h2>
           </div>
-          <button type="button" onClick={onClose} className="text-text-muted hover:text-on-surface transition-premium" aria-label="关闭">
-            <Icon name="close" className="text-2xl" />
-          </button>
+          <div className="flex items-center gap-2 shrink-0">
+            <button
+              type="button"
+              onClick={() => { onSave(localNoon, localEvening); onClose() }}
+              className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white transition-premium hover:opacity-90 active:scale-[0.97]"
+              aria-label="返回转盘"
+            >
+              <Icon name="casino" className="text-sm" />
+              返回转盘
+            </button>
+            <button type="button" onClick={onClose} className="text-text-muted hover:text-on-surface transition-premium p-1" aria-label="关闭">
+              <Icon name="close" className="text-2xl" />
+            </button>
+          </div>
         </div>
+
+        {/* Toast feedback */}
+        {toast && (
+          <div className="mb-md -mt-sm animate-result-pop rounded-full bg-primary/10 border border-primary/20 px-4 py-2 text-center">
+            <span className="font-body-md text-xs text-primary">{toast}</span>
+          </div>
+        )}
 
         {/* Tabs */}
         <div className="flex gap-0 mb-md shrink-0 border-b border-border-subtle">
@@ -290,12 +334,15 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
           )}
         </div>
 
-        {/* Save button */}
-        <div className="border-t border-border-subtle pt-md mt-md shrink-0">
+        {/* Save button — sticky on mobile */}
+        <div className="border-t border-border-subtle pt-md mt-md shrink-0 sticky bottom-0 bg-surface/95 backdrop-blur-sm pb-2">
           <button type="button" onClick={handleSave}
-            className="w-full inline-flex items-center justify-center gap-xs rounded-[2px] bg-primary px-md py-sm font-body-md font-semibold text-on-primary hover:opacity-90 transition-premium">
-            <Icon name="check" className="text-lg" />完成
+            className="w-full inline-flex items-center justify-center gap-xs rounded-full bg-primary px-md py-3 font-body-md font-semibold text-on-primary hover:opacity-90 transition-premium active:scale-[0.98] shadow-[0_4px_16px_rgba(0,47,167,0.25)]">
+            <Icon name="check" className="text-lg" />完成并返回转盘
           </button>
+          <p className="text-center font-label-mono text-[10px] text-text-muted mt-2">
+            所有修改即时生效，点击返回即可
+          </p>
         </div>
       </section>
     </div>

@@ -8,7 +8,6 @@ interface RouteItem {
 
 interface Props {
   routes: RouteItem[]
-  activeRoute: string
   activeIndex: number  // activeRoute 在 routes 中的下标（0-based）
   onContactClick?: () => void
 }
@@ -16,7 +15,7 @@ interface Props {
 const pad = (n: number) => String(n).padStart(2, '0')
 
 /** Action-Cut 超薄序号轨：片场监视器刻度，hover/当前路由浮出标签刀片 */
-const BlogSidebar = ({ routes, activeRoute, activeIndex, onContactClick }: Props) => {
+const BlogSidebar = ({ routes, activeIndex, onContactClick }: Props) => {
   return (
     <aside className="ac-rail" aria-label="主导航">
       <div className="ac-rail-brand">KK<span className="ac-rail-brand-rec">REC</span></div>

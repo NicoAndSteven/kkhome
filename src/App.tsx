@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef, Suspense } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
+import { Layout, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, ShotHeader, AdminLogin, AdminPanel } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute, ROUTE_ITEMS } from '@core/routeBridge'
@@ -334,6 +334,7 @@ function App() {
   const prevIdx = prevRouteId ? ROUTE_ITEMS.findIndex((r) => r.id === prevRouteId) : -1
   const cutDir = prevIdx === -1 || routeIdx === -1 || routeIdx >= prevIdx ? 'ac-fwd' : 'ac-back'
   prevRouteId = activeRouteItem.id
+  const activeIdx = Math.max(0, availableRouteItems.findIndex((r) => r.id === activeRouteItem.id))
 
   if (isMobile) {
     // === 移动端：全宽可滚动内容 + 底部 TabBar（切镜入场） ===
@@ -346,6 +347,7 @@ function App() {
           style={{ height: `calc(100dvh - ${tabBarHeight}px)` }}
         >
           <div className="ac-flash ac-go" aria-hidden="true" />
+          <ShotHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} />
           <ErrorBoundary key={activeRouteItem.id}>
             {activePlugin ? (
               <Suspense fallback={<div className="py-8 text-center text-text-muted font-body-md">加载中...</div>}>
@@ -374,14 +376,13 @@ function App() {
       <div className="route-shell">
         <BlogSidebar
           routes={availableRouteItems}
-          activeRoute={activeRoute}
-          footerSlot={sidebarNowPlaying}
-          config={siteConfig ?? undefined}
+          activeIndex={activeIdx}
           onContactClick={() => setContactOpen(true)}
         />
         <main className="route-main">
           <div key={activeRouteItem.id} className={`route-view ${cutDir}`} aria-label={activeRouteItem.label}>
             <div className="ac-flash ac-go" aria-hidden="true" />
+            <ShotHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} />
             <ErrorBoundary key={activeRouteItem.id}>
               {activePlugin ? (
                 <Suspense fallback={<div className="ac-loading">LOADING SEQUENCE…</div>}>
@@ -396,6 +397,7 @@ function App() {
               )}
             </ErrorBoundary>
           </div>
+          <div className="ac-dock-player">{sidebarNowPlaying}</div>
         </main>
       </div>
       {commonDrawer}

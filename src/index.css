@@ -2153,3 +2153,51 @@ html.ac-snap { scroll-snap-type: y proximity; }
 @media (prefers-reduced-motion: reduce) {
   .route-view.ac-fwd, .route-view.ac-back { animation: none; }
 }
+
+/* ── Action-Cut 超薄序号轨 ── */
+.ac-rail {
+  width: 52px; flex-shrink: 0;
+  display: flex; flex-direction: column; align-items: center; gap: 14px;
+  padding: 18px 0 16px;
+  background: #070b14; border-right: 1px solid rgba(143, 176, 255, 0.12);
+}
+.ac-rail-brand {
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.12em; color: #f2f4fb;
+}
+.ac-rail-brand-rec { color: #8fb0ff; }
+.ac-rail-nav {
+  flex: 1; min-height: 0; overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+}
+.ac-rail-nav::-webkit-scrollbar { width: 0; height: 0; }
+.ac-rail-num {
+  position: relative; width: 30px; height: 30px; display: grid; place-items: center;
+  font-family: "JetBrains Mono", monospace; font-size: 11px; font-weight: 700;
+  color: #5d6478; border: 1px solid transparent; border-radius: 4px; text-decoration: none;
+  transition: color 180ms, border-color 180ms, background 180ms, box-shadow 180ms;
+}
+.ac-rail-num:hover { color: #8fb0ff; }
+.ac-rail-num.ac-active {
+  color: #8fb0ff; border-color: rgba(143, 176, 255, 0.4);
+  background: rgba(61, 109, 255, 0.13); box-shadow: 0 0 12px rgba(61, 109, 255, 0.25);
+}
+.ac-rail-blade {
+  position: fixed; left: 58px; top: 18px; z-index: 45; pointer-events: none;
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 9px; font-weight: 500;
+  letter-spacing: 0.24em; color: #8fb0ff;
+  border: 1px solid rgba(143, 176, 255, 0.35); background: rgba(7, 11, 22, 0.88);
+  padding: 6px 12px; white-space: nowrap;
+  opacity: 0; transform: translateX(-4px);
+  transition: opacity 120ms, transform 120ms;
+}
+.ac-rail-num:hover .ac-rail-blade,
+.ac-rail-num.ac-active .ac-rail-blade { opacity: 1; transform: none; }
+.ac-rail-foot { margin-top: auto; display: flex; flex-direction: column; align-items: center; gap: 10px; }
+.ac-rail-tool {
+  width: 30px; height: 30px; display: grid; place-items: center;
+  color: #5d6478; background: transparent; border: 1px solid transparent; border-radius: 4px; cursor: pointer;
+  padding: 0; transition: color 180ms, border-color 180ms;
+}
+.ac-rail-tool:hover { color: #8fb0ff; border-color: rgba(143, 176, 255, 0.3); }
+@media (max-width: 900px) { .ac-rail-blade { display: none; } }

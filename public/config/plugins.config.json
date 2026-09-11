@@ -626,33 +626,6 @@
             "sourceCategory": "工具"
           },
           {
-            "id": "freeconvert-com-zh-gif-compressor",
-            "title": "Freeconvert",
-            "category": "convert",
-            "url": "https://www.freeconvert.com/zh/gif-compressor",
-            "description": "用于文件格式转换、批量转换或本地转换。",
-            "tags": [
-              "工具",
-              "gif动图录制",
-              "gif格式",
-              "gif压缩"
-            ],
-            "aliases": [
-              "gif动图录制#gif格式#gif压缩",
-              "Freeconvert",
-              "freeconvert",
-              "工具",
-              "gif动图录制",
-              "gif格式",
-              "gif压缩"
-            ],
-            "icon": "swap_horiz",
-            "featured": true,
-            "sourceTitle": "gif动图录制#gif格式#gif压缩",
-            "sourceUrl": "https://www.30aitool.com/2485.html",
-            "sourceCategory": "工具"
-          },
-          {
             "id": "tingwu-aliyun-com-home",
             "title": "Tingwu",
             "category": "video-audio",
@@ -713,39 +686,8 @@
             "sourceCategory": "工具"
           },
           {
-            "id": "aixdownloader-com-zh-install-guide",
-            "title": "Aixdownloader",
-            "category": "image",
-            "url": "https://aixdownloader.com/zh/install-guide",
-            "description": "用于图片编辑、生成、排版或视觉处理。",
-            "tags": [
-              "工具",
-              "网站视频下载",
-              "音频下载",
-              "图片下载",
-              "音乐下载",
-              "视频号下载"
-            ],
-            "aliases": [
-              "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
-              "Aixdownloader",
-              "aixdownloader",
-              "工具",
-              "网站视频下载",
-              "音频下载",
-              "图片下载",
-              "音乐下载",
-              "视频号下载"
-            ],
-            "icon": "auto_awesome",
-            "featured": false,
-            "sourceTitle": "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
-            "sourceUrl": "https://www.30aitool.com/397.html",
-            "sourceCategory": "工具"
-          },
-          {
             "id": "microsoftedge-microsoft-com-addons-detail-e7-8c-ab-e6-8a-93-oohmdefbja",
-            "title": "Microsoftedge",
+            "title": "猫抓",
             "category": "image",
             "url": "https://microsoftedge.microsoft.com/addons/detail/%E7%8C%AB%E6%8A%93/oohmdefbjalncfplafanlagojlakmjci?hl=zh-CN",
             "description": "用于图片编辑、生成、排版或视觉处理。",
@@ -1299,7 +1241,7 @@
           },
           {
             "id": "microsoftedge-microsoft-com-addons-detail-screenity-e5-b1-8f-e5-b9-95-",
-            "title": "Microsoftedge",
+            "title": "Screenity",
             "category": "video-audio",
             "url": "https://microsoftedge.microsoft.com/addons/detail/screenity-%E5%B1%8F%E5%B9%95%E5%BD%95%E5%83%8F%E5%92%8C%E6%A0%87%E6%B3%A8%E5%B7%A5%E5%85%B7/nbdkgeeeabnfegekngimpknhnkmocjcj?hl=zh-CN",
             "description": "用于屏幕录制、视频采集或录屏标注。",
@@ -1417,28 +1359,6 @@
             ],
             "icon": "swap_horiz",
             "featured": false,
-            "sourceTitle": "图片格式转换大全",
-            "sourceUrl": "https://www.30aitool.com/367.html",
-            "sourceCategory": "工具"
-          },
-          {
-            "id": "convertio-co-zh-pdf-doc",
-            "title": "Convertio",
-            "category": "convert",
-            "url": "https://convertio.co/zh/pdf-doc/",
-            "description": "用于文件格式转换、批量转换或本地转换。",
-            "tags": [
-              "工具",
-              "图片格式转换大全"
-            ],
-            "aliases": [
-              "图片格式转换大全",
-              "Convertio",
-              "convertio",
-              "工具"
-            ],
-            "icon": "swap_horiz",
-            "featured": true,
             "sourceTitle": "图片格式转换大全",
             "sourceUrl": "https://www.30aitool.com/367.html",
             "sourceCategory": "工具"
@@ -5105,28 +5025,6 @@
             "sourceCategory": "软件"
           },
           {
-            "id": "huorong-cn",
-            "title": "火绒内置的软件清理",
-            "category": "software-system",
-            "url": "https://www.huorong.cn/",
-            "description": "用于电脑维护、驱动、清理或系统问题处理。",
-            "tags": [
-              "软件",
-              "C盘清理思路and工具"
-            ],
-            "aliases": [
-              "C盘清理思路and工具",
-              "火绒内置的软件清理",
-              "huorong",
-              "软件"
-            ],
-            "icon": "terminal",
-            "featured": false,
-            "sourceTitle": "C盘清理思路and工具",
-            "sourceUrl": "https://www.30aitool.com/990.html",
-            "sourceCategory": "软件"
-          },
-          {
             "id": "github-com-bluepointlilac-contextmenumanager",
             "title": "ContextMenuManager",
             "category": "productivity",
@@ -5192,27 +5090,6 @@
             "sourceCategory": "软件"
           },
           {
-            "id": "voidtools-com-zh-cn-faq",
-            "title": "Voidtools",
-            "category": "software-system",
-            "url": "https://www.voidtools.com/zh-cn/faq/",
-            "description": "用于电脑文件搜索、快速启动或本地效率提升。",
-            "tags": [
-              "软件"
-            ],
-            "aliases": [
-              "电脑快捷搜索软件listary&everything",
-              "Voidtools",
-              "voidtools",
-              "软件"
-            ],
-            "icon": "terminal",
-            "featured": false,
-            "sourceTitle": "电脑快捷搜索软件listary&everything",
-            "sourceUrl": "https://www.30aitool.com/4184.html",
-            "sourceCategory": "软件"
-          },
-          {
             "id": "voidtools-com-zh-cn-support-everything",
             "title": "Voidtools",
             "category": "software-system",
@@ -5229,27 +5106,6 @@
             ],
             "icon": "terminal",
             "featured": true,
-            "sourceTitle": "电脑快捷搜索软件listary&everything",
-            "sourceUrl": "https://www.30aitool.com/4184.html",
-            "sourceCategory": "软件"
-          },
-          {
-            "id": "voidtools-com-zh-cn-downloads",
-            "title": "Voidtools",
-            "category": "download",
-            "url": "https://www.voidtools.com/zh-cn/downloads/",
-            "description": "用于下载、采集、管理或提取网页媒体资源。",
-            "tags": [
-              "软件"
-            ],
-            "aliases": [
-              "电脑快捷搜索软件listary&everything",
-              "Voidtools",
-              "voidtools",
-              "软件"
-            ],
-            "icon": "arrow_downward",
-            "featured": false,
             "sourceTitle": "电脑快捷搜索软件listary&everything",
             "sourceUrl": "https://www.30aitool.com/4184.html",
             "sourceCategory": "软件"
@@ -7800,28 +7656,6 @@
             "sourceCategory": "AI"
           },
           {
-            "id": "prompterhub-cn-doc-guide",
-            "title": "Prompterhub",
-            "category": "ai",
-            "url": "https://www.prompterhub.cn/doc/guide",
-            "description": "用于 AI 提示词、模型、信息源、工作流或知识库。",
-            "tags": [
-              "AI",
-              "AI提示词合集网站"
-            ],
-            "aliases": [
-              "AI提示词合集网站",
-              "Prompterhub",
-              "prompterhub",
-              "AI"
-            ],
-            "icon": "auto_awesome",
-            "featured": false,
-            "sourceTitle": "AI提示词合集网站",
-            "sourceUrl": "https://www.30aitool.com/4653.html",
-            "sourceCategory": "AI"
-          },
-          {
             "id": "boardmix-cn-app-share-cae-ck3b5qwgasoqtaqlmrrgc2oi0dvg4bdjbjagqae-yuby",
             "title": "Boardmix",
             "category": "productivity",
@@ -7844,33 +7678,6 @@
             "featured": false,
             "sourceTitle": "deepseek结合飞书使用#效率翻倍#工作流搭建",
             "sourceUrl": "https://www.30aitool.com/3039.html",
-            "sourceCategory": "AI"
-          },
-          {
-            "id": "boardmix-cn-app-share-cae-ck3b5qwgasoqwpc0-43n1itpixpn5ej8ltagqae-yuby",
-            "title": "Boardmix",
-            "category": "knowledge",
-            "url": "https://boardmix.cn/app/share/CAE.CK3b5QwgASoQWpc0-43n1itpixpN5eJ8lTAGQAE/yuBY0F， 点击链接加入boardmix中的文件「deepseek实用主义教学」",
-            "description": "用于学习资料、信息源、指南、博客或知识查询。",
-            "tags": [
-              "AI",
-              "Deepseek知识库",
-              "实用主义",
-              "资源整合大全(测试版)"
-            ],
-            "aliases": [
-              "Deepseek知识库#实用主义#资源整合大全(测试版)",
-              "Boardmix",
-              "boardmix",
-              "AI",
-              "Deepseek知识库",
-              "实用主义",
-              "资源整合大全(测试版)"
-            ],
-            "icon": "rate_review",
-            "featured": false,
-            "sourceTitle": "Deepseek知识库#实用主义#资源整合大全(测试版)",
-            "sourceUrl": "https://www.30aitool.com/2967.html",
             "sourceCategory": "AI"
           },
           {

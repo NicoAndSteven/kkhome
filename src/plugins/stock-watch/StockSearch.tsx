@@ -96,7 +96,7 @@ const StockSearch = ({ onAdd, existingSymbols, onClose }: Props) => {
           <input ref={inputRef} type="text" value={query} onChange={(e) => handleChange(e.target.value)}
             placeholder="搜索股票代码、中文名或英文名…"
             className="flex-1 bg-transparent font-body-md text-body-md text-on-surface outline-none placeholder:text-text-muted" />
-          <button type="button" onClick={onClose} className="rounded-full p-1.5 text-text-muted hover:bg-white/6 hover:text-on-surface transition-premium">
+          <button type="button" onClick={onClose} className="rounded-full p-1.5 text-text-muted hover:bg-surface-container hover:text-on-surface transition-premium">
             <Icon name="close" className="text-lg" />
           </button>
         </div>
@@ -111,7 +111,7 @@ const StockSearch = ({ onAdd, existingSymbols, onClose }: Props) => {
             return (
               <button key={symbol} type="button" disabled={alreadyAdded}
                 onClick={() => { if (!alreadyAdded) { onAdd(symbol, name); onClose() } }}
-                className={`w-full flex items-center justify-between rounded-xl px-3 py-2.5 text-left transition-premium ${alreadyAdded ? 'opacity-40 cursor-not-allowed' : 'hover:bg-white/6 hover:text-on-surface'}`}
+                className={`w-full flex items-center justify-between rounded-xl px-3 py-2.5 text-left transition-premium ${alreadyAdded ? 'opacity-40 cursor-not-allowed' : 'hover:bg-surface-container hover:text-on-surface'}`}
               >
                 <div className="flex items-center gap-md min-w-0">
                   <span className="font-label-mono text-sm text-primary shrink-0">{symbol}</span>

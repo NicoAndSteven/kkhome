@@ -111,15 +111,15 @@ export default function FoodPlugin(_props: Props) {
 
       <div className="flex items-center justify-center gap-3 border-t border-border-subtle pt-4">
         <button type="button" onClick={() => setPreviewPeriod('noon')}
-          className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-premium ${activePeriod === 'noon' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-white hover:text-on-surface'}`}>
+          className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-premium ${activePeriod === 'noon' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-card hover:text-on-surface'}`}>
           <Icon name="light_mode" className="text-sm" />中午
         </button>
         <button type="button" onClick={() => setPreviewPeriod(null)}
-          className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-premium ${previewPeriod === null ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-white hover:text-on-surface'}`}>
+          className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-premium ${previewPeriod === null ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-card hover:text-on-surface'}`}>
           <Icon name="autorenew" className="text-sm" />自动
         </button>
         <button type="button" onClick={() => setPreviewPeriod('evening')}
-          className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-premium ${activePeriod === 'evening' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-white hover:text-on-surface'}`}>
+          className={`inline-flex items-center gap-2 rounded-full px-4 py-2 text-xs font-semibold transition-premium ${activePeriod === 'evening' ? 'bg-primary/10 text-primary' : 'text-text-muted hover:bg-surface-card hover:text-on-surface'}`}>
           <Icon name="dark_mode" className="text-sm" />晚上
         </button>
       </div>

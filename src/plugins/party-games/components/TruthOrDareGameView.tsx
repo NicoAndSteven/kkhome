@@ -170,7 +170,7 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
         </div>
 
       {/* 玩家座位 + 进度 */}
-      <div className="overflow-hidden rounded-[28px] bg-white/80 px-4 py-4 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
+      <div className="overflow-hidden rounded-[28px] bg-surface-container px-4 py-4 shadow-[0_2px_16px_rgba(0,0,0,0.04)]">
         <div className="mb-3 flex items-center justify-between">
           <span className="text-xs font-semibold uppercase tracking-[0.12em] text-gray-400">玩家顺序</span>
           <span className="text-xs text-gray-400">

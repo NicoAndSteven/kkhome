@@ -115,7 +115,7 @@ const listIncludes = (items: string[] | undefined, query: string) =>
   items?.some((item) => item.toLowerCase().includes(query)) ?? false
 
 const scoreTool = (tool: AiTool, query: string) => {
-  if (!query) return Number(tool.featured)
+  if (!query) return 0
   const title = tool.title.toLowerCase()
   let score = 0
   if (title === query) score += 100
@@ -149,9 +149,9 @@ const AiNavigatorPlugin = ({ config }: Props) => {
 
   const rankedTools = tools
     .filter((tool) => activeCategory === 'all' || tool.category === activeCategory)
-    .map((tool) => ({ tool, score: scoreTool(tool, normalizedQuery) }))
+    .map((tool, index) => ({ tool, score: scoreTool(tool, normalizedQuery), index }))
     .filter((entry) => !normalizedQuery || entry.score > 0)
-    .sort((a, b) => b.score - a.score || Number(b.tool.featured) - Number(a.tool.featured) || a.tool.title.localeCompare(b.tool.title))
+    .sort((a, b) => b.score - a.score || a.index - b.index)
   const filteredTools = rankedTools.map((entry) => entry.tool)
   const visibleTools = query.trim() || activeCategory !== 'all' ? filteredTools : filteredTools.slice(0, 48)
 

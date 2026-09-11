@@ -104,7 +104,7 @@ const FundImport = ({ onImport, existingCodes, onClose }: Props) => {
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1.5 text-text-muted hover:bg-white/6 hover:text-on-surface transition-premium"
+            className="rounded-full p-1.5 text-text-muted hover:bg-surface-container hover:text-on-surface transition-premium"
           >
             <Icon name="close" className="text-lg" />
           </button>

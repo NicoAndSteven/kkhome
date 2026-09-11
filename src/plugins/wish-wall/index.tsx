@@ -271,7 +271,7 @@ const WishWallPlugin = ({ config }: Props) => {
           <div className="md:col-span-5">
             <div className="flex items-center gap-3">
               <span className="font-label-mono text-[10px] uppercase tracking-[0.34em] text-text-muted">Section 02</span>
-              <span className="h-px flex-1 bg-[linear-gradient(90deg,rgba(15,23,42,0.14),rgba(15,23,42,0.04),transparent)]" />
+              <span className="h-px flex-1 bg-border-subtle" />
             </div>
             <h2 className="mt-3 max-w-[8ch] font-headline-md text-[clamp(2.4rem,4.8vw,4.6rem)] font-semibold leading-[0.92] tracking-[-0.08em] text-on-surface">访客许愿墙</h2>
             <p className="mt-3 font-body-md text-sm leading-relaxed text-on-surface-variant">
@@ -286,7 +286,7 @@ const WishWallPlugin = ({ config }: Props) => {
                   className={`rounded-full border px-3 py-1.5 font-label-mono text-[10px] uppercase tracking-[0.16em] transition-premium ${
                     statusFilter === status
                       ? 'border-primary/20 bg-primary/6 text-primary'
-                      : 'border-border-subtle bg-white/60 text-text-muted hover:border-border-subtle hover:bg-white/90 hover:text-on-surface'
+                      : 'border-border-subtle bg-surface-container text-text-muted hover:border-border-subtle hover:bg-surface-card hover:text-on-surface'
                   }`}
                 >
                   <span>{status === 'all' ? '全部' : statusLabels[status]}</span>
@@ -300,7 +300,7 @@ const WishWallPlugin = ({ config }: Props) => {
               {statusOrder.map((status) => (
                 <div
                   key={status}
-                  className="group flex items-center gap-2 rounded-2xl border border-border-subtle bg-white/72 px-3 py-3 transition-premium hover:border-primary/20 hover:bg-white"
+                  className="group flex items-center gap-2 rounded-2xl border border-border-subtle bg-surface-container px-3 py-3 transition-premium hover:border-primary/20 hover:bg-surface-card"
                 >
                   <span className="grid size-8 place-items-center rounded-full border border-border-subtle bg-surface-container text-text-muted">
                     <Icon name={statusMeta[status].icon} className="text-sm" />
@@ -362,7 +362,7 @@ const WishWallPlugin = ({ config }: Props) => {
               <button
                 type="submit"
                 disabled={loading}
-                className="shimmer-btn inline-flex h-12 items-center justify-center gap-2 rounded-full bg-gradient-primary px-6 font-body-md text-body-md font-semibold text-[#07130e] transition-premium hover:shadow-[0_16px_48px_-28px_rgba(110,231,183,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
+                className="shimmer-btn inline-flex h-12 items-center justify-center gap-2 rounded-full bg-primary px-6 font-body-md text-body-md font-semibold text-on-primary transition-premium hover:shadow-[0_16px_48px_-28px_rgba(0,47,167,0.45)] disabled:cursor-not-allowed disabled:opacity-60"
               >
                 <Icon name="add" className="text-lg" />
                 许愿
@@ -395,7 +395,7 @@ const WishWallPlugin = ({ config }: Props) => {
 
       <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
         {filteredWishes.map((wish) => (
-          <article key={wish.id} className="surface-item group grid gap-3 rounded-[18px] p-5 transition-premium hover:border-primary/20 hover:bg-white">
+          <article key={wish.id} className="surface-item group grid gap-3 rounded-[18px] p-5 transition-premium hover:border-primary/20 hover:bg-surface-card">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <span className="font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
@@ -403,7 +403,7 @@ const WishWallPlugin = ({ config }: Props) => {
                 </span>
                 <h3 className="mt-xs font-body-lg font-bold text-on-surface">{wish.title}</h3>
               </div>
-              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border-subtle bg-white/78 px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
+              <span className="inline-flex shrink-0 items-center gap-1 rounded-full border border-border-subtle bg-surface-container px-2 py-1 font-label-mono text-[10px] uppercase text-text-muted">
                 <Icon name={statusMeta[wish.status].icon} className="text-xs" />
                 {statusLabels[wish.status]}
               </span>

@@ -26,7 +26,7 @@ const ThemeToggle = ({ initialTheme = 'light' }: Props) => {
   return (
     <button
       onClick={toggleTheme}
-      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-white/80 text-on-surface transition-premium hover:border-primary/25 hover:bg-white"
+      className="inline-flex h-10 w-10 items-center justify-center rounded-full border border-border-subtle bg-surface-container text-on-surface transition-premium hover:border-primary/25 hover:bg-surface-card"
       aria-label="切换明暗主题"
       title={theme === 'dark' ? '切换到浅色' : '切换到深色'}
     >

@@ -108,7 +108,7 @@ test('homepage renders configured content without placeholders', async ({ page }
   })
   await page.goto('/')
   await expect(page.locator('.intro-stage')).toBeVisible({ timeout: 3_000 })
-  await expect(page.locator('.vanta-rings-layer')).toHaveCount(1)
+  await expect(page.locator('.vanta-rings-layer')).toHaveCount(0)
   await expect(page.locator('.intro-mark')).toHaveText('可')
   await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 8_000 })
 
@@ -149,7 +149,7 @@ test('homepage renders configured content without placeholders', async ({ page }
   await expect(aiToolsSection.first()).toBeVisible({ timeout: 8000 })
   await expect(aiToolsSection.getByRole('heading', { name: '找工具' })).toBeVisible()
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible()
-  await expect(aiToolsSection.getByText('File Converter')).toBeVisible()
+  await expect(aiToolsSection.getByText('File Converter').first()).toBeVisible()
   // 验证 AI 工具列表已渲染
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible({ timeout: 5_000 })
 
@@ -169,8 +169,8 @@ test('homepage renders configured content without placeholders', async ({ page }
   await expect(wishSection.getByText('已采纳').first()).toBeVisible()
 
   await goRoute('news')
-  await expect(page).toHaveURL(/#\/ai-tools$/)
-  await expect(page.locator('#ai-tools').first()).toBeVisible()
+  // 未知路由经 normalizeHubRoute 归一为 home，渲染欢迎页
+  await expect(page.getByRole('heading', { name: '垣钰' })).toBeVisible()
 
   await page.evaluate(() => {
     window.location.hash = '#/stock-watch'

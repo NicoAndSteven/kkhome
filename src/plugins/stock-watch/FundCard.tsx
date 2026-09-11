@@ -97,7 +97,7 @@ const FundCard = ({ fund, onSelectStock, onDeleteFund }: Props) => {
           <button
             type="button"
             onClick={(e) => { e.stopPropagation(); setExpanded(!expanded) }}
-            className="rounded-full p-1 text-text-muted hover:bg-white/6 hover:text-on-surface transition-premium shrink-0"
+            className="rounded-full p-1 text-text-muted hover:bg-surface-container hover:text-on-surface transition-premium shrink-0"
           >
             <Icon name={expanded ? 'chevron_left' : 'chevron_right'} className="text-lg" />
           </button>
@@ -201,7 +201,7 @@ const FundCard = ({ fund, onSelectStock, onDeleteFund }: Props) => {
               <button
                 type="button"
                 onClick={() => setShowDeleteConfirm(false)}
-                className="rounded-full px-4 py-2 font-body-md text-xs text-text-muted hover:bg-white/6 transition-premium"
+                className="rounded-full px-4 py-2 font-body-md text-xs text-text-muted hover:bg-surface-container transition-premium"
               >
                 取消
               </button>

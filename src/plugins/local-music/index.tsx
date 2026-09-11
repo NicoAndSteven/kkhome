@@ -222,7 +222,7 @@ const LocalMusicPlugin = () => {
               <button
                 type="button"
                 onClick={() => setUploadMode(uploadMode === 'wish' ? 'none' : 'wish')}
-                className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-white/80 px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface transition-premium hover:border-primary/40 hover:bg-white active:scale-[0.98]"
+                className="inline-flex items-center gap-2 rounded-full border border-border-subtle bg-surface-container px-5 py-2 text-[11px] font-semibold uppercase tracking-[0.18em] text-on-surface transition-premium hover:border-primary/40 hover:bg-surface-card active:scale-[0.98]"
               >
                 <Icon name="rate_review" className="text-sm" />
                 许愿上架
@@ -295,7 +295,7 @@ const LocalMusicPlugin = () => {
             accept=".mp3,audio/mpeg"
             required
             disabled={uploading}
-            className="block w-full rounded-xl border border-dashed border-border-subtle bg-white/80 px-4 py-3 text-sm text-text-muted file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white disabled:opacity-50"
+            className="block w-full rounded-xl border border-dashed border-border-subtle bg-surface-container px-4 py-3 text-sm text-text-muted file:mr-3 file:rounded-full file:border-0 file:bg-primary file:px-4 file:py-2 file:text-xs file:font-semibold file:text-white disabled:opacity-50"
           />
           <div className="grid gap-3 md:grid-cols-2">
             <input type="text" name="title" placeholder="歌曲名（选填）" disabled={uploading} className="surface-control w-full rounded-xl px-4 py-3 text-sm text-on-surface placeholder:text-text-muted disabled:opacity-50" />
@@ -401,7 +401,7 @@ const LocalMusicPlugin = () => {
               className={`w-full rounded-2xl border p-4 text-left transition-premium relative overflow-hidden ${
                 isActive
                   ? 'border-primary/30 bg-primary/5'
-                  : 'border-border-subtle bg-white/80 hover:border-primary/20 hover:bg-white'
+                  : 'border-border-subtle bg-surface-container hover:border-primary/20 hover:bg-surface-card'
               }`}
             >
               {isActive && playing && (

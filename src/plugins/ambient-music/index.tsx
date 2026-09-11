@@ -149,7 +149,7 @@ export default function AmbientMusicPlugin(_props: Props) {
                   className={`inline-flex h-10 w-10 shrink-0 items-center justify-center rounded-full transition-premium ${
                     isPlaying
                       ? 'bg-primary text-white shadow-[0_4px_12px_-4px_rgba(0,47,167,0.3)]'
-                      : 'border border-border-subtle bg-white/80 text-text-muted hover:border-primary/30 hover:text-primary'
+                      : 'border border-border-subtle bg-surface-container text-text-muted hover:border-primary/30 hover:text-primary'
                   } ${isLoading ? 'cursor-not-allowed opacity-50' : ''}`}
                 >
                   <Icon name={isPlaying ? 'pause' : (isLoading ? 'hourglass_empty' : 'play_arrow')} className="text-lg" />

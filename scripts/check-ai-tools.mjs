@@ -16,6 +16,7 @@ const errors = []
 const warnings = []
 const ids = new Map()
 const titles = new Map()
+const hostTitles = new Map()
 
 for (const tool of tools) {
   for (const field of requiredFields) {
@@ -38,6 +39,21 @@ for (const tool of tools) {
     if (genericTitles.has(tool.title.trim())) {
       warnings.push(`${tool.id}: generic title "${tool.title}"`)
     }
+
+    try {
+      const host = new globalThis.URL(tool.url).hostname.replace(/^www\./, '')
+      const hostTitleKey = `${host}::${tool.title.trim().toLowerCase()}`
+      hostTitles.set(hostTitleKey, (hostTitles.get(hostTitleKey) ?? 0) + 1)
+    } catch {
+      // invalid URL already surfaced by the required-field / category checks
+    }
+  }
+}
+
+for (const [key, count] of hostTitles) {
+  if (count > 1) {
+    const [host, title] = key.split('::')
+    warnings.push(`same tool "${title}" listed ${count} times under ${host}`)
   }
 }
 

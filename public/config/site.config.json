@@ -3,14 +3,21 @@
     "title": "垣钰 | Personal Hub",
     "description": "全栈开发工程师",
     "author": "垣钰",
-    "theme": "light"
+    "theme": "dark"
   },
   "profile": {
     "avatar": "/images/yuanyu.png",
     "name": "垣钰",
     "title": "全栈开发工程师",
     "bio": "专注于现代 Web 技术开发，热爱编写整洁代码和创新解决方案。持续学习，追求卓越的数字体验。",
-    "skills": ["React", "TypeScript", "Node.js", "Python", "Docker", "Cloudflare"],
+    "skills": [
+      "React",
+      "TypeScript",
+      "Node.js",
+      "Python",
+      "Docker",
+      "Cloudflare"
+    ],
     "location": "北京，中国",
     "email": "1215240348@qq.com"
   },

@@ -1,35 +1,21 @@
 import { useCallback, useState, useEffect, useRef, Suspense } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, Header, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
+import { Layout, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, AdminLogin, AdminPanel } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
-import { HubRouteId, normalizeHubRoute } from '@core/routeBridge'
+import { HubRouteId, normalizeHubRoute, ROUTE_ITEMS } from '@core/routeBridge'
 import { getAudioEngine, TrackState } from '@plugins/ambient-music/AudioEngine'
 import { synthesizeTrack } from '@plugins/ambient-music/tracks'
 import MiniPlayer from '@plugins/ambient-music/MiniPlayer'
-import VantaBirds from '@components/VantaBirds'
-import VantaRings from '@components/VantaRings'
 import { MusicPlayerProvider } from './contexts/MusicPlayerContext'
 
 /** 所有路由定义（含 welcome） */
-const allRouteItems: Array<{ id: HubRouteId; label: string; href: string; pluginId: string }> = [
-  { id: 'home', label: '首页', href: '#/home', pluginId: 'profile' },
-  { id: 'ai-tools', label: '导向', href: '#/ai-tools', pluginId: 'ai-navigator' },
-  { id: 'wish-wall', label: '许愿', href: '#/wish-wall', pluginId: 'wish-wall' },
-  { id: 'stock-watch', label: '看盘', href: '#/stock-watch', pluginId: 'stock-watch' },
-  { id: 'food', label: '吃啥', href: '#/food', pluginId: 'food' },
-  { id: 'party-games', label: '游戏', href: '#/party-games', pluginId: 'party-games' },
-  { id: 'local-music', label: '音乐', href: '#/local-music', pluginId: 'local-music' },
-  { id: 'inbox', label: '投喂', href: '#/inbox', pluginId: 'universal-inbox' },
-  { id: 'launch', label: '启动', href: '#/launch', pluginId: 'quick-launch' },
-  { id: 'workbench', label: '工作台', href: '#/workbench', pluginId: 'workbench' },
-  { id: 'collections', label: '收藏', href: '#/collections', pluginId: 'collections' },
-  { id: 'scratchpad', label: '暂存', href: '#/scratchpad', pluginId: 'scratchpad' },
-]
+/** 博客内部路由（不含 welcome）；全量定义见 core/routeBridge 的 ROUTE_ITEMS */
+const blogRouteItems = ROUTE_ITEMS.filter(r => r.id !== 'home')
 
-/** 博客内部路由（不含 welcome） */
-const blogRouteItems = allRouteItems.filter(r => r.id !== 'home')
+/** 上一路由 id：跨渲染记忆，用于方向感知切镜 */
+let prevRouteId: string | null = null
 
 function App() {
   const [loading, setLoading] = useState(true)
@@ -143,7 +129,7 @@ function App() {
   useEffect(() => {
     if (loading) return
     const enabledPluginIds = new Set(pluginSystem.getEnabledPlugins().map((plugin) => plugin.id))
-    window.__hubAvailableRoutes = allRouteItems
+    window.__hubAvailableRoutes = ROUTE_ITEMS
       .filter((route) => enabledPluginIds.has(route.pluginId))
       .map((route) => route.id)
   }, [loading])
@@ -252,7 +238,6 @@ function App() {
   if (loading) {
     return (
       <Layout>
-        {showInitialIntro && !isMobile && <VantaRings />}
         {showInitialIntro && (
           <IntroStage
             author={siteConfig?.author ?? '垣钰'}
@@ -276,16 +261,12 @@ function App() {
   const isOnWelcome = activeRoute === 'home'
   const profilePlugin = enabledPlugins.find((plugin) => plugin.id === 'profile')
 
-  // === 欢迎页模式：Vanta Rings 背景 + Intro 动画 + 原首屏内容 ===
+  // === 欢迎页模式：Intro 动画 + Action Cut 首页舞台 ===
   if (isOnWelcome) {
+    // 舞台入场编排在 intro 结束后启动；移动端与关闭 intro 时立即就绪
+    const stageReady = introComplete || isMobile || !motionConfig?.intro
     return (
       <Layout>
-        {!isMobile && (
-          <>
-            <VantaRings />
-            <VantaBirds />
-          </>
-        )}
         {siteConfig && motionConfig && (
           <IntroStage
             author={siteConfig.author}
@@ -294,11 +275,14 @@ function App() {
             onComplete={handleIntroComplete}
           />
         )}
-        <main className={`page-shell home-page-shell mx-auto max-w-[1480px] px-6 pt-16 md:px-12 xl:px-16 ${introComplete ? 'page-ready' : ''}`} style={{ position: 'relative', zIndex: 1 }}>
+        <main className={`page-shell home-stage-shell ${stageReady ? 'page-ready' : ''}`} style={{ position: 'relative', zIndex: 1 }}>
           <ErrorBoundary>
             {profilePlugin ? (
               <Suspense fallback={<div className="surface-panel rounded-2xl p-lg"><p className="text-text-muted font-body-md">加载中...</p></div>}>
-                <profilePlugin.component config={profilePlugin.config} />
+                <profilePlugin.component
+                  config={profilePlugin.config}
+                  {...({ stageReady } as Record<string, unknown>)}
+                />
               </Suspense>
             ) : (
               <div className="surface-panel rounded-2xl p-lg">
@@ -345,26 +329,30 @@ function App() {
     />
   )
 
+  // 方向感知切镜：按路由顺序判断前进/后退
+  const routeIdx = ROUTE_ITEMS.findIndex((r) => r.id === activeRouteItem.id)
+  const prevIdx = prevRouteId ? ROUTE_ITEMS.findIndex((r) => r.id === prevRouteId) : -1
+  const cutDir = prevIdx === -1 || routeIdx === -1 || routeIdx >= prevIdx ? 'ac-fwd' : 'ac-back'
+  prevRouteId = activeRouteItem.id
+
   if (isMobile) {
-    // === 移动端：全宽可滚动内容 + 底部 TabBar ===
+    // === 移动端：全宽可滚动内容 + 底部 TabBar（切镜入场） ===
     const tabBarHeight = 88 // tabbar(~64px) + bottom-3(12px) + bottom-gap(~12px)
     return (
       <Layout routeMode>
         <MobileTabBar routes={availableRouteItems} activeRoute={activeRoute} />
         <main
-          key={activeRouteItem.id}
-          className="route-mobile-main route-mobile-enter mx-auto w-full max-w-[760px] px-4 pt-12"
+          className={`route-mobile-main route-view ${cutDir} mx-auto w-full max-w-[760px] px-4 pt-12`}
           style={{ height: `calc(100dvh - ${tabBarHeight}px)` }}
         >
+          <div className="ac-flash ac-go" aria-hidden="true" />
           <ErrorBoundary key={activeRouteItem.id}>
             {activePlugin ? (
-              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)] route-content-in">
-                <Suspense fallback={<div className="py-8 text-center text-text-muted font-body-md">加载中...</div>}>
-                  <activePlugin.component config={activePlugin.config} />
-                </Suspense>
-              </div>
+              <Suspense fallback={<div className="py-8 text-center text-text-muted font-body-md">加载中...</div>}>
+                <activePlugin.component config={activePlugin.config} />
+              </Suspense>
             ) : (
-              <div className="surface-panel rounded-[28px] p-5 shadow-[0_24px_64px_-42px_var(--color-panel-shadow)] route-content-in">
+              <div className="surface-panel rounded-[28px] p-5">
                 <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
                 <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
                 <p className="mt-1 font-body-md text-body-md text-text-muted">
@@ -380,53 +368,36 @@ function App() {
     )
   }
 
-  // === 桌面端：侧边栏 + 深色面板 ===
+  // === 桌面端：Action-Cut 导航轨 + 全幅内容 ===
   return (
     <Layout routeMode>
-      <Header
-        config={siteConfig ?? undefined}
-        activeSection={activeRoute}
-        routes={availableRouteItems}
-        ambientTracks={ambientTracks}
-        simple
-        onContactClick={() => setContactOpen(true)}
-        onAmbientClick={() => { window.location.hash = '#/local-music' }}
-      />
-      <main className={`page-shell route-page-shell page-ready`}>
-        <ErrorBoundary key={activeRouteItem.id}>
-          {activePlugin ? (
-            <div className="route-stage route-content-in" aria-label={activeRouteItem.label}>
-              <div className="route-frame">
-                <div className="blog-layout">
-                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} footerSlot={sidebarNowPlaying} />
-                  <div className="blog-content scrollbar-none">
-                    <Suspense fallback={<div className="px-6 py-12 text-text-muted font-body-md">加载中...</div>}>
-                      <activePlugin.component config={activePlugin.config} />
-                    </Suspense>
-                  </div>
+      <div className="route-shell">
+        <BlogSidebar
+          routes={availableRouteItems}
+          activeRoute={activeRoute}
+          footerSlot={sidebarNowPlaying}
+          config={siteConfig ?? undefined}
+          onContactClick={() => setContactOpen(true)}
+        />
+        <main className="route-main">
+          <div key={activeRouteItem.id} className={`route-view ${cutDir}`} aria-label={activeRouteItem.label}>
+            <div className="ac-flash ac-go" aria-hidden="true" />
+            <ErrorBoundary key={activeRouteItem.id}>
+              {activePlugin ? (
+                <Suspense fallback={<div className="ac-loading">LOADING SEQUENCE…</div>}>
+                  <activePlugin.component config={activePlugin.config} />
+                </Suspense>
+              ) : (
+                <div className="ac-unavailable">
+                  <span className="ac-kicker">OFF AIR</span>
+                  <h1 className="ac-display ac-h2">模块<em>不可用</em></h1>
+                  <p className="ac-final-sub">当前配置没有启用「{activeRouteItem.label}」模块。</p>
                 </div>
-              </div>
-            </div>
-          ) : (
-            <section className="route-stage" aria-label={activeRouteItem.label}>
-              <div className="route-frame">
-                <div className="blog-layout">
-                  <BlogSidebar routes={availableRouteItems} activeRoute={activeRoute} footerSlot={sidebarNowPlaying} />
-                  <div className="blog-content scrollbar-none">
-                    <div className="surface-panel rounded-2xl p-lg">
-                      <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
-                      <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
-                      <p className="mt-1 font-body-md text-body-md text-text-muted">
-                        当前配置没有启用「{activeRouteItem.label}」模块。
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          )}
-        </ErrorBoundary>
-      </main>
+              )}
+            </ErrorBoundary>
+          </div>
+        </main>
+      </div>
       {commonDrawer}
       {commonAdminEntry}
     </Layout>

@@ -474,7 +474,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
           {/* 重连中遮罩 */}
           {reconnecting && (
-            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-white/60 backdrop-blur-sm">
+            <div className="absolute inset-0 z-20 flex flex-col items-center justify-center bg-surface-container backdrop-blur-sm">
               <div className="flex flex-col items-center gap-4">
                 <div className="flex gap-1.5">
                   <span className="size-3 animate-bounce rounded-full bg-amber-400 [animation-delay:0ms]" />
@@ -604,7 +604,7 @@ const LocalModeBar = ({ room, currentPlayerId, onSwitchPlayer, onAddPlayer, isHo
 
   return (
     <div className="space-y-2">
-      <div className="flex items-center gap-2 rounded-2xl bg-white/90 px-3 py-2 shadow-[0_1px_6px_rgba(0,0,0,0.06)] backdrop-blur-sm">
+      <div className="flex items-center gap-2 rounded-2xl bg-surface-card px-3 py-2 shadow-[0_1px_6px_rgba(0,0,0,0.06)] backdrop-blur-sm">
         <span className="shrink-0 rounded-lg bg-blue-100 px-2 py-0.5 text-xs font-bold text-blue-600">📱 本地</span>
 
         {!compact && (

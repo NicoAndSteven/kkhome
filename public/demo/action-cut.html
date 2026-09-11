@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>ACTION CUT · 设计 Demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #04060c;
+    --bg-2: #070b16;
+    --ink: #f2f4fb;
+    --ink-dim: #99a2ba;
+    --ink-faint: #5a6178;
+    --blue: #002fa7;
+    --blue-hot: #3d6dff;
+    --blue-ice: #8fb0ff;
+    --hairline: rgba(226, 232, 252, 0.10);
+    --mono: "JetBrains Mono", "Noto Sans SC", monospace;
+    --sans: "Geist", "Noto Sans SC", system-ui, sans-serif;
+    --snap: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+    scroll-snap-type: y proximity;
+  }
+
+  /* ── 取景器 chrome（固定层）────────────────────────────── */
+  .vf { position: fixed; z-index: 40; pointer-events: none; font-family: var(--mono); font-size: 10px; letter-spacing: 0.2em; color: var(--ink-faint); }
+  .vf-corner { position: fixed; width: 26px; height: 26px; z-index: 40; pointer-events: none; opacity: 0.7; }
+  .vf-corner::before, .vf-corner::after { content: ''; position: absolute; background: rgba(226,232,252,0.35); }
+  .vf-corner::before { width: 100%; height: 1.5px; }
+  .vf-corner::after { width: 1.5px; height: 100%; }
+  .vf-tl { top: 18px; left: 18px; } .vf-tl::before { top: 0; left: 0; } .vf-tl::after { top: 0; left: 0; }
+  .vf-tr { top: 18px; right: 18px; } .vf-tr::before { top: 0; right: 0; } .vf-tr::after { top: 0; right: 0; }
+  .vf-bl { bottom: 18px; left: 18px; } .vf-bl::before { bottom: 0; left: 0; } .vf-bl::after { bottom: 0; left: 0; }
+  .vf-br { bottom: 18px; right: 18px; } .vf-br::before { bottom: 0; right: 0; } .vf-br::after { bottom: 0; right: 0; }
+
+  .vf-rec { top: 26px; right: 58px; display: flex; align-items: center; gap: 8px; color: var(--ink-dim); }
+  .vf-rec i { width: 8px; height: 8px; border-radius: 50%; background: #ff4747; animation: rec-blink 1.2s steps(2, start) infinite; }
+  @keyframes rec-blink { 50% { opacity: 0.15; } }
+  .vf-rec b { color: var(--ink); font-weight: 700; font-variant-numeric: tabular-nums; }
+
+  .vf-shot { bottom: 26px; left: 58px; display: flex; align-items: center; gap: 10px; }
+  .vf-shot b { color: var(--blue-ice); font-weight: 700; }
+  .vf-shot .bar { width: 90px; height: 2px; background: rgba(226,232,252,0.12); position: relative; overflow: hidden; }
+  .vf-shot .bar i { position: absolute; inset: 0; background: var(--blue-hot); transform-origin: left; transition: transform 500ms var(--snap); }
+
+  .vf-cross { top: 26px; left: 58px; display: flex; gap: 8px; align-items: center; }
+  .vf-cross i { width: 11px; height: 11px; position: relative; }
+  .vf-cross i::before, .vf-cross i::after { content: ''; position: absolute; background: rgba(226,232,252,0.5); }
+  .vf-cross i::before { left: 5px; top: 0; width: 1px; height: 11px; }
+  .vf-cross i::after { top: 5px; left: 0; height: 1px; width: 11px; }
+
+  /* 快切闪光 */
+  .flash { position: fixed; inset: 0; z-index: 60; pointer-events: none; background: var(--blue-ice); opacity: 0; }
+  .flash.go { animation: flash-cut 260ms var(--snap); }
+  @keyframes flash-cut { 0% { opacity: 0.14; } 100% { opacity: 0; } }
+
+  /* ── 通用 shot 结构 ────────────────────────────────────── */
+  .shot {
+    position: relative;
+    min-height: 100dvh;
+    scroll-snap-align: start;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 120px 6vw 110px;
+  }
+  .shot-no {
+    position: absolute; right: 2vw; top: 4vh;
+    font-family: var(--mono); font-weight: 700;
+    font-size: clamp(160px, 24vw, 360px);
+    line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(143, 176, 255, 0.13);
+    pointer-events: none;
+    user-select: none;
+  }
+  .speedlines {
+    position: absolute; inset: -20%;
+    background: repeating-linear-gradient(115deg, transparent 0 46px, rgba(143, 176, 255, 0.05) 46px 47px);
+    mask-image: radial-gradient(80% 70% at 70% 30%, black, transparent 75%);
+    -webkit-mask-image: radial-gradient(80% 70% at 70% 30%, black, transparent 75%);
+    animation: lines-slide 2.8s linear infinite;
+    pointer-events: none;
+  }
+  @keyframes lines-slide { to { transform: translate3d(-46px, 0, 0); } }
+
+  .atmos {
+    position: fixed; inset: 0; z-index: -5; pointer-events: none;
+    background:
+      radial-gradient(1000px 700px at 85% -5%, rgba(0, 47, 167, 0.42), transparent 60%),
+      radial-gradient(820px 600px at -10% 45%, rgba(46, 84, 194, 0.18), transparent 58%),
+      radial-gradient(1200px 800px at 55% 115%, rgba(0, 30, 110, 0.32), transparent 64%),
+      linear-gradient(180deg, #04060c, #05070d);
+  }
+  .grain { position: fixed; inset: 0; z-index: 55; pointer-events: none; opacity: 0.055;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .kicker {
+    display: inline-flex; align-items: center; gap: 10px;
+    font-family: var(--mono); font-size: 11px; font-weight: 700; letter-spacing: 0.3em;
+    color: var(--blue-ice);
+  }
+  .kicker::before { content: ''; width: 34px; height: 2px; background: var(--blue-hot); box-shadow: 0 0 12px rgba(61, 109, 255, 0.8); }
+
+  .display {
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 0.96;
+    text-transform: uppercase;
+  }
+
+  /* 斜切分隔带 = 剪辑接片 */
+  .splice {
+    position: relative; z-index: 5;
+    height: 92px; margin: -46px 0;
+    transform: rotate(-2.4deg) scale(1.06);
+    background: linear-gradient(90deg, var(--blue) 0%, #0a2a86 55%, #051233 100%);
+    border-top: 1px solid rgba(143, 176, 255, 0.35);
+    border-bottom: 1px solid rgba(143, 176, 255, 0.2);
+    box-shadow: 0 24px 70px -30px rgba(0, 20, 90, 0.9);
+    display: flex; align-items: center; overflow: hidden;
+  }
+  .splice .tape {
+    font-family: var(--mono); font-weight: 700; font-size: 12px; letter-spacing: 0.34em;
+    color: rgba(255, 255, 255, 0.85);
+    white-space: nowrap;
+    animation: tape-run 22s linear infinite;
+  }
+  .splice .tape i { font-style: normal; color: rgba(143, 176, 255, 0.7); margin: 0 26px; }
+  @keyframes tape-run { to { transform: translate3d(-50%, 0, 0); } }
+
+  /* ── SHOT 01 · HERO ────────────────────────────────────── */
+  .hero-title {
+    font-size: clamp(64px, 10.5vw, 158px);
+    transform: skewX(-6deg);
+    margin-left: -6px;
+    background: linear-gradient(105deg, #ffffff 38%, var(--blue-ice) 62%, #2e55c9 100%);
+    -webkit-background-clip: text; background-clip: text;
+    -webkit-text-fill-color: transparent;
+    filter: drop-shadow(0 18px 50px rgba(0, 30, 120, 0.65));
+  }
+  .hero-title .alt { -webkit-text-stroke: 2px rgba(226, 232, 252, 0.85); -webkit-text-fill-color: transparent; }
+  .hero-sub {
+    margin-top: 34px; max-width: 52ch;
+    font-size: 17px; line-height: 1.8; color: var(--ink-dim);
+    border-left: 2px solid rgba(61, 109, 255, 0.5);
+    padding-left: 20px;
+  }
+  .hero-sub b { color: var(--ink); font-weight: 700; }
+  .hero-cta { display: flex; flex-wrap: wrap; align-items: center; gap: 18px; margin-top: 48px; }
+  .btn-fire {
+    display: inline-flex; align-items: center; gap: 14px;
+    padding: 16px 30px;
+    background: linear-gradient(100deg, #2e63f2, var(--blue));
+    color: #fff; font-size: 16px; font-weight: 700; letter-spacing: 0.04em; text-decoration: none;
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    box-shadow: inset 0 0 0 1px rgba(143, 176, 255, 0.4);
+    transition: transform 350ms var(--snap), filter 350ms var(--snap);
+  }
+  .btn-fire:hover { transform: translate(-2px, -3px) skewX(-3deg); filter: brightness(1.15) drop-shadow(0 14px 34px rgba(46, 99, 242, 0.5)); }
+  .btn-ghost {
+    display: inline-flex; align-items: center; gap: 10px;
+    padding: 16px 28px; text-decoration: none; color: var(--ink);
+    font-size: 15px; font-weight: 500;
+    border: 1px solid var(--hairline);
+    background: rgba(226, 232, 252, 0.03);
+    clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+    transition: border-color 350ms var(--snap), background 350ms var(--snap), transform 350ms var(--snap);
+  }
+  .btn-ghost:hover { border-color: rgba(143, 176, 255, 0.5); background: rgba(61, 109, 255, 0.08); transform: translate(-1px, -2px); }
+
+  .hero-meta { position: absolute; left: 6vw; bottom: 9vh; display: flex; gap: 44px; font-family: var(--mono); font-size: 10.5px; letter-spacing: 0.22em; color: var(--ink-faint); }
+  .hero-meta b { display: block; color: var(--ink); font-size: 22px; letter-spacing: 0; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .hero-figure {
+    position: absolute; right: 6vw; top: 47%;
+    transform: translateY(-50%) rotate(3deg);
+    width: clamp(220px, 19vw, 320px); aspect-ratio: 0.82;
+    padding: 12px;
+    background: rgba(7, 11, 22, 0.7);
+    border: 1px solid rgba(143, 176, 255, 0.25);
+    box-shadow: 0 40px 90px -30px rgba(0, 15, 70, 0.9), inset 0 0 0 1px rgba(226, 232, 252, 0.04);
+    backdrop-filter: blur(6px);
+  }
+  .hero-figure::after {
+    content: '';
+    position: absolute; inset: 12px;
+    background: linear-gradient(200deg, rgba(61, 109, 255, 0.16), transparent 42%);
+    pointer-events: none;
+  }
+  .hero-figure img { width: 100%; height: 100%; object-fit: cover; filter: saturate(0.95) contrast(1.05); }
+  .hero-figure .tag {
+    position: absolute; left: 12px; bottom: 12px; right: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 8px 12px;
+    background: rgba(4, 6, 12, 0.72); backdrop-filter: blur(10px);
+    border-top: 1px solid rgba(143, 176, 255, 0.3);
+    font-family: var(--mono); font-size: 9px; letter-spacing: 0.24em; color: var(--ink-dim);
+  }
+  .hero-figure .tag i { width: 6px; height: 6px; border-radius: 50%; background: #ff4747; animation: rec-blink 1.2s steps(2, start) infinite; }
+
+  /* ── SHOT 02 · 工具 ────────────────────────────────────── */
+  .grid-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; margin-bottom: 54px; }
+  .grid-head h2 { font-size: clamp(52px, 8vw, 118px); transform: skewX(-4deg); }
+  .grid-head h2 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px rgba(143, 176, 255, 0.6); }
+  .grid-head .note { font-family: var(--mono); font-size: 11px; letter-spacing: 0.2em; color: var(--ink-faint); text-align: right; line-height: 2; }
+  .grid-head .note b { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+  .cards { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .tcard {
+    grid-column: span 4;
+    position: relative;
+    padding: 26px 24px 22px;
+    background: linear-gradient(165deg, rgba(16, 24, 48, 0.85), rgba(7, 11, 22, 0.92));
+    border: 1px solid var(--hairline);
+    clip-path: polygon(16px 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%, 0 16px);
+    transition: transform 320ms var(--snap), border-color 320ms var(--snap), background 320ms var(--snap);
+  }
+  .tcard:hover { transform: translate(-3px, -4px) rotate(-0.5deg); border-color: rgba(143, 176, 255, 0.45); background: linear-gradient(165deg, rgba(24, 36, 72, 0.9), rgba(9, 14, 28, 0.95)); }
+  .tcard.wide { grid-column: span 8; }
+  .tcard .idx { position: absolute; top: 18px; right: 20px; font-family: var(--mono); font-size: 10px; font-weight: 700; letter-spacing: 0.2em; color: var(--ink-faint); }
+  .tcard .ico { width: 40px; height: 40px; display: grid; place-items: center; color: var(--blue-ice); border: 1px solid rgba(143, 176, 255, 0.3); background: rgba(61, 109, 255, 0.08); clip-path: polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+  .tcard h3 { margin-top: 18px; font-size: 20px; font-weight: 700; letter-spacing: -0.01em; }
+  .tcard .domain { margin-top: 5px; font-family: var(--mono); font-size: 9.5px; letter-spacing: 0.2em; color: var(--ink-faint); text-transform: uppercase; }
+  .tcard p { margin-top: 12px; font-size: 13.5px; line-height: 1.7; color: var(--ink-dim); }
+  .tcard .tags { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 18px; }
+  .tcard .tags em { font-style: normal; font-size: 10.5px; color: var(--ink-dim); padding: 4px 10px; border: 1px solid var(--hairline); }
+  .tcard.hot { border-color: rgba(143, 176, 255, 0.4); background: linear-gradient(165deg, rgba(28, 44, 92, 0.9), rgba(8, 12, 26, 0.94)); }
+  .tcard.hot::before {
+    content: 'PICK';
+    position: absolute; top: 0; right: 0;
+    padding: 4px 12px;
+    background: var(--blue-hot); color: #fff;
+    font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: 0.26em;
+    clip-path: polygon(8px 0, 100% 0, 100% 100%, 0 100%);
+  }
+  .tcard .spark { display: flex; align-items: flex-end; gap: 5px; height: 56px; margin-top: 16px; }
+  .tcard .spark i { flex: 1; background: linear-gradient(180deg, var(--blue-hot), rgba(0, 47, 167, 0.4)); }
+
+  /* ── SHOT 03 · 遥测 ────────────────────────────────────── */
+  .tele { display: grid; grid-template-columns: repeat(12, 1fr); gap: 16px; }
+  .tele-cell {
+    grid-column: span 3;
+    padding: 26px 24px;
+    border: 1px solid var(--hairline);
+    background: rgba(7, 11, 22, 0.6);
+    clip-path: polygon(12px 0, 100% 0, 100% calc(100% - 12px), calc(100% - 12px) 100%, 0 100%, 0 12px);
+    position: relative;
+  }
+  .tele-cell b { display: block; font-size: clamp(40px, 4.6vw, 68px); font-weight: 800; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; background: linear-gradient(180deg, #fff, #9fb4ee); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .tele-cell span { display: block; margin-top: 10px; font-family: var(--mono); font-size: 10px; letter-spacing: 0.24em; color: var(--ink-faint); }
+  .tele-cell::after { content: ''; position: absolute; left: 24px; right: 24px; bottom: 18px; height: 2px; background: rgba(61, 109, 255, 0.35); }
+  .tele-cell.wide { grid-column: span 6; }
+  .tele-cell .live { position: absolute; top: 20px; right: 20px; display: flex; align-items: center; gap: 7px; font-family: var(--mono); font-size: 9px; letter-spacing: 0.26em; color: #7ef0b2; }
+  .tele-cell .live i { width: 6px; height: 6px; border-radius: 50%; background: #7ef0b2; animation: rec-blink 1.4s steps(2, start) infinite; }
+  .wave { display: flex; align-items: center; gap: 4px; height: 90px; margin-top: 20px; }
+  .wave i { flex: 1; background: linear-gradient(180deg, rgba(143, 176, 255, 0.9), rgba(0, 47, 167, 0.3)); border-radius: 2px; animation: wave-eq 1.6s var(--snap) infinite alternate; transform-origin: center; }
+  @keyframes wave-eq { from { transform: scaleY(0.25); } to { transform: scaleY(1); } }
+
+  /* ── SHOT 04 · CTA ─────────────────────────────────────── */
+  .final-title { font-size: clamp(72px, 13vw, 200px); transform: skewX(-5deg); }
+  .final-title em { font-style: normal; color: transparent; -webkit-text-stroke: 2px rgba(143, 176, 255, 0.75); }
+  .final-sub { margin-top: 30px; color: var(--ink-dim); font-size: 16px; max-width: 46ch; line-height: 1.8; }
+  .final-links { display: flex; flex-wrap: wrap; gap: 26px; margin-top: 46px; font-family: var(--mono); font-size: 12px; letter-spacing: 0.16em; }
+  .final-links a { color: var(--ink-dim); text-decoration: none; border-bottom: 1px solid rgba(143, 176, 255, 0.3); padding-bottom: 4px; transition: color 300ms var(--snap), border-color 300ms var(--snap); }
+  .final-links a:hover { color: var(--blue-ice); border-color: var(--blue-ice); }
+
+  /* ── 入场：快切编排 ────────────────────────────────────── */
+  .cut { opacity: 0; transform: translateY(34px) skewX(-4deg); filter: blur(8px); transition: opacity 480ms var(--snap), transform 480ms var(--snap), filter 480ms var(--snap); transition-delay: var(--d, 0ms); }
+  .cut.in { opacity: 1; transform: translateY(0) skewX(0deg); filter: blur(0); }
+  .cut-straight { transform: translateY(34px); }
+  .cut-straight.in { transform: translateY(0); }
+
+  @media (prefers-reduced-motion: reduce) {
+    body { scroll-snap-type: none; }
+    .speedlines, .splice .tape, .wave i, .vf-rec i, .hero-figure .tag i { animation: none; }
+    .cut { opacity: 1; transform: none; filter: none; transition: none; }
+  }
+
+  @media (max-width: 900px) {
+    .shot { padding: 96px 5vw 90px; }
+    .hero-figure { position: relative; right: auto; top: auto; transform: rotate(2deg); margin-top: 40px; width: min(70vw, 320px); }
+    .hero-meta { position: static; margin-top: 44px; flex-wrap: wrap; gap: 26px; }
+    .cards .tcard, .tcard.wide { grid-column: span 12; }
+    .tele-cell, .tele-cell.wide { grid-column: span 6; }
+    .grid-head { flex-direction: column; align-items: flex-start; }
+    .shot-no { font-size: 180px; opacity: 0.7; }
+  }
+</style>
+</head>
+<body>
+
+<div class="atmos"></div>
+<div class="grain"></div>
+<div class="flash" id="flash"></div>
+
+<div class="vf-corner vf-tl"></div><div class="vf-corner vf-tr"></div>
+<div class="vf-corner vf-bl"></div><div class="vf-corner vf-br"></div>
+<div class="vf vf-cross"><i></i><span>KKHOMECAM_01 · 35MM · f/1.8</span></div>
+<div class="vf vf-rec"><i></i>REC <b id="tc">00:00:00:00</b></div>
+<div class="vf vf-shot">SHOT <b id="shotNo">01</b> / 04 <span class="bar"><i id="shotBar" style="transform: scaleX(0.25)"></i></span></div>
+
+<!-- ── SHOT 01 · HERO ─────────────────────────── -->
+<section class="shot" data-shot="1">
+  <div class="speedlines"></div>
+  <div class="shot-no">01</div>
+
+  <span class="kicker cut">PERSONAL SPACE · 北京，中国</span>
+  <h1 class="display hero-title cut" style="--d:80ms">垣钰<span class="alt">·</span><br />CODE THE RUSH</h1>
+  <p class="hero-sub cut-straight cut" style="--d:160ms">
+    专注于<b>现代 Web 技术开发</b>，热爱整洁代码与创新解法。<br />
+    把每一次发布当作一次起跳——<b>速度、精度、控制力</b>，一个都不能少。
+  </p>
+  <div class="hero-cta cut" style="--d:240ms">
+    <a class="btn-fire" href="#">开始观看 <span>▶</span></a>
+    <a class="btn-ghost" href="#">跳过片头 ↓</a>
+  </div>
+
+  <div class="hero-figure cut" style="--d:300ms">
+    <img src="/images/yuanyu.png" alt="垣钰" />
+    <div class="tag"><span>REC · LIVE</span><i></i><span>4K / 60FPS</span></div>
+  </div>
+
+  <div class="hero-meta cut" style="--d:360ms">
+    <div><b>06</b>核心模块</div>
+    <div><b>313</b>工具收录</div>
+    <div><b>11</b>分类场景</div>
+  </div>
+</section>
+
+<div class="splice"><div class="tape">CUT 01 → 02 · TOOL NAVIGATION <i>✕</i> FULL STACK <i>✕</i> 速度 × 代码 × 设计 <i>✕</i> CUT 01 → 02 · TOOL NAVIGATION <i>✕</i> FULL STACK <i>✕</i> 速度 × 代码 × 设计 <i>✕</i> </div></div>
+
+<!-- ── SHOT 02 · 工具 ─────────────────────────── -->
+<section class="shot" data-shot="2">
+  <div class="shot-no">02</div>
+  <div class="grid-head">
+    <div>
+      <span class="kicker cut">SEQUENCE 02 · 导向</span>
+      <h2 class="display cut" style="--d:80ms">找<em>工具</em></h2>
+    </div>
+    <div class="note cut" style="--d:160ms"><b>313</b> TOOLS / <b>11</b> CATEGORIES<br />INTENT INDEX · READY</div>
+  </div>
+
+  <div class="cards">
+    <article class="tcard wide hot cut">
+      <span class="idx">T-01</span>
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h9l-2.2-2.2M16 13H7l2.2 2.2"/></svg></div>
+      <h3>Convertio</h3>
+      <div class="domain">convertio.co</div>
+      <p>用于 PDF、Word、Excel 或文档格式转换，支持批量处理与本地化转换。</p>
+      <div class="tags"><em>工具</em><em>文件转换</em><em>PDF</em><em>Word</em></div>
+    </article>
+    <article class="tcard cut" style="--d:90ms">
+      <span class="idx">T-02</span>
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="6" height="6" rx="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.5"/></svg></div>
+      <h3>Tinypng</h3>
+      <div class="domain">tinypng.com</div>
+      <p>用于图片压缩、GIF 处理或图片体积优化。</p>
+      <div class="tags"><em>图片压缩</em></div>
+    </article>
+    <article class="tcard cut" style="--d:150ms">
+      <span class="idx">T-03</span>
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><path d="M10 3v8m0 0l-3-3m3 3l3-3M4 14v2a1 1 0 001 1h10a1 1 0 001-1v-2"/></svg></div>
+      <h3>OBS Studio</h3>
+      <div class="domain">obsproject.com</div>
+      <p>用于屏幕录制、视频采集或录屏标注。</p>
+      <div class="tags"><em>录屏</em></div>
+    </article>
+    <article class="tcard cut" style="--d:210ms">
+      <span class="idx">T-04</span>
+      <div class="ico"><svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7"/><path d="M10 6v4l2.5 2.5"/></svg></div>
+      <h3>Metaso</h3>
+      <div class="domain">metaso.cn</div>
+      <p>用于 AI 提示词、模型、信息源或知识库。</p>
+      <div class="tags"><em>AI</em><em>搜索</em></div>
+    </article>
+    <article class="tcard cut" style="--d:270ms">
+      <span class="idx">T-05</span>
+      <div class="spark">
+        <i style="height:30%"></i><i style="height:52%"></i><i style="height:38%"></i><i style="height:70%"></i><i style="height:55%"></i><i style="height:88%"></i><i style="height:100%"></i><i style="height:72%"></i>
+      </div>
+      <h3>本周热度</h3>
+      <div class="domain">trending · weekly</div>
+      <p>收录节奏与访问热度实时更新。</p>
+      <div class="tags"><em>遥测</em></div>
+    </article>
+  </div>
+</section>
+
+<div class="splice" style="transform: rotate(2deg) scale(1.06);"><div class="tape">CUT 02 → 03 · TELEMETRY <i>✕</i> LIVE DATA <i>✕</i> 每一次发布都是一次起跳 <i>✕</i> CUT 02 → 03 · TELEMETRY <i>✕</i> LIVE DATA <i>✕</i> 每一次发布都是一次起跳 <i>✕</i> </div></div>
+
+<!-- ── SHOT 03 · 遥测 ─────────────────────────── -->
+<section class="shot" data-shot="3">
+  <div class="shot-no">03</div>
+  <span class="kicker cut">SEQUENCE 03 · 看盘 / 遥测</span>
+  <h2 class="display cut" style="--d:80ms; font-size: clamp(44px, 6.4vw, 96px); margin-top: 18px;">LIVE <em style="font-style: normal; color: transparent; -webkit-text-stroke: 1.5px rgba(143,176,255,0.6); -webkit-text-fill-color: transparent;">DATA</em></h2>
+
+  <div class="tele" style="margin-top: 54px;">
+    <div class="tele-cell cut"><b>313</b><span>TOOLS INDEXED</span></div>
+    <div class="tele-cell cut" style="--d:80ms"><b>06</b><span>ACTIVE MODULES</span></div>
+    <div class="tele-cell cut" style="--d:160ms"><b>30s</b><span>REFRESH RATE</span></div>
+    <div class="tele-cell wide cut" style="--d:240ms">
+      <div class="live"><i></i>LIVE FEED</div>
+      <b>99.2%</b>
+      <span>UPTIME · LAST 90 DAYS</span>
+      <div class="wave">
+        <i style="animation-delay:0ms"></i><i style="animation-delay:80ms"></i><i style="animation-delay:160ms"></i><i style="animation-delay:240ms"></i><i style="animation-delay:320ms"></i><i style="animation-delay:400ms"></i><i style="animation-delay:480ms"></i><i style="animation-delay:560ms"></i><i style="animation-delay:640ms"></i><i style="animation-delay:720ms"></i><i style="animation-delay:800ms"></i><i style="animation-delay:880ms"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="splice"><div class="tape">FINAL CUT · 联系 <i>✕</i> SAY HELLO <i>✕</i> 全栈开发工程师 <i>✕</i> FINAL CUT · 联系 <i>✕</i> SAY HELLO <i>✕</i> 全栈开发工程师 <i>✕</i> </div></div>
+
+<!-- ── SHOT 04 · CTA ─────────────────────────── -->
+<section class="shot" data-shot="4">
+  <div class="speedlines" style="mask-image: radial-gradient(80% 70% at 30% 60%, black, transparent 75%); -webkit-mask-image: radial-gradient(80% 70% at 30% 60%, black, transparent 75%);"></div>
+  <div class="shot-no">04</div>
+  <span class="kicker cut">FINAL CUT · 联系</span>
+  <h2 class="display final-title cut" style="--d:80ms; margin-top: 20px;">来<em>聊</em>个项目</h2>
+  <p class="final-sub cut" style="--d:160ms">
+    有想法、有需求、或者只是想聊聊技术与速度——联系窗口随时开放。
+  </p>
+  <div class="hero-cta cut" style="--d:240ms">
+    <a class="btn-fire" href="#">联系我 <span>▶</span></a>
+    <a class="btn-ghost" href="#">回到片头 ↑</a>
+  </div>
+  <div class="final-links cut" style="--d:320ms">
+    <a href="#">GITHUB ↗</a>
+    <a href="#">EMAIL ↗</a>
+    <a href="#">BLOG ↗</a>
+  </div>
+</section>
+
+<script>
+  // Timecode
+  const tc = document.getElementById('tc');
+  let frames = 0;
+  setInterval(() => {
+    frames += 2;
+    const f = frames % 25;
+    const s = Math.floor(frames / 25) % 60;
+    const m = Math.floor(frames / 1500) % 60;
+    const h = Math.floor(frames / 90000) % 24;
+    const p = (n) => String(n).padStart(2, '0');
+    tc.textContent = `${p(h)}:${p(m)}:${p(s)}:${p(f)}`;
+  }, 80);
+
+  // 快切闪光 + SHOT 指示
+  const flash = document.getElementById('flash');
+  const shotNo = document.getElementById('shotNo');
+  const shotBar = document.getElementById('shotBar');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      const n = e.target.dataset.shot;
+      shotNo.textContent = n;
+      shotBar.style.transform = `scaleX(${n / 4})`;
+      if (!reduceMotion) {
+        flash.classList.remove('go');
+        void flash.offsetWidth;
+        flash.classList.add('go');
+      }
+    }
+  }, { threshold: 0.55 });
+  document.querySelectorAll('.shot').forEach((s) => io.observe(s));
+
+  // 入场编排
+  const io2 = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io2.unobserve(e.target); }
+    }
+  }, { threshold: 0.2 });
+  document.querySelectorAll('.cut').forEach((el) => io2.observe(el));
+</script>
+</body>
+</html>

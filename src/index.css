@@ -2201,3 +2201,45 @@ html.ac-snap { scroll-snap-type: y proximity; }
 }
 .ac-rail-tool:hover { color: #8fb0ff; border-color: rgba(143, 176, 255, 0.3); }
 @media (max-width: 900px) { .ac-rail-blade { display: none; } }
+
+/* ── Action-Cut 移动端底栏与更多抽屉 ── */
+.ac-tabbar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 44;
+  display: flex; justify-content: center; gap: 4px;
+  padding: 9px 10px;
+  background: rgba(7, 11, 22, 0.78); backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
+  border-top: 1px solid rgba(143, 176, 255, 0.12);
+}
+.ac-tab {
+  flex: 0 1 74px; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 4px;
+  padding: 8px 6px; border-radius: 10px; color: #9aa2b8; text-decoration: none;
+  border: 1px solid transparent; transition: color 200ms, background 200ms, box-shadow 200ms;
+}
+.ac-tab:hover { color: #f2f4fb; }
+.ac-tab.ac-active {
+  color: #8fb0ff; background: rgba(61, 109, 255, 0.16);
+  box-shadow: inset 0 0 0 1px rgba(143, 176, 255, 0.25);
+}
+.ac-tab-label { font-size: 10px; letter-spacing: 0.04em; }
+.ac-tab-cue { display: none; }
+.ac-sheet-mask { position: fixed; inset: 0; z-index: 48; background: rgba(2, 4, 9, 0.62); }
+.ac-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 49;
+  background: #070b14; border-radius: 22px 22px 0 0; border-top: 1px solid rgba(143, 176, 255, 0.14);
+  padding: 20px 18px calc(24px + env(safe-area-inset-bottom));
+  animation: ac-sheet-in 300ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+@keyframes ac-sheet-in { from { transform: translateY(100%); } to { transform: none; } }
+.ac-sheet-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.ac-sheet-close {
+  width: 30px; height: 30px; border-radius: 8px; display: grid; place-items: center;
+  color: #9aa2b8; background: rgba(226, 232, 252, 0.06); border: 1px solid rgba(226, 232, 252, 0.1);
+}
+.ac-sheet-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-height: 62dvh; overflow-y: auto; }
+.ac-sheet-item {
+  display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 16px 8px;
+  border: 1px solid rgba(226, 232, 252, 0.08); border-radius: 14px; color: #9aa2b8; text-decoration: none;
+  font-size: 11px; background: rgba(13, 17, 32, 0.5);
+}
+.ac-sheet-item.ac-active { color: #8fb0ff; border-color: rgba(143, 176, 255, 0.35); background: rgba(61, 109, 255, 0.12); }
+@media (prefers-reduced-motion: reduce) { .ac-sheet { animation: none; } }

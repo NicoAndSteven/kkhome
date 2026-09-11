@@ -269,12 +269,7 @@ const WishWallPlugin = ({ config }: Props) => {
       <div className="stack-board surface-panel-strong rounded-[28px] p-5 md:p-6">
         <div className="grid gap-6 md:grid-cols-12 md:items-start">
           <div className="md:col-span-5">
-            <div className="flex items-center gap-3">
-              <span className="font-label-mono text-[10px] uppercase tracking-[0.34em] text-text-muted">Section 02</span>
-              <span className="h-px flex-1 bg-border-subtle" />
-            </div>
-            <h2 className="mt-3 max-w-[8ch] font-headline-md text-[clamp(2.4rem,4.8vw,4.6rem)] font-semibold leading-[0.92] tracking-[-0.08em] text-on-surface">访客许愿墙</h2>
-            <p className="mt-3 font-body-md text-sm leading-relaxed text-on-surface-variant">
+                        <p className="mt-3 font-body-md text-sm leading-relaxed text-on-surface-variant">
               留下你期待上线的功能、工具或体验。
             </p>
             <div className="mt-4 flex flex-wrap gap-2">

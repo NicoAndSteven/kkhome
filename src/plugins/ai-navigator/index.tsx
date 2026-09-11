@@ -161,12 +161,6 @@ const AiNavigatorPlugin = ({ config }: Props) => {
       {/* ── Search Hero ── */}
       <div className="space-y-3">
         <div className="flex items-end justify-between gap-4">
-          <div>
-            <span className="font-label-mono text-[9px] uppercase tracking-[0.32em] text-primary">工具导向</span>
-            <h2 className="mt-1 font-headline-md text-[clamp(1.6rem,3vw,2.6rem)] font-bold leading-[1] tracking-[-0.05em] text-on-surface">
-              找工具
-            </h2>
-          </div>
           <span className="mb-0.5 font-label-mono text-[10px] text-text-muted">{tools.length} 已收录</span>
         </div>
 

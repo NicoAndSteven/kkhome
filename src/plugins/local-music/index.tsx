@@ -188,9 +188,7 @@ const LocalMusicPlugin = () => {
             </div>
           </div>
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <span className="font-label-mono text-[10px] uppercase tracking-[0.24em] text-primary">Sound Archive</span>
-            <h2 className="mt-2 font-headline-md text-3xl font-semibold tracking-tight text-on-surface">本地音乐</h2>
-            <p className="mt-2 max-w-md font-body-md text-sm leading-relaxed text-on-surface-variant">
+                        <p className="mt-2 max-w-md font-body-md text-sm leading-relaxed text-on-surface-variant">
               这里是声音档案墙，不是传统播放器
             </p>
             <div className="mt-4 flex items-center gap-3">

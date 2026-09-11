@@ -2045,3 +2045,66 @@ html.ac-snap { scroll-snap-type: y proximity; }
   .ac-flash { display: none; }
   .ac-cut { opacity: 1; transform: none; filter: none; transition: none; }
 }
+
+/* ── Action-Cut 镜头页页头（路由内容）
+   作用域限定在 route-view / route-mobile-main 内，样式上刻意让 .ac-shot 复用于
+   首页舞台与路由页头，但此处所有规则均以路由容器为前缀，首页舞台不受影响 ── */
+.route-view .ac-shot,
+.route-mobile-main .ac-shot {
+  position: relative;
+  padding: 92px 48px 24px;
+}
+.route-view .ac-shot-kicker,
+.route-mobile-main .ac-shot-kicker {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.3em; color: #8fb0ff;
+}
+.route-view .ac-shot-kicker::before,
+.route-mobile-main .ac-shot-kicker::before {
+  content: ''; width: 34px; height: 2px; background: #3d6dff; box-shadow: 0 0 12px rgba(61, 109, 255, 0.8);
+}
+.route-view .ac-shottitle,
+.route-mobile-main .ac-shottitle {
+  margin-top: 20px; font-family: Geist, "Noto Sans SC", system-ui, sans-serif;
+  font-weight: 800; letter-spacing: -0.03em; line-height: 0.96;
+  transform: skewX(-5deg) translateX(-3px);
+  font-size: clamp(40px, 5.5vw, 72px);
+  background: linear-gradient(100deg, #ffffff 38%, #8fb0ff 64%, #2e55c9 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.route-view .ac-hud,
+.route-mobile-main .ac-hud {
+  position: fixed; top: 26px; right: 60px; z-index: 41; pointer-events: none;
+  display: flex; align-items: center; gap: 6px;
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace;
+  font-size: 10px; letter-spacing: 0.2em; color: #5d6478;
+}
+.route-view .ac-hud i,
+.route-mobile-main .ac-hud i {
+  width: 8px; height: 8px; border-radius: 50%; background: #ff4747;
+  animation: ac-rec-blink 1.2s steps(2, start) infinite;
+}
+.route-view .ac-hud b,
+.route-mobile-main .ac-hud b { color: #f2f4fb; font-weight: 700; }
+.route-view .ac-shot .ac-shotno,
+.route-mobile-main .ac-shot .ac-shotno {
+  position: absolute; right: 28px; bottom: -6px; pointer-events: none; user-select: none;
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-weight: 800;
+  font-size: clamp(110px, 15vw, 220px); line-height: 1;
+  color: transparent; -webkit-text-stroke: 1px rgba(143, 176, 255, 0.13);
+}
+/* 路由域取景框角标右移，避开 52px 序号轨（首页舞台不经 route-mode，不受影响） */
+.route-mode .ac-corner.ac-tl { left: 60px; }
+.route-mode .ac-corner.ac-bl { left: 60px; }
+
+@media (max-width: 900px) {
+  .route-view .ac-shot,
+  .route-mobile-main .ac-shot { padding: 24px 16px 12px; }
+  .route-view .ac-hud,
+  .route-mobile-main .ac-hud { display: none; }
+  .route-view .ac-shot .ac-corner,
+  .route-mobile-main .ac-shot .ac-corner { display: none; }
+  .route-view .ac-shot .ac-shotno,
+  .route-mobile-main .ac-shot .ac-shotno { right: 8px; bottom: 2px; font-size: clamp(84px, 30vw, 160px); }
+}

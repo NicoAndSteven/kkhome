@@ -141,8 +141,8 @@
     --color-surface-bright: #1e2230;
 }
 
-/* ── 暗色路由模式 ── */
-:root.dark .route-mode {
+/* ── Action-Cut 路由模式（暗到底，不再随 html.dark 切换） ── */
+.route-mode {
     --color-background: #0b0d14;
     --color-surface: #13151e;
     --color-surface-card: #191c28;
@@ -195,62 +195,6 @@
     --color-surface-dim: #0b0d14;
     --color-surface-bright: #1e2230;
     color-scheme: dark;
-}
-
-/* ── 克莱因蓝路由模式（亮色） ── */
-.route-mode {
-    --color-background: #f8f9fc;
-    --color-surface: #ffffff;
-    --color-surface-card: #ffffff;
-    --color-primary: #002FA7;
-    --color-secondary: #3d5a80;
-    --color-tertiary: #1a1a2e;
-    --color-text-muted: #8a8e9a;
-    --color-border-subtle: rgba(26,26,46,0.06);
-    --color-glow-primary: rgba(0,47,167,0.08);
-    --color-glow-secondary: rgba(61,90,128,0.06);
-    --color-on-primary: #ffffff;
-    --color-on-surface: #1a1a2e;
-    --color-on-background: #1a1a2e;
-    --color-on-surface-variant: #6b7280;
-    --color-surface-container: #f0f1f5;
-    --color-surface-container-low: #f4f5f9;
-    --color-error: #d62828;
-    --color-error-container: rgba(214,40,40,0.08);
-    --color-on-error: #ffffff;
-    --color-outline: rgba(26,26,46,0.14);
-    --color-outline-variant: rgba(26,26,46,0.08);
-    --color-body-bg: #f8f9fc;
-    --color-body-text: #1a1a2e;
-    --color-glass-bg: rgba(255,255,255,0.82);
-    --color-glass-border: rgba(26,26,46,0.06);
-    --color-glass-hover-border: rgba(0,47,167,0.18);
-    --color-glass-shadow: rgba(26,26,46,0.06);
-    --color-panel-bg: rgba(255,255,255,0.94);
-    --color-panel-item-bg: rgba(255,255,255,0.98);
-    --color-panel-border: rgba(26,26,46,0.06);
-    --color-panel-border-strong: rgba(26,26,46,0.10);
-    --color-panel-highlight: rgba(255,255,255,0.90);
-    --color-panel-shadow: rgba(26,26,46,0.06);
-    --color-panel-accent: rgba(0,47,167,0.90);
-    --color-field-bg: #ffffff;
-    --color-grid-line: rgba(26,26,46,0.03);
-    --color-intro-bg: #f4f5f9;
-    --color-drawer-bg: rgba(255,255,255,0.98);
-    --color-drawer-border: rgba(26,26,46,0.06);
-    --color-drawer-shadow: rgba(26,26,46,0.06);
-    --color-surface-tint: #002FA7;
-    --color-primary-container: rgba(0,47,167,0.08);
-    --color-on-primary-container: #002FA7;
-    --color-secondary-container: rgba(61,90,128,0.08);
-    --color-on-secondary-container: #1a1a2e;
-    --color-on-secondary: #ffffff;
-    --color-secondary-fixed: #e8ecf4;
-    --color-inverse-surface: #1a1a2e;
-    --color-inverse-on-surface: #f8f9fc;
-    --color-surface-dim: #ecedf2;
-    --color-surface-bright: #ffffff;
-    color-scheme: light;
 }
 
 .route-mode .blog-sidebar {

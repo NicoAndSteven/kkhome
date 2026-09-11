@@ -93,7 +93,6 @@ const UniversalInboxPlugin = ({ config }: Props) => {
         <div className="grid gap-md md:grid-cols-12 md:items-end">
           <div className="md:col-span-5">
             <span className="font-label-mono text-xs uppercase text-secondary">Universal inbox</span>
-            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">万能投入口</h2>
             <p className="mt-xs font-body-md text-body-md text-text-muted">
               粘贴任何东西，系统识别类型并匹配可热插拔 Capsule。
             </p>

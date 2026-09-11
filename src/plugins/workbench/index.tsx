@@ -159,7 +159,6 @@ const WorkbenchPlugin = ({ config }: Props) => {
       <div className="grid gap-md md:grid-cols-12 md:items-end">
         <div className="md:col-span-5">
           <span className="font-label-mono text-xs uppercase text-secondary">Workbench</span>
-          <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">工具收纳台</h2>
           <p className="mt-xs font-body-md text-body-md text-text-muted">
             只放可以直接处理输入输出的实用工具。
           </p>

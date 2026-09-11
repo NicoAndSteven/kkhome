@@ -121,7 +121,6 @@ const ScratchpadPlugin = ({ config }: Props) => {
       <div className="grid gap-md md:grid-cols-12">
         <div className="md:col-span-5">
           <span className="font-label-mono text-xs uppercase text-secondary">Scratchpad</span>
-          <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">临时收纳</h2>
           <p className="mt-xs font-body-md text-body-md text-text-muted">
             只保存在当前浏览器，用于暂存链接、文本、Prompt 和命令。
           </p>

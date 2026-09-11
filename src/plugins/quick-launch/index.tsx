@@ -120,7 +120,6 @@ const QuickLaunchPlugin = ({ config }: Props) => {
         <div className="grid gap-md md:grid-cols-12 md:items-end">
           <div className="md:col-span-5">
             <span className="font-label-mono text-xs uppercase text-secondary">Quick launch</span>
-            <h2 className="mt-xs font-headline-md text-headline-md text-on-surface">万能跳转</h2>
             <p className="mt-xs font-body-md text-body-md text-text-muted">
               搜索链接、工具、Prompt 和片段，快速打开或复制。
             </p>

@@ -2108,3 +2108,48 @@ html.ac-snap { scroll-snap-type: y proximity; }
   .route-view .ac-shot .ac-shotno,
   .route-mobile-main .ac-shot .ac-shotno { right: 8px; bottom: 2px; font-size: clamp(84px, 30vw, 160px); }
 }
+
+/* ── Action-Cut 路由外壳与切镜 ── */
+.route-shell { display: flex; height: 100dvh; overflow: hidden; }
+.route-main {
+  flex: 1; min-width: 0; position: relative;
+  overflow-y: auto; overflow-x: hidden;
+  scrollbar-color: rgba(143, 176, 255, 0.25) transparent;
+}
+.route-view { min-height: 100%; position: relative; }
+.route-view.ac-fwd { animation: ac-cut-fwd 280ms cubic-bezier(0.22, 1, 0.36, 1); }
+.route-view.ac-back { animation: ac-cut-back 280ms cubic-bezier(0.22, 1, 0.36, 1); }
+@keyframes ac-cut-fwd {
+  from { opacity: 0; transform: translateX(6%) scale(0.985); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes ac-cut-back {
+  from { opacity: 0; transform: translateX(-6%) scale(0.985); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+.ac-loading {
+  min-height: 44vh; display: grid; place-items: center;
+  font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-size: 11px; font-weight: 700;
+  letter-spacing: 0.3em; color: #5d6478;
+}
+.ac-unavailable { padding: 40px 48px; }
+.ac-unavailable .ac-display.ac-h2 {
+  margin-top: 18px; transform: skewX(-5deg); font-weight: 800;
+  font-size: clamp(40px, 5vw, 64px); line-height: 0.98; color: #f2f4fb; text-transform: uppercase;
+}
+.ac-unavailable .ac-display.ac-h2 em { font-style: normal; color: transparent; -webkit-text-stroke: 1.5px rgba(143, 176, 255, 0.5); }
+.ac-unavailable .ac-final-sub { margin-top: 24px; max-width: 46ch; color: #99a2ba; }
+.ac-dock-player {
+  position: fixed; right: 20px; bottom: 20px; z-index: 42;
+  width: 268px; max-height: 230px; overflow: hidden;
+  border-radius: 20px; border: 1px solid rgba(143, 176, 255, 0.14);
+  background: rgba(7, 11, 22, 0.82); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  box-shadow: 0 24px 50px -28px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+/* 桌面上 dock 播放器存在时，把管理员按钮让到左下角，避免与播放器重叠 */
+.route-mode:has(.ac-dock-player) button[aria-label="管理员"] {
+  right: auto; left: 24px;
+}
+@media (prefers-reduced-motion: reduce) {
+  .route-view.ac-fwd, .route-view.ac-back { animation: none; }
+}

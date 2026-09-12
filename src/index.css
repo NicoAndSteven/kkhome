@@ -1837,6 +1837,8 @@ html.ac-snap { scroll-snap-type: y proximity; }
 .route-view .ac-shot,
 .route-mobile-main .ac-shot {
   position: relative;
+  min-height: 0;
+  display: block;
   padding: 92px 48px 24px;
 }
 .route-view .ac-shot-kicker,
@@ -1874,7 +1876,7 @@ html.ac-snap { scroll-snap-type: y proximity; }
 .route-mobile-main .ac-hud b { color: #f2f4fb; font-weight: 700; }
 .route-view .ac-shot .ac-shotno,
 .route-mobile-main .ac-shot .ac-shotno {
-  position: absolute; right: 28px; bottom: -6px; pointer-events: none; user-select: none;
+  position: absolute; left: auto; right: 28px; bottom: -6px; pointer-events: none; user-select: none;
   font-family: "JetBrains Mono", "Noto Sans SC", monospace; font-weight: 800;
   font-size: clamp(110px, 15vw, 220px); line-height: 1;
   color: transparent; -webkit-text-stroke: 1px rgba(143, 176, 255, 0.13);

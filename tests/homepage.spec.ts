@@ -147,13 +147,13 @@ test('homepage renders configured content without placeholders', async ({ page }
 
   const aiToolsSection = page.locator('#ai-tools')
   await expect(aiToolsSection.first()).toBeVisible({ timeout: 8000 })
-  await expect(aiToolsSection.getByRole('heading', { name: '找工具' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '导向' })).toBeVisible()
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible()
   await expect(aiToolsSection.getByText('File Converter').first()).toBeVisible()
   // 验证 AI 工具列表已渲染
   await expect(aiToolsSection.getByText('Convertio').first()).toBeVisible({ timeout: 5_000 })
 
-  const nowPlaying = page.locator('aside').locator('section').filter({ hasText: '选择歌曲开始播放' })
+  const nowPlaying = page.locator('.ac-dock-player').filter({ hasText: '选择歌曲开始播放' })
   await expect(nowPlaying).toHaveCount(1)
   const nowPlayingBox = await nowPlaying.boundingBox()
   expect(nowPlayingBox).not.toBeNull()
@@ -164,7 +164,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 
   await goRoute('wish-wall')
   const wishSection = page.locator('#wish-wall')
-  await expect(wishSection.getByRole('heading', { name: '访客许愿墙' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '许愿' })).toBeVisible()
   await expect(wishSection.getByText('希望导向页支持收藏常用工具')).toBeVisible()
   await expect(wishSection.getByText('已采纳').first()).toBeVisible()
 
@@ -179,7 +179,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 
   await goRoute('party-games')
   const partyGamesSection = page.locator('#party-games')
-  await expect(partyGamesSection.getByRole('heading', { name: '聚会游戏' })).toBeVisible()
+  await expect(page.getByRole('heading', { name: '游戏' })).toBeVisible()
   await expect(partyGamesSection.getByRole('button', { name: '创建房间' })).toBeVisible()
   await expect(partyGamesSection.getByRole('button', { name: '加入房间' })).toBeVisible()
 
@@ -215,9 +215,9 @@ test('routes stay within desktop and mobile viewports', async ({ browser }) => {
           await page.waitForTimeout(2000)
         }
       } else {
-        // 桌面端有 page-shell，移动端有 MobileTabBar
+        // 桌面端有序号导轨，移动端有 MobileTabBar
         if (!viewport.isMobile) {
-          await page.locator('.page-shell.page-ready').waitFor({ state: 'attached', timeout: 7_000 })
+          await page.locator('.ac-rail').waitFor({ state: 'attached', timeout: 7_000 })
         } else {
           await page.waitForTimeout(3000)
         }
@@ -289,7 +289,7 @@ test('party games mobile flow exposes room setup and punishment states', async (
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
   const section = page.locator('#party-games')
-  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByRole('heading', { name: '游戏' })).toBeVisible({ timeout: 10_000 })
 
   await section.getByRole('button', { name: '创建房间' }).click()
   await expect(page.getByRole('dialog', { name: '创建房间' })).toBeVisible()
@@ -301,18 +301,29 @@ test('party games mobile flow exposes room setup and punishment states', async (
   // Waiting room is in a full-screen overlay, not inside #party-games
 	await expect(page.getByText('房间码')).toBeVisible()
   await expect(page.getByText('1 / 7')).toBeVisible()
+  // 本地谁是卧底至少需要 3 名玩家才能开始，先补两个模拟玩家
+  await page.getByRole('button', { name: '+ 随机添加' }).click()
+  await page.getByRole('button', { name: '+ 随机添加' }).click()
+  await expect(page.getByText('3 / 7')).toBeVisible()
   await page.getByRole('button', { name: '开始游戏' }).click()
 
-  await expect(page.getByText('长按查看你的词')).toBeVisible()
-  await page.getByRole('button', { name: '进入发言' }).click()
-  await expect(page.getByText('当前发言')).toBeVisible()
-  await page.getByRole('button', { name: '进入投票' }).click()
+  // 词语 → 发言 → 投票 → 结果 → 惩罚 全流程（胜负随机，只断言阶段文本）
+  await expect(page.getByText('点击查看你的词语')).toBeVisible()
+  await page.getByRole('button', { name: '开始发言' }).click()
+  await expect(page.getByText('正在发言')).toBeVisible()
+  for (let i = 0; i < 3; i++) {
+    await page.getByRole('button', { name: /下一位发言|进入投票/ }).click()
+  }
   await expect(page.getByText('选择你怀疑的人')).toBeVisible()
-  await page.getByRole('button', { name: '揭晓结果' }).click()
-  await expect(page.getByText('平民胜利')).toBeVisible()
-  await page.getByRole('button', { name: '抽惩罚' }).click()
-  await expect(page.getByText('真心话大冒险', { exact: true })).toBeVisible()
-  await expect(page.getByText('选择一种惩罚')).toBeVisible()
+  // 投给一个非房主座位（第 2 个座位 = 随机添加的模拟玩家）
+  await page.locator('.flex.justify-center.gap-3 button').nth(1).click()
+  await expect(page.getByText('已投票').first()).toBeVisible()
+  await page.getByRole('button', { name: /揭晓结果/ }).click()
+  await expect(page.getByText(/平民胜利！|卧底胜利！/)).toBeVisible()
+  await expect(page.getByRole('button', { name: '🔄 再来一局' })).toBeVisible()
+  // 进入惩罚阶段：PhaseStepper 的「惩罚环节」节点高亮
+  await page.getByRole('button', { name: /进入惩罚环节/ }).click()
+  await expect(page.locator('[title="惩罚环节"]')).toHaveClass(/bg-amber-100/)
 })
 
 test('party games keeps create-room capacity in sync when mode changes while the sheet is open', async ({ page }) => {
@@ -362,7 +373,7 @@ test('party games keeps create-room capacity in sync when mode changes while the
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
   const section = page.locator('#party-games')
-  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByRole('heading', { name: '游戏' })).toBeVisible({ timeout: 10_000 })
 
   // Switch to online mode so the API mock is triggered
   await section.getByRole('button', { name: '在线联机' }).click()
@@ -420,7 +431,7 @@ test('party games join room surfaces backend errors', async ({ page }) => {
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
 
   const section = page.locator('#party-games')
-  await expect(section.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByRole('heading', { name: '游戏' })).toBeVisible({ timeout: 10_000 })
   // Switch to online mode so the API mock is triggered
   await section.getByRole('button', { name: '在线联机' }).click()
   await page.waitForTimeout(200)
@@ -515,7 +526,7 @@ test('admin entry stays reachable on public routes', async ({ page }) => {
   test.setTimeout(60_000)
 
   await page.goto('/#/party-games', { waitUntil: 'domcontentloaded' })
-  await expect(page.getByRole('heading', { name: '聚会游戏' })).toBeVisible({ timeout: 10_000 })
+  await expect(page.getByRole('heading', { name: '游戏' })).toBeVisible({ timeout: 10_000 })
   await expect(page.locator('button[aria-label="管理员"]')).toBeVisible()
 })
 
@@ -728,4 +739,43 @@ test('admin party question bank supports filtering and status toggles', async ({
   await expect(page.getByText('用主持人的语气宣布下一轮开始。')).toBeVisible()
   await page.getByRole('button', { name: '启用 用主持人的语气宣布下一轮开始。' }).click()
   await expect(page.getByText('当前筛选下没有真心话大冒险题目。')).toBeVisible()
+})
+
+test('action-cut routing shell renders rail, shot header and switches routes', async ({ page }) => {
+  test.setTimeout(60_000)
+
+  await page.route('**/api/health', async (route) => {
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ ok: true, data: { bindings: {}, features: {} } }),
+    })
+  })
+  await page.route('**/api/music/songs', async (route) => {
+    await route.fulfill({ contentType: 'application/json', body: JSON.stringify({ ok: true, data: { songs: [] } }) })
+  })
+
+  await page.setViewportSize({ width: 1440, height: 1000 })
+  await page.goto('/#/ai-tools', { waitUntil: 'domcontentloaded' })
+  await page.waitForTimeout(2500)
+
+  // 超薄序号轨：数字导航
+  await expect(page.locator('.ac-rail')).toBeVisible()
+  await expect(page.locator('.ac-rail-nav')).toHaveCount(1)
+  await expect(page.locator('.ac-rail-num[aria-label="导向"]')).toBeVisible()
+
+  // 镜头页页头：kicker + h1 大字 + 序号水印
+  await expect(page.locator('.ac-shot-kicker')).toContainText('MODULE /')
+  await expect(page.getByRole('heading', { name: '导向' })).toBeVisible()
+  await expect(page.locator('.ac-shotno')).toBeVisible()
+
+  // 切到看盘：shot header 更新 + rail 高亮跟随
+  await page.evaluate(() => { window.location.hash = '#/stock-watch' })
+  await page.waitForTimeout(1500)
+  await expect(page.getByRole('heading', { name: '看盘' })).toBeVisible()
+  await expect(page.locator('.ac-rail-num[aria-label="看盘"]')).toHaveAttribute('aria-current', 'page')
+
+  // 非法路由归一 home，回到欢迎页
+  await page.evaluate(() => { window.location.hash = '#/nope' })
+  await page.waitForTimeout(1500)
+  await expect(page.getByRole('heading', { name: '垣钰' })).toBeVisible()
 })

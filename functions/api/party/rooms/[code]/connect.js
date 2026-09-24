@@ -1,5 +1,3 @@
-/* global Request */
-
 export const onRequestGet = async ({ request, env, params }) => {
   const rooms = env.PARTY_ROOMS ?? null
   if (!rooms) {

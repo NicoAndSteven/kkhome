@@ -92,11 +92,6 @@ function selectorOf(chunk) {
   return norm(head)
 }
 
-function stripChunk(chunk) {
-  const braceStart = chunk.indexOf('{')
-  return { head: chunk.slice(0, braceStart), body: chunk }
-}
-
 function clean(cssText) {
   const chunks = parseChunks(cssText)
   const out = []

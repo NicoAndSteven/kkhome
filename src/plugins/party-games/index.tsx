@@ -207,7 +207,6 @@ const PartyGamesPlugin = ({ config }: Props) => {
     setSubmitting(true)
     setRoomError('')
     try {
-      // eslint-disable-next-line no-console
       console.log('[party-games] POST /api/party/rooms — settings.maxPlayers =', settings.maxPlayers, '| mode =', settings.mode)
       const response = await fetch('/api/party/rooms', {
         method: 'POST',
@@ -215,7 +214,6 @@ const PartyGamesPlugin = ({ config }: Props) => {
         body: JSON.stringify({ nickname, settings }),
       })
       const json = await response.json()
-      // eslint-disable-next-line no-console
       console.log('[party-games] API response — room.settings.maxPlayers =', json?.data?.room?.settings?.maxPlayers, '| ok =', json?.ok)
       if (!json.ok) throw new Error(json.error?.message || '创建房间失败')
 
@@ -223,7 +221,6 @@ const PartyGamesPlugin = ({ config }: Props) => {
       // If the server returns a different value, correct it client-side and warn.
       const room = json.data.room
       if (room && room.settings && room.settings.maxPlayers !== settings.maxPlayers) {
-        // eslint-disable-next-line no-console
         console.warn('[party-games] Server maxPlayers mismatch: sent', settings.maxPlayers, 'got', room.settings.maxPlayers, '- correcting client-side')
         room.settings.maxPlayers = settings.maxPlayers
         if (room.capacity) room.capacity.max = settings.maxPlayers
@@ -266,12 +263,10 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
   useEffect(() => {
     if (!roomCode || !sessionPlayerId || gameMode !== 'online') {
-      // eslint-disable-next-line no-console
       console.log('[party-games] WS skip: roomCode=', roomCode, 'sessionPlayerId=', sessionPlayerId, 'gameMode=', gameMode)
       return undefined
     }
 
-    // eslint-disable-next-line no-console
     console.log('[party-games] WS connecting: roomCode=', roomCode, 'playerId=', sessionPlayerId)
     const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:'
     const socket = new WebSocket(`${protocol}//${window.location.host}/api/party/rooms/${roomCode}/connect?playerId=${encodeURIComponent(sessionPlayerId)}&connectToken=${encodeURIComponent(sessionConnectToken)}`)
@@ -289,7 +284,6 @@ const PartyGamesPlugin = ({ config }: Props) => {
             // Keep the client-side maxPlayers from initial room creation.
             const serverRoom = payload.room
             if (current && serverRoom.settings && serverRoom.settings.maxPlayers !== current.settings.maxPlayers) {
-              // eslint-disable-next-line no-console
               console.warn('[party-games] WS room_state maxPlayers mismatch: client has', current.settings.maxPlayers, 'server sent', serverRoom.settings.maxPlayers, '- keeping client value')
               serverRoom.settings.maxPlayers = current.settings.maxPlayers
               if (serverRoom.capacity) serverRoom.capacity.max = current.settings.maxPlayers
@@ -304,7 +298,6 @@ const PartyGamesPlugin = ({ config }: Props) => {
           setRoom((current) => (current ? { ...current, privateWord: payload.privateWord ?? null, privateRole: payload.role ?? null } : current))
         }
         if (payload.type === 'error') {
-          // eslint-disable-next-line no-console
           console.warn('[party-games] Server error:', payload.message)
           setRoomError(payload.message || '服务器处理失败')
         }
@@ -317,7 +310,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
     socket.addEventListener('close', () => { setConnectionState('disconnected'); if (socketRef.current === socket) socketRef.current = null })
     socket.addEventListener('error', () => { setConnectionState('disconnected'); setRoomError('房间连接已断开') })
     return () => { if (socketRef.current === socket) socketRef.current = null; socket.close() }
-  }, [roomCode, sessionPlayerId, gameMode])
+  }, [roomCode, sessionPlayerId, sessionConnectToken, gameMode])
 
   // ── 在线模式：操作 ──────────────────────────────
 

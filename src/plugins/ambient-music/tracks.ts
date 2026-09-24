@@ -3,7 +3,6 @@
  * 自然音使用 Web Audio API 合成，复杂音源使用 MP3 文件
  */
 
-/* eslint-disable no-undef */
 
 export interface TrackDef {
   id: string

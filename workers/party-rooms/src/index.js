@@ -166,7 +166,6 @@ export class PartyRoom {
         const payload = JSON.parse(String(event.data || '{}'))
         await this.handleSocketMessage(playerId, payload)
       } catch (error) {
-        // eslint-disable-next-line no-console
         console.error('[party-rooms] handleSocketMessage error:', error)
         server.send(JSON.stringify({ type: 'error', message: error?.message || 'invalid_event' }))
       }

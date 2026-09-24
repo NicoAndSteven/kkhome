@@ -5,7 +5,6 @@
 
 import { TRACKS } from './tracks'
 
-/* eslint-disable no-undef */
 
 export interface TrackState {
   id: string

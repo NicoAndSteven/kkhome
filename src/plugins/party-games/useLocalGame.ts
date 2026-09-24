@@ -49,34 +49,35 @@ const pickRandomCard = (type?: 'truth' | 'dare' | 'random'): TruthOrDareCard => 
   return pool[Math.floor(Math.random() * pool.length)]
 }
 
+// Privacy: the full room (with roles/words/votes) lives in stateRef for shared
+// state machine functions. The React state only receives a public copy with
+// private fields stripped — same principle as getPartyRoomSummary online.
+const toPublicRoom = (full: LocalPartyRoom): LocalPartyRoom => ({
+  ...full,
+  roles: {},
+  words: {},
+  votes: {},
+  players: [...full.players],
+})
+
 export const useLocalGame = () => {
   const [room, setRoom] = useState<LocalPartyRoom | null>(null)
   const [currentPlayerId, setCurrentPlayerId] = useState<string | null>(null)
   const [isHost, setIsHost] = useState(false)
   const stateRef = useRef<{ room: LocalPartyRoom } | null>(null)
 
-  // Privacy: the full room (with roles/words/votes) lives in stateRef for shared
-  // state machine functions. The React state only receives a public copy with
-  // private fields stripped — same principle as getPartyRoomSummary online.
-  const toPublicRoom = (full: LocalPartyRoom): LocalPartyRoom => ({
-    ...full,
-    roles: {},
-    words: {},
-    votes: {},
-    players: [...full.players],
-  })
-
   // Helper: apply a shared state machine function that mutates room in-place,
   // then sync a privacy-safe copy to React state (new reference triggers re-render).
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const apply = (fn: (r: any) => any) => {
+  // 依赖数组为 [] 是成立的：只碰 stateRef（ref，稳定）和 setRoom（setState，稳定）。
+  // apply 必须稳定，否则下游每个 useCallback 的依赖都会每次渲染失效。
+  const apply = useCallback((fn: (r: any) => any) => {
     const state = stateRef.current
     if (!state) return
     fn(state.room)
     const snap = { ...state.room, players: [...state.room.players] }
     state.room = snap
     setRoom(toPublicRoom(snap))
-  }
+  }, [])
 
   // ── 房间管理 ──
 
@@ -112,7 +113,6 @@ export const useLocalGame = () => {
 
     const playerId = uid()
     // Use shared join logic, then override the generated playerId
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { player } = joinPartyRoomState(state.room as any, nickname)
     player.id = playerId
 
@@ -166,17 +166,17 @@ export const useLocalGame = () => {
     })
     // Project private data for current player
     switchToPlayer(currentPlayerId!)
-  }, [currentPlayerId, switchToPlayer])
+  }, [apply, currentPlayerId, switchToPlayer])
 
   // ── 发言（共享函数统一处理 word→speaking 和 speaker→next/voting） ──
 
   const advanceToSpeaking = useCallback(() => {
     apply((r) => advanceSpeaking(r))
-  }, [])
+  }, [apply])
 
   const nextSpeaker = useCallback(() => {
     apply((r) => advanceSpeaking(r))
-  }, [])
+  }, [apply])
 
   const submitDescription = useCallback((content: string) => {
     const state = stateRef.current
@@ -184,29 +184,29 @@ export const useLocalGame = () => {
     const player = state.room.players.find((p) => p.id === currentPlayerId)
     if (!player) return
     apply((r) => submitPartyDescription(r, currentPlayerId, player.nickname, content))
-  }, [currentPlayerId])
+  }, [apply, currentPlayerId])
 
   // ── 投票 ──
 
   const submitVote = useCallback((suspectId: string) => {
     if (!currentPlayerId) return
     apply((r) => submitPartyVote(r, currentPlayerId, suspectId))
-  }, [currentPlayerId])
+  }, [apply, currentPlayerId])
 
   const revealResult = useCallback(() => {
     apply((r) => revealPartyVotingResult(r))
-  }, [])
+  }, [apply])
 
   // ── 惩罚 ──
 
   const localMoveToPunishment = useCallback(() => {
     apply((r) => moveToPunishment(r))
-  }, [])
+  }, [apply])
 
   const drawPunishment = useCallback((choice: 'truth' | 'dare' | 'random') => {
     const card = pickRandomCard(choice)
     apply((r) => drawPunishmentCard(r, card))
-  }, [])
+  }, [apply])
 
   const localCompletePunishment = useCallback(() => {
     const state = stateRef.current
@@ -233,7 +233,7 @@ export const useLocalGame = () => {
     }
     state.room = snap
     setRoom(toPublicRoom(snap))
-  }, [currentPlayerId, switchToPlayer])
+  }, [apply, currentPlayerId, switchToPlayer])
 
   // ── 再来一局 ──
 
@@ -249,7 +249,7 @@ export const useLocalGame = () => {
     }
     state.room = snap
     setRoom(toPublicRoom(snap))
-  }, [])
+  }, [apply])
 
   // ── 重置 ──
 

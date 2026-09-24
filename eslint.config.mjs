@@ -7,43 +7,10 @@ import tsPlugin from '@typescript-eslint/eslint-plugin'
 import reactHooks from 'eslint-plugin-react-hooks'
 import reactRefresh from 'eslint-plugin-react-refresh'
 
-const browserGlobals = {
-  console: 'readonly',
-  document: 'readonly',
-  fetch: 'readonly',
-  localStorage: 'readonly',
-  navigator: 'readonly',
-  window: 'readonly',
-  IntersectionObserver: 'readonly',
-  HTMLMetaElement: 'readonly',
-  HTMLElement: 'readonly',
-  Element: 'readonly',
-  MouseEvent: 'readonly',
-  setTimeout: 'readonly',
-  clearTimeout: 'readonly',
-  setInterval: 'readonly',
-  clearInterval: 'readonly',
-  ResizeObserver: 'readonly',
-  HTMLDivElement: 'readonly',
-  HTMLInputElement: 'readonly',
-  CustomEvent: 'readonly',
-  Event: 'readonly',
-  HTMLAudioElement: 'readonly',
-  HTMLFormElement: 'readonly',
-  Audio: 'readonly',
-  FormData: 'readonly',
-  File: 'readonly',
-  alert: 'readonly',
-  confirm: 'readonly',
-  React: 'readonly',
-  crypto: 'readonly',
-  __dirname: 'readonly',
-  process: 'readonly',
-}
-
 export default [
   {
-    ignores: ['dist', 'node_modules', 'playwright-report', 'test-results'],
+    // hub-agent 是独立的全栈子项目，有自己的依赖与约定，不参与主站 lint
+    ignores: ['dist', 'node_modules', 'playwright-report', 'test-results', 'hub-agent'],
   },
   js.configs.recommended,
   {
@@ -73,7 +40,6 @@ export default [
         ecmaVersion: 2020,
         sourceType: 'module',
       },
-      globals: browserGlobals,
     },
     plugins: {
       '@typescript-eslint': tsPlugin,
@@ -86,6 +52,9 @@ export default [
         'warn',
         { allowConstantExport: true },
       ],
+      // TypeScript 自己就会报未定义标识符（Cannot find name），no-undef 在 TS 文件里
+      // 只是重复劳动，还会逼着人维护一份手写的浏览器全局清单（漏一个就假报错）。
+      'no-undef': 'off',
       'no-unused-vars': 'off', // handled by @typescript-eslint/no-unused-vars
       '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }],
     },

@@ -144,44 +144,77 @@ test('player reconnect toggles offline player back online', () => {
 
 // ── F10: distribution test for F1 shuffle fix ──
 
+// 固定种子的 PRNG。这条断言是统计性的：直接用 Math.random 的话，即使洗牌实现
+// 完全正确，也有 α≈1% 的概率假红（实测 2000 次里挂 18 次 = 0.90%），
+// 那会让 CI 门禁长期往外吐假红 —— flaky 测试的下场就是被无视，护栏变装饰。
+// 固定种子后结果完全可复现，同时把样本从 1000 局放大到 100000 局，
+// 灵敏度反而比原来高一个数量级。
+const mulberry32 = (seed) => {
+  let a = seed >>> 0
+  return () => {
+    a = (a + 0x6d2b79f5) >>> 0
+    let t = Math.imul(a ^ (a >>> 15), 1 | a)
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296
+  }
+}
+
 test('assignUndercoverRound distributes undercover role across all positions', () => {
   const playerIds = ['host', 'guest-1', 'guest-2', 'guest-3']
   const counts = Object.fromEntries(playerIds.map((id) => [id, 0]))
-  const rounds = 1000
+  const rounds = 100000
 
-  for (let i = 0; i < rounds; i++) {
-    const room = createInitialPartyRoomState({
-      code: 'TEST',
-      nickname: '房主',
-      settings: {
-        mode: 'undercover',
-        maxPlayers: 4,
-        allowLateJoin: true,
-        wordCategory: '生活',
-        punishmentMode: 'truth',
-      },
-    })
-    joinPartyRoomState(room, '玩家A')
-    joinPartyRoomState(room, '玩家B')
-    joinPartyRoomState(room, '玩家C')
+  // 只在这次断言期间替换 Math.random，跑完立刻还原。
+  const originalRandom = Math.random
+  Math.random = mulberry32(0x5eed)
+  try {
+    for (let i = 0; i < rounds; i++) {
+      const room = createInitialPartyRoomState({
+        code: 'TEST',
+        nickname: '房主',
+        settings: {
+          mode: 'undercover',
+          maxPlayers: 4,
+          allowLateJoin: true,
+          wordCategory: '生活',
+          punishmentMode: 'truth',
+        },
+      })
+      joinPartyRoomState(room, '玩家A')
+      joinPartyRoomState(room, '玩家B')
+      joinPartyRoomState(room, '玩家C')
 
-    assignUndercoverRound(room, wordPair)
-    const undercoverId = Object.entries(room.roles).find(([, role]) => role === 'undercover')?.[0]
-    assert.ok(undercoverId, `round ${i}: no undercover assigned`)
-    counts[undercoverId]++
+      assignUndercoverRound(room, wordPair)
+      const undercoverId = Object.entries(room.roles).find(([, role]) => role === 'undercover')?.[0]
+      assert.ok(undercoverId, `round ${i}: no undercover assigned`)
+      counts[undercoverId]++
+    }
+  } finally {
+    Math.random = originalRandom
   }
 
-  // Chi-square goodness-of-fit test for uniform distribution.
-  // H₀: undercover role is uniformly distributed across all players.
-  // df = 3 (4 players - 1), α = 0.01 → critical value = 11.34
+  // 先来一条好读的粗检：每个位置都必须拿到过身份。
+  // 「永远是最后一个玩家」这类回归会直接把这条打红，且报错一眼能看懂。
+  for (const id of playerIds) {
+    assert.ok(
+      counts[id] > 0,
+      `position ${id} never got the undercover role. Counts: ${JSON.stringify(counts)}`,
+    )
+  }
+
+  // 卡方拟合优度检验。种子固定 → χ² 是确定值，假红率为 0。
+  // 阈值 20 是按灵敏度选的、不是照着结果凑的：N=100000 时
+  // χ² ≈ 533333·d²（d = 单个位置的偏差），所以 20 对应能抓出约 0.6% 的偏；
+  // 而均匀分布下 df=3 的 χ² 期望值只有 3。
   const expected = rounds / playerIds.length
   let chiSquare = 0
   for (const id of playerIds) {
     chiSquare += Math.pow(counts[id] - expected, 2) / expected
   }
   assert.ok(
-    chiSquare <= 11.34,
-    `Shuffle bias detected! χ² = ${chiSquare.toFixed(2)} > 11.34 (α=0.01, df=3). ` +
+    chiSquare <= 20,
+    `Shuffle bias detected! χ² = ${chiSquare.toFixed(2)} > 20 ` +
+    `(seed 0x5eed, ${rounds} rounds). ` +
     `Counts: ${playerIds.map((id) => `${id}=${counts[id]}`).join(', ')}`,
   )
 })

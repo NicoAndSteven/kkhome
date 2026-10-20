@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useStaggerIn } from '@core/motion'
 
 export interface DescriptionEntry {
   playerId: string
@@ -54,6 +55,27 @@ const DescriptionBoard = ({
     return Math.abs(hash) % AVATAR_COLORS.length
   }
 
+  // 发言列表的错峰入场。
+  //
+  // 原来是 Tailwind 任意值 + 手算延迟：
+  //   className="animate-[party-card-in_0.4s_…_both]" style={{ animationDelay: `${i * 60}ms` }}
+  // 两个问题：
+  //   1. `i * 60ms` 是手写公式 —— 发言一多就排到一秒开外，而且没人会回头改它。
+  //      这里交给 anime.js：元素多时自动**压缩间隔**而不是拉长序列。
+  //   2. 任意值语法的转义类名没法写进 `prefers-reduced-motion` 清单，
+  //      所以这些动画对"减少动态效果"的用户完全不生效。现在统一由动效层判断。
+  //
+  // 必须放在下面那个 `if (entries.length === 0 && !canInput) return null` 之前 ——
+  // 提前 return 会让 hook 调用顺序在两次渲染间变化。
+  const listRef = useStaggerIn<HTMLDivElement>({
+    selector: '[data-stagger-item]',
+    trigger: entries.length,
+    duration: 400,
+    stagger: 60,
+    maxTotal: 520,
+    from: 18,
+  })
+
   if (entries.length === 0 && !canInput) return null
 
   return (
@@ -71,12 +93,12 @@ const DescriptionBoard = ({
 
       {/* 消息列表 */}
       {entries.length > 0 && (
-        <div className="max-h-48 space-y-2 overflow-y-auto">
-          {entries.map((entry, i) => (
+        <div ref={listRef} className="max-h-48 space-y-2 overflow-y-auto">
+          {entries.map((entry) => (
             <div
               key={`${entry.playerId}-${entry.timestamp}`}
-              className="animate-[party-card-in_0.4s_cubic-bezier(0.16,1,0.3,1)_both]"
-              style={{ animationDelay: `${i * 60}ms` }}
+              data-stagger-item
+              className="m-rise"
             >
               <div className="flex items-start gap-2.5">
                 {/* 迷你头像 */}
@@ -109,7 +131,7 @@ const DescriptionBoard = ({
 
       {/* 输入区 */}
       {canInput && (
-        <div className="animate-[party-card-in_0.4s_cubic-bezier(0.16,1,0.3,1)_both]">
+        <div className="party-card-enter">
           {submitted ? (
             <div className="rounded-2xl bg-emerald-50 px-4 py-3 text-center">
               <span className="text-sm font-semibold text-emerald-600">✅ 描述已提交</span>

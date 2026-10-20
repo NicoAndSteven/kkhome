@@ -59,7 +59,7 @@ const GameAvatar = ({ playerId, size = 'md', isSpeaking, isCurrent, isEliminated
         SIZE_CLASSES[size]
       } ${
         isSpeaking
-          ? `scale-110 ring-[3px] ${char.ring} ring-offset-2 animate-[party-pulse-glow_2s_ease-in-out_infinite]`
+          ? `scale-110 ring-[3px] ${char.ring} ring-offset-2 party-speaking-glow`
           : ''
       } ${
         isCurrent && !isSpeaking ? `ring-[2px] ${char.ring} ring-offset-1` : ''

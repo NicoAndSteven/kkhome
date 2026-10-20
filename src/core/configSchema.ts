@@ -1,5 +1,5 @@
 import { z } from 'zod'
-import { AppConfig, MotionConfig, PluginConfig, ProfileConfig, SiteConfig } from './types'
+import type { AppConfig, HeroConfig, MotionConfig, PluginConfig, ProfileConfig, SiteConfig } from './types.ts'
 
 export const defaultSiteConfig: SiteConfig = {
   title: '垣钰 | Personal Hub',
@@ -23,10 +23,21 @@ export const defaultMotionConfig: MotionConfig = {
   introDuration: 2400,
 }
 
+export const defaultHeroConfig: HeroConfig = {
+  videoUrl: 'https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260622_204221_5339e40b-e73d-4ab0-9c65-79c18c66fd50.mp4',
+  videoPosition: '70% center',
+  badge: 'PERSONAL HUB · 北京，中国',
+  headline: ['垣钰', '把想法做成', '能被使用的产品。'],
+  subline: '专注于现代 Web 技术开发，热爱编写整洁代码和创新解决方案。',
+  ctaLabel: '开始探索',
+  ctaHref: '#/ai-tools',
+}
+
 export const defaultAppConfig: AppConfig = {
   site: defaultSiteConfig,
   profile: defaultProfileConfig,
   motion: defaultMotionConfig,
+  hero: defaultHeroConfig,
 }
 
 const siteConfigSchema = z.object({
@@ -46,6 +57,17 @@ const profileConfigSchema = z.object({
   email: z.string().email().optional().catch(defaultProfileConfig.email),
 })
 
+const heroConfigSchema = z.object({
+  // 允许空串：显式留空 = 用渐变兜底，而不是报错
+  videoUrl: z.string().catch(defaultHeroConfig.videoUrl),
+  videoPosition: z.string().min(1).catch(defaultHeroConfig.videoPosition),
+  badge: z.string().min(1).catch(defaultHeroConfig.badge),
+  headline: z.array(z.string().min(1)).min(1).catch(defaultHeroConfig.headline),
+  subline: z.string().catch(defaultHeroConfig.subline),
+  ctaLabel: z.string().min(1).catch(defaultHeroConfig.ctaLabel),
+  ctaHref: z.string().min(1).catch(defaultHeroConfig.ctaHref),
+})
+
 const appConfigSchema = z.object({
   site: siteConfigSchema.catch(defaultSiteConfig).default(defaultSiteConfig),
   profile: profileConfigSchema.catch(defaultProfileConfig).default(defaultProfileConfig),
@@ -53,6 +75,7 @@ const appConfigSchema = z.object({
     intro: z.boolean().catch(defaultMotionConfig.intro),
     introDuration: z.number().int().min(800).max(3200).catch(defaultMotionConfig.introDuration),
   }).catch(defaultMotionConfig).default(defaultMotionConfig),
+  hero: heroConfigSchema.catch(defaultHeroConfig).default(defaultHeroConfig),
 })
 
 const hubItemBaseSchema = z.object({

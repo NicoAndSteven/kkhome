@@ -1,0 +1,150 @@
+{
+  "layout": {
+    "initial": {
+      "rootTag": "DIV#row",
+      "childrenParam": "*",
+      "absoluteCoords": false,
+      "oldStateNodes": 6,
+      "newStateNodes": 6
+    },
+    "frames": [
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 6.1867px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "6.1867px",
+        "left": 16
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 20.6055px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "20.6055px",
+        "left": 31
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 43.4459px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "43.4459px",
+        "left": 53
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 75.7867px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "75.7867px",
+        "left": 86
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 111.635px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "111.634px",
+        "left": 122
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 139.103px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "139.103px",
+        "left": 149
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 159.612px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "159.612px",
+        "left": 170
+      },
+      {
+        "cls": "is-animated",
+        "inline": "transition: none !important; display: block !important; position: absolute; left: 0px; top: 0px; margin-left: 0px; margin-top: 0px; translate: 170.969px; width: 50px; height: 50px; min-width: auto; min-height: auto; max-width: none; max-height: none;",
+        "transform": "none",
+        "translate": "170.969px",
+        "left": 181
+      },
+      {
+        "cls": "",
+        "inline": "transition: none !important;",
+        "transform": "none",
+        "translate": "none",
+        "left": 184
+      }
+    ],
+    "frameCount": 14,
+    "anyInline": true,
+    "anyTransform": false,
+    "rowClassSeen": [
+      "is-animated",
+      ""
+    ],
+    "leftTrack": [
+      16,
+      31,
+      53,
+      86,
+      122,
+      149,
+      170,
+      181,
+      184,
+      184,
+      184,
+      184,
+      184,
+      184
+    ],
+    "tl": {
+      "duration": 300,
+      "children": null,
+      "paused": true,
+      "id": 0
+    },
+    "finalInline": "",
+    "finalLeft": 184,
+    "beforeX": [
+      10,
+      68,
+      126,
+      184
+    ],
+    "afterMutateX": [
+      184,
+      10,
+      68,
+      126
+    ]
+  },
+  "scramble": {
+    "text": {
+      "distinct": 1,
+      "mid": "FINAL TEXT",
+      "final": "FINAL TEXT",
+      "reached": true,
+      "html": "FINAL TEXT"
+    },
+    "textContent": {
+      "distinct": 9,
+      "mid": "FINSB 40J4",
+      "final": "FINAL TEXT",
+      "reached": true,
+      "html": "FINAL TEXT"
+    },
+    "innerHTML": {
+      "distinct": 8,
+      "mid": "FINJM 8XOS",
+      "final": "FINAL TEXT",
+      "reached": true,
+      "html": "FINAL TEXT"
+    },
+    "innerText": {
+      "distinct": 8,
+      "mid": "FIN8P 121H",
+      "final": "FINAL TEXT",
+      "reached": true,
+      "html": "FINAL TEXT"
+    }
+  },
+  "errs": []
+}

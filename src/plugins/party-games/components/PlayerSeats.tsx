@@ -82,7 +82,7 @@ const PlayerSeats = ({
                 {/* 状态标签 */}
                 <div className="flex items-center gap-1">
                   {isSpeaking && (
-                    <span className="animate-[party-pop-in_0.3s_ease] rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-600">
+                    <span className="party-anim-pop-fast rounded-full bg-amber-100 px-2 py-0.5 text-[10px] font-bold text-amber-600">
                       🎤 发言中
                     </span>
                   )}

@@ -63,7 +63,7 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
           {/* 卡片区域 */}
           <div className="mt-5">
             {card ? (
-              <div className="animate-[party-pop-in_0.4s_cubic-bezier(0.16,1,0.3,1)_both]">
+              <div className="party-anim-pop">
                 {/* 卡片类型 + 强度 */}
                 <div className="flex items-center justify-center gap-2">
                   <span className={`rounded-full px-3 py-1 text-xs font-bold ${
@@ -123,7 +123,7 @@ const TruthOrDareGameView = ({ room, isHost, currentPlayerId, onDraw, onDone, on
               </div>
             ) : (
               /* 选卡界面 */
-              <div className="animate-[party-card-in_0.5s_cubic-bezier(0.16,1,0.3,1)_both]">
+              <div className="party-card-enter">
                 <p className="text-center text-sm text-gray-500 mb-4">
                   {isMyTurn ? '选择一种类型' : `等待 ${targetPlayer?.nickname} 选择...`}
                 </p>

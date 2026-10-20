@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8" /><title>recheck</title>
+<style>body{margin:0;font:12px monospace;background:#0d1117;color:#e6edf3;padding:10px}</style></head>
+<body>
+<script src="./anime.umd.js"></script>
+<svg width="160" height="90" viewBox="0 0 160 90">
+  <path id="d1" d="M5,20 C35,0 65,40 135,20" stroke="#f0883e" stroke-width="3" fill="none" />
+  <path id="mp" d="M10,70 C40,10 120,10 150,70" fill="none" stroke="#30363d" />
+  <circle id="mover" cx="0" cy="0" r="7" fill="#f778ba" />
+</svg>
+<div id="wbox" style="width:50px;height:50px;background:#1f6feb;border-radius:6px"></div>
+<script>
+const R = {}; window.RESULTS = R
+const ok = (n, p, e) => { R[n] = { pass: !!p, evidence: e } }
+const raf = () => new Promise(r => requestAnimationFrame(r))
+const wait = ms => new Promise(r => setTimeout(r, ms))
+const A = window.anime
+
+/* createDrawable：把 drawable 实例交给 animate（v1 通过、final 失败的区别就在这） */
+window.tDraw = async () => {
+  const el = document.querySelector('#d1')
+  const dr = A.createDrawable('#d1')
+  await raf()
+  const dash = getComputedStyle(el).strokeDasharray
+  const o0 = getComputedStyle(el).strokeDashoffset
+  A.animate(dr, { draw: ['0 1', '1 1'], duration: 500, ease: 'inOut(2)' })
+  const track = []
+  for (let i = 0; i < 12; i++) { await wait(45); track.push(getComputedStyle(el).strokeDashoffset) }
+  await wait(400)
+  ok('createDrawable', dash !== 'none' && new Set(track).size > 2, {
+    strokeDasharray: dash,
+    dashoffsetTrack: [...new Set(track)].slice(0, 6),
+    distinctOffsets: new Set(track).size,
+    correctUsage: 'animate(createDrawable(sel) 的返回值, { draw: [...] })',
+  })
+  return R
+}
+
+/* createMotionPath：读 SVG 的 transform 属性，而不是 computed translate */
+window.tPath = async () => {
+  const c = document.querySelector('#mover')
+  const mp = A.createMotionPath('#mp')
+  const keys = Object.keys(mp)
+  const types = Object.fromEntries(keys.map(k => [k, typeof mp[k]]))
+  A.animate('#mover', { ...mp, duration: 900, ease: 'inOut(2)' })
+  const attrTrack = [], matrixTrack = []
+  for (let i = 0; i < 12; i++) {
+    await wait(80)
+    attrTrack.push(c.getAttribute('transform'))
+    matrixTrack.push(getComputedStyle(c).transform)
+  }
+  await wait(400)
+  const distinctAttr = new Set(attrTrack.filter(Boolean)).size
+  const distinctMatrix = new Set(matrixTrack.filter(t => t && t !== 'none')).size
+  ok('createMotionPath', distinctAttr > 2 || distinctMatrix > 2, {
+    returnedKeys: keys, valueTypes: types,
+    transformAttrSamples: [...new Set(attrTrack.filter(Boolean))].slice(0, 3),
+    distinctTransformAttr: distinctAttr, distinctMatrix: distinctMatrix,
+    note: '返回值可直接 ...展开 进 animate，元素沿路径移动',
+  })
+  return R
+}
+
+/* waapi：它没有 finished，有 play/pause/cancel/commitStyles/persist */
+window.tWaapi = async () => {
+  const el = document.querySelector('#wbox')
+  const anim = A.waapi.animate(el, { x: 90, opacity: [1, 0.35], duration: 600 })
+  const members = { ctor: anim?.constructor?.name }
+  for (const m of ['play', 'pause', 'cancel', 'commitStyles', 'persist', 'paused', 'autoplay']) {
+    members[m] = typeof anim?.[m]
+  }
+  await wait(280)
+  const midTranslate = getComputedStyle(el).translate
+  const midOpacity = getComputedStyle(el).opacity
+  await wait(600)
+  ok('waapi', members.ctor === 'WAAPIAnimation' && midTranslate !== 'none', {
+    members, midFlight: { translate: midTranslate, opacity: midOpacity },
+    note: '真·Web Animations 对象（走合成器线程），非 rAF 驱动',
+  })
+  return R
+}
+window.runAll = async () => { await window.tDraw(); await window.tPath(); await window.tWaapi(); return R }
+</script>
+</body></html>

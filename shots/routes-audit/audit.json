@@ -1,0 +1,149 @@
+[
+  {
+    "id": "home",
+    "nodes": 286,
+    "height": 3944,
+    "inlineStyled": 48,
+    "cssAnimated": 10,
+    "transitions": 38,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 1,
+      "surface-panel": 1,
+      "surface-item": 0,
+      "surface-panel-strong": 0,
+      "ac-cards": 1,
+      "ac-cell": 4,
+      "ac-tcard": 11,
+      "ac-sheet": 0
+    },
+    "text": "SHOT 1 / 04 PERSONAL HUB 导向 许愿 看盘 吃啥 联系我 导向 许愿 看盘 吃啥 联系我 REC · LIVE 4K / 60FPS PERSONAL HUB · 北京，中国 垣钰 垣钰 把想法做成 把想法做成 能被使用的产品。 能被使用的产品。 专注于现代 Web 技术开发，热爱编写整洁代码和创新解决方案。 开始探索 CUT 01 "
+  },
+  {
+    "id": "ai-tools",
+    "nodes": 734,
+    "height": 2671,
+    "inlineStyled": 55,
+    "cssAnimated": 1,
+    "transitions": 117,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 59,
+      "rounded-2xl": 50,
+      "surface-panel": 0,
+      "surface-item": 0,
+      "surface-panel-strong": 0,
+      "ac-cards": 0,
+      "ac-cell": 0,
+      "ac-tcard": 0,
+      "ac-sheet": 0
+    },
+    "text": "REC CUT 01 / 06 MODULE / TOOLS 导向 01 313 已收录 文件转换器 PDF 转 WORD 图片压缩 视频转音频 电脑录屏 视频下载 抠图去背景 去水印 全部 转换工具 图片处理 视频音频 文档办公 素材设计 下载采集 软件系统 效率工具 知识学习 其他 313 个结果 输入关键词继续收窄 Convertio 精选 CONVE"
+  },
+  {
+    "id": "wish-wall",
+    "nodes": 122,
+    "height": 900,
+    "inlineStyled": 9,
+    "cssAnimated": 1,
+    "transitions": 28,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 7,
+      "surface-panel": 0,
+      "surface-item": 2,
+      "surface-panel-strong": 1,
+      "ac-cards": 0,
+      "ac-cell": 0,
+      "ac-tcard": 0,
+      "ac-sheet": 0
+    },
+    "text": "REC CUT 02 / 06 MODULE / WISH 许愿 02 留下你期待上线的功能、工具或体验。 全部2 新愿望0 已采纳1 开发中1 已上线0 新愿望 待整理 已采纳 进入计划 开发中 正在实现 已上线 可以使用 愿望 说明 称呼 许愿 功能 工具 内容 体验 其他 当前使用本地草稿模式 工具 希望导向页能按目标自动推荐工具 开发中 输入文件转换"
+  },
+  {
+    "id": "stock-watch",
+    "nodes": 38,
+    "height": 900,
+    "inlineStyled": 7,
+    "cssAnimated": 1,
+    "transitions": 5,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 4,
+      "surface-panel": 1,
+      "surface-item": 3,
+      "surface-panel-strong": 1,
+      "ac-cards": 0,
+      "ac-cell": 0,
+      "ac-tcard": 0,
+      "ac-sheet": 0
+    },
+    "text": "REC CUT 03 / 06 MODULE / STOCK 看盘 03 基金重仓股实时行情看板。美股盘前盘后数据自动更新。 导入基金 基金数量 0 持仓总数 0 刷新间隔 30s 暂无基金数据 导入 QDII 基金，查看其重仓股实时行情 导入基金"
+  },
+  {
+    "id": "food",
+    "nodes": 112,
+    "height": 1046,
+    "inlineStyled": 7,
+    "cssAnimated": 1,
+    "transitions": 15,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 8,
+      "surface-panel": 1,
+      "surface-item": 0,
+      "surface-panel-strong": 2,
+      "ac-cards": 0,
+      "ac-cell": 0,
+      "ac-tcard": 0,
+      "ac-sheet": 0
+    },
+    "text": "REC CUT 04 / 06 MODULE / FOOD 吃啥 04 把随机推荐做成一块轻松的菜单海报，保留随机性，但不再像独立的小工具。 管理菜单 晚上 · 在家做 编辑菜单 今日推荐 番茄炒蛋 点击下方按钮随机切换，或者从右侧菜单里挑选你今天想吃的。 番茄炒蛋 酸辣土豆丝 手撕包菜 干煸四季豆 地三鲜 随机推荐 管理菜单 本期菜单 155 项 番茄炒蛋"
+  },
+  {
+    "id": "party-games",
+    "nodes": 32,
+    "height": 900,
+    "inlineStyled": 9,
+    "cssAnimated": 1,
+    "transitions": 6,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 4,
+      "rounded-2xl": 5,
+      "surface-panel": 0,
+      "surface-item": 0,
+      "surface-panel-strong": 0,
+      "ac-cards": 0,
+      "ac-cell": 0,
+      "ac-tcard": 0,
+      "ac-sheet": 0
+    },
+    "text": "REC CUT 05 / 06 MODULE / GAME 游戏 05 📱 本地测试 🌐 在线联机 单设备离线模式：添加玩家后传手机轮流操作。 🕵️ 谁是卧底 🎲 真心话大冒险 🏠 创建房间 🔗 加入房间 💡 本地测试模式 · 创建房间后，用「随机添加」按钮添加模拟玩家 · 通过顶部切换器切换当前操作玩家（传手机） · 谁是卧底需要至少 3 名"
+  },
+  {
+    "id": "local-music",
+    "nodes": 34,
+    "height": 900,
+    "inlineStyled": 7,
+    "cssAnimated": 1,
+    "transitions": 2,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 1,
+      "surface-panel": 1,
+      "surface-item": 0,
+      "surface-panel-strong": 1,
+      "ac-cards": 0,
+      "ac-cell": 0,
+      "ac-tcard": 0,
+      "ac-sheet": 0
+    },
+    "text": "REC CUT 06 / 06 MODULE / MUSIC 音乐 06 这里是声音档案墙，不是传统播放器 0 首 上传歌曲 许愿上架 无法连接服务器"
+  }
+]

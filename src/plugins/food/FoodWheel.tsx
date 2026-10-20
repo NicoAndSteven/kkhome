@@ -1,4 +1,5 @@
-import { useCallback, useMemo, useState, useRef } from 'react'
+import { useCallback, useMemo, useState } from 'react'
+import { useFlickSpin, useStaggerIn } from '@core/motion'
 import { FoodItem, Period } from './types'
 import Icon from '../../components/Icon'
 
@@ -28,10 +29,7 @@ const cardPalette = [
 
 export default function FoodWheel({ items, periodLabel, periodIcon, emptyText, onSpin, onEdit, mode }: Props) {
   const [spinning, setSpinning] = useState(false)
-  const [rotation, setRotation] = useState(0)
   const [selected, setSelected] = useState<FoodItem | null>(null)
-  const targetRef = useRef(0)
-  const rotationRef = useRef(0)
 
   const activeItems = useMemo(() => items.filter((item) => !item.disabled), [items])
 
@@ -39,6 +37,30 @@ export default function FoodWheel({ items, periodLabel, periodIcon, emptyText, o
     setSelected(item)
     onSpin(item)
   }, [onSpin])
+
+  // 转盘的手感：指针拖拽跟手 + 松手后弹簧落位。
+  // 原来的实现是 `transition: transform 4s cubic-bezier(...)` —— 固定 4 秒匀速减速，
+  // 用户没法参与，只能看它自己转完。转盘这个交互的全部价值就是手感，
+  // 而"手指拨动 → 惯性滑出 → 弹簧拉回最近扇区"是连续量映射，CSS 做不到。
+  const spin = useFlickSpin({
+    // 落位时吸附到扇区中心
+    segment: activeItems.length > 0 ? 360 / activeItems.length : 0,
+    stiffness: 80,
+    damping: 13,
+    velocityFactor: 150,
+    settleDuration: 1500,
+  })
+
+  // 结果徽章的入场。原来用 `.animate-result-pop`（CSS keyframe），
+  // 换掉是为了让它和"转盘落位"共用同一套缓动语言，并拿到 reduced-motion 判断。
+  const resultRef = useStaggerIn<HTMLDivElement>({
+    selector: '[data-result-badge]',
+    trigger: selected && !spinning ? selected.id : 'none',
+    duration: 520,
+    stagger: 0,
+    maxTotal: 520,
+    from: 16,
+  })
 
   // ── Empty state ──
   if (activeItems.length === 0) {
@@ -206,36 +228,34 @@ export default function FoodWheel({ items, periodLabel, periodIcon, emptyText, o
   )
 
   const handleSpin = () => {
-    if (spinning) return
+    if (spinning || spin.dragging) return
     setSpinning(true)
     setSelected(null)
 
     const targetIndex = Math.floor(Math.random() * activeItems.length)
-    targetRef.current = targetIndex
+    const result = activeItems[targetIndex]
 
-    // The pointer sits at the top (0°).  We need the target sector's centre
-    // to end up under the pointer, so we rotate the wheel by (360 − mid-angle).
+    // 指针在正上方（0°）。要让目标扇区的**中心**停到指针下面，
+    // 就把转盘转到 (360 − 扇区中心角)。
     const targetCentre = targetIndex * segAngle + segAngle / 2
     const targetAngle = 360 - targetCentre
-    const fullSpins = 4 + Math.floor(Math.random() * 3) // 4–6 full rotations
+    const fullSpins = 4 + Math.floor(Math.random() * 3) // 4–6 圈
 
-    const currentMod = rotationRef.current % 360
+    const currentMod = spin.angle() % 360
     let delta = targetAngle - currentMod
     if (delta < 0) delta += 360
-    const total = rotationRef.current + fullSpins * 360 + delta
+    const total = fullSpins * 360 + delta
 
-    rotationRef.current = total
-    setRotation(total)
-  }
-
-  const handleTransitionEnd = () => {
-    if (!spinning) return
-    setSpinning(false)
-    const result = activeItems[targetRef.current]
-    if (result) {
-      setSelected(result)
-      onSpin(result)
-    }
+    // snap: false —— 落点已经精确算好，再吸附一次会把"多转的几圈"抹掉，
+    // 转盘就不转了。吸附只用于**手指甩动**的落位（那里落点是随机的）。
+    spin.spinBy(total, {
+      duration: 1500,
+      snap: false,
+      onSettle: () => {
+        setSpinning(false)
+        if (result) handleSelect(result)
+      },
+    })
   }
 
   // Adaptive label sizing — more items → smaller text, pushed closer to centre
@@ -285,17 +305,19 @@ export default function FoodWheel({ items, periodLabel, periodIcon, emptyText, o
 
           {/* Wheel disc */}
           <div
-            className="w-full h-full rounded-full relative"
+            ref={spin.ref}
+            {...spin.bind}
+            className="w-full h-full rounded-full relative touch-none cursor-grab active:cursor-grabbing"
             style={{
               background: `conic-gradient(from 0deg, ${gradParts.join(', ')})`,
-              transform: `rotate(${rotation}deg)`,
-              transition: spinning
-                ? 'transform 4s cubic-bezier(0.12, 0.84, 0.22, 1.02)'
-                : 'none',
+              // 旋转由 anime.js 独占（`createAnimatable` 写 `rotate`）。
+              // 这里**不能**再写 transform —— anime.js 的 rotate 会整个覆盖
+              // `transform` 属性，两处都写就是"改一处漏一处"。
+              // `touch-none` 是必须的：否则手机上纵向滑动会被浏览器当成滚动，
+              // 转盘收不到 pointermove。
               boxShadow:
                 '0 0 0 5px #1a1a2e, 0 0 0 8px rgba(255,215,0,0.5), 0 8px 40px rgba(0,0,0,0.18)',
             }}
-            onTransitionEnd={handleTransitionEnd}
           >
             {/* Segment labels — each rotated to its sector's mid-angle */}
             {activeItems.map((item, i) => {
@@ -342,21 +364,26 @@ export default function FoodWheel({ items, periodLabel, periodIcon, emptyText, o
         <button
           type="button"
           onClick={handleSpin}
-          disabled={spinning}
+          disabled={spinning || spin.dragging}
           className={`inline-flex items-center gap-2 rounded-full px-6 py-3 text-sm font-bold transition-all duration-200 active:scale-[0.96] ${
-            spinning
+            spinning || spin.dragging
               ? 'bg-text-muted/20 text-text-muted cursor-not-allowed'
               : 'bg-primary text-white hover:opacity-90 shadow-[0_4px_16px_rgba(0,47,167,0.35)]'
           }`}
         >
           <Icon name="casino" className="text-lg" />
-          {spinning ? '转盘中...' : '转一次'}
+          {spin.dragging ? '松手试试' : spinning ? '转盘中...' : '转一次'}
         </button>
 
-        {/* Result badge — pop-in animation */}
+        {/* 拖动提示：不写的话没人知道可以直接拨 */}
+        <p className="mt-3 font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
+          也可以直接拨动转盘
+        </p>
+
+        {/* Result badge */}
         {selected && !spinning && (
-          <div className="mt-4 animate-result-pop">
-            <div className="rounded-2xl bg-primary/10 px-6 py-3 text-center">
+          <div ref={resultRef} className="mt-4">
+            <div data-result-badge className="m-rise rounded-2xl bg-primary/10 px-6 py-3 text-center">
               <p className="font-label-mono text-[10px] uppercase tracking-[0.2em] text-text-muted">
                 今天中午吃
               </p>

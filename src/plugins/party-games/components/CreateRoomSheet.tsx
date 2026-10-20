@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useLayoutEffect, useState } from 'react'
 import { Icon } from '@components'
+import { useOverlayTransition } from '@core/motion'
 import { PartyGameMode, PartyRoomSettings, PunishmentMode } from '../types'
 
 interface Props {
@@ -73,7 +74,14 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
     }
   }, [open, defaultMaxPlayers, defaultMode])
 
-  if (!open) return null
+  // 进出场交给动效层：退场动画播完之前保持挂载（原来是 `if (!open) return null`，
+  // 关掉是硬消失，完全没有退场）。
+  const { rootRef, mounted } = useOverlayTransition(open, {
+    backdrop: '[data-sheet-backdrop]',
+    panel: '[data-sheet-panel]',
+  })
+
+  if (!mounted) return null
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
@@ -131,16 +139,18 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
   }
 
   return (
-    <>
+    <div ref={rootRef} className="pg-scope">
       <div
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+        data-sheet-backdrop
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
       <form
+        data-sheet-panel
         role="dialog"
         aria-label="创建房间"
         onSubmit={submit}
-        className="party-anim-slide-up fixed inset-x-0 bottom-0 z-50 rounded-t-[32px] bg-white px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.15)] max-h-[85vh] overflow-y-auto"
+        className="fixed inset-x-0 bottom-0 z-50 rounded-t-[32px] bg-white px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.15)] max-h-[85vh] overflow-y-auto"
       >
         {/* 拖动把手 */}
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-gray-200" />
@@ -289,7 +299,7 @@ const CreateRoomSheet = ({ open, defaultMode, defaultMaxPlayers, submitting = fa
           {submitting ? '⏳ 处理中...' : '✅ 确认创建'}
         </button>
       </form>
-    </>
+    </div>
   )
 }
 

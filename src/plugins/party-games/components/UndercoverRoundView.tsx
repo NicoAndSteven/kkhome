@@ -62,7 +62,7 @@ const UndercoverRoundView = ({
             className="party-tap-highlight w-full rounded-[24px] bg-gradient-to-br from-violet-50 via-purple-50 to-indigo-50 p-6 text-center transition-all duration-300 active:scale-[0.97]"
           >
             {wordRevealed ? (
-              <div className="animate-[party-pop-in_0.4s_cubic-bezier(0.16,1,0.3,1)_both]">
+              <div className="party-anim-pop">
                 <span className="text-xs font-semibold uppercase tracking-[0.12em] text-purple-400">你的词语</span>
                 <h2 className="mt-3 text-5xl font-bold tracking-tight text-purple-900">
                   {room.privateWord ?? '等待分发...'}
@@ -287,7 +287,7 @@ const UndercoverRoundView = ({
       <Shell className={shellBorder}>
         {/* 结果展示 */}
         <div className="text-center">
-          <div className={`animate-[party-pop-in_0.5s_cubic-bezier(0.16,1,0.3,1)_both] mx-auto flex size-20 items-center justify-center rounded-full ${iconBg}`}>
+          <div className={`party-anim-pop mx-auto flex size-20 items-center justify-center rounded-full ${iconBg}`}>
             <span className="text-4xl">{isTie ? '🤝' : gameEnded ? (isUndercoverWin ? '🕵️' : '🎉') : '🔄'}</span>
           </div>
           <h2 className={`mt-3 text-3xl font-bold ${titleCls}`}>{titleText}</h2>

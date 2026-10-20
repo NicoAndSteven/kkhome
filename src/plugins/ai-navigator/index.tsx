@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react'
 import { Icon } from '@components'
+import { useCountUp, useStaggerIn } from '@core/motion'
 import { PluginRuntimeConfig } from '@core/types'
+import { scoreTool, getHostname, type AiTool } from './search'
 
 interface Props {
   config?: PluginRuntimeConfig
@@ -11,21 +13,6 @@ interface AiCategory {
   title: string
   description?: string
   icon?: string
-}
-
-interface AiTool {
-  id: string
-  title: string
-  category: string
-  url: string
-  description: string
-  tags?: string[]
-  aliases?: string[]
-  icon?: string
-  featured?: boolean
-  sourceTitle?: string
-  sourceUrl?: string
-  sourceCategory?: string
 }
 
 const fallbackIntentPrompts = ['文件转换器', 'PDF 转 Word', '图片压缩', '视频转音频', '电脑录屏', 'PPT 模板']
@@ -100,36 +87,6 @@ const fallbackTools: AiTool[] = [
   },
 ]
 
-const getHostname = (url: string) => {
-  try {
-    return new globalThis.URL(url).hostname.replace(/^www\./, '')
-  } catch {
-    return ''
-  }
-}
-
-const fieldIncludes = (field: string | undefined, query: string) =>
-  field?.toLowerCase().includes(query) ?? false
-
-const listIncludes = (items: string[] | undefined, query: string) =>
-  items?.some((item) => item.toLowerCase().includes(query)) ?? false
-
-const scoreTool = (tool: AiTool, query: string) => {
-  if (!query) return 0
-  const title = tool.title.toLowerCase()
-  let score = 0
-  if (title === query) score += 100
-  else if (title.startsWith(query)) score += 80
-  else if (title.includes(query)) score += 55
-  if (listIncludes(tool.aliases, query)) score += 45
-  if (listIncludes(tool.tags, query)) score += 35
-  if (fieldIncludes(tool.description, query)) score += 18
-  if (fieldIncludes(tool.category, query)) score += 8
-  if (fieldIncludes(getHostname(tool.url), query)) score += 5
-  if (tool.featured && score > 0) score += 4
-  return score
-}
-
 const AiNavigatorPlugin = ({ config }: Props) => {
   const categories = useMemo(
     () => (Array.isArray(config?.categories) ? config.categories : fallbackCategories) as AiCategory[],
@@ -155,13 +112,37 @@ const AiNavigatorPlugin = ({ config }: Props) => {
   const filteredTools = rankedTools.map((entry) => entry.tool)
   const visibleTools = query.trim() || activeCategory !== 'all' ? filteredTools : filteredTools.slice(0, 48)
 
+  /**
+   * 卡片错峰入场。
+   *
+   * 原来这里是内联的 `animation: content-rise 400ms … ${i * 25}ms both`，
+   * 有两个真问题：
+   * 1. **每次输入都会重放**。React 在 `i` 变化时重写 style 字符串，浏览器就重启动画。
+   *    搜索框里打一个字，整片网格重放一遍。
+   * 2. **不受 reduced-motion 约束**。内联样式的优先级高于样式表，
+   *    `@media (prefers-reduced-motion: reduce)` 里的规则覆盖不掉它。
+   *
+   * 现在由 anime.js 驱动，且只在**结果集长度变化**时重放 ——
+   * 数量没变就不重放（这正是"边打字边闪"的根因）。
+   */
+  const gridRef = useStaggerIn<HTMLDivElement>({
+    selector: '.m-rise',
+    trigger: visibleTools.length,
+    from: 16,
+  })
+
+  // 两个计数都走数字滚动。第一个是路由页的规模声明（进页面滚一次），
+  // 第二个随筛选变化重滚 —— trigger 绑结果数，数量不变就不重放。
+  const totalRef = useCountUp<HTMLSpanElement>(tools.length, { duration: 1100, delay: 220 })
+  const resultRef = useCountUp<HTMLSpanElement>(filteredTools.length, { trigger: filteredTools.length, duration: 700 })
+
   return (
-    <section id="ai-tools" className="flex flex-col gap-4 px-5 py-5 md:px-7 md:py-6">
+    <section id="ai-tools" className="flex flex-col gap-4">
 
       {/* ── Search Hero ── */}
       <div className="space-y-3">
         <div className="flex items-end justify-between gap-4">
-          <span className="mb-0.5 font-label-mono text-[10px] text-text-muted">{tools.length} 已收录</span>
+          <span className="mb-0.5 font-label-mono text-[10px] text-text-muted"><span ref={totalRef}>{tools.length}</span> 已收录</span>
         </div>
 
         {/* Search input */}
@@ -233,7 +214,7 @@ const AiNavigatorPlugin = ({ config }: Props) => {
       {/* ── Stats ── */}
       <div className="flex items-center gap-2">
         <span className="font-label-mono text-[10px] text-text-muted">
-          {filteredTools.length} 个结果
+          <span ref={resultRef}>{filteredTools.length}</span> 个结果
         </span>
         {visibleTools.length < filteredTools.length && (
           <>
@@ -244,14 +225,13 @@ const AiNavigatorPlugin = ({ config }: Props) => {
       </div>
 
       {/* ── Tool Grid ── */}
-      <div className="ai-results-scroll grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
-        {visibleTools.map((tool, i) => (
+      <div ref={gridRef} className="ai-results-scroll grid gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+        {visibleTools.map((tool) => (
           <button
             key={tool.id}
             type="button"
             onClick={() => window.open(tool.url, '_blank', 'noopener,noreferrer')}
-            className="group rounded-2xl border border-border-subtle bg-surface p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_8px_28px_-12px_rgba(8,145,178,0.15)]"
-            style={{ animation: `content-rise 400ms cubic-bezier(0.16,1,0.3,1) ${i * 25}ms both` }}
+            className="m-rise group rounded-2xl border border-border-subtle bg-surface p-4 text-left transition-all duration-200 hover:-translate-y-0.5 hover:border-primary/25 hover:shadow-[0_8px_28px_-12px_rgba(8,145,178,0.15)]"
           >
             <div className="flex items-start gap-3">
               <span
@@ -293,7 +273,7 @@ const AiNavigatorPlugin = ({ config }: Props) => {
         ))}
 
         {visibleTools.length === 0 && (
-          <div className="col-span-full flex flex-col items-center gap-3 py-16 text-center">
+          <div className="m-rise col-span-full flex flex-col items-center gap-3 py-16 text-center">
             <span className="rounded-2xl bg-surface-card p-4 text-text-muted">
               <Icon name="search_off" className="text-3xl" />
             </span>

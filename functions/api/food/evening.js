@@ -14,12 +14,14 @@ const requesterKey = (request) => {
   return ip
 }
 
+// Only creation (POST) is throttled — renames/toggles/deletes are interactive
+// drawer actions and a blanket 3s window made the second click in a row fail.
 const RATE_LIMITS = new Map()
 
 const checkRateLimit = (key) => {
   const last = RATE_LIMITS.get(key)
   const now = Date.now()
-  if (last && now - last < 3_000) return false
+  if (last && now - last < 1_000) return false
   RATE_LIMITS.set(key, now)
   if (RATE_LIMITS.size > 5_000) {
     const cutoff = now - 60_000
@@ -58,13 +60,13 @@ export const onRequestGet = async ({ request, env }) => {
 export const onRequestPost = async ({ request, env }) => {
   const db = requireDb(env)
   if (!db) return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
-  if (!checkRateLimit(requesterKey(request))) return fail('too_many_requests', 'Too many requests', 429, { request, env })
 
   let body
   try { body = await request.json() } catch { return fail('invalid_json', 'Invalid JSON body', 400, { request, env }) }
 
   const name = String(body.name ?? '').trim()
   if (name.length < 1 || name.length > 40) return fail('invalid_name', 'Name must be 1-40 chars', 400, { request, env })
+  if (!checkRateLimit(requesterKey(request))) return fail('too_many_requests', 'Too many requests', 429, { request, env })
 
   const item = { id: crypto.randomUUID(), name, createdAt: new Date().toISOString() }
 
@@ -78,7 +80,6 @@ export const onRequestPost = async ({ request, env }) => {
 export const onRequestDelete = async ({ request, env }) => {
   const db = requireDb(env)
   if (!db) return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
-  if (!checkRateLimit(requesterKey(request))) return fail('too_many_requests', 'Too many requests', 429, { request, env })
 
   let body
   try { body = await request.json() } catch { return fail('invalid_json', 'Invalid JSON body', 400, { request, env }) }
@@ -97,7 +98,6 @@ export const onRequestDelete = async ({ request, env }) => {
 export const onRequestPut = async ({ request, env }) => {
   const db = requireDb(env)
   if (!db) return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
-  if (!checkRateLimit(requesterKey(request))) return fail('too_many_requests', 'Too many requests', 429, { request, env })
 
   let body
   try { body = await request.json() } catch { return fail('invalid_json', 'Invalid JSON body', 400, { request, env }) }
@@ -118,7 +118,6 @@ export const onRequestPut = async ({ request, env }) => {
 export const onRequestPatch = async ({ request, env }) => {
   const db = requireDb(env)
   if (!db) return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
-  if (!checkRateLimit(requesterKey(request))) return fail('too_many_requests', 'Too many requests', 429, { request, env })
 
   let body
   try { body = await request.json() } catch { return fail('invalid_json', 'Invalid JSON body', 400, { request, env }) }

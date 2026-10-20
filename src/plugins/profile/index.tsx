@@ -1,5 +1,8 @@
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type ReactElement } from 'react'
-import { PluginRuntimeConfig, ProfileConfig } from '@core/types'
+import { useEffect, useMemo, useRef, useState, type ReactElement } from 'react'
+import { HeroConfig, PluginRuntimeConfig, ProfileConfig } from '@core/types'
+import { defaultHeroConfig } from '@core/configSchema'
+import { VideoHero } from '@components'
+import { useScrollStagger } from '@core/motion'
 import { ROUTE_ITEMS } from '@core/routeBridge'
 
 interface Quote {
@@ -55,13 +58,25 @@ interface Props {
 }
 
 const ProfilePlugin = ({ config, stageReady = true }: Props) => {
-  const profile = config as unknown as ProfileConfig | undefined
+  const profile = config as unknown as (ProfileConfig & { hero?: HeroConfig }) | undefined
+  const hero = profile?.hero ?? defaultHeroConfig
   const [quote, setQuote] = useState<Quote | null>(null)
-  const revealsOn = stageReady
-  const tcRef = useRef<HTMLElement>(null)
   const shotNoRef = useRef<HTMLElement>(null)
   const shotBarRef = useRef<HTMLElement>(null)
   const flashRef = useRef<HTMLDivElement>(null)
+
+  /**
+   * SHOT 02–04 的滚动入场。
+   *
+   * 替代原来那套「IntersectionObserver 加 `.ac-in` 类 → CSS transition 接动画」：
+   * 触发器与动画分成两处，而且每个元素的延迟要手写在行内（`--d: 120 + idx*70ms`），
+   * 模块数量一变就没人记得改。现在触发（`onScroll`）和动画（`stagger`）都在
+   * anime.js 里，延迟按实际 DOM 顺序算。
+   */
+  const stageRef = useScrollStagger<HTMLElement>({
+    selector: '.m-rise',
+    group: '.ac-shot',
+  })
 
   useEffect(() => {
     fetch('/config/quotes.json')
@@ -89,24 +104,14 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
     return () => root.classList.remove('ac-snap')
   }, [])
 
-  // 时间码：500ms 步进，避免高频重绘
-  useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-    let frames = 0
-    const timer = setInterval(() => {
-      frames = (frames + 12) % 216000
-      const el = tcRef.current
-      if (el) {
-        el.textContent = `${pad(Math.floor(frames / 90000) % 24)}:${pad(Math.floor(frames / 3750) % 60)}:${pad(Math.floor(frames / 25) % 60)}:${pad(frames % 25)}`
-      }
-    }, 500)
-    return () => clearInterval(timer)
-  }, [])
+  // 时间码 HUD 已随顶部 chrome 一起移除，这里不再需要 tcRef / 计时器。
 
   // 快切闪光 + SHOT 指示
+  // 选择器用 [data-shot] 而不是 .ac-shot：首屏已换成 VideoHero，
+  // 它不带 .ac-shot 的版式（那是镜头页的 padding），但仍然是 SHOT 01。
   useEffect(() => {
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    const shots = document.querySelectorAll<HTMLElement>('.ac-shot')
+    const shots = document.querySelectorAll<HTMLElement>('[data-shot]')
     const io = new IntersectionObserver((entries) => {
       for (const entry of entries) {
         if (!entry.isIntersecting) continue
@@ -124,18 +129,6 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
     return () => io.disconnect()
   }, [])
 
-  // 入场编排：intro 结束后启动
-  useEffect(() => {
-    if (!revealsOn) return
-    const io = new IntersectionObserver((entries) => {
-      for (const entry of entries) {
-        if (entry.isIntersecting) { entry.target.classList.add('ac-in'); io.unobserve(entry.target) }
-      }
-    }, { threshold: 0.15 })
-    document.querySelectorAll<HTMLElement>('.ac-cut').forEach((el) => io.observe(el))
-    return () => io.disconnect()
-  }, [revealsOn])
-
   if (!profile) {
     return (
       <div className="surface-panel rounded-lg p-lg">
@@ -144,74 +137,28 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
     )
   }
 
-  const featuredSkills = profile.skills.slice(0, 6)
-
   return (
-    <section className="ac-stage" aria-label="首页舞台">
-      {/* 取景器 chrome */}
+    <section ref={stageRef} className="ac-stage" aria-label="首页舞台">
+      {/* 取景器 chrome
+          顶部的 CAM / REC HUD 已移除：首屏换成 VideoHero 后它自带导航，
+          两组固定定位的 HUD 会和新导航抢同一个角落。
+          保留角标 + SHOT 指示 + 快切闪光，摄影棚的母题还在。 */}
       <div className="ac-corner ac-tl" aria-hidden="true" />
       <div className="ac-corner ac-tr" aria-hidden="true" />
       <div className="ac-corner ac-bl" aria-hidden="true" />
       <div className="ac-corner ac-br" aria-hidden="true" />
-      <div className="ac-vf ac-cam" aria-hidden="true"><i />KKHOMECAM_01 · 35MM · F1.8</div>
-      <div className="ac-vf ac-rec" aria-hidden="true"><i />REC <b ref={tcRef}>00:00:00:00</b></div>
       <div className="ac-vf ac-shotno" aria-hidden="true">
         SHOT <b ref={shotNoRef}>01</b> / 04
         <span className="ac-shotbar"><i ref={shotBarRef} style={{ transform: 'scaleX(0.25)' }} /></span>
       </div>
       <div className="ac-flash" ref={flashRef} aria-hidden="true" />
 
-      {/* 浮动导航 */}
-      <nav className="ac-nav" aria-label="快捷导航">
-        <div className="ac-nav-brand"><i />{profile.name}</div>
-        {modules.slice(0, 3).map((m) => (
-          <a key={m.id} href={m.href}>{m.label}</a>
-        ))}
-        {profile.email && (
-          <button type="button" className="ac-nav-cta" onClick={openContact}>
-            联系我
-            <span><svg width="11" height="11" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"><path d="M2 10L10 2M4 2h6v6" /></svg></span>
-          </button>
-        )}
-      </nav>
-
-      {/* SHOT 01 · 开场 */}
-      <section className="ac-shot" data-shot="1" aria-label="开场">
-        <div className="ac-speedlines" aria-hidden="true" />
-        <div className="ac-shot-no" aria-hidden="true">01</div>
-
-        <div className="ac-hero-copy">
-          <span className="ac-kicker ac-cut">PERSONAL SPACE · {profile.location}</span>
-          <h1 className="ac-display ac-hero-title ac-cut" style={{ '--d': '80ms' } as CSSProperties}>{profile.name}</h1>
-          <div className="ac-display ac-hero-slogan ac-cut" style={{ '--d': '140ms' } as CSSProperties} aria-hidden="true">
-            CODE THE <em>RUSH</em>
-          </div>
-          <p className="ac-hero-sub ac-cut" style={{ '--d': '200ms' } as CSSProperties}>{profile.bio}</p>
-          <div className="ac-chips ac-cut" style={{ '--d': '260ms' } as CSSProperties}>
-            {featuredSkills.map((skill) => <span key={skill} className="ac-chip">{skill}</span>)}
-          </div>
-          <div className="ac-cta ac-cut" style={{ '--d': '320ms' } as CSSProperties}>
-            {profile.email && (
-              <button type="button" className="ac-btn-fire" onClick={openContact}>
-                联系我
-                <span><svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"><path d="M2 10L10 2M4 2h6v6" /></svg></span>
-              </button>
-            )}
-            <a className="ac-btn-ghost" href="#/ai-tools">开始使用 ↓</a>
-          </div>
-        </div>
-
-        <div className="ac-figure ac-cut" style={{ '--d': '260ms' } as CSSProperties}>
-          <img src={profile.avatar} alt={profile.name} loading="eager" />
-          <div className="ac-figure-tag"><span>REC · LIVE</span><i /><span>4K / 60FPS</span></div>
-        </div>
-
-        <div className="ac-hero-meta ac-cut" style={{ '--d': '360ms' } as CSSProperties}>
-          <div><b>{profile.location}</b><span>BASE</span></div>
-          <div><b>{profile.skills.length}</b><span>CORE SKILLS</span></div>
-          <div><b>PAGES</b><span>CLOUDFLARE 静态部署</span></div>
-        </div>
-      </section>
+      {/* SHOT 01 · 开场：全屏视频 + 错峰文案
+          导航由 VideoHero 自己提供（品牌 + 路由 + 强调色 + 移动端菜单），
+          这里不再挂第二套 .ac-nav，否则两套导航会同时出现。 */}
+      <div data-shot="1" className="ac-shot-hero">
+        <VideoHero hero={hero} avatar={profile.avatar} stageReady={stageReady} />
+      </div>
 
       <div className="ac-splice" aria-hidden="true">
         <div className="ac-tape">
@@ -226,16 +173,16 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
         <div className="ac-shot-no" aria-hidden="true">02</div>
         <div className="ac-grid-head">
           <div>
-            <span className="ac-kicker ac-cut">SEQUENCE 02 · 导向</span>
-            <h2 className="ac-display ac-h2 ac-cut" style={{ '--d': '80ms' } as CSSProperties}>核心<em>模块</em></h2>
+            <span className="ac-kicker m-rise">SEQUENCE 02 · 导向</span>
+            <h2 className="ac-display ac-h2 m-rise">核心<em>模块</em></h2>
           </div>
-          <div className="ac-grid-note ac-cut" style={{ '--d': '160ms' } as CSSProperties}>
+          <div className="ac-grid-note m-rise">
             <b>{modules.length}</b> ROUTES / READY
           </div>
         </div>
         <div className="ac-cards">
           {modules.map((m, idx) => (
-            <a key={m.id} className={`ac-tcard ac-cut${idx === 0 ? ' ac-hot' : ''}`} href={m.href} style={{ '--d': `${120 + idx * 70}ms` } as CSSProperties}>
+            <a key={m.id} className={`ac-tcard m-rise${idx === 0 ? ' ac-hot' : ''}`} href={m.href}>
               <span className="ac-idx">M-{pad(idx + 1)}</span>
               <span className="ac-ico">
                 <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
@@ -261,16 +208,16 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
       {/* SHOT 03 · 遥测 */}
       <section className="ac-shot" data-shot="3" aria-label="数据与引言">
         <div className="ac-shot-no" aria-hidden="true">03</div>
-        <span className="ac-kicker ac-cut">SEQUENCE 03 · 遥测</span>
-        <h2 className="ac-display ac-h2 ac-cut" style={{ '--d': '80ms', marginTop: 18 } as CSSProperties}>
+        <span className="ac-kicker m-rise">SEQUENCE 03 · 遥测</span>
+        <h2 className="ac-display ac-h2 m-rise" style={{ marginTop: 18 }}>
           LIVE <em>DATA</em>
         </h2>
         <div className="ac-tele">
-          <div className="ac-cell ac-cut"><b>{modules.length}</b><span>ROUTES LIVE</span></div>
-          <div className="ac-cell ac-cut" style={{ '--d': '80ms' } as CSSProperties}><b>{profile.skills.length}</b><span>CORE SKILLS</span></div>
-          <div className="ac-cell ac-cut" style={{ '--d': '160ms' } as CSSProperties}><b>{new Date().getFullYear()}</b><span>BUILD YEAR</span></div>
+          <div className="ac-cell m-rise"><b>{modules.length}</b><span>ROUTES LIVE</span></div>
+          <div className="ac-cell m-rise"><b>{profile.skills.length}</b><span>CORE SKILLS</span></div>
+          <div className="ac-cell m-rise"><b>{new Date().getFullYear()}</b><span>BUILD YEAR</span></div>
           {quote && (
-            <div className="ac-cell ac-cell-wide ac-cut" style={{ '--d': '240ms' } as CSSProperties}>
+            <div className="ac-cell ac-cell-wide m-rise">
               <div className="ac-live"><i />DAILY QUOTE</div>
               <p className="ac-quote">&ldquo;{quote.text}&rdquo;</p>
               <span className="ac-quote-by">— {quote.author}{quote.source ? ` · ${quote.source}` : ''}</span>
@@ -291,14 +238,14 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
       <section className="ac-shot" data-shot="4" aria-label="联系">
         <div className="ac-speedlines ac-speedlines-alt" aria-hidden="true" />
         <div className="ac-shot-no" aria-hidden="true">04</div>
-        <span className="ac-kicker ac-cut">FINAL CUT · 联系</span>
-        <h2 className="ac-display ac-final-title ac-cut" style={{ '--d': '80ms', marginTop: 20 } as CSSProperties}>
+        <span className="ac-kicker m-rise">FINAL CUT · 联系</span>
+        <h2 className="ac-display ac-final-title m-rise" style={{ marginTop: 20 }}>
           来<em>聊</em>个项目
         </h2>
-        <p className="ac-final-sub ac-cut" style={{ '--d': '160ms' } as CSSProperties}>
+        <p className="ac-final-sub m-rise">
           有想法、有需求、或者只是想聊聊技术与速度——联系窗口随时开放。
         </p>
-        <div className="ac-cta ac-cut" style={{ '--d': '240ms' } as CSSProperties}>
+        <div className="ac-cta m-rise">
           {profile.email && (
             <button type="button" className="ac-btn-fire" onClick={openContact}>
               联系我
@@ -308,7 +255,7 @@ const ProfilePlugin = ({ config, stageReady = true }: Props) => {
           <a className="ac-btn-ghost" href="#/home" onClick={(e) => { e.preventDefault(); window.scrollTo({ top: 0, behavior: 'smooth' }) }}>回到片头 ↑</a>
         </div>
         {profile.email && (
-          <div className="ac-final-links ac-cut" style={{ '--d': '320ms' } as CSSProperties}>
+          <div className="ac-final-links m-rise">
             <a href={`mailto:${profile.email}`}>EMAIL ↗</a>
             <a href="#/ai-tools">工具导向 ↗</a>
             <a href="#/wish-wall">许愿墙 ↗</a>

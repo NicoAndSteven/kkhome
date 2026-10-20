@@ -24,5 +24,14 @@
   "motion": {
     "intro": true,
     "introDuration": 2400
+  },
+  "hero": {
+    "videoUrl": "/videos/hero-bg.mp4",
+    "videoPosition": "70% center",
+    "badge": "PERSONAL HUB · 北京，中国",
+    "headline": ["垣钰", "把想法做成", "能被使用的产品。"],
+    "subline": "专注于现代 Web 技术开发，热爱编写整洁代码和创新解决方案。",
+    "ctaLabel": "开始探索",
+    "ctaHref": "#/ai-tools"
   }
 }

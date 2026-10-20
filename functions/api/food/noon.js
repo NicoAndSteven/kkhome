@@ -13,7 +13,9 @@ const normalizeItem = (row) => ({
   createdAt: String(row.created_at),
 })
 
-// Rate-limit helper — one submission per 3 seconds per IP
+// Rate-limit helper — one creation per second per IP.
+// Only POST is throttled: deletes/renames are interactive actions in the menu
+// drawer, and a blanket 3s window made the second click in a row fail with 429.
 const requesterKey = (request) => {
   const ip = request.headers.get('CF-Connecting-IP')
     ?? request.headers.get('x-forwarded-for')?.split(',')[0]?.trim()
@@ -26,7 +28,7 @@ const RATE_LIMITS = new Map()
 const checkRateLimit = (key) => {
   const last = RATE_LIMITS.get(key)
   const now = Date.now()
-  if (last && now - last < 3_000) return false
+  if (last && now - last < 1_000) return false
   RATE_LIMITS.set(key, now)
   // Lightweight cleanup — keep map from growing unbounded
   if (RATE_LIMITS.size > 5_000) {
@@ -66,10 +68,6 @@ export const onRequestPost = async ({ request, env }) => {
     return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
   }
 
-  if (!checkRateLimit(requesterKey(request))) {
-    return fail('too_many_requests', 'Too many requests', 429, { request, env })
-  }
-
   let body
   try {
     body = await request.json()
@@ -80,6 +78,10 @@ export const onRequestPost = async ({ request, env }) => {
   const name = String(body.name ?? '').trim()
   if (name.length < 1 || name.length > 40) {
     return fail('invalid_name', 'Name must be 1-40 chars', 400, { request, env })
+  }
+
+  if (!checkRateLimit(requesterKey(request))) {
+    return fail('too_many_requests', 'Too many requests', 429, { request, env })
   }
 
   const item = {
@@ -101,10 +103,6 @@ export const onRequestDelete = async ({ request, env }) => {
   const db = requireDb(env)
   if (!db) {
     return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
-  }
-
-  if (!checkRateLimit(requesterKey(request))) {
-    return fail('too_many_requests', 'Too many requests', 429, { request, env })
   }
 
   let body
@@ -134,10 +132,6 @@ export const onRequestPut = async ({ request, env }) => {
   const db = requireDb(env)
   if (!db) {
     return fail('binding_unavailable', 'WISHES_DB is not configured', 503, { request, env })
-  }
-
-  if (!checkRateLimit(requesterKey(request))) {
-    return fail('too_many_requests', 'Too many requests', 429, { request, env })
   }
 
   let body

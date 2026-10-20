@@ -1,4 +1,4 @@
-import { FoodItem, Period, EveningData } from './types'
+import type { FoodItem, Period, EveningData } from './types'
 
 const STORAGE_KEYS = {
   EVENING: 'hub:food-evening',
@@ -6,65 +6,111 @@ const STORAGE_KEYS = {
   NOON_FALLBACK: 'hub:food-noon',
 } as const
 
+// ── Shared API helpers ──
+//
+// The site is deployed as static assets + Cloudflare Pages Functions. `npm run dev`
+// (plain Vite) does not serve `/functions`, so every API write answers 404 — and a SPA
+// fallback answers 200 with HTML. Treat "no JSON body" and 5xx as "API unavailable" and
+// fall back to localStorage, so the menu stays usable in dev/offline. A real refusal
+// (400/404 not_found/429) must NOT be masked: the UI has to show the failure.
+
+type ApiOutcome<T> =
+  | { status: 'ok'; data: T }
+  | { status: 'unavailable' }
+  | { status: 'rejected' }
+
+async function callFoodApi<T>(input: string, init?: RequestInit): Promise<ApiOutcome<T>> {
+  try {
+    const res = await fetch(input, init)
+    const contentType = res.headers.get('content-type') ?? ''
+    if (!contentType.includes('application/json')) return { status: 'unavailable' }
+
+    let payload: { ok?: boolean; data?: T } | null = null
+    try { payload = await res.json() as { ok?: boolean; data?: T } } catch { return { status: 'unavailable' } }
+
+    if (res.ok && payload?.ok) return { status: 'ok', data: payload.data as T }
+    return { status: res.status >= 500 ? 'unavailable' : 'rejected' }
+  } catch {
+    return { status: 'unavailable' }
+  }
+}
+
 // ── Noon items — shared API (D1-backed), localStorage fallback ──
 
-export async function loadNoonItems(): Promise<FoodItem[]> {
-  try {
-    const res = await fetch('/api/food/noon')
-    if (!res.ok) throw new Error('API unavailable')
-    const payload = await res.json() as { ok: boolean; data?: { items?: Array<{ id: string; name: string; createdAt: string }> } }
-    const items = payload?.data?.items
-    if (Array.isArray(items) && items.length > 0) {
-      // Map API shape → FoodItem (source is always 'user' for shared noon items)
-      const mapped: FoodItem[] = items.map((i) => ({ id: i.id, name: i.name, source: 'user' as const }))
-      // Update fallback cache so offline reads still have data
-      localStorage.setItem(STORAGE_KEYS.NOON_FALLBACK, JSON.stringify(mapped))
-      return mapped
-    }
-  } catch { /* fall through to fallback */ }
-
-  // Fallback: read from localStorage (offline / API not deployed yet)
+function readNoonCache(): FoodItem[] {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.NOON_FALLBACK)
-    return raw ? (JSON.parse(raw) as FoodItem[]) : []
+    const parsed = raw ? JSON.parse(raw) : []
+    return Array.isArray(parsed) ? parsed as FoodItem[] : []
   } catch { return [] }
 }
 
+function writeNoonCache(items: FoodItem[]): void {
+  try { localStorage.setItem(STORAGE_KEYS.NOON_FALLBACK, JSON.stringify(items)) } catch { /* ignore quota errors */ }
+}
+
+export async function loadNoonItems(): Promise<FoodItem[]> {
+  const outcome = await callFoodApi<{ items?: Array<{ id: string; name: string; createdAt: string }> }>('/api/food/noon')
+  if (outcome.status === 'ok' && Array.isArray(outcome.data?.items)) {
+    // Map API shape → FoodItem (source is always 'user' for shared noon items).
+    // An empty server list is authoritative — do not resurrect a stale offline cache.
+    const mapped: FoodItem[] = outcome.data.items.map((i) => ({ id: i.id, name: i.name, source: 'user' as const }))
+    writeNoonCache(mapped)
+    return mapped
+  }
+  return readNoonCache()
+}
+
 export async function addNoonItem(name: string): Promise<FoodItem | null> {
-  try {
-    const res = await fetch('/api/food/noon', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name }),
-    })
-    if (!res.ok) return null
-    const payload = await res.json() as { ok: boolean; data?: { item?: { id: string; name: string; createdAt: string } } }
-    const item = payload?.data?.item
-    if (item) return { id: item.id, name: item.name, source: 'user' as const }
-    return null
-  } catch { return null }
+  const trimmed = name.trim()
+  if (!trimmed) return null
+
+  const outcome = await callFoodApi<{ item?: { id: string; name: string; createdAt: string } }>('/api/food/noon', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: trimmed }),
+  })
+
+  if (outcome.status === 'ok') {
+    const item = outcome.data?.item
+    return item ? { id: item.id, name: item.name, source: 'user' as const } : null
+  }
+  if (outcome.status === 'rejected') return null
+
+  const item: FoodItem = { id: genId(), name: trimmed, source: 'user' }
+  writeNoonCache([...readNoonCache(), item])
+  return item
 }
 
 export async function renameNoonItem(id: string, name: string): Promise<boolean> {
-  try {
-    const res = await fetch('/api/food/noon', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, name }),
-    })
-    return res.ok
-  } catch { return false }
+  const trimmed = name.trim()
+  if (!trimmed) return false
+
+  const outcome = await callFoodApi('/api/food/noon', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, name: trimmed }),
+  })
+
+  if (outcome.status === 'ok') return true
+  if (outcome.status === 'rejected') return false
+
+  writeNoonCache(readNoonCache().map((i) => i.id === id ? { ...i, name: trimmed } : i))
+  return true
 }
 
 export async function deleteNoonItem(id: string): Promise<boolean> {
-  try {
-    const res = await fetch('/api/food/noon', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    })
-    return res.ok
-  } catch { return false }
+  const outcome = await callFoodApi('/api/food/noon', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+
+  if (outcome.status === 'ok') return true
+  if (outcome.status === 'rejected') return false
+
+  writeNoonCache(readNoonCache().filter((i) => i.id !== id))
+  return true
 }
 
 // ── Time helpers (Beijing time) ──
@@ -103,76 +149,111 @@ interface EveningApiResponse {
   disabledIds: string[]
 }
 
-export async function loadEveningData(): Promise<EveningData> {
-  try {
-    const res = await fetch('/api/food/evening')
-    if (!res.ok) throw new Error('API unavailable')
-    const payload = await res.json() as { ok: boolean; data?: EveningApiResponse }
-    const data = payload?.data
-    if (data) {
-      const result: EveningData = {
-        custom: data.custom.map((i) => ({ id: i.id, name: i.name, source: 'user' as const })),
-        disabledIds: data.disabledIds,
-      }
-      // Update fallback cache
-      localStorage.setItem(STORAGE_KEYS.EVENING, JSON.stringify(result))
-      return result
-    }
-  } catch { /* fall through to fallback */ }
-
-  // Fallback: read from localStorage
+function readEveningCache(): EveningData {
   try {
     const raw = localStorage.getItem(STORAGE_KEYS.EVENING)
-    return raw ? (JSON.parse(raw) as EveningData) : { custom: [], disabledIds: [] }
+    if (!raw) return { custom: [], disabledIds: [] }
+    const parsed = JSON.parse(raw) as Partial<EveningData> | null
+    return {
+      custom: Array.isArray(parsed?.custom) ? parsed.custom : [],
+      disabledIds: Array.isArray(parsed?.disabledIds) ? parsed.disabledIds : [],
+    }
   } catch { return { custom: [], disabledIds: [] } }
 }
 
+function writeEveningCache(data: EveningData): void {
+  try { localStorage.setItem(STORAGE_KEYS.EVENING, JSON.stringify(data)) } catch { /* ignore quota errors */ }
+}
+
+export async function loadEveningData(): Promise<EveningData> {
+  const outcome = await callFoodApi<EveningApiResponse>('/api/food/evening')
+  if (outcome.status === 'ok' && outcome.data) {
+    const result: EveningData = {
+      custom: Array.isArray(outcome.data.custom)
+        ? outcome.data.custom.map((i) => ({ id: i.id, name: i.name, source: 'user' as const }))
+        : [],
+      disabledIds: Array.isArray(outcome.data.disabledIds) ? outcome.data.disabledIds : [],
+    }
+    writeEveningCache(result)
+    return result
+  }
+  return readEveningCache()
+}
+
 export async function addEveningItem(name: string): Promise<FoodItem | null> {
-  try {
-    const res = await fetch('/api/food/evening', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name }),
-    })
-    if (!res.ok) return null
-    const payload = await res.json() as { ok: boolean; data?: { item?: { id: string; name: string; createdAt: string } } }
-    const item = payload?.data?.item
-    if (item) return { id: item.id, name: item.name, source: 'user' as const }
-    return null
-  } catch { return null }
+  const trimmed = name.trim()
+  if (!trimmed) return null
+
+  const outcome = await callFoodApi<{ item?: { id: string; name: string; createdAt: string } }>('/api/food/evening', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ name: trimmed }),
+  })
+
+  if (outcome.status === 'ok') {
+    const item = outcome.data?.item
+    return item ? { id: item.id, name: item.name, source: 'user' as const } : null
+  }
+  if (outcome.status === 'rejected') return null
+
+  const item: FoodItem = { id: genId(), name: trimmed, source: 'user' }
+  const current = readEveningCache()
+  writeEveningCache({ ...current, custom: [...current.custom, item] })
+  return item
 }
 
 export async function renameEveningItem(id: string, name: string): Promise<boolean> {
-  try {
-    const res = await fetch('/api/food/evening', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id, name }),
-    })
-    return res.ok
-  } catch { return false }
+  const trimmed = name.trim()
+  if (!trimmed) return false
+
+  const outcome = await callFoodApi('/api/food/evening', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id, name: trimmed }),
+  })
+
+  if (outcome.status === 'ok') return true
+  if (outcome.status === 'rejected') return false
+
+  const current = readEveningCache()
+  writeEveningCache({ ...current, custom: current.custom.map((i) => i.id === id ? { ...i, name: trimmed } : i) })
+  return true
 }
 
 export async function deleteEveningItem(id: string): Promise<boolean> {
-  try {
-    const res = await fetch('/api/food/evening', {
-      method: 'DELETE',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ id }),
-    })
-    return res.ok
-  } catch { return false }
+  const outcome = await callFoodApi('/api/food/evening', {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ id }),
+  })
+
+  if (outcome.status === 'ok') return true
+  if (outcome.status === 'rejected') return false
+
+  const current = readEveningCache()
+  writeEveningCache({ ...current, custom: current.custom.filter((i) => i.id !== id) })
+  return true
 }
 
 export async function toggleEveningRecipe(recipeId: string): Promise<boolean> {
-  try {
-    const res = await fetch('/api/food/evening', {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ recipeId }),
-    })
-    return res.ok
-  } catch { return false }
+  const outcome = await callFoodApi('/api/food/evening', {
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ recipeId }),
+  })
+
+  if (outcome.status === 'ok') return true
+  if (outcome.status === 'rejected') return false
+
+  const current = readEveningCache()
+  const wasDisabled = current.disabledIds.includes(recipeId)
+  writeEveningCache({
+    ...current,
+    disabledIds: wasDisabled
+      ? current.disabledIds.filter((id) => id !== recipeId)
+      : [...current.disabledIds, recipeId],
+  })
+  return true
 }
 
 export function loadTodayResult(): { item: FoodItem; period: Period } | null {

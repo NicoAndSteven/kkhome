@@ -1,5 +1,31 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { expect, test } from '@playwright/test'
+import { expect, test, type Locator } from '@playwright/test'
+
+/**
+ * 取一组元素的**可见文本**。
+ *
+ * 为什么不能直接用 `toHaveText`：逐字揭示用的 `splitText` 默认 `accessible: true`，
+ * 会往元素里插一份视觉隐藏的完整文本副本（`position:absolute` + 1px 见方 +
+ * `clip-path: inset(50%)`）供读屏软件朗读。于是 `textContent` = 可见文本 + 副本，
+ * 断言会读到两倍 —— 但页面上只显示一份。
+ *
+ * 这里剔除那个副本，对「有没有开逐字拆分」两种状态都成立，
+ * 所以拆不拆都不会让这条用例假红。
+ */
+const readVisibleText = (locator: Locator) =>
+  locator.evaluateAll((els) =>
+    els.map((el) =>
+      Array.from(el.childNodes)
+        .filter((node) => {
+          // 文本节点永远不是那个副本，保留
+          if (node.nodeType !== Node.ELEMENT_NODE) return true
+          const style = getComputedStyle(node as Element)
+          return !(style.position === 'absolute' && style.width === '1px')
+        })
+        .map((node) => node.textContent ?? '')
+        .join(''),
+    ),
+  )
 
 const readAdminPassword = () => {
   for (const path of ['.env.local', '.env']) {
@@ -217,7 +243,7 @@ test('routes stay within desktop and mobile viewports', async ({ browser }) => {
       } else {
         // 桌面端有序号导轨，移动端有 MobileTabBar
         if (!viewport.isMobile) {
-          await page.locator('.ac-rail').waitFor({ state: 'attached', timeout: 7_000 })
+          await page.locator('.kk-nav').waitFor({ state: 'attached', timeout: 7_000 })
         } else {
           await page.waitForTimeout(3000)
         }
@@ -741,7 +767,7 @@ test('admin party question bank supports filtering and status toggles', async ({
   await expect(page.getByText('当前筛选下没有真心话大冒险题目。')).toBeVisible()
 })
 
-test('action-cut routing shell renders rail, shot header and switches routes', async ({ page }) => {
+test('routing shell renders nav, route header and switches routes', async ({ page }) => {
   test.setTimeout(60_000)
 
   await page.route('**/api/health', async (route) => {
@@ -758,24 +784,116 @@ test('action-cut routing shell renders rail, shot header and switches routes', a
   await page.goto('/#/ai-tools', { waitUntil: 'domcontentloaded' })
   await page.waitForTimeout(2500)
 
-  // 超薄序号轨：数字导航
-  await expect(page.locator('.ac-rail')).toBeVisible()
-  await expect(page.locator('.ac-rail-nav')).toHaveCount(1)
-  await expect(page.locator('.ac-rail-num[aria-label="导向"]')).toBeVisible()
+  // 导航轨：序号 + 常驻标签
+  await expect(page.locator('.kk-nav')).toBeVisible()
+  await expect(page.locator('.kk-nav-list')).toHaveCount(1)
+  await expect(page.locator('.kk-nav-item[aria-label="导向"]')).toBeVisible()
 
-  // 镜头页页头：kicker + h1 大字 + 序号水印
-  await expect(page.locator('.ac-shot-kicker')).toContainText('MODULE /')
+  // 路由页头：kicker + h1 大字 + 描边序号
+  await expect(page.locator('.kk-head-kicker')).toContainText('MODULE /')
   await expect(page.getByRole('heading', { name: '导向' })).toBeVisible()
-  await expect(page.locator('.ac-shotno')).toBeVisible()
+  await expect(page.locator('.kk-head-idx')).toBeVisible()
 
-  // 切到看盘：shot header 更新 + rail 高亮跟随
+  // 切到看盘：页头更新 + 导航高亮跟随
   await page.evaluate(() => { window.location.hash = '#/stock-watch' })
   await page.waitForTimeout(1500)
   await expect(page.getByRole('heading', { name: '看盘' })).toBeVisible()
-  await expect(page.locator('.ac-rail-num[aria-label="看盘"]')).toHaveAttribute('aria-current', 'page')
+  await expect(page.locator('.kk-nav-item[aria-label="看盘"]')).toHaveAttribute('aria-current', 'page')
 
   // 非法路由归一 home，回到欢迎页
   await page.evaluate(() => { window.location.hash = '#/nope' })
   await page.waitForTimeout(1500)
   await expect(page.getByRole('heading', { name: '垣钰' })).toBeVisible()
+})
+
+/**
+ * 首屏 VideoHero 与强调色切换的护栏。
+ *
+ * 这两块是 Action-Cut 首屏改造新加的表面，此前只有「标题文本存在」这一条间接
+ * 覆盖 —— 换素材、改配置、把强调色从 CSS 属性改回内联变量，都不会变红。
+ * 这里把各自的契约钉住：
+ *   1. 文案来自 site.config.json 的 hero 块，不是写死在组件里；
+ *   2. 背景视频不可用时降级到渐变，并**明确告知**，不静默；
+ *   3. 强调色由 html[data-accent] 驱动并可持久化。
+ *
+ * reducedMotion 显式钉成 no-preference：视频降级分支只有在允许动效时才会走到
+ * （reduced 时 showVideo 恒为 false，根本不会触发 onError）。不钉住的话，
+ * 这条用例在「系统开了减弱动效」的机器上会假红 —— 那不是它要测的东西。
+ */
+test.describe('action-cut hero guardrails', () => {
+  test.use({ reducedMotion: 'no-preference' })
+
+  test('homepage hero renders copy from site config and degrades when the video fails', async ({ page }) => {
+    test.setTimeout(60_000)
+
+    const hero = {
+      videoUrl: '/videos/hero-bg.mp4',
+      videoPosition: '60% center',
+      badge: 'E2E BADGE · 测试',
+      headline: ['E2E 第一行', 'E2E 第二行'],
+      subline: 'E2E 副标题',
+      ctaLabel: 'E2E 入口',
+      ctaHref: '#/wish-wall',
+    }
+
+    // 只换 hero 块，其余配置照常从真实文件读
+    await page.route('**/config/site.config.json', async (route) => {
+      const response = await route.fetch()
+      const body = (await response.json()) as Record<string, unknown>
+      await route.fulfill({ json: { ...body, hero } })
+    })
+    await page.route('**/api/health', (route) =>
+      route.fulfill({ json: { ok: true, data: { bindings: {}, features: {} } } }),
+    )
+    // 让背景视频加载失败，走降级分支
+    await page.route('**/videos/hero-bg.mp4', (route) => route.abort('failed'))
+
+    await page.goto('/')
+    await expect(page.locator('.intro-stage')).toBeHidden({ timeout: 8_000 })
+
+    // 文案来自配置：改 site.config.json 的 hero 块，页面必须跟着变
+    await expect(page.locator('.vh')).toBeVisible()
+    await expect(page.locator('.vh-badge')).toHaveText(hero.badge)
+    // 标题不能用 toHaveText：逐字揭示用的 splitText 会额外插入一份**视觉隐藏**的
+    // 完整文本副本（给读屏用），于是 textContent 是「可见文本 + 副本」的拼接，
+    // 断言会读到两倍。这里只取可见文本。
+    expect(await readVisibleText(page.locator('.vh-line'))).toEqual(hero.headline)
+    await expect(page.locator('.vh-sub')).toHaveText(hero.subline)
+    await expect(page.locator('.vh-cta')).toContainText(hero.ctaLabel)
+    await expect(page.locator('.vh-cta')).toHaveAttribute('href', hero.ctaHref)
+
+    // 视频不可用：兜底渐变仍在，且明确告知降级（不是一片黑，也不是静默失败）
+    await expect(page.locator('.vh-fallback')).toBeVisible()
+    await expect(page.locator('.vh-note')).toBeVisible()
+    await expect(page.locator('.vh-video')).toHaveCount(0)
+  })
+
+  test('accent switcher drives html[data-accent] and survives a reload', async ({ page }) => {
+    test.setTimeout(60_000)
+
+    await page.route('**/api/health', (route) =>
+      route.fulfill({ json: { ok: true, data: { bindings: {}, features: {} } } }),
+    )
+    await page.route('**/api/music/songs', (route) =>
+      route.fulfill({ json: { ok: true, data: { songs: [] } } }),
+    )
+
+    await page.setViewportSize({ width: 1440, height: 1000 })
+    await page.goto('/#/ai-tools', { waitUntil: 'domcontentloaded' })
+    await expect(page.locator('.kk-nav')).toBeVisible()
+
+    // 默认色在首帧之前就已落盘（main.tsx），不是等切换器挂载后才生效
+    await expect(page.locator('html')).toHaveAttribute('data-accent', 'klein')
+
+    await page.getByRole('button', { name: '强调色' }).click()
+    await page.getByRole('button', { name: '等离子紫' }).click()
+
+    // 颜色由 html 属性驱动（明暗组合交给 CSS 算），不是 JS 写内联变量
+    await expect(page.locator('html')).toHaveAttribute('data-accent', 'plasma')
+    expect(await page.evaluate(() => localStorage.getItem('hub:accent'))).toBe('plasma')
+
+    // 刷新后仍是用户选的色
+    await page.reload({ waitUntil: 'domcontentloaded' })
+    await expect(page.locator('html')).toHaveAttribute('data-accent', 'plasma')
+  })
 })

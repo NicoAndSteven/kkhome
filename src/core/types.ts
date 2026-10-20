@@ -40,10 +40,28 @@ export interface MotionConfig {
   introDuration: number
 }
 
+/**
+ * 首页首屏（Video Hero）配置。
+ * 文案与视频地址都走配置，不写死在组件里 —— 换素材不用改代码。
+ */
+export interface HeroConfig {
+  /** 背景视频地址。留空则退化为渐变背景（不是静默失败，是明确的降级路径）。 */
+  videoUrl: string
+  /** 视频 object-position，默认偏右留出文字空间 */
+  videoPosition: string
+  badge: string
+  /** 标题按行拆分：每行独立参与错峰入场 */
+  headline: string[]
+  subline: string
+  ctaLabel: string
+  ctaHref: string
+}
+
 export interface AppConfig {
   site: SiteConfig
   profile: ProfileConfig
   motion: MotionConfig
+  hero: HeroConfig
 }
 
 /**

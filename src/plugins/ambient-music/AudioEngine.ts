@@ -19,6 +19,19 @@ type EngineListener = (tracks: TrackState[]) => void
 export class AudioEngine {
   private ctx: AudioContext | null = null
   private masterGain: GainNode | null = null
+  /**
+   * 频谱分析器。串在 master 和 destination 之间 —— 直通，不改变听感，
+   * 但能读到**真实**的频谱数据。
+   *
+   * 为什么值得加：这个插件原来的"频谱条"是假的 —— 固定节奏上下摆动
+   * （`animation: mini-bar 0.8s … infinite alternate`），跟实际在响什么毫无关系。
+   * 而这个插件的音源全部是 Web Audio 合成的（见 tracks.ts 的 `category: 'synth'`），
+   * 所以拿到真实频谱的成本就是在图里插一个节点。
+   */
+  private analyser: AnalyserNode | null = null
+  /** 显式标成 `Uint8Array<ArrayBuffer>` —— `getByteFrequencyData` 不接受
+   *  `Uint8Array<ArrayBufferLike>`（TS 5.7 起 TypedArray 带了缓冲区类型参数）。 */
+  private freqData: Uint8Array<ArrayBuffer> | null = null
   private sources: Map<string, { node: AudioBufferSourceNode; gain: GainNode; buffer: AudioBuffer }> = new Map()
   private trackConfigs: Map<string, { buffer: AudioBuffer; volume: number; _progress: number; duration: number }> = new Map()
   private listeners: Set<EngineListener> = new Set()
@@ -31,12 +44,54 @@ export class AudioEngine {
     if (!this.ctx) {
       this.ctx = new AudioContext()
       this.masterGain = this.ctx.createGain()
-      this.masterGain.connect(this.ctx.destination)
+
+      this.analyser = this.ctx.createAnalyser()
+      this.analyser.fftSize = 256
+      // 0.75 让柱子有轻微余韵，不会随每一帧抖动
+      this.analyser.smoothingTimeConstant = 0.75
+      this.freqData = new Uint8Array(this.analyser.frequencyBinCount)
+
+      this.masterGain.connect(this.analyser)
+      this.analyser.connect(this.ctx.destination)
     }
     if (this.ctx.state === 'suspended') {
       this.ctx.resume()
     }
     return { ctx: this.ctx, master: this.masterGain! }
+  }
+
+  /**
+   * 读取当前频谱，按**对数**分桶归一化到 0–1（低频在前）。
+   *
+   * 为什么必须对数分桶：音频能量大致按频率倒数衰减，线性分桶会让高频那几根
+   * 柱子永远是 0，看起来像坏了。人耳本身也是对数的，按对数切才符合直觉。
+   *
+   * 没有任何音轨在播时返回全 0 —— 调用方据此停止 rAF 循环。
+   */
+  getLevels(bars = 5, minHz = 60, maxHz = 6000): number[] {
+    const analyser = this.analyser
+    const data = this.freqData
+    if (!analyser || !data || this.sources.size === 0 || !this.ctx) {
+      return new Array(bars).fill(0)
+    }
+    analyser.getByteFrequencyData(data)
+
+    const nyquist = this.ctx.sampleRate / 2
+    const out: number[] = []
+    for (let i = 0; i < bars; i++) {
+      const f0 = minHz * Math.pow(maxHz / minHz, i / bars)
+      const f1 = minHz * Math.pow(maxHz / minHz, (i + 1) / bars)
+      const i0 = Math.max(0, Math.floor((f0 / nyquist) * data.length))
+      const i1 = Math.min(data.length - 1, Math.max(i0, Math.ceil((f1 / nyquist) * data.length)))
+      let sum = 0
+      let n = 0
+      for (let k = i0; k <= i1; k++) {
+        sum += data[k]
+        n++
+      }
+      out.push(n > 0 ? sum / n / 255 : 0)
+    }
+    return out
   }
 
   /** 注册一个音轨的 AudioBuffer */
@@ -192,6 +247,8 @@ export class AudioEngine {
       this.ctx.close()
       this.ctx = null
       this.masterGain = null
+      this.analyser = null
+      this.freqData = null
     }
     this.listeners.clear()
   }

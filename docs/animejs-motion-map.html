@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>anime.js 4.5 · 能力盘点与改造地图</title>
+<style>
+  :root {
+    --klein: #002FA7;
+    --klein-soft: #e8edfb;
+    --ink: #10131c;
+    --ink-2: #414755;
+    --ink-3: #7b8294;
+    --line: #dfe3ec;
+    --line-2: #eef1f6;
+    --bg: #ffffff;
+    --bg-2: #f7f8fb;
+    --ok: #0f6e56;
+    --ok-bg: #e1f5ee;
+    --warn: #854f0b;
+    --warn-bg: #faeeda;
+    --no: #a32d2d;
+    --no-bg: #fcebeb;
+    --mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    --sans: system-ui, -apple-system, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei", sans-serif;
+    --cut: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 400 15px/1.75 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 1000px; margin: 0 auto; padding: 0 28px 96px; }
+
+  /* ── 页头 ── */
+  header {
+    border-bottom: 1px solid var(--line);
+    padding: 56px 0 32px; margin-bottom: 44px;
+  }
+  .kicker {
+    font: 500 11px/1 var(--mono); letter-spacing: .22em; text-transform: uppercase;
+    color: var(--klein); display: block; margin-bottom: 18px;
+  }
+  h1 { font-size: 38px; line-height: 1.12; letter-spacing: -.025em; margin: 0 0 16px; font-weight: 600; }
+  h1 em { font-style: normal; color: var(--ink-3); }
+  .lede { font-size: 16px; color: var(--ink-2); margin: 0; max-width: 62ch; }
+  .meta {
+    display: flex; flex-wrap: wrap; gap: 8px 22px; margin-top: 26px;
+    font: 400 12px/1.5 var(--mono); color: var(--ink-3);
+  }
+  .meta b { color: var(--ink); font-weight: 500; }
+
+  /* ── 区块 ── */
+  section { margin-bottom: 60px; }
+  h2 {
+    font-size: 13px; font-weight: 500; letter-spacing: .16em; text-transform: uppercase;
+    color: var(--klein); margin: 0 0 6px; font-family: var(--mono);
+  }
+  h2 .n { color: var(--ink-3); margin-right: 10px; }
+  .h2sub { font-size: 20px; font-weight: 500; letter-spacing: -.01em; margin: 0 0 20px; }
+  h3 { font-size: 16px; font-weight: 500; margin: 30px 0 10px; }
+  p { margin: 0 0 14px; color: var(--ink-2); }
+  p strong, li strong { color: var(--ink); font-weight: 500; }
+  code {
+    font: 400 13px/1.5 var(--mono); background: var(--bg-2);
+    border: 1px solid var(--line-2); border-radius: 4px; padding: 1px 5px; color: #1f2937;
+  }
+  a { color: var(--klein); }
+
+  /* ── 表格 ── */
+  .scroll { overflow-x: auto; margin: 0 0 20px; }
+  table { border-collapse: collapse; width: 100%; font-size: 13.5px; min-width: 620px; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line-2); vertical-align: top; }
+  th {
+    font: 500 11px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+    color: var(--ink-3); border-bottom: 1px solid var(--line); white-space: nowrap;
+  }
+  tbody tr:hover { background: var(--bg-2); }
+  td.mono { font-family: var(--mono); font-size: 12.5px; }
+  td.num { font-family: var(--mono); font-variant-numeric: tabular-nums; white-space: nowrap; }
+
+  /* ── 标签 ── */
+  .tag {
+    display: inline-block; font: 500 11px/1.6 var(--mono); letter-spacing: .06em;
+    padding: 1px 8px; border-radius: 3px; white-space: nowrap;
+  }
+  .t-ok { background: var(--ok-bg); color: var(--ok); }
+  .t-warn { background: var(--warn-bg); color: var(--warn); }
+  .t-no { background: var(--no-bg); color: var(--no); }
+  .t-k { background: var(--klein-soft); color: var(--klein); }
+  .t-line { background: transparent; color: var(--ink-3); border: 1px solid var(--line); }
+
+  /* ── 卡片 ── */
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); }
+  .card {
+    border: 1px solid var(--line); border-radius: 10px; padding: 18px 20px; background: var(--bg);
+  }
+  .card h4 { margin: 0 0 8px; font-size: 14.5px; font-weight: 500; }
+  .card p { margin: 0; font-size: 13.5px; }
+  .card .ev {
+    margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--line);
+    font: 400 12px/1.6 var(--mono); color: var(--ink-3); word-break: break-word;
+  }
+  .card .ev b { color: var(--ink-2); font-weight: 500; }
+
+  /* ── 指标 ── */
+  .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(128px, 1fr)); gap: 10px; margin: 0 0 22px; }
+  .metric { background: var(--bg-2); border-radius: 8px; padding: 14px 16px; }
+  .metric .l { font: 400 11.5px/1.4 var(--mono); color: var(--ink-3); letter-spacing: .04em; }
+  .metric .v { font: 500 26px/1.2 var(--sans); letter-spacing: -.02em; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .metric .u { font: 400 12px/1.4 var(--mono); color: var(--ink-3); }
+
+  /* ── 引用块 ── */
+  .note {
+    border-left: 3px solid var(--klein); background: var(--bg-2);
+    padding: 14px 18px; border-radius: 0 8px 8px 0; margin: 0 0 20px;
+  }
+  .note p:last-child { margin-bottom: 0; }
+  .note.warn { border-left-color: var(--warn); }
+  .note.no { border-left-color: var(--no); }
+  .note.ok { border-left-color: var(--ok); }
+
+  ul, ol { margin: 0 0 16px; padding-left: 22px; color: var(--ink-2); }
+  li { margin-bottom: 6px; }
+  li::marker { color: var(--ink-3); }
+
+  /* ── 层级条 ── */
+  .tier { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; margin-bottom: 18px; }
+  .tier-h { display: flex; align-items: center; gap: 12px; padding: 14px 18px; background: var(--bg-2); border-bottom: 1px solid var(--line); }
+  .tier-h .badge {
+    font: 500 11px/1 var(--mono); letter-spacing: .1em; padding: 5px 9px; border-radius: 4px;
+  }
+  .tier-h h4 { margin: 0; font-size: 15px; font-weight: 500; }
+  .tier-h .why { margin-left: auto; font-size: 12.5px; color: var(--ink-3); }
+  .tier-b { padding: 4px 0; }
+  .tier-b .row { display: flex; gap: 14px; padding: 12px 18px; border-bottom: 1px solid var(--line-2); }
+  .tier-b .row:last-child { border-bottom: none; }
+  .tier-b .row .loc { flex: 0 0 190px; font: 400 12.5px/1.6 var(--mono); color: var(--klein); word-break: break-all; }
+  .tier-b .row .body { flex: 1; min-width: 0; font-size: 13.5px; }
+  .tier-b .row .body .now { color: var(--ink-3); }
+  .tier-b .row .body .to { color: var(--ink); }
+  @media (max-width: 640px) {
+    .tier-b .row { flex-direction: column; gap: 5px; }
+    .tier-b .row .loc { flex: none; }
+    h1 { font-size: 29px; }
+    .tier-h { flex-wrap: wrap; }
+    .tier-h .why { margin-left: 0; flex-basis: 100%; }
+  }
+
+  footer { border-top: 1px solid var(--line); padding-top: 22px; margin-top: 70px; font-size: 13px; color: var(--ink-3); }
+  footer code { font-size: 12px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header>
+  <span class="kicker">Motion audit · anime.js 4.5.0</span>
+  <h1>能力盘点与改造地图<br /><em>哪些地方值得上 anime.js，哪些不该动</em></h1>
+  <p class="lede">
+    这份文档做两件事：先用可复现的实验确认 anime.js 4.5 到底能做什么（不靠文档转述），
+    再把这个仓库里每一处动效按「CSS 做不到 / 能做但更差 / 不该动」三档归类，给出改造优先级。
+  </p>
+  <div class="meta">
+    <span><b>15</b> 项 API 实测</span>
+    <span><b>70</b> tsx · <b>26</b> ts</span>
+    <span><b>2364</b> 行动效样式</span>
+    <span><b>35</b> keyframes</span>
+    <span>实测环境 Chromium · 2026-09-28</span>
+  </div>
+</header>
+
+<!-- ══════════════ 1. 验证结论 ══════════════ -->
+<section>
+  <h2><span class="n">01</span>验证结论</h2>
+  <p class="h2sub">15 项 API 全部可用，但其中 5 项我一开始用错了</p>
+
+  <p>
+    我写了一个独立的探针页（UMD 包直载，不经构建），逐项跑通并记录证据。
+    下面每个数字都是实测输出，不是文档抄录。
+  </p>
+
+  <div class="metrics">
+    <div class="metric"><div class="l">实测通过</div><div class="v">15<span class="u">/15</span></div></div>
+    <div class="metric"><div class="l">控制台错误</div><div class="v">0</div></div>
+    <div class="metric"><div class="l">初版误判</div><div class="v">5<span class="u"> 项</span></div></div>
+    <div class="metric"><div class="l">真实鼠标拖拽</div><div class="v">223<span class="u"> px</span></div></div>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead>
+      <tr><th>能力</th><th>实测证据</th><th>结论</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>createLayout</code><br /><span class="tag t-k">FLIP</span></td>
+          <td class="mono">DOM 重排 [10,68,126,184] → [184,10,68,126]<br />translate 逐帧 6.19 → 20.6 → 43.4 → 75.8 → 111.6 → 139.1 → 171.0px<br />root 加 <code>is-animated</code>，结束后内联样式清空</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>createDraggable</code></td>
+          <td class="mono">真实鼠标拖 223px / −25px<br />回调 grab → drag×30 → release<br />未越出容器</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>spring</code></td>
+          <td class="mono">目标 180px，峰值 <b>228.1px</b><br />过冲 48.1px，回落稳定在 179.1</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>morphTo</code></td>
+          <td class="mono">矩形 → 三角形，9 个中间帧<br />路径顶点逐帧真实插值</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>createDrawable</code></td>
+          <td class="mono">dasharray <b>0px, 1010px</b> 自动测量<br />dashoffset −28.8 → −67.7 → −163.6 → −294.9 → −472.4 → −657.2</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>scrambleText</code></td>
+          <td class="mono">9 个不同帧：<br />"FINSB 40J4" → … → "FINAL TEXT"</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>splitText</code></td>
+          <td class="mono">6 词 / 16 字 / <span class="tag t-warn">0 行</span><br />拆成 SPAN，原文 textContent 仍可读</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>stagger</code></td>
+          <td class="mono">grid [3,4] + from:'center'<br />首帧仅中心元素位移 → 8 个不同帧</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>createMotionPath</code></td>
+          <td class="mono">返回 <code>{translateX, translateY, rotate}</code>（均为函数）<br />沿曲线 11 个不同位置</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>createAnimatable</code></td>
+          <td class="mono">持久对象，改值即生效<br />无需每次重建动画</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>waapi</code></td>
+          <td class="mono">返回 <code>WAAPIAnimation</code><br />中途 opacity 0.531（1→0.35 之间）<br />暴露 play / pause / cancel / commitStyles</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>onScroll</code></td>
+          <td class="mono">返回 <code>ScrollObserver</code> 实例<br />enter 阈值 "bottom top" 生效</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+      <tr><td><code>utils</code></td>
+          <td class="mono">clamp(15,0,10)=10 · lerp(0,100,.25)=25<br />mapRange(5,0,10,0,100)=50 · snap(13,5)=15<br />damp / seededRandom / cleanInlineStyles 均在</td>
+          <td><span class="tag t-ok">可用</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn">
+    <p><strong>五个误判，全是我的用法错，不是 anime.js 的限制。</strong>这段值得看，因为它就是接入时最容易踩的坑：</p>
+    <ul>
+      <li><strong><code>createLayout</code></strong> — 我读 <code>transform</code> 判定"没动"，实际它动的是<strong>独立的 <code>translate</code> 属性</strong>。这正是上一轮动效层里我踩过的同一个坑。</li>
+      <li><strong><code>scrambleText</code></strong> — 属性名必须写 <code>textContent</code>。写 <code>text</code> 时静默无效、不报错。</li>
+      <li><strong><code>createDrawable</code></strong> — 必须把 <code>createDrawable()</code> 的<strong>返回值</strong>交给 <code>animate()</code>，传选择器会丢掉上下文。</li>
+      <li><strong><code>createMotionPath</code></strong> — 返回的是普通对象，我却在 SVG 元素上读 <code>computed translate</code>，量错了对象。</li>
+      <li><strong><code>createDraggable</code></strong> — 我把 <code>container</code> 设成了元素自己，可移动空间为 0，所以"拖不动"。</li>
+    </ul>
+    <p><strong>共同点：五项全部静默失败。</strong>没有异常、没有警告、控制台干净。这类 API 不能靠"跑起来没报错"验收，必须量最终数值。</p>
+  </div>
+
+  <div class="note">
+    <p><strong>一个必须知道的前提：anime.js v4 的 API 和 v3 完全不同。</strong>v3 是 <code>anime({...})</code>，v4 是 <code>animate()</code> / <code>createTimeline()</code> / <code>createScope()</code>。
+    网上绝大多数教程、StackOverflow 答案仍是 v3，<strong>照抄必错且不报错</strong>。仓库里已用 eslint 把 animejs 限制为只能从 <code>src/core/motion.ts</code> 导入，这个护栏要继续保持。</p>
+  </div>
+</section>
+
+<!-- ══════════════ 2. 能力地图 ══════════════ -->
+<section>
+  <h2><span class="n">02</span>能力地图</h2>
+  <p class="h2sub">按「CSS 能不能做」分四类，而不是按 API 罗列</p>
+
+  <p>
+    按 API 列清单没有决策价值。真正决定"要不要上"的问题只有一个：
+    <strong>这件事 CSS 能不能做？</strong>能做的，上 anime.js 就是净损失（性能降级 + 多一套实现）。
+  </p>
+
+  <div class="grid g2">
+    <div class="card">
+      <h4>① 连续性数值映射 <span class="tag t-k">CSS 做不到</span></h4>
+      <p>输入是连续量（指针位置、滚动进度、音频振幅、拖拽速度），输出要跟着连续变。CSS 只能表达离散状态（<code>:hover</code>、class 切换），没有"按比例"这回事。</p>
+      <div class="ev">
+        <b>API</b> createAnimatable · onScroll(sync) · createDraggable · damp/lerp/mapRange
+      </div>
+    </div>
+    <div class="card">
+      <h4>② 运行时才知道的编排 <span class="tag t-k">CSS 做不到</span></h4>
+      <p>元素数量、文字字数、列表长度来自接口或用户输入。CSS 的 <code>animation-delay</code> 是静态的，写不出"按实际数量逐项错峰"。</p>
+      <div class="ev">
+        <b>API</b> stagger(grid/from) · splitText · createTimeline
+      </div>
+    </div>
+    <div class="card">
+      <h4>③ 几何与拓扑变换 <span class="tag t-k">CSS 做不到</span></h4>
+      <p>位置/尺寸变化后平滑接续（FLIP）、路径描边生长、形状形变、沿曲线运动。CSS 没有 FLIP，没有路径插值。</p>
+      <div class="ev">
+        <b>API</b> createLayout · createDrawable · morphTo · createMotionPath
+      </div>
+    </div>
+    <div class="card">
+      <h4>④ 可中断 / 可回退 <span class="tag t-k">CSS 做不到</span></h4>
+      <p>动画进行到一半要改方向、要取消、要退场。CSS 一旦开始就跑完，没有"中途接管"的接口。</p>
+      <div class="ev">
+        <b>API</b> Timeline.pause/play/revert · createScope 自动 revert · createSpring 可重定向
+      </div>
+    </div>
+  </div>
+
+  <h3>反过来：这些交给 CSS，不要动</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>状态过渡</h4>
+      <p><code>:hover</code> / <code>:focus</code> / <code>:active</code>。CSS 能做，浏览器优化最好，且 JS 未加载时依然可用。</p>
+      <div class="ev"><b>本仓库</b> 120 处 transition-premium + 29 处 transition:</div>
+    </div>
+    <div class="card">
+      <h4>纯装饰循环</h4>
+      <p>骨架屏微光、录制点闪烁、跑马灯。无输入、无编排、无中断需求 —— 上 JS 只会让主线程多一件事。</p>
+      <div class="ev"><b>本仓库</b> skeleton-shimmer ×31<br />ac-rec-blink · vh-rec · ac-tape-run</div>
+    </div>
+    <div class="card">
+      <h4>能写成 keyframes 的定长动画</h4>
+      <p>时长固定、元素数量固定、不需要中途接管。写成 CSS 跑在合成器线程，比 rAF 更稳。</p>
+      <div class="ev"><b>本仓库</b> 剩余 keyframes</div>
+    </div>
+  </div>
+
+  <div class="note ok">
+    <p><strong>一句话判据：</strong>问"这个动画的<em>输入</em>是什么"。
+    输入是 <strong>CSS 状态</strong>（hover / class）→ 用 CSS；
+    输入是 <strong>连续量或运行时数据</strong>（指针、滚动、字数、列表长度、接口结果）→ 用 anime.js。
+    输入是 <strong>无</strong>（纯装饰循环）→ 用 CSS。</p>
+  </div>
+</section>
+
+<!-- ══════════════ 3. 仓库盘点 ══════════════ -->
+<section>
+  <h2><span class="n">03</span>仓库盘点</h2>
+  <p class="h2sub">35 个 keyframes、30 处 animation 声明、162 处状态过渡，逐项定性</p>
+
+  <div class="metrics">
+    <div class="metric"><div class="l">第一档 · 该上</div><div class="v">11<span class="u"> 处</span></div></div>
+    <div class="metric"><div class="l">第二档 · 可统一</div><div class="v">20<span class="u"> 处</span></div></div>
+    <div class="metric"><div class="l">第三档 · 不动</div><div class="v">162<span class="u"> 处</span></div></div>
+    <div class="metric"><div class="l">死代码</div><div class="v">5<span class="u"> keyframes</span></div></div>
+  </div>
+
+  <div class="note">
+    <p><strong>口径说明（避免数字看着不一致）。</strong>第三档的 162 处 =
+    <code>transition-premium</code> 在 tsx 里 120 次调用 + <code>index.css</code> 里 29 处 <code>transition:</code> 声明
+    + 13 处 <code>infinite</code> 装饰循环。第二档的 20 处 = 9 处 <code>animate-[...]</code>
+    + 5 处 <code>mini-bar</code> 内联 + 3 个 <code>party-anim-*</code> 类 + 3 处唱片/拍立得内联动画。</p>
+  </div>
+
+  <!-- 第一档 -->
+  <div class="tier">
+    <div class="tier-h">
+      <span class="badge t-k">第一档</span>
+      <h4>CSS 做不到 —— anime.js 是唯一解</h4>
+      <span class="why">收益最高，也是"炫"的真正来源</span>
+    </div>
+    <div class="tier-b">
+
+      <div class="row">
+        <div class="loc">food/FoodWheel.tsx<br />:291</div>
+        <div class="body">
+          <div class="now">现在：<code>transition: transform 4s cubic-bezier(...)</code>，固定 4 秒匀速减速，每转一次都一样。</div>
+          <div class="to">改成：<code>spring</code> 物理减速 + <code>createDraggable</code> 支持"甩一下"用手指拨。转速决定停在哪个扇区，每次手感都不同。<strong>这是全仓库最值得改的一处</strong> —— 转盘本身是个游戏，物理手感就是它的全部价值。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">party-games/<br />CreateRoomSheet.tsx:76<br />JoinRoomSheet.tsx</div>
+        <div class="body">
+          <div class="now">现在：<code>if (!open) return null</code> —— <strong>直接卸载，根本没有退场动画</strong>。滑上来是有的，关掉是"啪"地消失。</div>
+          <div class="to">改成：时间线管进/出两段。退场需要元素先留着，用 <code>createTimeline</code> 播完再卸载（或 <code>createLayout</code> 的 <code>leaveTo</code>）。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">components/<br />ContactDrawer.tsx:26</div>
+        <div class="body">
+          <div class="now">现在：<code>drawer-layer ${open ? 'open' : ''}</code> —— 元素常驻，靠 class 切 CSS transition。能用，但遮罩与面板的时序是写死的。</div>
+          <div class="to">改成：一条时间线编排遮罩淡入 → 面板位移 → 内容错峰。退场反向，且能被中断。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">plugins/ai-navigator<br />:搜索结果网格</div>
+        <div class="body">
+          <div class="now">现在：结果集变化时整片重排，元素直接跳到新位置（上一轮已修掉"每次输入都重放"，但位置跳变仍在）。</div>
+          <div class="to">改成：<code>createLayout</code> 让筛选/排序后的元素<strong>平滑移动到新位置</strong>，而不是瞬移。313 条工具这个规模下差异非常明显。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">plugins/wish-wall<br />:卡片网格</div>
+        <div class="body">
+          <div class="now">现在：按状态筛选后卡片瞬间重排。</div>
+          <div class="to">改成：<code>createLayout</code> + 进/出场。许愿墙是"看着卡片生长"的场景，FLIP 天然契合。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">hooks/useTilt.ts<br />:28</div>
+        <div class="body">
+          <div class="now">现在：手写 <code>el.style.transform = \`perspective() rotateX() rotateY() scale3d()\`</code>，每个 pointermove 直接写字符串。</div>
+          <div class="to">改成：<code>createAnimatable</code> —— 为这个场景而生。持久对象，指针移动时只改数值，内部做插值平滑，不用每帧拼字符串。<strong>同时修掉一个隐患</strong>：现在 <code>transform</code> 被整个覆盖，元素自带的 transform 会永久丢失。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">ambient-music/*<br />local-music/*<br />:5 处 mini-bar</div>
+        <div class="body">
+          <div class="now">现在：<code>animation: \`mini-bar .8s ease-in-out ${b * .15}s infinite alternate\`</code> —— <strong>假频谱</strong>。柱子只是按固定节奏摆动，跟正在播的音乐毫无关系。</div>
+          <div class="to">改成：<code>AudioContext</code> 项目里<strong>已经有了</strong>（<code>ambient-music/AudioEngine.ts:32</code>）。接一个 <code>AnalyserNode</code>，用 <code>createAnimatable</code> 把真实频率数据喂给柱高。<strong>这是"从装饰变成信息"的一处</strong> —— 用户会真的觉得它在响应音乐。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">页面标题 / 页头大字<br />（全局）</div>
+        <div class="body">
+          <div class="now">现在：整块淡入 + 位移，行内元素一起动。</div>
+          <div class="to">改成：<code>splitText</code> + <code>stagger</code> 逐字入场。上一轮已验证：<strong>按运行时字数生成错峰</strong>，改文案不用回头改样式表。注意 <code>splitText</code> 会生成 22 个 <code>aria-hidden</code> 节点，必须配 <code>accessible: true</code> 保留可读文本。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">stats / analytics /<br />stock-watch 数值</div>
+        <div class="body">
+          <div class="now">现在：数字直接出现。</div>
+          <div class="to">改成：数值滚动（<code>animate</code> 一个对象 + <code>onUpdate</code> 写文本）+ 千分位。配合 <code>createSeededRandom</code> 可做稳定的"抖动落位"。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">components/<br />ProgressRail.tsx</div>
+        <div class="body">
+          <div class="now">现在：进度条宽度过渡。</div>
+          <div class="to">改成：SVG 描边生长（<code>createDrawable</code>）或沿路径运动的指示点（<code>createMotionPath</code>）。已验证 dasharray 自动测量为 <code>0px, 1010px</code>，不用手算路径长度。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">路由切镜<br />RouteCut.tsx（已有）</div>
+        <div class="body">
+          <div class="now">现在：进场面已由 anime.js 时间线接管（上一轮完成）。</div>
+          <div class="to">可再进一层：<strong>可中断</strong>。切到一半改主意，时间线 <code>revert()</code> 优雅回退，而不是让两个路由打架。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 第二档 -->
+  <div class="tier">
+    <div class="tier-h">
+      <span class="badge t-warn">第二档</span>
+      <h4>CSS 能做，但统一到动效层更好</h4>
+      <span class="why">收益中等：一致性 + 可维护性</span>
+    </div>
+    <div class="tier-b">
+
+      <div class="row">
+        <div class="loc">party-games/<br />9 处 <code>animate-[...]</code></div>
+        <div class="body">
+          <div class="now">现在：Tailwind 任意值语法内联时序，散在 4 个文件里。<br />
+            <code>animate-[party-card-in_0.4s_cubic-bezier(0.16,1,0.3,1)_both]</code></div>
+          <div class="to">改成：统一走 <code>useStaggerIn</code>。<strong>这是上一轮在 <code>ai-navigator</code> 修过的同一类问题</strong> —— 内联 <code>animation</code> 字符串在 React 重渲染时会重启动画，且优先级高于样式表，CSS 里的 <code>prefers-reduced-motion</code> 覆盖不掉。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">index.css:1356<br />party-anim-pop<br />party-anim-slide-up<br />party-anim-fade-in</div>
+        <div class="body">
+          <div class="now">现在：3 个自定义动画类，与 keyframes 一一对应。</div>
+          <div class="to">改成：并入动效层统一入口，或保留为纯 CSS（它们确实是定长无编排的）。<strong>倾向保留</strong>，除非需要中断。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">components/<br />PolaroidCard.tsx:21<br />VinylRecord.tsx:41,64</div>
+        <div class="body">
+          <div class="now">现在：内联 <code>animation: isPlaying ? 'vinyl-spin 2s linear infinite' : 'none'</code> —— 启停是硬切。</div>
+          <div class="to">改成：转速用 <code>createAnimatable</code> 做<strong>缓升缓降</strong>（唱片机启动/停止的真实手感），而不是 0↔满速瞬间切换。这是"物理感"最便宜的一处提升。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">plugins/profile<br />:115 IntersectionObserver</div>
+        <div class="body">
+          <div class="now">现在：<code>IntersectionObserver</code> threshold 0.55 做 SHOT 滚动侦测（这个是<strong>活的、有用的</strong>，不是上一轮删掉的那个）。</div>
+          <div class="to">改成：可换成 <code>onScroll</code>。收益是能顺便拿到<strong>滚动进度比例</strong>（做连续性映射），而 IO 只给"进了/没进"的离散信号。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">index.css<br />5 个死 keyframes</div>
+        <div class="body">
+          <div class="now">现在：<code>party-bounce</code> · <code>party-confetti-fall</code> · <code>party-spin-slow</code> · <code>party-card-flip</code> · <code>party-scale-in</code> —— 全仓库 0 引用。</div>
+          <div class="to">改成：<strong>直接删</strong>。35 个 keyframes 里 30 个在用，这 5 个是纯遗留。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- 第三档 -->
+  <div class="tier">
+    <div class="tier-h">
+      <span class="badge t-line">第三档</span>
+      <h4>不该动 —— CSS 是更优解</h4>
+      <span class="why">162 处，动了就是负收益</span>
+    </div>
+    <div class="tier-b">
+
+      <div class="row">
+        <div class="loc">transition-premium<br />×120 调用<br />+ 29 处 transition:</div>
+        <div class="body">
+          <div class="now">现在：<code>:hover</code> / <code>:active</code> / <code>:focus</code> 状态过渡，以及项目自有的 <code>transition-premium</code> 工具类。</div>
+          <div class="to">保持 CSS。<strong>anime.js 接管不了伪类</strong> —— 硬改的结果一定是"同一件事两份实现"，一处漏改就不一致。这 162 处是"不该动"里占比最大的部分。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">skeleton-shimmer<br />×31 引用</div>
+        <div class="body">
+          <div class="now">现在：骨架屏微光，<code>infinite</code> 循环。</div>
+          <div class="to">保持 CSS。无输入、无编排、无中断需求。跑在合成器线程，主线程忙也不掉帧。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">ac-rec-blink · vh-rec<br />ac-tape-run · ac-lines</div>
+        <div class="body">
+          <div class="now">现在：REC 点闪烁、品牌点闪烁、胶片跑马灯。</div>
+          <div class="to">保持 CSS。纯装饰循环，而且它们是"摄影棚"视觉语言的一部分，改动能不动就不动。</div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="loc">html.ac-snap<br />scroll-snap</div>
+        <div class="body">
+          <div class="now">现在：<code>scroll-snap-type: y proximity</code>。</div>
+          <div class="to">保持。滚动吸附是浏览器原生行为，用 JS 模拟只会更差（而且会和触控板惯性打架）。</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 4. 路线图 ══════════════ -->
+<section>
+  <h2><span class="n">04</span>建议路线</h2>
+  <p class="h2sub">按"可见收益 ÷ 风险"排序，不是按技术含量</p>
+
+  <div class="scroll">
+  <table>
+    <thead>
+      <tr><th>阶段</th><th>做什么</th><th>为什么排这儿</th><th>风险</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">P0</td>
+        <td>删 5 个死 keyframes；把 9 处 <code>animate-[...]</code> 和 5 处 <code>mini-bar</code> 内联手算迁到 <code>useStaggerIn</code></td>
+        <td>纯减法 + 修既有缺陷（内联样式绕过 reduced-motion）。不新增任何东西，先把地基扫干净。</td>
+        <td><span class="tag t-ok">低</span></td>
+      </tr>
+      <tr>
+        <td class="mono">P1</td>
+        <td><code>FoodWheel</code> 改 spring + draggable</td>
+        <td>单点、独立、<strong>用户能立刻感觉到</strong>。转盘是游戏，手感就是它的价值。</td>
+        <td><span class="tag t-warn">中</span><br /><span class="tag t-line">需要处理指针与旋转角换算</span></td>
+      </tr>
+      <tr>
+        <td class="mono">P2</td>
+        <td>Sheet / Drawer 的退场时间线</td>
+        <td>修的是<strong>真实缺陷</strong>：现在关掉是硬消失。三处共用一套 <code>useOverlayTimeline</code>。</td>
+        <td><span class="tag t-warn">中</span><br /><span class="tag t-line">卸载时机要处理干净，否则会留残影</span></td>
+      </tr>
+      <tr>
+        <td class="mono">P3</td>
+        <td><code>ai-navigator</code> + <code>wish-wall</code> 上 <code>createLayout</code></td>
+        <td>列表筛选/排序是这两个页面的主要交互，FLIP 让"重排"从瞬移变成移动。<strong>但要注意</strong>：它会把元素临时设成 <code>position: absolute</code>，容器必须有确定的定位上下文。</td>
+        <td><span class="tag t-warn">中高</span><br /><span class="tag t-line">要先验证不破坏现有网格布局</span></td>
+      </tr>
+      <tr>
+        <td class="mono">P4</td>
+        <td>真实音频频谱（AnalyserNode + createAnimatable）</td>
+        <td>从"假动画"变"真信息"。<code>AudioContext</code> 已经在项目里了，只差一个 Analyser。</td>
+        <td><span class="tag t-warn">中</span><br /><span class="tag t-line">注意 iOS 音频策略与性能</span></td>
+      </tr>
+      <tr>
+        <td class="mono">P5</td>
+        <td>逐字入场 + 数字滚动 + <code>useTilt</code> 迁移</td>
+        <td>观感提升明显，但属于"锦上添花"，且 <code>splitText</code> 有无障碍细节要处理。</td>
+        <td><span class="tag t-ok">低</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="note warn">
+    <p><strong>如果只做一件事，做 P1。</strong>转盘是唯一一个"动效质量 = 产品价值"的地方 —— 用户拨它就是为了那个手感。其余多数地方是"更好看"，只有它是"更好用"。</p>
+  </div>
+</section>
+
+<!-- ══════════════ 5. 边界 ══════════════ -->
+<section>
+  <h2><span class="n">05</span>诚实的边界</h2>
+  <p class="h2sub">三个我确认过的限制，以及三个我没验证的</p>
+
+  <h3>确认的限制</h3>
+  <div class="grid g3">
+    <div class="card">
+      <h4>它不是组件库</h4>
+      <p>没有渲染、没有状态、没有生命周期。它只能让<strong>已经存在的 DOM</strong> 动起来。所以"替换所有组件"这个说法本身不成立 —— 能替换的是动效的<em>实现方式</em>。</p>
+      <div class="ev">70 个 tsx 里绝大多数与它无关</div>
+    </div>
+    <div class="card">
+      <h4>接管不了伪类</h4>
+      <p><code>:hover</code> / <code>:focus</code> 只能留在 CSS。硬改必然产生两份实现。</p>
+      <div class="ev">162 处状态过渡保持不动</div>
+    </div>
+    <div class="card">
+      <h4>失败是静默的</h4>
+      <p>本次实测中 5 项用法错误<strong>全部没有报错</strong>。不能用"跑起来没异常"验收，必须量最终数值。</p>
+      <div class="ev">控制台错误 0 ≠ 用对了</div>
+    </div>
+  </div>
+
+  <h3>我没验证的</h3>
+  <ul>
+    <li><strong><code>createLayout</code> 的 enter / leave。</strong>我验证了重排（swap），但没测元素增删的进出场。而 P3 恰恰要用这个 —— <strong>落地前必须先单独验证</strong>。</li>
+    <li><strong>大量元素下的性能。</strong>探针最多测了 12 个元素。313 条工具的网格是另一个量级，需要单独压测。</li>
+    <li><strong>Safari / Firefox 行为。</strong>本次只在 Chromium 实测。上一轮 <code>backdrop-filter</code> 的教训说明跨浏览器差异是真实存在的。</li>
+  </ul>
+
+  <div class="note no">
+    <p><strong>还有一个前置问题必须先解决。</strong>仓库里 <code>src/core/motion.ts</code> 已经是 anime.js 的唯一入口，eslint 有 <code>no-restricted-imports</code> 护栏。
+    这次改造会显著扩大它的职责（新增 draggable / layout / text 三类用法），
+    <strong>建议先把它拆成目录</strong>（<code>motion/scope.ts</code>、<code>motion/stagger.ts</code>、<code>motion/drag.ts</code>…），
+    否则会变成一个几百行的巨型文件，护栏也就失去意义了。</p>
+  </div>
+</section>
+
+<footer>
+  <p>
+    探针与原始数据：<code>docs/evidence/anime-capabilities.json</code> ·
+    <code>docs/evidence/anime-recheck.json</code> ·
+    <code>docs/evidence/anime-dbg.json</code><br />
+    可复现的探针页：<code>docs/evidence/probe-capabilities.html</code> ·
+    <code>probe-recheck.html</code> · <code>probe-debug.html</code>
+    （同目录放一份 <code>anime.umd.js</code> 即可打开；文件取自
+    <code>node_modules/animejs/dist/bundles/anime.umd.js</code>）<br />
+    实测环境：Chromium（Playwright）· anime.js <b>4.5.0</b> UMD bundle · 2026-09-28<br />
+    所有数字来自实测输出，未从文档转述。
+  </p>
+</footer>
+
+</div>
+</body>
+</html>

@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useMemo, useState } from 'react'
 import { Icon } from '@components'
+import { useFlipLayout, useStaggerIn } from '@core/motion'
 import { PluginRuntimeConfig } from '@core/types'
 
 interface Props {
@@ -188,6 +189,46 @@ const WishWallPlugin = ({ config }: Props) => {
   const filteredWishes = wishes
     .filter((wish) => statusFilter === 'all' || wish.status === statusFilter)
     .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt))
+
+  /**
+   * 愿望卡片错峰入场。原来这里没有任何入场动效 —— 切状态筛选时
+   * 整片卡片瞬间换掉。错峰只在**结果集长度变化**时重放，
+   * 所以点筛选会看到卡片依次落位，而不会在每次渲染时闪。
+   */
+  /**
+   * 首次挂载的错峰入场。
+   *
+   * `trigger` 刻意传一个**常量**：这个 hook 只负责"刚进页面时依次落位"，
+   * 之后的筛选/排序交给下面的 `useFlipLayout`。
+   *
+   * 为什么不能两者共用同一个 trigger：两个 hook 都要写元素的 `translate`
+   * （`useStaggerIn` 走 `--m-rise` 自定义属性，`createLayout` 直接写内联 `translate`），
+   * 同时跑就是两个机制抢同一个属性 —— 内联会赢，于是错峰位移变成静默无效。
+   * 分开触发时机之后各管一段，互不干扰。
+   */
+  const cardsRef = useStaggerIn<HTMLDivElement>({
+    selector: '.m-rise',
+    trigger: 'wish-wall-mount',
+    from: 20,
+  })
+
+  /**
+   * 筛选 / 排序时的重排动画（FLIP）。
+   *
+   * 这里的价值是真实的：按"状态"和按"时间"排序时，**是同一批卡片换了位置**，
+   * 原来它们会瞬移过去。`createLayout` 让幸存卡片平滑移到新位置，
+   * 同时给新增卡片做进场。
+   *
+   * 注意实测到的边界：`createLayout` **不能**做退场 ——
+   * 元素从 DOM 移除后它不保留克隆节点（探针实测：移除 1 个元素后容器子节点
+   * 从 3 变 2，没有幽灵节点）。所以被筛掉的卡片是直接消失的。
+   * 想让它动出去，得先播完退场再删（见 `exitThenRemove`）。
+   */
+  const gridRef = useFlipLayout<HTMLDivElement>({
+    selector: '[data-flip-item]',
+    trigger: `${statusFilter}:${filteredWishes.length}`,
+    duration: 420,
+  })
 
   const statusCounts = useMemo(() => {
     const counts: Record<WishStatus, number> = {
@@ -388,9 +429,15 @@ const WishWallPlugin = ({ config }: Props) => {
         </div>
       </div>
 
-      <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+      {/* `relative` 是给 createLayout 用的：它把参与重排的子元素临时设成
+          `position: absolute`，需要一个确定的包含块，否则 left/top 会按视口算。
+          `display: contents` 的内层只是为了让两个 hook 各有一个搜索根
+          （错峰找 `.m-rise`，FLIP 找 `[data-flip-item]`），本身不产生盒子，
+          所以卡片仍然是外层 grid 的直接网格项。 */}
+      <div ref={gridRef} className="relative grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+        <div ref={cardsRef} className="contents">
         {filteredWishes.map((wish) => (
-          <article key={wish.id} className="surface-item group grid gap-3 rounded-[18px] p-5 transition-premium hover:border-primary/20 hover:bg-surface-card">
+          <article data-flip-item key={wish.id} className="m-rise surface-item group grid gap-3 rounded-[18px] p-5 transition-premium hover:border-primary/20 hover:bg-surface-card">
             <div className="flex items-start justify-between gap-4">
               <div className="min-w-0">
                 <span className="font-label-mono text-[10px] uppercase tracking-[0.18em] text-text-muted">
@@ -426,6 +473,7 @@ const WishWallPlugin = ({ config }: Props) => {
             </div>
           </article>
         ))}
+        </div>
       </div>
     </section>
   )

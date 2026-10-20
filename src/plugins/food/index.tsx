@@ -60,7 +60,7 @@ export default function FoodPlugin(_props: Props) {
       <div className="stack-board surface-panel-strong rounded-[28px] p-5 md:p-7">
         <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
           <div>
-                        <p className="mt-3 max-w-2xl font-body-md text-sm leading-relaxed text-on-surface-variant">
+                        <p className="max-w-2xl font-body-md text-sm leading-relaxed text-on-surface-variant">
               把随机推荐做成一块轻松的菜单海报，保留随机性，但不再像独立的小工具。
             </p>
           </div>

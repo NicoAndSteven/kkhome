@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import { PluginRuntimeConfig } from '@core/types'
+import { AudioBars } from '@components'
 import { getAudioEngine, TrackState } from './AudioEngine'
 import { TRACKS, synthesizeTrack } from './tracks'
 import Icon from '../../components/Icon'
@@ -89,11 +90,16 @@ export default function AmbientMusicPlugin(_props: Props) {
               </div>
               {activeCount > 0 && (
                 <div className="flex items-center gap-2 rounded-full bg-green-50 px-4 py-2">
-                  <div className="flex items-end gap-[1px] h-3">
-                    {[1, 2, 3].map(b => (
-                      <div key={b} className="w-[2px] rounded-full bg-green-500" style={{ animation: `mini-bar 0.8s ease-in-out ${b * 0.15}s infinite alternate`, height: `${4 + b * 3}px` }} />
-                    ))}
-                  </div>
+                  {/* 真实频谱：读 AnalyserNode，不再是固定节奏的假动画 */}
+                  <AudioBars
+                    count={3}
+                    min={4}
+                    max={13}
+                    className="flex items-end gap-[1px] h-3"
+                    barClassName="w-[2px] rounded-full bg-green-500"
+                    read={(n) => engine.getLevels(n)}
+                    active={activeCount > 0}
+                  />
                   <span className="font-label-mono text-[10px] tracking-[0.06em] text-green-600">播放中</span>
                 </div>
               )}
@@ -127,11 +133,15 @@ export default function AmbientMusicPlugin(_props: Props) {
                   }}
                 >
                   {isPlaying ? (
-                    <div className="flex items-end gap-[2px] h-5">
-                      {[1, 2, 3].map(b => (
-                        <div key={b} className="w-[2.5px] rounded-full bg-primary" style={{ animation: `mini-bar 0.7s ease-in-out ${b * 0.18}s infinite alternate`, height: `${5 + b * 5}px` }} />
-                      ))}
-                    </div>
+                    <AudioBars
+                      count={3}
+                      min={5}
+                      max={20}
+                      className="flex items-end gap-[2px] h-5"
+                      barClassName="w-[2.5px] rounded-full bg-primary"
+                      read={(n) => engine.getLevels(n)}
+                      active={isPlaying}
+                    />
                   ) : (
                     <Icon name={track.icon} className="text-2xl text-primary/70" />
                   )}

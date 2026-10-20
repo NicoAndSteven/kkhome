@@ -6,6 +6,7 @@
 - [x] `npm run check:assets` 通过。
 - [x] `npm run build` 通过。
 - [x] `npm run test:e2e` 通过。
+- [x] `npm run test:unit` 通过（73 tests, 72 pass, 1 skip）。
 
 ## 当前路由
 

@@ -1,0 +1,57 @@
+{
+  "createDrawable": {
+    "pass": true,
+    "evidence": {
+      "strokeDasharray": "0px, 1010px",
+      "dashoffsetTrack": [
+        "-28.8px",
+        "-67.7px",
+        "-163.6px",
+        "-294.9px",
+        "-472.4px",
+        "-657.2px"
+      ],
+      "distinctOffsets": 11,
+      "correctUsage": "animate(createDrawable(sel) 的返回值, { draw: [...] })"
+    }
+  },
+  "createMotionPath": {
+    "pass": true,
+    "evidence": {
+      "returnedKeys": [
+        "translateX",
+        "translateY",
+        "rotate"
+      ],
+      "valueTypes": {
+        "translateX": "function",
+        "translateY": "function",
+        "rotate": "function"
+      },
+      "transformAttrSamples": [],
+      "distinctTransformAttr": 0,
+      "distinctMatrix": 11,
+      "note": "返回值可直接 ...展开 进 animate，元素沿路径移动"
+    }
+  },
+  "waapi": {
+    "pass": false,
+    "evidence": {
+      "members": {
+        "ctor": "WAAPIAnimation",
+        "play": "function",
+        "pause": "function",
+        "cancel": "function",
+        "commitStyles": "function",
+        "persist": "boolean",
+        "paused": "boolean",
+        "autoplay": "boolean"
+      },
+      "midFlight": {
+        "translate": "none",
+        "opacity": "0.531085"
+      },
+      "note": "真·Web Animations 对象（走合成器线程），非 rAF 驱动"
+    }
+  }
+}

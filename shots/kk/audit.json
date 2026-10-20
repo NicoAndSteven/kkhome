@@ -1,0 +1,163 @@
+[
+  {
+    "id": "home",
+    "nodes": 286,
+    "height": 3944,
+    "inlineStyled": 48,
+    "cssAnimated": 10,
+    "transitions": 38,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 1,
+      "surface-panel": 1,
+      "surface-item": 0,
+      "surface-control": 0,
+      "kk-head": 0,
+      "kk-nav": 0,
+      "ac-tcard": 11,
+      "ac-cell": 4
+    },
+    "head": "",
+    "nav": 0,
+    "errors": []
+  },
+  {
+    "id": "ai-tools",
+    "nodes": 740,
+    "height": 2817,
+    "inlineStyled": 60,
+    "cssAnimated": 0,
+    "transitions": 117,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 59,
+      "rounded-2xl": 50,
+      "surface-panel": 0,
+      "surface-item": 0,
+      "surface-control": 0,
+      "kk-head": 1,
+      "kk-nav": 0,
+      "ac-tcard": 0,
+      "ac-cell": 0
+    },
+    "head": "导向",
+    "nav": 6,
+    "errors": []
+  },
+  {
+    "id": "wish-wall",
+    "nodes": 128,
+    "height": 1007,
+    "inlineStyled": 12,
+    "cssAnimated": 0,
+    "transitions": 28,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 7,
+      "surface-panel": 0,
+      "surface-item": 2,
+      "surface-control": 3,
+      "kk-head": 1,
+      "kk-nav": 0,
+      "ac-tcard": 0,
+      "ac-cell": 0
+    },
+    "head": "许愿",
+    "nav": 6,
+    "errors": []
+  },
+  {
+    "id": "stock-watch",
+    "nodes": 44,
+    "height": 900,
+    "inlineStyled": 9,
+    "cssAnimated": 0,
+    "transitions": 5,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 4,
+      "surface-panel": 1,
+      "surface-item": 3,
+      "surface-control": 0,
+      "kk-head": 1,
+      "kk-nav": 0,
+      "ac-tcard": 0,
+      "ac-cell": 0
+    },
+    "head": "看盘",
+    "nav": 6,
+    "errors": []
+  },
+  {
+    "id": "food",
+    "nodes": 118,
+    "height": 1202,
+    "inlineStyled": 11,
+    "cssAnimated": 0,
+    "transitions": 15,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 8,
+      "surface-panel": 1,
+      "surface-item": 0,
+      "surface-control": 0,
+      "kk-head": 1,
+      "kk-nav": 0,
+      "ac-tcard": 0,
+      "ac-cell": 0
+    },
+    "head": "吃啥",
+    "nav": 6,
+    "errors": []
+  },
+  {
+    "id": "party-games",
+    "nodes": 38,
+    "height": 900,
+    "inlineStyled": 10,
+    "cssAnimated": 0,
+    "transitions": 6,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 4,
+      "rounded-2xl": 5,
+      "surface-panel": 0,
+      "surface-item": 0,
+      "surface-control": 0,
+      "kk-head": 1,
+      "kk-nav": 0,
+      "ac-tcard": 0,
+      "ac-cell": 0
+    },
+    "head": "游戏",
+    "nav": 6,
+    "errors": []
+  },
+  {
+    "id": "local-music",
+    "nodes": 40,
+    "height": 900,
+    "inlineStyled": 10,
+    "cssAnimated": 0,
+    "transitions": 2,
+    "legacy": {
+      "glass": 0,
+      "rounded-xl": 0,
+      "rounded-2xl": 1,
+      "surface-panel": 1,
+      "surface-item": 0,
+      "surface-control": 0,
+      "kk-head": 1,
+      "kk-nav": 0,
+      "ac-tcard": 0,
+      "ac-cell": 0
+    },
+    "head": "音乐",
+    "nav": 6,
+    "errors": []
+  }
+]

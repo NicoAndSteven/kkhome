@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8" /><title>debug</title>
+<style>
+  body { margin: 0; font: 12px/1.5 monospace; background: #0d1117; color: #e6edf3; padding: 10px; }
+  #row { display: flex; gap: 8px; }
+  .box { width: 50px; height: 50px; display: grid; place-items: center; border-radius: 6px; background: #1f6feb; color: #fff; }
+  pre { background: #161b22; padding: 8px; border-radius: 6px; white-space: pre-wrap; }
+</style>
+</head>
+<body>
+<script src="./anime.umd.js"></script>
+<div id="row"><div class="box">A</div><div class="box">B</div><div class="box">C</div><div class="box">D</div></div>
+<div id="scr">FINAL TEXT</div>
+<div id="scr2">FINAL TEXT</div>
+<pre id="log"></pre>
+<script>
+const A = window.anime
+const out = {}
+const raf = () => new Promise(r => requestAnimationFrame(r))
+const wait = (ms) => new Promise(r => setTimeout(r, ms))
+const log = (o) => { document.querySelector('#log').textContent = JSON.stringify(o, null, 1) }
+window.__out = out
+
+window.dbgLayout = async () => {
+  const row = document.querySelector('#row')
+  const layout = A.createLayout('#row', { duration: 300, ease: 'inOut(2)' })
+  await raf(); await wait(80)
+  out.initial = {
+    rootTag: layout.root?.tagName + (layout.root?.id ? '#' + layout.root.id : ''),
+    childrenParam: String(layout.children),
+    absoluteCoords: layout.absoluteCoords,
+    oldStateNodes: layout.oldState ? Object.keys(layout.oldState).length : null,
+    newStateNodes: layout.newState ? Object.keys(layout.newState).length : null,
+  }
+  const kids = [...row.querySelectorAll('.box')]
+  const beforeX = kids.map(k => Math.round(k.getBoundingClientRect().left))
+  row.appendChild(kids[0])
+  await raf()
+  const afterMutateX = kids.map(k => Math.round(k.getBoundingClientRect().left))
+
+  let tl = null
+  try { tl = layout.animate() } catch (e) { out.animateError = String(e).slice(0, 200) }
+
+  const frames = []
+  for (let i = 0; i < 14; i++) {
+    await raf(); await wait(25)
+    const el = kids[0]
+    frames.push({
+      cls: row.className,
+      inline: el.getAttribute('style'),
+      transform: getComputedStyle(el).transform,
+      translate: getComputedStyle(el).translate,
+      left: Math.round(el.getBoundingClientRect().left),
+    })
+  }
+  out.frames = frames.filter(f => f.inline || (f.transform && f.transform !== 'none'))
+  out.frameCount = frames.length
+  out.anyInline = frames.some(f => f.inline)
+  out.anyTransform = frames.some(f => f.transform && f.transform !== 'none')
+  out.rowClassSeen = [...new Set(frames.map(f => f.cls))]
+  out.leftTrack = frames.map(f => f.left)
+  out.tl = tl ? { duration: tl.duration, children: tl.children?.length ?? null, paused: tl.paused, id: tl.id } : null
+  await wait(600)
+  out.finalInline = kids[0].getAttribute('style')
+  out.finalLeft = Math.round(kids[0].getBoundingClientRect().left)
+  out.beforeX = beforeX; out.afterMutateX = afterMutateX
+  log(out)
+  return out
+}
+
+window.dbgScramble = async () => {
+  const names = ['text', 'textContent', 'innerHTML', 'innerText']
+  const results = {}
+  for (let i = 0; i < names.length; i++) {
+    const el = document.createElement('div')
+    el.textContent = 'FINAL TEXT'
+    el.id = 'sc_' + names[i]
+    document.body.appendChild(el)
+    const samples = []
+    try {
+      A.animate(el, { [names[i]]: A.scrambleText({ text: 'FINAL TEXT', chars: 'A-Z0-9', duration: 600 }) })
+      for (let k = 0; k < 10; k++) { await wait(70); samples.push(el.textContent) }
+      await wait(400)
+    } catch (e) { results[names[i]] = { error: String(e).slice(0, 150) }; continue }
+    results[names[i]] = {
+      distinct: [...new Set(samples)].length,
+      mid: samples[4], final: el.textContent, reached: el.textContent === 'FINAL TEXT',
+      html: el.innerHTML.slice(0, 60),
+    }
+  }
+  out.scramble = results
+  log(out)
+  return results
+}
+</script>
+</body>
+</html>

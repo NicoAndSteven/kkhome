@@ -1,7 +1,7 @@
 import { useCallback, useState, useEffect, useRef, Suspense } from 'react'
 import { pluginSystem, configLoader } from '@core'
 import { plugins } from '@plugins'
-import { Layout, IntroStage, ContactDrawer, ErrorBoundary, Loading, BlogSidebar, MobileTabBar, ShotHeader, AdminLogin, AdminPanel } from '@components'
+import { Layout, IntroStage, ContactDrawer, ErrorBoundary, Loading, RouteNav, RouteBody, MobileTabBar, RouteHeader, AdminLogin, AdminPanel, RouteCut } from '@components'
 import { MotionConfig, ProfileConfig, SiteConfig } from '@core/types'
 import { useIsMobile } from './hooks/useIsMobile'
 import { HubRouteId, normalizeHubRoute, ROUTE_ITEMS } from '@core/routeBridge'
@@ -85,7 +85,9 @@ function App() {
         pluginSystem.applyConfigs(
           pluginCfgs.map((pluginCfg) => (
             pluginCfg.id === 'profile'
-              ? { ...pluginCfg, config: { ...appCfg.profile, ...pluginCfg.config } }
+              // hero 一并注入：首屏文案与视频地址走 site.config.json，
+              // 不写死在组件里，换素材不用改代码。
+              ? { ...pluginCfg, config: { ...appCfg.profile, hero: appCfg.hero, ...pluginCfg.config } }
               : pluginCfg
           )),
         )
@@ -221,20 +223,6 @@ function App() {
     </>
   )
 
-  // Reveal 动画
-  useEffect(() => {
-    const observerOptions = { threshold: 0.15, rootMargin: '0px 0px -50px 0px' }
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) entry.target.classList.add('active')
-      })
-    }, observerOptions)
-
-    const revealElements = document.querySelectorAll('.reveal')
-    revealElements.forEach((el) => revealObserver.observe(el))
-    return () => revealObserver.disconnect()
-  }, [activeRoute, loading])
-
   if (loading) {
     return (
       <Layout>
@@ -343,26 +331,34 @@ function App() {
       <Layout routeMode>
         <MobileTabBar routes={availableRouteItems} activeRoute={activeRoute} />
         <main
-          className={`route-mobile-main route-view ${cutDir} mx-auto w-full max-w-[760px] px-4 pt-12`}
+          className="route-mobile-main mx-auto w-full max-w-[760px] px-4 pt-12"
           style={{ height: `calc(100dvh - ${tabBarHeight}px)` }}
         >
-          <div className="ac-flash ac-go" aria-hidden="true" />
-          <ShotHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} />
-          <ErrorBoundary key={activeRouteItem.id}>
-            {activePlugin ? (
-              <Suspense fallback={<div className="py-8 text-center text-text-muted font-body-md">加载中...</div>}>
-                <activePlugin.component config={activePlugin.config} />
-              </Suspense>
-            ) : (
-              <div className="surface-panel rounded-[28px] p-5">
-                <span className="font-label-mono text-xs uppercase text-secondary">当前不可用</span>
-                <h1 className="mt-1 font-headline-md text-headline-md text-on-surface">模块不可用</h1>
-                <p className="mt-1 font-body-md text-body-md text-text-muted">
-                  当前配置没有启用「{activeRouteItem?.label ?? ''}」模块。
-                </p>
-              </div>
-            )}
-          </ErrorBoundary>
+          {/* 切镜幕布由 RouteCut 自己渲染。它不能挂在这一层 ——
+              外面那层带 padding，fixed 幕布会以它为准算 inset。 */}
+          <RouteCut
+            key={activeRouteItem.id}
+            routeId={activeRouteItem.id}
+            index={activeIdx + 1}
+            direction={cutDir}
+            className="route-view"
+            label={activeRouteItem.label}
+          >
+            <RouteHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} direction={cutDir} accentSwitcher />
+            <ErrorBoundary key={activeRouteItem.id}>
+              {activePlugin ? (
+                <Suspense fallback={<div className="kk-loading">LOADING…</div>}>
+                  <activePlugin.component config={activePlugin.config} />
+                </Suspense>
+              ) : (
+                <div className="kk-unavailable">
+                  <span className="kk-head-kicker">OFFLINE</span>
+                  <h2>模块<em>不可用</em></h2>
+                  <p>当前配置没有启用「{activeRouteItem?.label ?? ''}」模块。</p>
+                </div>
+              )}
+            </ErrorBoundary>
+          </RouteCut>
         </main>
         {commonDrawer}
         {commonAdminEntry}
@@ -374,29 +370,40 @@ function App() {
   return (
     <Layout routeMode>
       <div className="route-shell">
-        <BlogSidebar
+        <RouteNav
           routes={availableRouteItems}
           activeIndex={activeIdx}
           onContactClick={() => setContactOpen(true)}
         />
         <main className="route-main">
-          <div key={activeRouteItem.id} className={`route-view ${cutDir}`} aria-label={activeRouteItem.label}>
-            <div className="ac-flash ac-go" aria-hidden="true" />
-            <ShotHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} />
+          <RouteCut
+            key={activeRouteItem.id}
+            routeId={activeRouteItem.id}
+            index={activeIdx + 1}
+            direction={cutDir}
+            className="route-view"
+            label={activeRouteItem.label}
+          >
+            <RouteHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} direction={cutDir} />
             <ErrorBoundary key={activeRouteItem.id}>
               {activePlugin ? (
-                <Suspense fallback={<div className="ac-loading">LOADING SEQUENCE…</div>}>
-                  <activePlugin.component config={activePlugin.config} />
+                <Suspense fallback={<div className="kk-loading">LOADING…</div>}>
+                  {/* RouteBody 统一内容区的左右留白、底部余量，以及区块错峰入场。
+                      之前每条路由各写各的 padding（ai-navigator 有 px-5、
+                      food 一点都没有），横向起点对不齐，是靠肉眼补的。 */}
+                  <RouteBody routeId={activeRouteItem.id}>
+                    <activePlugin.component config={activePlugin.config} />
+                  </RouteBody>
                 </Suspense>
               ) : (
-                <div className="ac-unavailable">
-                  <span className="ac-kicker">OFF AIR</span>
-                  <h1 className="ac-display ac-h2">模块<em>不可用</em></h1>
-                  <p className="ac-final-sub">当前配置没有启用「{activeRouteItem.label}」模块。</p>
+                <div className="kk-unavailable">
+                  <span className="kk-head-kicker">OFFLINE</span>
+                  <h2>模块<em>不可用</em></h2>
+                  <p>当前配置没有启用「{activeRouteItem.label}」模块。</p>
                 </div>
               )}
             </ErrorBoundary>
-          </div>
+          </RouteCut>
           <div className="ac-dock-player">{sidebarNowPlaying}</div>
         </main>
       </div>

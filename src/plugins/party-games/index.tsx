@@ -1,6 +1,7 @@
 /* global WebSocket */
 
 import { useEffect, useMemo, useRef, useState } from 'react'
+import { useStaggerIn } from '@core/motion'
 import { PluginRuntimeConfig } from '@core/types'
 import CreateRoomSheet from './components/CreateRoomSheet'
 import JoinRoomSheet from './components/JoinRoomSheet'
@@ -200,6 +201,16 @@ const PartyGamesPlugin = ({ config }: Props) => {
 
   // 本地模式引擎
   const localGame = useLocalGame()
+
+  /**
+   * 大厅入场错峰。替代主卡片上单打独斗的 `.party-anim-card`（CSS 动画）——
+   * 那个只能让一张卡自己动，无法把"模式切换 → 主卡片"排成先后。
+   * 注意必须放在所有 early return 之前，否则违反 hooks 调用规则。
+   */
+  const lobbyRef = useStaggerIn<HTMLElement>({
+    selector: '.m-rise',
+    from: 22,
+  })
 
   // ── 在线模式：API ──────────────────────────────
 
@@ -461,7 +472,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
     return (
       <>
         {/* 全屏覆盖层 */}
-        <div className="fixed inset-0 z-[100] flex flex-col overflow-hidden bg-gradient-to-b from-amber-50 via-orange-50/60 to-rose-50">
+        <div className="pg-scope fixed inset-0 z-[100] flex flex-col overflow-hidden bg-gradient-to-b from-amber-50 via-orange-50/60 to-rose-50">
           {/* 浮动背景 */}
           <FloatingParticles />
 
@@ -513,9 +524,9 @@ const PartyGamesPlugin = ({ config }: Props) => {
   // ── 首页（非全屏） ──────────────────────────────
 
   return (
-    <section id="party-games" className="space-y-5 scroll-mt-24 px-1">
+    <section ref={lobbyRef} id="party-games" className="pg-scope space-y-5 scroll-mt-24">
       {/* 模式切换 */}
-      <div className="mx-auto flex max-w-xs rounded-2xl bg-gray-100 p-1">
+      <div className="m-rise mx-auto flex max-w-xs rounded-2xl bg-gray-100 p-1">
         {([
           ['local', '📱 本地测试'],
           ['online', '🌐 在线联机'],
@@ -532,7 +543,7 @@ const PartyGamesPlugin = ({ config }: Props) => {
       </div>
 
       {/* 主卡片 */}
-      <div className="party-anim-card overflow-hidden rounded-[32px] bg-gradient-to-br from-amber-400 via-orange-400 to-rose-500 p-[1.5px] shadow-[0_8px_40px_-12px_rgba(251,146,60,0.35)]">
+      <div className="m-rise overflow-hidden rounded-[32px] bg-gradient-to-br from-amber-400 via-orange-400 to-rose-500 p-[1.5px] shadow-[0_8px_40px_-12px_rgba(251,146,60,0.35)]">
         <div className="rounded-[30px] bg-white/95 px-5 py-6 backdrop-blur-sm">
                     <p className="mt-1.5 text-sm leading-relaxed text-gray-500">
             {gameMode === 'local' ? '单设备离线模式：添加玩家后传手机轮流操作。' : '和朋友一起玩谁是卧底和真心话大冒险。'}

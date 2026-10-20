@@ -1,0 +1,249 @@
+{
+  "splitText": {
+    "pass": true,
+    "evidence": {
+      "words": 6,
+      "chars": 16,
+      "lines": 0,
+      "ariaHiddenNodes": 22,
+      "keepsReadableText": true,
+      "charTagSample": "SPAN"
+    }
+  },
+  "createLayout": {
+    "pass": true,
+    "evidence": {
+      "domReordered": true,
+      "beforeX": [
+        14,
+        72,
+        130,
+        188
+      ],
+      "afterX": [
+        188,
+        14,
+        72,
+        130
+      ],
+      "translateTrack": [
+        5,
+        18,
+        38,
+        64,
+        100,
+        128,
+        151,
+        166,
+        173
+      ],
+      "rootGotIsAnimatedClass": false,
+      "cleanedUpAfter": true,
+      "returnType": "Timeline",
+      "propertyAnimated": "translate"
+    }
+  },
+  "morphTo": {
+    "pass": true,
+    "evidence": {
+      "distinctFrames": 9,
+      "changed": true,
+      "shapeMorphs": true,
+      "note": "作为 tween 值使用：d: morphTo(目标路径)"
+    }
+  },
+  "createDrawable": {
+    "pass": false,
+    "evidence": {
+      "strokeDasharray": "0px, 1010px",
+      "offsetStart": "0px",
+      "offsetMid": "0px"
+    }
+  },
+  "createAnimatable": {
+    "pass": true,
+    "evidence": {
+      "afterSet": {
+        "translate": "none",
+        "opacity": "1"
+      },
+      "afterReset": {
+        "x": 0,
+        "y": 0
+      },
+      "persistentObject": true,
+      "note": "对象持久，指针移动时直接改值，无需重建动画"
+    }
+  },
+  "createDraggable": {
+    "pass": true,
+    "evidence": {
+      "dragThreshold": 3,
+      "containerId": "dragStage",
+      "hasReleaseSpring": true,
+      "note": "真实拖拽由 Playwright 鼠标完成"
+    }
+  },
+  "scrambleText": {
+    "pass": true,
+    "evidence": {
+      "distinctFrames": 9,
+      "first": "TCR5E GRJZ",
+      "mid": "FINAL XH2G",
+      "final": "FINAL TEXT",
+      "reachesTarget": true,
+      "correctProperty": "textContent（用 `text` 无效，实测过）"
+    }
+  },
+  "spring": {
+    "pass": true,
+    "evidence": {
+      "peak": 228,
+      "target": 180,
+      "overshootPx": 48,
+      "settlesAt": [
+        183.119,
+        183.392,
+        183.411
+      ],
+      "realOvershoot": true
+    }
+  },
+  "stagger": {
+    "pass": true,
+    "evidence": {
+      "distinctFrames": 8,
+      "centerMovesFirst": true,
+      "firstFrame": [
+        0,
+        0,
+        0,
+        0,
+        -1.7,
+        0,
+        0,
+        -1.7,
+        0,
+        0,
+        0,
+        0
+      ],
+      "lastFrame": [
+        -6.1,
+        -7.4,
+        -6.1,
+        -8.8,
+        -10.6,
+        -8.8,
+        -8.8,
+        -10.6,
+        -8.8,
+        -6.1,
+        -7.4,
+        -6.1
+      ]
+    }
+  },
+  "onScroll": {
+    "pass": true,
+    "evidence": {
+      "instanceType": "ScrollObserver",
+      "hasLinked": true,
+      "syncModesSupported": true,
+      "note": "支持 smooth / linear / 自定义 sync 回调"
+    }
+  },
+  "waapi": {
+    "pass": false,
+    "evidence": {
+      "ctor": "WAAPIAnimation",
+      "hasFinishedPromise": false,
+      "translate": "none",
+      "note": "输出真正的 Web Animations 对象，可交给合成器线程"
+    }
+  },
+  "utils": {
+    "pass": true,
+    "evidence": {
+      "clamp": 10,
+      "lerp": 25,
+      "mapRange": 50,
+      "snap": 15,
+      "round": 3.14,
+      "damp": 0,
+      "randomPick": true,
+      "shuffle": true,
+      "seededRandom": true,
+      "seededStable": true,
+      "cleanInlineStyles": true,
+      "keepTime": true
+    }
+  },
+  "splitText+stagger": {
+    "pass": true,
+    "evidence": {
+      "charCount": 11,
+      "distinctFrames": 7,
+      "firstFrame": [
+        0.7,
+        0.52,
+        0.23,
+        0,
+        0,
+        0
+      ],
+      "midFrame": [
+        1,
+        0.99,
+        0.99,
+        0.99,
+        0.98,
+        0.96
+      ],
+      "note": "逐字入场，CSS 无法按运行时字数生成"
+    }
+  },
+  "createMotionPath": {
+    "pass": false,
+    "evidence": {
+      "apiShape": "object",
+      "distinctPositions": 1,
+      "samples": [
+        {
+          "x": null,
+          "t": "none"
+        },
+        {
+          "x": null,
+          "t": "none"
+        },
+        {
+          "x": null,
+          "t": "none"
+        },
+        {
+          "x": null,
+          "t": "none"
+        }
+      ],
+      "note": "返回 { translateX, translateY, rotate } 可直接展开进 animate"
+    }
+  },
+  "realDrag(真实鼠标)": {
+    "pass": true,
+    "evidence": {
+      "movedPx": {
+        "x": 223,
+        "y": -25
+      },
+      "callbacks": [
+        "grab",
+        "drag",
+        "release"
+      ],
+      "callbackCount": 32,
+      "stayedInContainer": true
+    }
+  },
+  "_errors": []
+}

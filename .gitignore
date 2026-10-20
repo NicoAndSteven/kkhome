@@ -44,3 +44,13 @@ node_modules/.npm-cache
 
 # TypeScript
 *.tsbuildinfo
+
+# Vite 加载 TS 配置时产生的临时文件
+vite.config.ts.timestamp-*.mjs
+
+# hub-agent（子项目运行时数据）
+hub-agent/.npm-cache
+hub-agent/data/chat.db
+hub-agent/data/chat.db-shm
+hub-agent/data/chat.db-wal
+hub-agent/dist

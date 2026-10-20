@@ -1,5 +1,6 @@
 import { FormEvent, useEffect, useState } from 'react'
 import { Icon } from '@components'
+import { useOverlayTransition } from '@core/motion'
 
 interface Props {
   open: boolean
@@ -24,7 +25,13 @@ const JoinRoomSheet = ({ open, defaultCode = '', submitting = false, externalErr
     }
   }, [open, defaultCode])
 
-  if (!open) return null
+  // 进出场交给动效层（原来是 `if (!open) return null`，没有退场动画）
+  const { rootRef, mounted } = useOverlayTransition(open, {
+    backdrop: '[data-sheet-backdrop]',
+    panel: '[data-sheet-panel]',
+  })
+
+  if (!mounted) return null
 
   const submit = (event: FormEvent) => {
     event.preventDefault()
@@ -45,16 +52,18 @@ const JoinRoomSheet = ({ open, defaultCode = '', submitting = false, externalErr
   }
 
   return (
-    <>
+    <div ref={rootRef} className="pg-scope">
       <div
-        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm transition-opacity duration-300"
+        data-sheet-backdrop
+        className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
         onClick={onClose}
       />
       <form
+        data-sheet-panel
         role="dialog"
         aria-label="加入房间"
         onSubmit={submit}
-        className="party-anim-slide-up fixed inset-x-0 bottom-0 z-50 rounded-t-[32px] bg-white px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.15)]"
+        className="fixed inset-x-0 bottom-0 z-50 rounded-t-[32px] bg-white px-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-6 shadow-[0_-8px_40px_-12px_rgba(0,0,0,0.15)]"
       >
         {/* 拖动把手 */}
         <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-gray-200" />
@@ -110,7 +119,7 @@ const JoinRoomSheet = ({ open, defaultCode = '', submitting = false, externalErr
           {submitting ? '⏳ 加入中...' : '🚀 加入房间'}
         </button>
       </form>
-    </>
+    </div>
   )
 }
 

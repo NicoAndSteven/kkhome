@@ -58,6 +58,13 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     onClose()
   }
 
+  // Backdrop / X must sync too — otherwise the wheel keeps showing stale items
+  // until a full reload even though the change was already persisted.
+  const handleClose = () => {
+    onSave(localNoon, localEvening)
+    onClose()
+  }
+
   // ── Noon operations — call shared API immediately ──
 
   const handleAddNoon = async () => {
@@ -85,6 +92,8 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
       setLocalNoon(prev => prev.filter(i => i.id !== id))
       setToast(`已删除「${name}」`)
       try { navigator.vibrate?.(10) } catch { /* */ }
+    } else {
+      setToast('删除失败，请稍后重试')
     }
     setNoonBusy(false)
   }
@@ -95,7 +104,9 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
     const ok = await renameNoonItem(editId, editName.trim())
     if (ok) {
       setLocalNoon(prev => prev.map(i => i.id === editId ? { ...i, name: editName.trim() } : i))
-      setToast(`已重命名`)
+      setToast('已重命名')
+    } else {
+      setToast('重命名失败，请稍后重试')
     }
     setEditId(null)
     setNoonBusy(false)
@@ -128,6 +139,8 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
       setLocalEvening(prev => ({ ...prev, custom: prev.custom.filter(i => i.id !== id) }))
       setToast(`已删除「${name}」`)
       try { navigator.vibrate?.(10) } catch { /* */ }
+    } else {
+      setToast('删除失败，请稍后重试')
     }
     setEveningBusy(false)
   }
@@ -145,6 +158,8 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
           : [...prev.disabledIds, builtinId],
       }))
       setToast(wasDisabled ? '已启用该菜谱' : '已禁用该菜谱')
+    } else {
+      setToast('操作失败，请稍后重试')
     }
     setEveningBusy(false)
   }
@@ -157,7 +172,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
 
   return (
     <div className="drawer-layer open" aria-hidden={!open}>
-      <button className="drawer-backdrop" type="button" aria-label="关闭" onClick={onClose} />
+      <button className="drawer-backdrop" type="button" aria-label="关闭" onClick={handleClose} />
       <section className="contact-drawer flex flex-col" role="dialog" aria-modal="true" aria-label="管理菜单">
         {/* Header */}
         <div className="flex items-start justify-between gap-md mb-lg shrink-0">
@@ -168,14 +183,14 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
           <div className="flex items-center gap-2 shrink-0">
             <button
               type="button"
-              onClick={() => { onSave(localNoon, localEvening); onClose() }}
+              onClick={handleSave}
               className="inline-flex items-center gap-1.5 rounded-full bg-primary px-4 py-2 text-xs font-semibold text-white transition-premium hover:opacity-90 active:scale-[0.97]"
               aria-label="返回转盘"
             >
               <Icon name="casino" className="text-sm" />
               返回转盘
             </button>
-            <button type="button" onClick={onClose} className="text-text-muted hover:text-on-surface transition-premium p-1" aria-label="关闭">
+            <button type="button" onClick={handleClose} className="text-text-muted hover:text-on-surface transition-premium p-1" aria-label="关闭">
               <Icon name="close" className="text-2xl" />
             </button>
           </div>
@@ -254,10 +269,12 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
                       <>
                         <span className="flex-1 font-body-md text-sm text-on-surface truncate">{item.name}</span>
                         <button type="button" onClick={() => { setEditId(item.id); setEditName(item.name) }}
+                          aria-label={`重命名${item.name}`}
                           className="text-text-muted hover:text-on-surface transition-premium shrink-0">
                           <Icon name="rate_review" className="text-lg" />
                         </button>
                         <button type="button" onClick={() => handleDeleteNoon(item.id)}
+                          aria-label={`删除${item.name}`}
                           className="text-text-muted hover:text-error transition-premium shrink-0">
                           <Icon name="delete" className="text-lg" />
                         </button>
@@ -281,6 +298,7 @@ export default function FoodManager({ open, noonItems, eveningData, onClose, onS
                       <div key={item.id} className="flex items-center gap-xs surface-item rounded-[2px] px-sm py-2">
                         <span className="flex-1 font-body-md text-sm text-on-surface">{item.name}</span>
                         <button type="button" onClick={() => handleDeleteEvening(item.id)}
+                          aria-label={`删除${item.name}`}
                           className="text-text-muted hover:text-error transition-premium shrink-0">
                           <Icon name="delete" className="text-lg" />
                         </button>

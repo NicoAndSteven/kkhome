@@ -32,8 +32,14 @@
 - [x] 新增 `cloudflare-lab` 路由。
 - [x] Cloudflare Lab 接入 `/api/health` 和 feature flags。
 - [x] 新增 Data Foundation v2 migration。
+- [x] 新增 `hub-agent` 子项目：基于 CodeBuddy Agent SDK 的「Hub 工具顾问」。
+- [x] 新增 `npm run sync:catalog`，把 AI 工具目录同步给 hub-agent。
 
 ## 下一步
+
+- [ ] 为 hub-agent 配置 `CODEBUDDY_API_KEY` 并跑通一次真实问答。
+- [ ] 目录清洗后重跑 `npm run sync:catalog`，让顾问拿到干净数据。
+- [ ] 评估是否把 hub-agent 的推荐能力回流到 `ai-navigator` 搜索结果页。
 
 - [ ] 创建真实 KV namespace 并绑定 `HUB_KV`。
 - [ ] 创建真实 R2 bucket 并绑定 `HUB_BUCKET`。
@@ -46,8 +52,8 @@
 - [ ] 为 Wish Wall 增加最小管理脚本或管理接口，用于推进状态。
 - [ ] 在 Cloudflare Pages 上绑定真实 D1 数据库并应用 migration。
 - [ ] 补充 Wish Wall Function 的独立 API 测试。
-- [ ] 为 `configSchema` 增加单元测试。
-- [ ] 为 AI 搜索排序增加单元测试。
+- [x] 为 `configSchema` 增加单元测试。
+- [x] 为 AI 搜索排序增加单元测试。
 - [ ] 补充线上部署验证记录。
 
 ## 暂缓模块

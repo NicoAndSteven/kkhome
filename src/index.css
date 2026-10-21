@@ -1793,6 +1793,20 @@ html.ac-snap { scroll-snap-type: y proximity; }
   color: rgba(255, 255, 255, 0.16);
 }
 
+/* ── 共享元素：导航高亮条 → 页头 kicker 线 ──
+   RouteCut 把它挂到 body 上，而不是 .route-view 内部：路由内容里可能有
+   游戏房间、灯箱这类 fixed 浮层，祖先一旦带 transform 就会改包含块。
+   起点是导航项左侧的 2px 高亮条，终点是 kicker 前那根 22×2 的强调线。 */
+.morph-bar {
+  position: fixed; z-index: 80;
+  border-radius: 2px;
+  background: var(--accent-on-dark);
+  box-shadow: 0 0 18px color-mix(in srgb, var(--accent-on-dark) 55%, transparent);
+  pointer-events: none;
+  transform-origin: left top;
+  will-change: transform, opacity;
+}
+
 /* ── 外壳 ── */
 .route-shell { display: flex; height: 100dvh; overflow: hidden; background: var(--kk-canvas); }
 .route-main {
@@ -1904,6 +1918,17 @@ html.ac-snap { scroll-snap-type: y proximity; }
 }
 /* 桌面上 dock 存在时，把管理员按钮让到左下角，避免与播放器重叠 */
 .route-mode:has(.ac-dock-player) button[aria-label="管理员"] { right: auto; left: 24px; }
+
+/* dock 播放器是常驻右下角的浮层（268 宽，高 246–310 随播放态变化，距右/底各 20px）。
+   管理员按钮已经会让位，内容区却没有：默认视图和滚动过程中，卡片会整块
+   从它下面经过 —— 实测 ai-tools 首屏右下卡片、滚到底的最后一行都被压过。
+   只垫底部不够（那只能保证"滚到底"干净），这里按它的实际占位把右侧通道
+   让出来：内容永远不进它那一列，首屏和滚动中都不会被压。
+   让位挂在 .route-view 而不是 .kk-body：标题头和正文要共用同一列，
+   否则正文收窄、标题仍拉满，居中内容会相对标题偏左。
+   移动端不渲染 .ac-dock-player（App.tsx 移动分支只有 TabBar），:has() 不成立，
+   留白保持原样。 */
+.route-mode:has(.ac-dock-player) .route-view { padding-right: 300px; }
 
 /* ── 移动端底栏与更多抽屉 ── */
 .ac-tabbar {

@@ -45,6 +45,7 @@ const MobileTabBar = ({ routes, activeRoute }: Props) => {
               key={route.id}
               href={route.href}
               className={`ac-tab${isActive ? ' ac-active' : ''}`}
+              data-route-id={route.id}
               aria-current={isActive ? 'page' : undefined}
             >
               <Icon name={routeIcons[route.id] ?? 'link'} className="text-lg" />
@@ -83,6 +84,7 @@ const MobileTabBar = ({ routes, activeRoute }: Props) => {
                   <a
                     key={route.id}
                     href={route.href}
+                    data-route-id={route.id}
                     onClick={() => setShowSheet(false)}
                     className={`ac-sheet-item${isActive ? ' ac-active' : ''}`}
                   >

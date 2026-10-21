@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>路由转场实验室 · MOTION LAB</title>
+    <link rel="stylesheet" href="./demo.css" />
+    <style>
+      .lab-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .lab-card:first-child { grid-column: 1 / -1; }
+      .lab-note {
+        max-width: 780px;
+        margin: 34px 0 0;
+        padding: 18px 20px;
+        border: 1px solid var(--line);
+        border-left: 2px solid var(--accent);
+        border-radius: 0 12px 12px 0;
+        background: rgba(77, 124, 255, 0.05);
+        color: var(--text-2);
+        font-size: 12.5px;
+        line-height: 1.8;
+      }
+      .lab-note b { color: var(--text); }
+      .lab-note code {
+        padding: 1px 5px;
+        border-radius: 4px;
+        background: rgba(255, 255, 255, 0.07);
+        font-family: var(--mono);
+        font-size: 10.5px;
+        color: var(--text);
+      }
+      @media (max-width: 900px) {
+        .lab-grid { grid-template-columns: 1fr; }
+        .lab-card:first-child { grid-column: auto; }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="rail">
+      <div class="brand">KK<i></i></div>
+      <nav class="rail-list" aria-label="演示列表">
+        <a class="rail-item active" href="./index.html"><b>00</b><span>总览</span></a>
+        <a class="rail-item" href="./current.html"><b>01</b><span>现状</span></a>
+        <a class="rail-item" href="./shared-axis.html"><b>02</b><span>共享轴</span></a>
+        <a class="rail-item" href="./signature-cut.html"><b>03</b><span>切镜</span></a>
+        <a class="rail-item" href="./container-morph.html"><b>04</b><span>元素</span></a>
+        <a class="rail-item" href="./quick-fade.html"><b>05</b><span>淡入</span></a>
+      </nav>
+      <div class="rail-foot">MOTION LAB / 2026</div>
+    </aside>
+
+    <main class="lab">
+      <span class="lab-kicker">MOTION LAB / ROUTE TRANSITIONS</span>
+      <h1>同一套页面，<br />五种切换方式。</h1>
+      <p class="lab-intro">
+        五个独立页面使用同一套假数据、同一条左侧导航。点击导航、按 <b>← / →</b>，或打开 <b>AUTO</b> 循环播放，
+        直接对比「转场占用了多少时间」和「视线有没有落点」。
+      </p>
+
+      <div class="lab-grid">
+        <a class="lab-card" href="./current.html">
+          <div class="lab-card-head">
+            <h2>现状 · 双层幕布</h2>
+            <code>CURRENT / 650ms</code>
+          </div>
+          <p>强调色 + 画布色两层幕布擦除，页头 5 组元素分别延迟进场。方向感很强，但每次导航都要等幕布走完，页头最后一条线要 1120ms 才停。</p>
+          <div class="timeline">
+            <div class="timeline-row"><span>幕布</span><div class="timeline-track"><i style="width: 54%"></i></div></div>
+            <div class="timeline-row"><span>页头</span><div class="timeline-track"><i style="width: 93%"></i></div></div>
+            <div class="timeline-row"><span>正文</span><div class="timeline-track"><i style="width: 57%"></i></div></div>
+          </div>
+          <div class="lab-card-foot"><span>A / 品牌签名感最强</span><span>看效果 →</span></div>
+        </a>
+
+        <a class="lab-card" href="./shared-axis.html">
+          <div class="lab-card-head">
+            <h2>共享轴 · 横向滑动</h2>
+            <code>SHARED AXIS / 240ms</code>
+          </div>
+          <p>旧页退 16px 淡出，新页从行进方向 24px 淡入；页头与正文沿同一方向落位。没有幕布，导航始终可见，最接近原生 App 的页面切换。</p>
+          <div class="timeline">
+            <div class="timeline-row"><span>退场</span><div class="timeline-track"><i style="width: 13%"></i></div></div>
+            <div class="timeline-row"><span>进场</span><div class="timeline-track"><i style="width: 20%"></i></div></div>
+            <div class="timeline-row"><span>页头</span><div class="timeline-track"><i style="width: 30%"></i></div></div>
+          </div>
+          <div class="lab-card-foot"><span>B / 推荐作为默认</span><span>看效果 →</span></div>
+        </a>
+
+        <a class="lab-card" href="./signature-cut.html">
+          <div class="lab-card-head">
+            <h2>缩短版切镜</h2>
+            <code>SIGNATURE CUT / 400ms</code>
+          </div>
+          <p>保留双层幕布，但缩到约 400ms；新页头和新正文在幕布还没走完时就开始进场。适合首次进入或跨大章节跳转，而不是每次点导航。</p>
+          <div class="timeline">
+            <div class="timeline-row"><span>幕布</span><div class="timeline-track"><i style="width: 33%"></i></div></div>
+            <div class="timeline-row"><span>页头</span><div class="timeline-track"><i style="width: 40%"></i></div></div>
+            <div class="timeline-row"><span>正文</span><div class="timeline-track"><i style="width: 25%"></i></div></div>
+          </div>
+          <div class="lab-card-foot"><span>C / 保留 Action-Cut 身份</span><span>看效果 →</span></div>
+        </a>
+
+        <a class="lab-card" href="./container-morph.html">
+          <div class="lab-card-head">
+            <h2>共享元素 · 导航条变页头</h2>
+            <code>CONTAINER MORPH / 320ms</code>
+          </div>
+          <p>点击导航时，左侧高亮竖条会从导航轨飞向页头，变成 kicker 前的强调横线。导航和页面之间有了明确的「同一个东西」在移动。</p>
+          <div class="timeline">
+            <div class="timeline-row"><span>morph</span><div class="timeline-track"><i style="width: 27%"></i></div></div>
+            <div class="timeline-row"><span>标题</span><div class="timeline-track"><i style="width: 27%"></i></div></div>
+            <div class="timeline-row"><span>正文</span><div class="timeline-track"><i style="width: 20%"></i></div></div>
+          </div>
+          <div class="lab-card-foot"><span>D / 空间连续性最强</span><span>看效果 →</span></div>
+        </a>
+
+        <a class="lab-card" href="./quick-fade.html">
+          <div class="lab-card-head">
+            <h2>移动端 · 快速淡入</h2>
+            <code>QUICK FADE / 140ms</code>
+          </div>
+          <p>底部 Tab 切换只动内容层：旧内容 100ms 淡出，新内容 140ms 淡入。TabBar 永远在，不会被整屏幕布盖住。移动端最不容易出错。</p>
+          <div class="timeline">
+            <div class="timeline-row"><span>淡出</span><div class="timeline-track"><i style="width: 8%"></i></div></div>
+            <div class="timeline-row"><span>淡入</span><div class="timeline-track"><i style="width: 12%"></i></div></div>
+          </div>
+          <div class="lab-card-foot"><span>E / 推荐用于底部 Tab</span><span>看效果 →</span></div>
+        </a>
+      </div>
+
+      <p class="lab-note">
+        <b>读法：</b>每个 demo 的左侧导航和内容都是独立假数据，互不影响。HUD 里的
+        <code>← 后退</code> / <code>前进 →</code> 会按路由顺序决定方向，<code>重播</code> 可以反复看同一段，
+        <code>AUTO</code> 每 1.4–1.7 秒自动切一次。<br />
+        <b>实现注意：</b>共享轴和容器变换会给路由内容加 <code>transform</code>。主站里有游戏房间、灯箱等
+        <code>position: fixed</code> 浮层，真正落地前要么把它们 portal 到 <code>body</code>，要么只动不含浮层的内容块。
+        所有 demo 都尊重系统的「减少动态效果」设置。
+      </p>
+    </main>
+  </body>
+</html>

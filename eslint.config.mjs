@@ -9,8 +9,9 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 
 export default [
   {
-    // hub-agent 是独立的全栈子项目，有自己的依赖与约定，不参与主站 lint
-    ignores: ['dist', 'node_modules', 'playwright-report', 'test-results', 'hub-agent'],
+    // experiments/ 是与主站零耦合的子项目（各有独立依赖与约定），不参与主站 lint
+    // docs/archive 是退役插件的归档区，代码原样保存但不参与构建与门禁
+    ignores: ['dist', 'node_modules', 'playwright-report', 'test-results', 'experiments', 'docs/archive'],
   },
   js.configs.recommended,
   {

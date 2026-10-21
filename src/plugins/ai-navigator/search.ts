@@ -18,13 +18,14 @@ export interface AiTool {
   category: string
   url: string
   description: string
+  /** 点开之后会发生什么：online 直接用 / desktop 要安装 / resource 是去看内容 */
+  kind?: 'online' | 'desktop' | 'resource'
+  /** 同站多条目时的归属声明 */
+  variantOf?: string
   tags?: string[]
   aliases?: string[]
   icon?: string
   featured?: boolean
-  sourceTitle?: string
-  sourceUrl?: string
-  sourceCategory?: string
 }
 
 export const getHostname = (url: string): string => {

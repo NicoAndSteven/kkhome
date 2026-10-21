@@ -1,0 +1,6194 @@
+{
+  "generatedAt": "2026-10-21T09:25:23.228Z",
+  "source": "public/config/plugins.config.json#ai-navigator",
+  "total": 267,
+  "categories": [
+    {
+      "id": "convert",
+      "title": "转换压缩",
+      "count": 8
+    },
+    {
+      "id": "image",
+      "title": "图片处理",
+      "count": 18
+    },
+    {
+      "id": "video-audio",
+      "title": "视频音频",
+      "count": 24
+    },
+    {
+      "id": "document",
+      "title": "文档演示",
+      "count": 8
+    },
+    {
+      "id": "design",
+      "title": "设计素材",
+      "count": 50
+    },
+    {
+      "id": "download",
+      "title": "下载采集",
+      "count": 19
+    },
+    {
+      "id": "software",
+      "title": "电脑软件",
+      "count": 46
+    },
+    {
+      "id": "ai",
+      "title": "AI 工具",
+      "count": 13
+    },
+    {
+      "id": "learn",
+      "title": "学习阅读",
+      "count": 42
+    },
+    {
+      "id": "fun",
+      "title": "休闲",
+      "count": 39
+    }
+  ],
+  "tools": [
+    {
+      "id": "doubao-com",
+      "title": "豆包",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://www.doubao.com/",
+      "description": "字节跳动的 AI 助手。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "豆包",
+        "doubao",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "metaso-cn-echo",
+      "title": "秘塔 AI 搜索",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://metaso.cn/echo",
+      "description": "AI 搜索，直接给答案并标注来源。",
+      "tags": [
+        "AI",
+        "AI语音输入",
+        "语音输入法"
+      ],
+      "aliases": [
+        "AI语音输入#语音输入法",
+        "Metaso",
+        "metaso",
+        "AI",
+        "AI语音输入",
+        "语音输入法"
+      ],
+      "featured": true
+    },
+    {
+      "id": "aishort-top",
+      "title": "AIShort",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://www.aishort.top/",
+      "description": "AI 工具与提示词导航。",
+      "tags": [
+        "AI",
+        "AI提示词合集网站"
+      ],
+      "aliases": [
+        "AI提示词合集网站",
+        "Aishort",
+        "aishort",
+        "AI"
+      ],
+      "featured": true
+    },
+    {
+      "id": "artificialanalysis-ai-image-arena",
+      "title": "Artificial Analysis",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://artificialanalysis.ai/image/arena",
+      "description": "AI 模型跑分、价格与生图能力对比。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "竞技场",
+        "artificialanalysis",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "chatgpt-com",
+      "title": "ChatGPT",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://chatgpt.com/",
+      "description": "OpenAI 的 AI 对话模型。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "ChatGPT",
+        "chatgpt",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "claude-ai",
+      "title": "Claude",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://claude.ai/",
+      "description": "Anthropic 的 AI 对话模型。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "Claude",
+        "claude",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "grok-com",
+      "title": "Grok",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://grok.com/",
+      "description": "xAI 的 AI 对话模型。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "Grok",
+        "grok",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "kimi-com",
+      "title": "Kimi",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://www.kimi.com/",
+      "description": "月之暗面的 AI 助手，长文本处理见长。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "Kimi",
+        "kimi",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "llm-stats-com",
+      "title": "LLM Stats",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://llm-stats.com/",
+      "description": "各家大模型的跑分与价格对比。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "Llm Stats",
+        "llm stats",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "arena-ai-zh-c-new",
+      "title": "LMArena 竞技场",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://arena.ai/zh/c/new",
+      "description": "两个模型匿名对答，投票选出更好的那个。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "竞技场模式",
+        "arena",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "prompterhub-cn-home",
+      "title": "PrompterHub",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://www.prompterhub.cn/home",
+      "description": "中文提示词库，按场景分类检索。",
+      "tags": [
+        "AI",
+        "AI提示词合集网站"
+      ],
+      "aliases": [
+        "AI提示词合集网站",
+        "PrompterHub",
+        "prompterhub",
+        "AI"
+      ],
+      "featured": false
+    },
+    {
+      "id": "promptup-net-scoreboard",
+      "title": "PromptUp",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://promptup.net/scoreboard",
+      "description": "提示词排行榜，可对提示词投票。",
+      "tags": [
+        "AI",
+        "AI提示词合集网站"
+      ],
+      "aliases": [
+        "AI提示词合集网站",
+        "Promptup",
+        "promptup",
+        "AI"
+      ],
+      "featured": false
+    },
+    {
+      "id": "superclueai-com-homepage",
+      "title": "SuperCLUE",
+      "category": "ai",
+      "categoryTitle": "AI 工具",
+      "url": "https://superclueai.com/homepage",
+      "description": "中文大模型能力评测榜。",
+      "tags": [
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "aliases": [
+        "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+        "Superclueai",
+        "superclueai",
+        "AI",
+        "AI大模型排行榜测评网站",
+        "当下什么",
+        "最强呢？"
+      ],
+      "featured": false
+    },
+    {
+      "id": "web-baimiaoapp-com-image-to-excel",
+      "title": "白描",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://web.baimiaoapp.com/image-to-excel",
+      "description": "拍照或截图转文字，支持图片转 Excel、PDF 提取文字。",
+      "tags": [
+        "工具",
+        "图片转excel",
+        "图片文字提取",
+        "pdf转文字"
+      ],
+      "aliases": [
+        "图片转excel#图片文字提取#pdf转文字",
+        "Web",
+        "web",
+        "工具",
+        "图片转excel",
+        "图片文字提取",
+        "pdf转文字"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pcfreetime-com-formatfactory-cn-download-html",
+      "title": "格式工厂",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "http://www.pcfreetime.com/formatfactory/CN/download.html",
+      "description": "免费的音视频、图片、文档格式转换桌面软件。",
+      "tags": [
+        "软件",
+        "格式转换本地软件大合集"
+      ],
+      "aliases": [
+        "格式转换本地软件大合集",
+        "Pcfreetime",
+        "pcfreetime",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "convertio",
+      "title": "Convertio",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://convertio.co/zh/",
+      "description": "在线转换文档、图片、音视频格式，支持 PDF / Word / Excel 互转。",
+      "tags": [
+        "工具",
+        "文件转换",
+        "PDF",
+        "Word",
+        "Excel"
+      ],
+      "aliases": [
+        "文件转换器",
+        "格式转换",
+        "PDF转换",
+        "Word转换",
+        "Excel转换"
+      ],
+      "featured": true
+    },
+    {
+      "id": "file-converter-local",
+      "title": "File Converter",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://file-converter.io/",
+      "description": "Windows 右键菜单直接转换文件格式，支持批量，开源免费。",
+      "tags": [
+        "软件",
+        "文件转换",
+        "本地工具"
+      ],
+      "aliases": [
+        "文件转换器",
+        "本地转换",
+        "格式转换"
+      ],
+      "featured": true
+    },
+    {
+      "id": "freeconvert-video-mp3",
+      "title": "FreeConvert 视频转 MP3",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://www.freeconvert.com/zh/convert/video-to-mp3",
+      "description": "在线把 MP4 等视频转成 MP3 或其它音频格式。",
+      "tags": [
+        "工具",
+        "视频转音频",
+        "MP3"
+      ],
+      "aliases": [
+        "视频转音频",
+        "mp4转mp3",
+        "音频提取"
+      ],
+      "featured": true
+    },
+    {
+      "id": "nextbconvert-com-zh",
+      "title": "NextConvert",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://nextbconvert.com/zh",
+      "description": "在线图片格式转换，支持批量处理。",
+      "tags": [
+        "工具",
+        "图片格式转换大全"
+      ],
+      "aliases": [
+        "图片格式转换大全",
+        "Nextbconvert",
+        "nextbconvert",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pdfgear-com-zh",
+      "title": "PDFgear",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://www.pdfgear.com/zh/",
+      "description": "PDF 阅读、编辑、转换与 OCR，有在线版和桌面版。",
+      "tags": [
+        "软件",
+        "格式转换本地软件大合集"
+      ],
+      "aliases": [
+        "格式转换本地软件大合集",
+        "Pdfgear",
+        "pdfgear",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "vidbee-org-zh-tools-convert-mp4-to-mp3",
+      "title": "Vidbee MP4 转 MP3",
+      "category": "convert",
+      "categoryTitle": "转换压缩",
+      "url": "https://vidbee.org/zh/tools/convert-mp4-to-mp3",
+      "description": "在线把 MP4 视频转换成 MP3 音频。",
+      "tags": [
+        "工具",
+        "视频格式转换",
+        "格式转换"
+      ],
+      "aliases": [
+        "视频格式转换#格式转换",
+        "Vidbee",
+        "vidbee",
+        "工具",
+        "视频格式转换",
+        "格式转换"
+      ],
+      "featured": false
+    },
+    {
+      "id": "100font-com-forum-1-1-htm-tagids-8-0-0-0",
+      "title": "100font",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.100font.com/forum-1-1.htm?tagids=8_0_0_0",
+      "description": "免费商用字体大全，按字重和风格筛选。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "100font",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bzdt-ch-mnr-gov-cn-index-html",
+      "title": "标准地图服务",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "http://bzdt.ch.mnr.gov.cn/index.html",
+      "description": "自然资源部标准地图下载，避免地图版权问题。",
+      "tags": [
+        "资源",
+        "其他图片",
+        "手机历史图",
+        "艺术",
+        "抽象",
+        "地图"
+      ],
+      "aliases": [
+        "其他图片#手机历史图#艺术#抽象#地图",
+        "Bzdt",
+        "bzdt",
+        "资源",
+        "其他图片",
+        "手机历史图",
+        "艺术",
+        "抽象",
+        "地图"
+      ],
+      "featured": false
+    },
+    {
+      "id": "jianlixiazai-cn-jianlizhongxin-html-type-1-order-2",
+      "title": "简历下载",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://jianlixiazai.cn/jianlizhongxin.html?type=1&order=2",
+      "description": "简历模板下载站，按行业分类。",
+      "tags": [
+        "资源",
+        "简历模板",
+        "在线编辑",
+        "简历制作"
+      ],
+      "aliases": [
+        "简历模板#在线编辑#简历制作",
+        "Jianlixiazai",
+        "jianlixiazai",
+        "资源",
+        "简历模板",
+        "在线编辑",
+        "简历制作"
+      ],
+      "featured": false
+    },
+    {
+      "id": "maoken-com-freefonts",
+      "title": "猫啃网",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.maoken.com/freefonts",
+      "description": "猫啃网免费商用字体合集，持续更新。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "Maoken",
+        "maoken",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "separator-mayastudios-com-horz-bookmark-differentiator-234fd716-90a2-4",
+      "title": "书签分隔图",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://separator.mayastudios.com/?horz#bookmark-differentiator--234fd716-90a2-493e-a7bc-923fcc337323",
+      "description": "生成透明占位图，用来给书签栏分组。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "空白logo网站",
+        "separator",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "icon-sucai999-com",
+      "title": "图标素材网",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://icon.sucai999.com/",
+      "description": "免费图标下载，含矢量与位图格式。",
+      "tags": [
+        "资源",
+        "图标",
+        "icon",
+        "svg",
+        "图形",
+        "开源图标"
+      ],
+      "aliases": [
+        "图标#icon#svg#图形#开源图标#可商业",
+        "Icon",
+        "icon",
+        "资源",
+        "图标",
+        "svg",
+        "图形",
+        "开源图标"
+      ],
+      "featured": false
+    },
+    {
+      "id": "wangyasai-github-io-stars-emmision",
+      "title": "王亚赛 星空生成器",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://wangyasai.github.io/Stars-Emmision/",
+      "description": "生成星空、流星等天文效果图。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "Wangyasai",
+        "wangyasai",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "ypppt-com-moban",
+      "title": "优品PPT",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.ypppt.com/moban/",
+      "description": "中文 PPT 模板站，免费下载。",
+      "tags": [
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "aliases": [
+        "PPT模板#高级模板#免费免登录#附上工具",
+        "优品PPT",
+        "ypppt",
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "laozhaopian5-com",
+      "title": "中国老照片",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "http://www.laozhaopian5.com/",
+      "description": "老照片、历史影像资料库。",
+      "tags": [
+        "资源",
+        "其他图片",
+        "手机历史图",
+        "艺术",
+        "抽象",
+        "地图"
+      ],
+      "aliases": [
+        "其他图片#手机历史图#艺术#抽象#地图",
+        "Laozhaopian5",
+        "laozhaopian5",
+        "资源",
+        "其他图片",
+        "手机历史图",
+        "艺术",
+        "抽象",
+        "地图"
+      ],
+      "featured": false
+    },
+    {
+      "id": "font-sucai999-com",
+      "title": "字体素材网",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://font.sucai999.com/",
+      "description": "免费字体下载，按风格分类。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "Font",
+        "font",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "fontshow-com-zh",
+      "title": "字体秀",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.fontshow.com/zh",
+      "description": "在线预览字体效果并下载。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "Fontshow",
+        "fontshow",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bg-patterns-com",
+      "title": "BG Patterns",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://bg-patterns.com/",
+      "description": "日系风格背景图案生成器。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "Bg-Pattrens-日系风格",
+        "bg patterns",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "canva-cn-templates-query-e7-ae-80-e5-8e-86",
+      "title": "Canva 简历模板",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.canva.cn/templates/?query=%E7%AE%80%E5%8E%86",
+      "description": "在线挑简历模板并直接编辑排版。",
+      "tags": [
+        "资源",
+        "简历模板",
+        "在线编辑",
+        "简历制作"
+      ],
+      "aliases": [
+        "简历模板#在线编辑#简历制作",
+        "Canva",
+        "canva",
+        "资源",
+        "简历模板",
+        "在线编辑",
+        "简历制作"
+      ],
+      "featured": false
+    },
+    {
+      "id": "cocomaterial-com",
+      "title": "cocomaterial 手绘风",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://cocomaterial.com/",
+      "description": "手绘风插画素材，适合做演示和海报。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "cocomaterial-手绘风",
+        "cocomaterial",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "color4bg-com-zh-hans",
+      "title": "Color4BG",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://color4bg.com/zh-hans/",
+      "description": "在线生成彩色渐变背景，可导出图片。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "Color4bg",
+        "color4bg",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bg-painter-com",
+      "title": "COLOR4BG 艺术背景",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "http://bg-painter.com/",
+      "description": "生成艺术感渐变背景图。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "COLOR4BG-艺术感",
+        "bg painter",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "dotown-maeda-design-room-net",
+      "title": "dotown 像素图",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://dotown.maeda-design-room.net/",
+      "description": "像素风格插画素材，可商用。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "Dotown",
+        "dotown",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "durves-com",
+      "title": "Durves 点阵图",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.durves.com/",
+      "description": "生成点阵风格背景图。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "\uddecDurves-点阵图",
+        "durves",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "fffuel-co-tttexture",
+      "title": "fffuel 纹理生成",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://fffuel.co/tttexture/",
+      "description": "生成可平铺纹理，颜色可调。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "\udf2btttexture-真实纹理",
+        "fffuel",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "fontspace-com",
+      "title": "Fontspace",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.fontspace.com/",
+      "description": "免费英文字体下载，支持在线预览。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "Fontspace",
+        "fontspace",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "frame-illust-com",
+      "title": "Frameillust 卡通插画",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://frame-illust.com/",
+      "description": "卡通风格插画素材，按场景分类。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "\ude91Frameillust-卡通插画",
+        "frame illust",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "products-ls-graphics-mesh-gradients",
+      "title": "Free Mesh 渐变色",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://products.ls.graphics/mesh-gradients/",
+      "description": "一百种免费网格渐变背景。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "\udfa8Free Mesh-100种渐变色",
+        "products",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "glitchart-io",
+      "title": "Glitch Art",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://glitchart.io/",
+      "description": "故障风格图片生成器。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "\udca5Glitch Art -故障风格",
+        "glitchart",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "app-haikei-app",
+      "title": "Haikei",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://app.haikei.app/",
+      "description": "生成简约风背景、波浪和噪点图。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "HaiKei-自定义简约风",
+        "app",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "icon-icons-com-zh",
+      "title": "Icon-Icons",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://icon-icons.com/zh/",
+      "description": "海量免费图标下载，支持多格式导出。",
+      "tags": [
+        "资源",
+        "图标",
+        "icon",
+        "svg",
+        "图形",
+        "开源图标"
+      ],
+      "aliases": [
+        "图标#icon#svg#图形#开源图标#可商业",
+        "Icon Icons",
+        "icon icons",
+        "资源",
+        "图标",
+        "icon",
+        "svg",
+        "图形",
+        "开源图标"
+      ],
+      "featured": false
+    },
+    {
+      "id": "justfreeslide-com-zh-document-tag-cute",
+      "title": "JustFreeSlide",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://justfreeslide.com/zh/document-tag/cute/",
+      "description": "免费 PPT 与 Google Slides 模板。",
+      "tags": [
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "aliases": [
+        "PPT模板#高级模板#免费免登录#附上工具",
+        "Justfreelide",
+        "justfreeslide",
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "kyuncuts-com",
+      "title": "kyuncuts",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://kyuncuts.com/",
+      "description": "可爱少女风背景素材。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "\udf38kyuncuts-可爱少女风",
+        "kyuncuts",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "loosedrawing-com",
+      "title": "Loose Drawing 趣味卡通",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://loosedrawing.com/",
+      "description": "趣味卡通插画素材，可商用。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "Loose Drawing-趣味卡通",
+        "loosedrawing",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "lab-magiconch-com-eva-title",
+      "title": "Magiconch EVA 标题",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://lab.magiconch.com/eva-title/",
+      "description": "生成 EVA 风格的标题字。",
+      "tags": [
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "aliases": [
+        "文字海报#eva#多种样式#免费字体#工程文件",
+        "Lab",
+        "lab",
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "magicv-art-app-dashboard-templates",
+      "title": "Magicv 简历模板",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://magicv.art/app/dashboard/templates",
+      "description": "在线简历模板库，选好即可编辑。",
+      "tags": [
+        "资源",
+        "简历模板",
+        "在线编辑",
+        "简历制作"
+      ],
+      "aliases": [
+        "简历模板#在线编辑#简历制作",
+        "Magicv",
+        "magicv",
+        "资源",
+        "简历模板",
+        "在线编辑",
+        "简历制作"
+      ],
+      "featured": false
+    },
+    {
+      "id": "miao3-cn",
+      "title": "Miao3 字体",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.miao3.cn/",
+      "description": "免费可商用字体下载站。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "Miao3",
+        "miao3",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "minimalmockups-com-mockups",
+      "title": "MINIMAL 样机",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.minimalmockups.com/mockups/",
+      "description": "免费样机素材，可在线合成。",
+      "tags": [
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "aliases": [
+        "样机生成#免费样机在线合成",
+        "MINIMAL",
+        "minimalmockups",
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mockups-design-com-free-mockups",
+      "title": "Mockups Design",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://mockups-design.com/free-mockups/",
+      "description": "免费样机 PSD 与在线合成。",
+      "tags": [
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "aliases": [
+        "样机生成#免费样机在线合成",
+        "Mockups Design",
+        "mockups design",
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pixie-haus",
+      "title": "pixie.haus",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://pixie.haus/",
+      "description": "像素风插画素材，可用于游戏和海报。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "pixie.haus",
+        "pixie",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "postspark-app",
+      "title": "PostSpark 截图美化",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://postspark.app/",
+      "description": "给截图加背景、圆角和阴影，导出精美图。",
+      "tags": [
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "aliases": [
+        "文字海报#eva#多种样式#免费字体#工程文件",
+        "Beautify Screenshots",
+        "postspark",
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pptsupermarket-com-ppts",
+      "title": "PPT超级市场",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.pptsupermarket.com/ppts",
+      "description": "PPT 模板与素材聚合站。",
+      "tags": [
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "aliases": [
+        "PPT模板#高级模板#免费免登录#附上工具",
+        "PPT超级市场",
+        "pptsupermarket",
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pptmon-com-category-free-templates-creative",
+      "title": "PPTMON",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://pptmon.com/category/free-templates/creative/",
+      "description": "免费 PPT 模板，含创意版式。",
+      "tags": [
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "aliases": [
+        "PPT模板#高级模板#免费免登录#附上工具",
+        "PPTMON",
+        "pptmon",
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "resourceboy-com-mockups",
+      "title": "Resourceboy",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://resourceboy.com/mockups/",
+      "description": "免费样机与设计素材。",
+      "tags": [
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "aliases": [
+        "样机生成#免费样机在线合成",
+        "Resourceboy",
+        "resourceboy",
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "featured": false
+    },
+    {
+      "id": "shigureni-com",
+      "title": "shigureni 日系插画",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.shigureni.com/",
+      "description": "日系可爱风免费插画。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "\udc30shigureni-日系可爱",
+        "shigureni",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "shots-so",
+      "title": "Shots.so",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://shots.so/",
+      "description": "在线给截图做精美排版。",
+      "tags": [
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "aliases": [
+        "文字海报#eva#多种样式#免费字体#工程文件",
+        "Shots",
+        "shots",
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "slidecoretemplates-com",
+      "title": "Slidecore 模板",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://slidecoretemplates.com/",
+      "description": "免费 PPT 模板，免登录下载。",
+      "tags": [
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "aliases": [
+        "PPT模板#高级模板#免费免登录#附上工具",
+        "Slidecore",
+        "slidecoretemplates",
+        "资源",
+        "PPT模板",
+        "高级模板",
+        "免费免登录",
+        "附上工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "sozai-good-com",
+      "title": "Sozai Good 日系插画",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://sozai-good.com/",
+      "description": "日系插画素材，可商用。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "\udfd5Soazi Good-日系插画",
+        "sozai good",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "tartanify-com-tartan-aitken",
+      "title": "Tartanify 苏格兰格子",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://tartanify.com/tartan/aitken",
+      "description": "在线生成苏格兰格子图案。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "\udfc1Tartanify-苏格兰格子",
+        "tartanify",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "tinkersynth-com-slopes",
+      "title": "Tinkersynth",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://tinkersynth.com/slopes/",
+      "description": "生成艺术感线条与坡度图。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "Tinkersynth",
+        "tinkersynth",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "transparenttextures-com",
+      "title": "Transparent Textures",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://transparenttextures.com/",
+      "description": "免费可平铺纹理素材。",
+      "tags": [
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "aliases": [
+        "背景图素材#自定义#免费生成#PPT必备",
+        "Transparent Textures -纹理",
+        "transparenttextures",
+        "资源",
+        "背景图素材",
+        "自定义",
+        "免费生成",
+        "PPT必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "unblast-com-mockups",
+      "title": "Unblast",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://unblast.com/mockups/",
+      "description": "免费样机素材下载，含设备与包装场景。",
+      "tags": [
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "aliases": [
+        "样机生成#免费样机在线合成",
+        "Unblast",
+        "unblast",
+        "资源",
+        "样机生成",
+        "免费样机在线合成"
+      ],
+      "featured": false
+    },
+    {
+      "id": "undraw-co-illustrations",
+      "title": "unDraw",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://undraw.co/illustrations",
+      "description": "可换色的开源 SVG 插画。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "Undraw",
+        "undraw",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yesicon-app",
+      "title": "Yesicon",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://yesicon.app/",
+      "description": "开源图标库，支持多套图标集检索。",
+      "tags": [
+        "资源",
+        "图标",
+        "icon",
+        "svg",
+        "图形",
+        "开源图标"
+      ],
+      "aliases": [
+        "图标#icon#svg#图形#开源图标#可商业",
+        "Yesicon",
+        "yesicon",
+        "资源",
+        "图标",
+        "icon",
+        "svg",
+        "图形",
+        "开源图标"
+      ],
+      "featured": true
+    },
+    {
+      "id": "zfont-cn",
+      "title": "Zfont 字体",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.zfont.cn/",
+      "description": "免费商用字体下载，可按风格和字重筛选。",
+      "tags": [
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "aliases": [
+        "免费字体#可商用字体#",
+        "Zfont",
+        "zfont",
+        "资源",
+        "免费字体",
+        "可商用字体"
+      ],
+      "featured": false
+    },
+    {
+      "id": "irasutoya-com",
+      "title": "いらすとや",
+      "category": "design",
+      "categoryTitle": "设计素材",
+      "url": "https://www.irasutoya.com/",
+      "description": "日式免费插画素材，量大风格统一。",
+      "tags": [
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "aliases": [
+        "插画素材#PPT必备#自媒体#可商用",
+        "Irasutoya",
+        "irasutoya",
+        "资源",
+        "插画素材",
+        "PPT必备",
+        "自媒体",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "b3log-org-siyuan",
+      "title": "思源笔记",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://b3log.org/siyuan/",
+      "description": "本地优先的块级笔记工具，支持 Markdown。",
+      "tags": [
+        "工具",
+        "Markdown编辑工具"
+      ],
+      "aliases": [
+        "Markdown编辑工具",
+        "思源笔记",
+        "b3log",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "boardmix-cn-app-share-cae-ck3b5qwgasoqtaqlmrrgc2oi0dvg4bdjbjagqae-yuby",
+      "title": "Boardmix 白板",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://boardmix.cn/app/share/CAE.CK3b5QwgASoQtAqLMRrGc2oi0DvG4bdJbjAGQAE/yuBY0F",
+      "description": "在线协作白板，可画流程图和思维导图。",
+      "tags": [
+        "AI",
+        "效率翻倍",
+        "工作流搭建"
+      ],
+      "aliases": [
+        "deepseek结合飞书使用#效率翻倍#工作流搭建",
+        "Boardmix",
+        "boardmix",
+        "AI",
+        "效率翻倍",
+        "工作流搭建"
+      ],
+      "featured": false
+    },
+    {
+      "id": "chartcube-alipay-com",
+      "title": "ChartCube 图表",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://chartcube.alipay.com/",
+      "description": "导入 Excel 数据快速生成图表，可导出为图片。",
+      "tags": [
+        "工具",
+        "图表制作",
+        "支持Excel文件导入"
+      ],
+      "aliases": [
+        "图表制作#支持Excel文件导入",
+        "Chartcube",
+        "chartcube",
+        "工具",
+        "图表制作",
+        "支持Excel文件导入"
+      ],
+      "featured": false
+    },
+    {
+      "id": "markdown-lovejade-cn",
+      "title": "Markdown 在线编辑器",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://markdown.lovejade.cn/",
+      "description": "在线写 Markdown，实时预览，可导出 HTML。",
+      "tags": [
+        "工具",
+        "Markdown编辑工具"
+      ],
+      "aliases": [
+        "Markdown编辑工具",
+        "Markdown",
+        "markdown",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "markdown-cn",
+      "title": "Markdown 中文网",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://www.markdown.cn/",
+      "description": "Markdown 语法中文教程与在线练习。",
+      "tags": [
+        "知识",
+        "markdown语法"
+      ],
+      "aliases": [
+        "markdown语法",
+        "MARKDOWN 中文",
+        "markdown",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "markdown-com-cn-basic-syntax-headings-html",
+      "title": "Markdown 中文文档",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://markdown.com.cn/",
+      "description": "Markdown 基础与扩展语法的中文参考，含表格、脚注、任务列表。",
+      "tags": [
+        "知识",
+        "markdown语法"
+      ],
+      "aliases": [
+        "markdown语法",
+        "标题（Heading）",
+        "markdown",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "md2card-com-zh",
+      "title": "MD2Card",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://md2card.com/zh",
+      "description": "把 Markdown 转成知识卡片图片。",
+      "tags": [
+        "工具",
+        "Markdown卡片",
+        "文字卡片",
+        "知识卡片"
+      ],
+      "aliases": [
+        "Markdown卡片#文字卡片#知识卡片",
+        "Md2card",
+        "md2card",
+        "工具",
+        "Markdown卡片",
+        "文字卡片",
+        "知识卡片"
+      ],
+      "featured": false
+    },
+    {
+      "id": "notecard-top",
+      "title": "Notecard 文字海报",
+      "category": "document",
+      "categoryTitle": "文档演示",
+      "url": "https://www.notecard.top/",
+      "description": "把文字排成海报卡片，内置多种模板。",
+      "tags": [
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "aliases": [
+        "文字海报#eva#多种样式#免费字体#工程文件",
+        "Notecard",
+        "notecard",
+        "工具",
+        "文字海报",
+        "eva",
+        "多种样式",
+        "免费字体",
+        "工程文件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "moviebluebook-com-movie",
+      "title": "电影蓝皮书",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://moviebluebook.com/movie/",
+      "description": "电影资源下载站，按类型和年份归档。",
+      "tags": [
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "aliases": [
+        "电影资源下载#仅供学习交流",
+        "Moviebluebook",
+        "moviebluebook",
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "featured": false
+    },
+    {
+      "id": "asus-com-cn-support-id-155",
+      "title": "华硕驱动下载",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.asus.com.cn/support?id=155",
+      "description": "华硕主板与笔记本驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "华硕电脑",
+        "asus",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "consumer-huawei-com-cn-support-driver-list",
+      "title": "华为驱动下载",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://consumer.huawei.com/cn/support/driver-list/",
+      "description": "华为笔记本驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "华为电脑",
+        "consumer",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mechrevo-com-service",
+      "title": "机械革命驱动",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.mechrevo.com/service/",
+      "description": "机械革命笔记本驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "机械革命",
+        "mechrevo",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "kuakes-com-films",
+      "title": "夸克影视",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://kuakes.com/films",
+      "description": "影视资源在线观看与下载。",
+      "tags": [
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "aliases": [
+        "电影资源下载#仅供学习交流",
+        "Kuakes",
+        "kuakes",
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "featured": false
+    },
+    {
+      "id": "newsupport-lenovo-com-cn-drivedownloads-index-html",
+      "title": "联想驱动下载",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://newsupport.lenovo.com.cn/driveDownloads_index.html",
+      "description": "联想笔记本驱动与固件下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "联想电脑",
+        "newsupport",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-e7-8c-ab-e6-8a-93-oohmdefbja",
+      "title": "猫抓",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/%E7%8C%AB%E6%8A%93/oohmdefbjalncfplafanlagojlakmjci?hl=zh-CN",
+      "description": "浏览器扩展，嗅探并下载网页中的视频、音频和图片。",
+      "tags": [
+        "工具",
+        "网站视频下载",
+        "音频下载",
+        "图片下载",
+        "音乐下载",
+        "视频号下载"
+      ],
+      "aliases": [
+        "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
+        "Microsoftedge",
+        "microsoftedge",
+        "工具",
+        "网站视频下载",
+        "音频下载",
+        "图片下载",
+        "音乐下载",
+        "视频号下载"
+      ],
+      "featured": false
+    },
+    {
+      "id": "ruancang-net",
+      "title": "软仓",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.ruancang.net/",
+      "description": "软件下载站，收录常用 Windows 软件。",
+      "tags": [
+        "软件"
+      ],
+      "aliases": [
+        "adobe软件下载全家桶网站",
+        "Ruancang",
+        "ruancang",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-e5-b0-8f-e7-ba-a2-e4-b9-a6-e",
+      "title": "小红书笔记下载",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/%E5%B0%8F%E7%BA%A2%E4%B9%A6%E7%AC%94%E8%AE%B0%E4%B8%8B%E8%BD%BD%E5%8A%A9%E6%89%8B/aajfehiicohpgdimepmpjgeajecagdgb",
+      "description": "Edge 扩展，下载小红书笔记里的图片。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "小红书笔记下载助手",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mi-com-service-notebook-drivers",
+      "title": "小米驱动下载",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.mi.com/service/notebook/drivers",
+      "description": "小米笔记本驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "小米电脑",
+        "mi",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yinfans-me",
+      "title": "音范丝",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.yinfans.me/",
+      "description": "电影资源下载站，提供高清片源。",
+      "tags": [
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "aliases": [
+        "电影资源下载#仅供学习交流",
+        "Yinfans",
+        "yinfans",
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "featured": false
+    },
+    {
+      "id": "airportal-cn",
+      "title": "AirPortal 空投快传",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.airportal.cn/",
+      "description": "输入取件码跨设备传文件。",
+      "tags": [
+        "工具",
+        "文件传输"
+      ],
+      "aliases": [
+        "文件传输",
+        "Airportal",
+        "airportal",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "aixdownloader-com-zh",
+      "title": "AIX 智能下载器",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://aixdownloader.com/zh",
+      "description": "浏览器扩展，下载网页里的视频、音频和图片。",
+      "tags": [
+        "工具",
+        "网站视频下载",
+        "音频下载",
+        "图片下载",
+        "音乐下载",
+        "视频号下载"
+      ],
+      "aliases": [
+        "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
+        "Aixdownloader",
+        "aixdownloader",
+        "工具",
+        "网站视频下载",
+        "音频下载",
+        "图片下载",
+        "音乐下载",
+        "视频号下载"
+      ],
+      "featured": false
+    },
+    {
+      "id": "amd-com-zh-cn-support-download-drivers-html",
+      "title": "AMD 驱动",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.amd.com/zh-cn/support/download/drivers.html",
+      "description": "AMD 处理器与显卡驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "AMD处理器和显卡驱动程序及支持",
+        "amd",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "intel-cn-content-www-cn-zh-support-detect-html",
+      "title": "Intel 驱动",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.intel.cn/content/www/cn/zh/support/detect.html",
+      "description": "Intel 处理器与核显驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "英特尔驱动程序和软件",
+        "intel",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "nvidia-cn-geforce-drivers",
+      "title": "NVIDIA 驱动",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.nvidia.cn/geforce/drivers/",
+      "description": "NVIDIA 显卡驱动下载。",
+      "tags": [
+        "软件",
+        "驱动下载"
+      ],
+      "aliases": [
+        "驱动下载",
+        "NVIDIA 驱动程序 – N 卡驱动 | NVIDIA",
+        "nvidia",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "rrdynb-com-index-html",
+      "title": "Rrdynb 电影",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://www.rrdynb.com/index.html",
+      "description": "电影资源下载站，含经典与院线片。",
+      "tags": [
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "aliases": [
+        "电影资源下载#仅供学习交流",
+        "Rrdynb",
+        "rrdynb",
+        "资源",
+        "电影资源下载",
+        "仅供学习交流"
+      ],
+      "featured": false
+    },
+    {
+      "id": "send-vis-ee",
+      "title": "Send 文件传输",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://send.vis.ee/",
+      "description": "端到端加密的文件分享，链接到期自动失效。",
+      "tags": [
+        "工具",
+        "文件传输"
+      ],
+      "aliases": [
+        "文件传输",
+        "Send",
+        "send",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "store-steampowered-com-about",
+      "title": "Steam",
+      "category": "download",
+      "categoryTitle": "下载采集",
+      "url": "https://store.steampowered.com/about/",
+      "description": "Steam 商店，买游戏和下载客户端。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第三课】：软件下载教程和必装软件",
+        "store.steampowered.com/",
+        "store",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "guozhivip-com-fun-2048",
+      "title": "2048",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "http://guozhivip.com/fun/2048/",
+      "description": "在线小游戏：2048 数字合并。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "Guozhivip",
+        "guozhivip",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "eazhijia-com-fun-map-html",
+      "title": "猜中国地图",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.eazhijia.com/fun/map.html",
+      "description": "在线小游戏：猜中国省份位置。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "猜中国地图",
+        "eazhijia",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yikm-net-play-id-3501",
+      "title": "超级玛丽",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.yikm.net/play?id=3501",
+      "description": "在线小游戏：超级玛丽。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "超级玛丽",
+        "yikm",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "blockbreaker-onl-zh",
+      "title": "打砖块",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://blockbreaker.onl/zh/",
+      "description": "在线小游戏：打砖块。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "打砖块",
+        "blockbreaker",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zty-pe",
+      "title": "打字游戏 zty.pe",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://zty.pe/",
+      "description": "在线小游戏：边打字边击落单词。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "打字游戏",
+        "zty",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "polkadotgame-com",
+      "title": "大球吃小球",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.polkadotgame.com/",
+      "description": "在线小游戏：球球大作战。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "大球吃小球",
+        "polkadotgame",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "narrow-one",
+      "title": "弓箭手",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://narrow.one/",
+      "description": "在线小游戏：弓箭手对战。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "弓箭手",
+        "narrow",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yohoho-io",
+      "title": "海盗大逃杀",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://yohoho.io/",
+      "description": "在线小游戏：海盗大逃杀。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "海盗大逃杀",
+        "yohoho",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "lab-hakim-se-core",
+      "title": "红球防卫",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://lab.hakim.se/core/",
+      "description": "在线小游戏：红球塔防。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "红球防卫",
+        "lab",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yikm-net-play-id-4137",
+      "title": "魂斗罗",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.yikm.net/play?id=4137",
+      "description": "在线小游戏：魂斗罗。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "魂斗罗",
+        "yikm",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "u-ali213-net-games-jisushiliang-index-html",
+      "title": "极速矢量",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://u.ali213.net/games/jisushiliang/index.html",
+      "description": "在线小游戏：极速矢量竞速。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "极速矢量",
+        "u",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "hex-frvr-com",
+      "title": "六边形拼图",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://hex.frvr.com/",
+      "description": "在线小游戏：把六边形拼成完整图案。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "六边形拼图",
+        "hex",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "js13kgames-com-2025-games-cat-survivors-play",
+      "title": "猫猫幸存者",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://js13kgames.com/2025/games/cat-survivors#play",
+      "description": "在线小游戏：猫猫幸存者。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "猫猫幸存者",
+        "js13kgames",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "cuber-heheda-top",
+      "title": "魔方",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://cuber.heheda.top/",
+      "description": "在线小游戏：还原三阶魔方。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "魔方",
+        "cuber",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "dapingpang-top",
+      "title": "乒乓球",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://dapingpang.top/",
+      "description": "在线小游戏：乒乓球对战。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "乒乓球",
+        "dapingpang",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "aring-cc-human-benchmark-index",
+      "title": "人类极限挑战",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://aring.cc/human-benchmark/#/index",
+      "description": "在线小游戏：人类极限反应测试。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "人类极限挑战",
+        "aring",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bulletz-io",
+      "title": "射击吞吐",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://bulletz.io/",
+      "description": "在线小游戏：弹幕射击。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "射击吞吐",
+        "bulletz",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "poki-com-zh-g-temple-run-2-holi-festival",
+      "title": "神庙逃亡",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://poki.com/zh/g/temple-run-2-holi-festival",
+      "description": "在线小游戏：神庙逃亡。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "神庙 逃亡",
+        "poki",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "fn-heheda-top",
+      "title": "水果忍者",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://fn.heheda.top/",
+      "description": "在线小游戏：切水果。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "水果忍者",
+        "fn",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "missile-game-bwhmather-com",
+      "title": "隧道穿越",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://missile-game.bwhmather.com/",
+      "description": "在线小游戏：穿越隧道躲避障碍。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "隧道穿越",
+        "missile game",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "heyzxz-me-pcol",
+      "title": "台球斯诺克",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "http://www.heyzxz.me/pcol/",
+      "description": "在线小游戏：台球斯诺克。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "台球斯诺克",
+        "heyzxz",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yikm-net-play-id-4275",
+      "title": "坦克大战",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.yikm.net/play?id=4275",
+      "description": "在线小游戏：坦克大战。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "坦克大战",
+        "yikm",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yikm-net",
+      "title": "我的世界网页版",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.yikm.net/",
+      "description": "在线小游戏：网页版 Minecraft。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "MC多种模式",
+        "yikm",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "poki-com-zh-g-flappy-chicken",
+      "title": "像素鸟",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://poki.com/zh/g/flappy-chicken",
+      "description": "在线小游戏：Flappy Bird 复刻版。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "像素鸟",
+        "poki",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "js13kgames-com-2025-games-clawstrike-play",
+      "title": "凶狠猫猫",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://js13kgames.com/2025/games/clawstrike#play",
+      "description": "在线小游戏：猫爪格斗。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "凶狠 猫猫",
+        "js13kgames",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yandex-com-games-zh-app-178531-app-id-178531-catalog-session-uid-catal",
+      "title": "羽毛球",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://yandex.com/games/zh/app/178531#app-id=178531&catalog-session-uid=catalog-4b6dc19f-fff2-5398-913c-d2ef4f41b5d5-1715319176435-ce73&rtx-reqid=3567158497419094919&pos=%7B%22listType%22%3A%22suggested%22%2C%22tabCategory%22%3A%22tag%22%7D&redir-data=%7B%22http_ref%22%3A%22https%253A%252F%252Fyandex.com%252Fgames%252Fzh%252Ftag%252Fyu_mao_qiu_755%22%2C%22rn%22%3A528922171%7D",
+      "description": "在线小游戏：羽毛球对战。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "羽毛球",
+        "yandex",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "js13kgames-com-2025-games-kittens-crossing",
+      "title": "找猫猫",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://js13kgames.com/2025/games/kittens-crossing",
+      "description": "在线小游戏：帮小猫过马路。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "找 猫猫",
+        "js13kgames",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "touchpianist-com",
+      "title": "自动挡钢琴",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://touchpianist.com/",
+      "description": "在线小游戏：自动演奏钢琴。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "自动挡钢琴",
+        "touchpianist",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "miku-sci-fifans-net",
+      "title": "自动档打碟",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://miku.sci-fifans.net/",
+      "description": "在线小游戏：自动打碟混音。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "自动档打碟",
+        "miku",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zuomeme-com",
+      "title": "做表情",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.zuomeme.com/",
+      "description": "在线生成表情包，模板可改文字。",
+      "tags": [
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "aliases": [
+        "表情包#梗图#表情DIY",
+        "Zuomeme",
+        "zuomeme",
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "featured": false
+    },
+    {
+      "id": "beatstage-com",
+      "title": "BeatStage",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.beatstage.com/",
+      "description": "在线小游戏：网页音游。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "音游",
+        "beatstage",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "diydoutu-com-diy-doutu",
+      "title": "DIY 斗图",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.diydoutu.com/diy/doutu",
+      "description": "在线制作斗图表情包。",
+      "tags": [
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "aliases": [
+        "表情包#梗图#表情DIY",
+        "Diydoutu",
+        "diydoutu",
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "featured": false
+    },
+    {
+      "id": "girlsgogames-com",
+      "title": "Girlsgogames",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.girlsgogames.com/",
+      "description": "在线小游戏站，偏休闲向。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "Girlsgogames",
+        "girlsgogames",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "krunker-io",
+      "title": "Krunker",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://krunker.io/",
+      "description": "在线小游戏：浏览器 FPS。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "射击游戏",
+        "krunker",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "toolwa-com-petpet",
+      "title": "PetPet 摸摸头",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://toolwa.com/petpet/",
+      "description": "给图片加「摸摸头」动图效果。",
+      "tags": [
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "aliases": [
+        "表情包#梗图#表情DIY",
+        "Toolwa",
+        "toolwa",
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "featured": false
+    },
+    {
+      "id": "poki-com-zh",
+      "title": "POKI",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://poki.com/zh",
+      "description": "在线小游戏平台，点开即玩。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "POKI",
+        "poki",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "soogif-com-funny",
+      "title": "Soogif 表情包",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://www.soogif.com/funny",
+      "description": "GIF 表情包搜索与在线制作。",
+      "tags": [
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "aliases": [
+        "表情包#梗图#表情DIY",
+        "Soogif",
+        "soogif",
+        "资源",
+        "表情包",
+        "梗图",
+        "表情DIY"
+      ],
+      "featured": false
+    },
+    {
+      "id": "suroi-fpsgo-net",
+      "title": "Suroi 吃鸡",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://suroi.fpsgo.net/",
+      "description": "在线小游戏：2D 大逃杀。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "D吃鸡",
+        "suroi",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "oskarstalberg-com-townscaper",
+      "title": "Townscaper",
+      "category": "fun",
+      "categoryTitle": "休闲",
+      "url": "https://oskarstalberg.com/Townscaper",
+      "description": "在线小游戏：随手搭出小镇。",
+      "tags": [
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "aliases": [
+        "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+        "建房子",
+        "oskarstalberg",
+        "资源",
+        "在线小游戏",
+        "点开即玩",
+        "在线摸鱼流畅游玩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "ps-gaoding-com",
+      "title": "稿定设计在线 PS",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://ps.gaoding.com/#/",
+      "description": "在线版 PS，支持抠图、修图、AI 生图和加水印。",
+      "tags": [
+        "工具",
+        "图片编辑",
+        "AI做图",
+        "豆包",
+        "在线版PS",
+        "添加水印"
+      ],
+      "aliases": [
+        "图片编辑#AI做图#豆包#在线版PS#添加水印",
+        "Ps",
+        "ps",
+        "工具",
+        "图片编辑",
+        "AI做图",
+        "豆包",
+        "在线版PS",
+        "添加水印"
+      ],
+      "featured": false
+    },
+    {
+      "id": "autohanding-com",
+      "title": "模拟手写体",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://www.autohanding.com/",
+      "description": "把文字转成手写风格的图片。",
+      "tags": [
+        "工具",
+        "模拟手写样式"
+      ],
+      "aliases": [
+        "模拟手写样式",
+        "Autohanding",
+        "autohanding",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "cuijianzhuang-github-io-photo-watermark",
+      "title": "图片加水印",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://cuijianzhuang.github.io/photo-watermark/",
+      "description": "在线给照片批量添加文字或图片水印。",
+      "tags": [
+        "工具",
+        "图片编辑",
+        "AI做图",
+        "豆包",
+        "在线版PS",
+        "添加水印"
+      ],
+      "aliases": [
+        "图片编辑#AI做图#豆包#在线版PS#添加水印",
+        "Cuijianzhuang",
+        "cuijianzhuang",
+        "工具",
+        "图片编辑",
+        "AI做图",
+        "豆包",
+        "在线版PS",
+        "添加水印"
+      ],
+      "featured": false
+    },
+    {
+      "id": "apeaksoft-com-watermark-remover-editor",
+      "title": "Apeaksoft 去水印",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://www.apeaksoft.com/watermark-remover/editor/",
+      "description": "去除照片和视频中的水印。",
+      "tags": [
+        "工具",
+        "去照片水印",
+        "图片水印去除"
+      ],
+      "aliases": [
+        "去照片水印#图片水印去除",
+        "Apeaksoft",
+        "apeaksoft",
+        "工具",
+        "去照片水印",
+        "图片水印去除"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zh-bgsub-com-webapp",
+      "title": "BgSub",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://zh.bgsub.com/webapp/",
+      "description": "AI 自动抠图去背景，可替换背景色。",
+      "tags": [
+        "工具",
+        "抠图免费网站"
+      ],
+      "aliases": [
+        "抠图免费网站",
+        "Zh",
+        "zh",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bigjpg-com",
+      "title": "Bigjpg",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://bigjpg.com/",
+      "description": "AI 放大图片，同时降噪并提升分辨率。",
+      "tags": [
+        "工具",
+        "模糊修复-测试"
+      ],
+      "aliases": [
+        "模糊修复-测试",
+        "Bigjpg",
+        "bigjpg",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-gofullpage-full-page-sc-hfac",
+      "title": "GoFullPage 长截图",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/gofullpage-full-page-sc/hfaciehifhdcgoolaejkoncjciicbemc?hl=zh-CN",
+      "description": "Edge 扩展，整页长截图。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "高清长截图当前网页",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "magiconch-com-vaporwave-from-home",
+      "title": "Magiconch 蒸汽波",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://magiconch.com/vaporwave/?from=home",
+      "description": "把图片转成蒸汽波风格。",
+      "tags": [
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "aliases": [
+        "图片风格化#蒸汽波#油画#像素画",
+        "Magiconch",
+        "magiconch",
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "featured": false
+    },
+    {
+      "id": "lab-magiconch-com-one-last-image",
+      "title": "Magiconch 最后一张图",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://lab.magiconch.com/one-last-image/",
+      "description": "生成「最后一张图」风格的梗图。",
+      "tags": [
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "aliases": [
+        "图片风格化#蒸汽波#油画#像素画",
+        "Lab",
+        "lab",
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "featured": false
+    },
+    {
+      "id": "magiconch-com-patina",
+      "title": "Magiconch 做旧",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://magiconch.com/patina/",
+      "description": "给图片加做旧、锈迹质感。",
+      "tags": [
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "aliases": [
+        "图片风格化#蒸汽波#油画#像素画",
+        "Magiconch",
+        "magiconch",
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "featured": false
+    },
+    {
+      "id": "photomosh-com-app",
+      "title": "PhotoMosh",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://photomosh.com/app/",
+      "description": "在线给图片或视频加故障、噪点等特效。",
+      "tags": [
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "aliases": [
+        "图片风格化#蒸汽波#油画#像素画",
+        "Photomosh",
+        "photomosh",
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "featured": false
+    },
+    {
+      "id": "picwish-cn-remove-unwanted-object",
+      "title": "PicWish",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://picwish.cn/remove-unwanted-object",
+      "description": "AI 去除图片里的多余物体、路人和水印。",
+      "tags": [
+        "工具",
+        "去照片水印",
+        "图片水印去除"
+      ],
+      "aliases": [
+        "去照片水印#图片水印去除",
+        "Picwish",
+        "picwish",
+        "工具",
+        "去照片水印",
+        "图片水印去除"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pixel-me-tokyo-en",
+      "title": "Pixel Me",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://pixel-me.tokyo/en/",
+      "description": "把照片转成像素画风格。",
+      "tags": [
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "aliases": [
+        "图片风格化#蒸汽波#油画#像素画",
+        "Pixel Me",
+        "pixel me",
+        "工具",
+        "图片风格化",
+        "蒸汽波",
+        "油画",
+        "像素画"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pixian-ai",
+      "title": "Pixian.AI",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://pixian.ai/",
+      "description": "免费 AI 抠图，支持批量，输出透明 PNG。",
+      "tags": [
+        "工具",
+        "抠图免费网站"
+      ],
+      "aliases": [
+        "抠图免费网站",
+        "Pixian",
+        "pixian",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "moonvy-com-apps-pxevapo",
+      "title": "PxEvapo 图片压缩",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://moonvy.com/apps/PxEvapo/",
+      "description": "在线压缩 PNG、JPG，支持批量与 GIF。",
+      "tags": [
+        "工具",
+        "图片压缩",
+        "png压缩",
+        "批量压缩",
+        "GIF压缩"
+      ],
+      "aliases": [
+        "图片压缩#png压缩#批量压缩#GIF压缩",
+        "Moonvy",
+        "moonvy",
+        "工具",
+        "图片压缩",
+        "png压缩",
+        "批量压缩",
+        "GIF压缩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zh-recompressor-com",
+      "title": "Recompressor",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://zh.recompressor.com/",
+      "description": "在线压缩图片，可对比不同压缩率下的画质。",
+      "tags": [
+        "工具",
+        "图片压缩",
+        "png压缩",
+        "批量压缩",
+        "GIF压缩"
+      ],
+      "aliases": [
+        "图片压缩#png压缩#批量压缩#GIF压缩",
+        "Zh",
+        "zh",
+        "工具",
+        "图片压缩",
+        "png压缩",
+        "批量压缩",
+        "GIF压缩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "remove-bg-zh-upload",
+      "title": "remove.bg",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://www.remove.bg/zh/upload",
+      "description": "上传图片自动去背景，输出透明 PNG。",
+      "tags": [
+        "工具",
+        "抠图免费网站"
+      ],
+      "aliases": [
+        "抠图免费网站",
+        "Remove",
+        "remove",
+        "工具"
+      ],
+      "featured": true
+    },
+    {
+      "id": "tinypng-com",
+      "title": "TinyPNG",
+      "category": "image",
+      "categoryTitle": "图片处理",
+      "url": "https://tinypng.com/",
+      "description": "在线压缩 PNG、JPG、WebP，画质损失很小。",
+      "tags": [
+        "工具",
+        "图片压缩",
+        "png压缩",
+        "批量压缩",
+        "GIF压缩"
+      ],
+      "aliases": [
+        "图片压缩#png压缩#批量压缩#GIF压缩",
+        "Tinypng",
+        "tinypng",
+        "工具",
+        "图片压缩",
+        "png压缩",
+        "批量压缩",
+        "GIF压缩"
+      ],
+      "featured": true
+    },
+    {
+      "id": "52pojie-cn",
+      "title": "52破解",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.52pojie.cn/",
+      "description": "软件逆向与资源交流论坛。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第五课】：如何找到高质量的网站&软件解决需求",
+        "52pojie",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "53bk-com-baokan",
+      "title": "53BK 报刊",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "http://www.53bk.com/Baokan/",
+      "description": "在线浏览国内报纸和杂志，按日期翻页。",
+      "tags": [
+        "资源",
+        "报纸杂志"
+      ],
+      "aliases": [
+        "报纸杂志",
+        "53bk",
+        "资源"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zq5-bookan-com-cn-id-21160",
+      "title": "博看网",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://zq5.bookan.com.cn/?id=21160#/",
+      "description": "在线期刊杂志阅读，支持往期回溯。",
+      "tags": [
+        "资源",
+        "报纸杂志"
+      ],
+      "aliases": [
+        "报纸杂志",
+        "Zq5",
+        "zq5",
+        "资源"
+      ],
+      "featured": false
+    },
+    {
+      "id": "cook-yunyoujun-cn",
+      "title": "程序员做饭指南",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://cook.yunyoujun.cn/",
+      "description": "用程序员思维写的做饭教程。",
+      "tags": [
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "aliases": [
+        "实用指南手册#租房#医保#做饭",
+        "Cook",
+        "cook",
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "featured": false
+    },
+    {
+      "id": "web-okjike-com-following",
+      "title": "即刻",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://web.okjike.com/following",
+      "description": "即刻社区网页版，关注动态和话题。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第五课】：如何找到高质量的网站&软件解决需求",
+        "即刻",
+        "web",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "tophub-today",
+      "title": "今日热榜",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://tophub.today/",
+      "description": "各平台热榜聚合，一站看全网热搜。",
+      "tags": [
+        "知识",
+        "搭建自己的优质信息"
+      ],
+      "aliases": [
+        "搭建自己的优质信息",
+        "今日热榜",
+        "tophub",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-ruanyf-weekly-tab-readme-ov-file",
+      "title": "科技爱好者周刊",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://github.com/ruanyf/weekly?tab=readme-ov-file",
+      "description": "阮一峰整理的每周科技资讯合集。",
+      "tags": [
+        "知识",
+        "AI优质每日信息源查看"
+      ],
+      "aliases": [
+        "AI优质每日信息源查看",
+        "GitHub阅读",
+        "github",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "ruanyifeng-com-blog",
+      "title": "阮一峰的网络日志",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.ruanyifeng.com/blog/",
+      "description": "阮一峰的技术博客，前端与工程实践。",
+      "tags": [
+        "知识",
+        "AI优质每日信息源查看"
+      ],
+      "aliases": [
+        "AI优质每日信息源查看",
+        "网页阅读",
+        "ruanyifeng",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mobilephonemuseum-com-catalogue",
+      "title": "手机博物馆",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.mobilephonemuseum.com/catalogue",
+      "description": "历代手机图鉴，看机型演变。",
+      "tags": [
+        "资源",
+        "其他图片",
+        "手机历史图",
+        "艺术",
+        "抽象",
+        "地图"
+      ],
+      "aliases": [
+        "其他图片#手机历史图#艺术#抽象#地图",
+        "Mobilephonemuseum",
+        "mobilephonemuseum",
+        "资源",
+        "其他图片",
+        "手机历史图",
+        "艺术",
+        "抽象",
+        "地图"
+      ],
+      "featured": false
+    },
+    {
+      "id": "ask-xiaoyuzhoufm-com",
+      "title": "小宇宙播客",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://ask.xiaoyuzhoufm.com/",
+      "description": "中文播客平台，可搜索节目。",
+      "tags": [
+        "资源",
+        "听播客",
+        "电台",
+        "小宇宙",
+        "播客",
+        "高质量摸鱼"
+      ],
+      "aliases": [
+        "听播客#电台#小宇宙#播客#高质量摸鱼",
+        "Ask",
+        "ask",
+        "资源",
+        "听播客",
+        "电台",
+        "小宇宙",
+        "播客",
+        "高质量摸鱼"
+      ],
+      "featured": false
+    },
+    {
+      "id": "newrank-cn-ranklist-gongzhonghao-l-sq-main-t-bd",
+      "title": "新榜",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.newrank.cn/ranklist/gongzhonghao?l=sq_main-t_bd",
+      "description": "公众号与内容平台排行榜。",
+      "tags": [
+        "知识",
+        "搭建自己的优质信息"
+      ],
+      "aliases": [
+        "搭建自己的优质信息",
+        "新榜",
+        "newrank",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-e5-ad-a6-e6-9c-af-e8-b5-84-e",
+      "title": "学术资源搜索",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/%E5%AD%A6%E6%9C%AF%E8%B5%84%E6%BA%90%E5%85%A8%E7%BD%91%E6%90%9C%E7%B4%A2/jinddgjhfchibbpdohnllegfjllidhpk",
+      "description": "Edge 扩展，跨库搜索学术论文。",
+      "tags": [
+        "知识",
+        "搭建自己的优质信息"
+      ],
+      "aliases": [
+        "搭建自己的优质信息",
+        "AI搜索插件",
+        "microsoftedge",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "yibao-233h-com",
+      "title": "医保指南",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://yibao.233h.com/",
+      "description": "医保报销流程与常见问题。",
+      "tags": [
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "aliases": [
+        "实用指南手册#租房#医保#做饭",
+        "Yibao",
+        "yibao",
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zufang-ababtools-com",
+      "title": "租房攻略",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://zufang.ababtools.com/",
+      "description": "租房流程与避坑指南。",
+      "tags": [
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "aliases": [
+        "实用指南手册#租房#医保#做饭",
+        "Zufang",
+        "zufang",
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "featured": false
+    },
+    {
+      "id": "ai-hubtoday-app",
+      "title": "AI HubToday",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://ai.hubtoday.app/",
+      "description": "AI 资讯每日聚合。",
+      "tags": [
+        "知识",
+        "AI优质每日信息源查看"
+      ],
+      "aliases": [
+        "AI优质每日信息源查看",
+        "Ai",
+        "ai",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "podcasts-apple-com-cn-new",
+      "title": "Apple 播客",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://podcasts.apple.com/cn/new",
+      "description": "Apple 播客网页版。",
+      "tags": [
+        "资源",
+        "听播客",
+        "电台",
+        "小宇宙",
+        "播客",
+        "高质量摸鱼"
+      ],
+      "aliases": [
+        "听播客#电台#小宇宙#播客#高质量摸鱼",
+        "Podcasts",
+        "podcasts",
+        "资源",
+        "听播客",
+        "电台",
+        "小宇宙",
+        "播客",
+        "高质量摸鱼"
+      ],
+      "featured": false
+    },
+    {
+      "id": "babelabc-com-ref-toolsdar-cn",
+      "title": "BabelABC",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.babelabc.com/?ref=toolsdar.cn",
+      "description": "英语分级阅读与听力。",
+      "tags": [
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "aliases": [
+        "学习英语网站#看剧学#打字学#背单词合集#大合集",
+        "Babelabc",
+        "babelabc",
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bestblogs-dev",
+      "title": "BestBlogs",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.bestblogs.dev/",
+      "description": "AI 领域优质博客每日精选。",
+      "tags": [
+        "知识",
+        "AI优质每日信息源查看"
+      ],
+      "aliases": [
+        "AI优质每日信息源查看",
+        "Bestblogs",
+        "bestblogs",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "buzzing-cc",
+      "title": "Buzzing",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.buzzing.cc/",
+      "description": "海外优质内容的中文摘要。",
+      "tags": [
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "aliases": [
+        "国外优质文章#中文预览海外优质内容",
+        "Buzzing",
+        "buzzing",
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "featured": false
+    },
+    {
+      "id": "englearner-site-cn-index-html",
+      "title": "Englearner",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.englearner.site/cn/index.html",
+      "description": "通过影视片段学英语。",
+      "tags": [
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "aliases": [
+        "学习英语网站#看剧学#打字学#背单词合集#大合集",
+        "Englearner",
+        "englearner",
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "featured": false
+    },
+    {
+      "id": "englishnewsinlevels-com",
+      "title": "English News in Levels",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://englishnewsinlevels.com/",
+      "description": "按难度分级的英语新闻。",
+      "tags": [
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "aliases": [
+        "学习英语网站#看剧学#打字学#背单词合集#大合集",
+        "Englishnewsinlevels",
+        "englishnewsinlevels",
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "featured": false
+    },
+    {
+      "id": "failory-com-graveyard",
+      "title": "Failory 创业墓地",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.failory.com/graveyard",
+      "description": "收录失败创业公司的案例库。",
+      "tags": [
+        "知识",
+        "创业相关网站",
+        "失败案例总结",
+        "挖掘痛点"
+      ],
+      "aliases": [
+        "创业相关网站#失败案例总结#挖掘痛点",
+        "创业公司墓地",
+        "failory",
+        "知识",
+        "创业相关网站",
+        "失败案例总结",
+        "挖掘痛点"
+      ],
+      "featured": false
+    },
+    {
+      "id": "film-grab-com",
+      "title": "FilmGrab",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://film-grab.com/",
+      "description": "电影画面截图素材库。",
+      "tags": [
+        "知识",
+        "审美提升网站",
+        "艺术",
+        "网站设计",
+        "平面（持续更新）"
+      ],
+      "aliases": [
+        "审美提升网站#艺术#网站设计#平面（持续更新）",
+        "Film Grab",
+        "film grab",
+        "知识",
+        "审美提升网站",
+        "艺术",
+        "网站设计",
+        "平面（持续更新）"
+      ],
+      "featured": false
+    },
+    {
+      "id": "follow-is",
+      "title": "Follow",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://follow.is/",
+      "description": "把博客、播客、社交账号聚合成一个信息流。",
+      "tags": [
+        "知识",
+        "搭建自己的优质信息"
+      ],
+      "aliases": [
+        "搭建自己的优质信息",
+        "follow官网",
+        "follow",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "hn-aimaker-dev",
+      "title": "Hacker News 中文",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://hn.aimaker.dev/",
+      "description": "Hacker News 热帖的中文摘要。",
+      "tags": [
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "aliases": [
+        "国外优质文章#中文预览海外优质内容",
+        "Hn",
+        "hn",
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "featured": false
+    },
+    {
+      "id": "idea-search-0gab-onrender-com",
+      "title": "Idea Search",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://idea-search-0gab.onrender.com/",
+      "description": "从失败案例里反推创业点子。",
+      "tags": [
+        "知识",
+        "创业相关网站",
+        "失败案例总结",
+        "挖掘痛点"
+      ],
+      "aliases": [
+        "创业相关网站#失败案例总结#挖掘痛点",
+        "Idea Search 0gab",
+        "idea search 0gab",
+        "知识",
+        "创业相关网站",
+        "失败案例总结",
+        "挖掘痛点"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zh-ifixit-com-guide",
+      "title": "iFixit 维修指南",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://zh.ifixit.com/Guide",
+      "description": "手机、电脑等设备的拆机维修教程。",
+      "tags": [
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "aliases": [
+        "实用指南手册#租房#医保#做饭",
+        "Zh",
+        "zh",
+        "知识",
+        "实用指南手册",
+        "租房",
+        "医保",
+        "做饭"
+      ],
+      "featured": false
+    },
+    {
+      "id": "archive-org-details-magazine-rack-tab-collection-query-primary-collect",
+      "title": "Internet Archive 杂志",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://archive.org/details/magazine_rack?tab=collection&query=primary_collection%3Amagazine_rack&sort=-week",
+      "description": "archive.org 的杂志扫描件合集。",
+      "tags": [
+        "资源",
+        "报纸杂志"
+      ],
+      "aliases": [
+        "报纸杂志",
+        "Archive",
+        "archive",
+        "资源"
+      ],
+      "featured": false
+    },
+    {
+      "id": "itjuzi-com-deathcompany",
+      "title": "IT桔子 死亡公司库",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.itjuzi.com/deathCompany",
+      "description": "收录倒闭的新经济公司数据。",
+      "tags": [
+        "知识",
+        "创业相关网站",
+        "失败案例总结",
+        "挖掘痛点"
+      ],
+      "aliases": [
+        "创业相关网站#失败案例总结#挖掘痛点",
+        "新经济倒闭公司数据库",
+        "itjuzi",
+        "知识",
+        "创业相关网站",
+        "失败案例总结",
+        "挖掘痛点"
+      ],
+      "featured": false
+    },
+    {
+      "id": "magazinelib-com",
+      "title": "Magazinelib",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://magazinelib.com/",
+      "description": "英文杂志 PDF 下载。",
+      "tags": [
+        "资源",
+        "报纸杂志"
+      ],
+      "aliases": [
+        "报纸杂志",
+        "Magazinelib",
+        "magazinelib",
+        "资源"
+      ],
+      "featured": false
+    },
+    {
+      "id": "nbfox-com",
+      "title": "NB Fox",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.nbfox.com/",
+      "description": "网页设计灵感与案例。",
+      "tags": [
+        "知识",
+        "审美提升网站",
+        "艺术",
+        "网站设计",
+        "平面（持续更新）"
+      ],
+      "aliases": [
+        "审美提升网站#艺术#网站设计#平面（持续更新）",
+        "Nbfox",
+        "nbfox",
+        "知识",
+        "审美提升网站",
+        "艺术",
+        "网站设计",
+        "平面（持续更新）"
+      ],
+      "featured": false
+    },
+    {
+      "id": "owenyoung-com",
+      "title": "Owen 的博客",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.owenyoung.com/",
+      "description": "个人技术博客，记录工具与思考。",
+      "tags": [
+        "知识",
+        "优质博客内容",
+        "blog"
+      ],
+      "aliases": [
+        "优质博客内容#blog",
+        "Owenyoung",
+        "owenyoung",
+        "知识",
+        "优质博客内容",
+        "blog"
+      ],
+      "featured": false
+    },
+    {
+      "id": "qwerty-kaiyi-cool-gallery",
+      "title": "Qwerty Learner",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://qwerty.kaiyi.cool/gallery",
+      "description": "用打字练习记单词，内置多种词库。",
+      "tags": [
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "aliases": [
+        "学习英语网站#看剧学#打字学#背单词合集#大合集",
+        "Qwerty",
+        "qwerty",
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "featured": false
+    },
+    {
+      "id": "readhub-cn",
+      "title": "Readhub",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://readhub.cn/",
+      "description": "科技新闻每日聚合，按热度排序。",
+      "tags": [
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "aliases": [
+        "国外优质文章#中文预览海外优质内容",
+        "Readhub",
+        "readhub",
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "featured": false
+    },
+    {
+      "id": "rss-source-com",
+      "title": "RSS 订阅源包",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://rss-source.com/",
+      "description": "整理好的 RSS 订阅源合集。",
+      "tags": [
+        "知识",
+        "搭建自己的优质信息"
+      ],
+      "aliases": [
+        "搭建自己的优质信息",
+        "订阅源包",
+        "rss source",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-rsshub-radar-gangkeiaobmjcjo",
+      "title": "RSSHub Radar",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/rsshub-radar/gangkeiaobmjcjokiofpkfpcobpbmnln",
+      "description": "Edge 扩展，自动发现当前网站的 RSS 源。",
+      "tags": [
+        "知识",
+        "搭建自己的优质信息"
+      ],
+      "aliases": [
+        "搭建自己的优质信息",
+        "RSShub插件",
+        "microsoftedge",
+        "知识"
+      ],
+      "featured": false
+    },
+    {
+      "id": "games-solidot-org",
+      "title": "Solidot 奇客",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://games.solidot.org/",
+      "description": "奇客资讯的技术新闻。",
+      "tags": [
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "aliases": [
+        "国外优质文章#中文预览海外优质内容",
+        "奇客资讯网",
+        "games",
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "featured": false
+    },
+    {
+      "id": "v2ex-com",
+      "title": "V2EX",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://www.v2ex.com/",
+      "description": "程序员与独立开发者社区。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第五课】：如何找到高质量的网站&软件解决需求",
+        "V2EX",
+        "v2ex",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "wordflow-click-application-sentence",
+      "title": "Wordflow",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://wordflow.click/application/sentence",
+      "description": "通过看剧、打字、背单词来学英语。",
+      "tags": [
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "aliases": [
+        "学习英语网站#看剧学#打字学#背单词合集#大合集",
+        "Wordflow",
+        "wordflow",
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "featured": false
+    },
+    {
+      "id": "wordsfunny-com-sat-3-words",
+      "title": "Wordsfunny",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://wordsfunny.com/SAT_3/words",
+      "description": "SAT 词汇学习网站。",
+      "tags": [
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "aliases": [
+        "学习英语网站#看剧学#打字学#背单词合集#大合集",
+        "Wordsfunny",
+        "wordsfunny",
+        "知识",
+        "学习英语网站",
+        "看剧学",
+        "打字学",
+        "背单词合集",
+        "大合集"
+      ],
+      "featured": false
+    },
+    {
+      "id": "xyzrank-com",
+      "title": "XYZRank 播客榜",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://xyzrank.com/#/",
+      "description": "中文播客排行榜，按分类看热门节目。",
+      "tags": [
+        "资源",
+        "听播客",
+        "电台",
+        "小宇宙",
+        "播客",
+        "高质量摸鱼"
+      ],
+      "aliases": [
+        "听播客#电台#小宇宙#播客#高质量摸鱼",
+        "Xyzrank",
+        "xyzrank",
+        "资源",
+        "听播客",
+        "电台",
+        "小宇宙",
+        "播客",
+        "高质量摸鱼"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zeli-app-zh",
+      "title": "Zeli",
+      "category": "learn",
+      "categoryTitle": "学习阅读",
+      "url": "https://zeli.app/zh",
+      "description": "海外文章中文导读，附原文链接。",
+      "tags": [
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "aliases": [
+        "国外优质文章#中文预览海外优质内容",
+        "Zeli",
+        "zeli",
+        "知识",
+        "国外优质文章",
+        "中文预览海外优质内容"
+      ],
+      "featured": false
+    },
+    {
+      "id": "360totalsecurity-com-zh-cn-360zip",
+      "title": "360 压缩",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.360totalsecurity.com/zh-cn/360zip/",
+      "description": "360 出品的压缩解压软件。",
+      "tags": [
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "aliases": [
+        "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+        "官网下载",
+        "360totalsecurity",
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "featured": false
+    },
+    {
+      "id": "7-zip-org",
+      "title": "7-Zip",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.7-zip.org/",
+      "description": "免费开源压缩软件，支持 7z、zip、rar 等格式。",
+      "tags": [
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "aliases": [
+        "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+        "官网下载",
+        "7 zip",
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "featured": true
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-e6-b2-89-e6-b5-b8-e5-bc-8f-e",
+      "title": "沉浸式翻译",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/%E6%B2%89%E6%B5%B8%E5%BC%8F%E7%BF%BB%E8%AF%91-%E7%BD%91%E9%A1%B5%E7%BF%BB%E8%AF%91%E6%8F%92%E4%BB%B6-pdf%E7%BF%BB%E8%AF%91-/amkbmndfnliijdhojkpoglbnaaahippg?hl=zh-CN",
+      "description": "网页双语对照翻译扩展，支持 PDF 与视频字幕。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "沉浸式翻译",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "crxsoso-com-webstore-detail-mompgifjlbbfcmgfgpfjdhhaibnmamki",
+      "title": "豆瓣评分趋势",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.crxsoso.com/webstore/detail/mompgifjlbbfcmgfgpfjdhhaibnmamki",
+      "description": "浏览器扩展，在豆瓣页面显示评分趋势图。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "豆瓣评分趋势",
+        "crxsoso",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-douban-book-kfdimcpljilcbhml",
+      "title": "豆瓣跳转",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/douban-book/kfdimcpljilcbhmlogkagbbjpjkdihom?hl=zh-CN",
+      "description": "Edge 扩展，豆瓣条目一键跳转到其它平台。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "豆瓣跳转其他平台",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "huorong-cn-person",
+      "title": "火绒安全",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.huorong.cn/person",
+      "description": "轻量杀毒软件，能拦弹窗和捆绑安装。",
+      "tags": [
+        "电脑课",
+        "C盘清理指南，全网最全"
+      ],
+      "aliases": [
+        "C盘清理指南，全网最全",
+        "火绒",
+        "huorong",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-coodesker-coodesker-desktop",
+      "title": "酷呆桌面",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/coodesker/coodesker-desktop",
+      "description": "桌面图标自动整理归类。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第四课】快捷软件和快捷键思路",
+        "开源",
+        "github",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "crxsoso-com-webstore-detail-hhfkpjffbhledfpkhhcoidplcebgdgbk",
+      "title": "流量查看",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.crxsoso.com/webstore/detail/hhfkpjffbhledfpkhhcoidplcebgdgbk",
+      "description": "Edge 扩展，查看网站的流量来源。",
+      "tags": [
+        "知识",
+        "站长日常工作经验分享",
+        "普通人也受用",
+        "调研思路"
+      ],
+      "aliases": [
+        "站长日常工作经验分享#普通人也受用#调研思路",
+        "流量查看",
+        "crxsoso",
+        "知识",
+        "站长日常工作经验分享",
+        "普通人也受用",
+        "调研思路"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-e9-9d-92-e6-9f-a0-e8-b5-b7-e",
+      "title": "青柠起始页",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/%E9%9D%92%E6%9F%A0%E8%B5%B7%E5%A7%8B%E9%A1%B5/pcpnigdkpcgemocnjhebmajldpjlbeom?hl=zh-CN",
+      "description": "Edge 扩展，简洁的浏览器起始页。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "青柠起始页",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "tbtool-cn",
+      "title": "图吧工具箱",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.tbtool.cn/",
+      "description": "硬件检测与烤机工具合集。",
+      "tags": [
+        "软件",
+        "图吧工具箱",
+        "烤机"
+      ],
+      "aliases": [
+        "图吧工具箱#烤机#",
+        "官网下载",
+        "tbtool",
+        "软件",
+        "图吧工具箱",
+        "烤机"
+      ],
+      "featured": false
+    },
+    {
+      "id": "uuyc-163-com",
+      "title": "网易 UU 远程",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://uuyc.163.com/",
+      "description": "网易的免费远程控制软件。",
+      "tags": [
+        "软件",
+        "电脑远程软件",
+        "免费",
+        "流程"
+      ],
+      "aliases": [
+        "电脑远程软件#免费#流程",
+        "Uuyc",
+        "uuyc",
+        "软件",
+        "电脑远程软件",
+        "免费",
+        "流程"
+      ],
+      "featured": false
+    },
+    {
+      "id": "crxsoso-com-webstore-detail-ipnlcfhfdicbfbchfoihipknbaeenenm",
+      "title": "网站总结",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.crxsoso.com/webstore/detail/ipnlcfhfdicbfbchfoihipknbaeenenm",
+      "description": "Edge 扩展，用 AI 总结网页内容。",
+      "tags": [
+        "知识",
+        "站长日常工作经验分享",
+        "普通人也受用",
+        "调研思路"
+      ],
+      "aliases": [
+        "站长日常工作经验分享#普通人也受用#调研思路",
+        "网站总结",
+        "crxsoso",
+        "知识",
+        "站长日常工作经验分享",
+        "普通人也受用",
+        "调研思路"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-edge-e7-9a-84-e7-b1-bb-e4-bc",
+      "title": "找类似网站",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/edge-%E7%9A%84%E7%B1%BB%E4%BC%BC%E7%BD%91%E7%AB%99/gcadmjofigcidaecpelabbdhdkkgkbko?hl=zh-CN",
+      "description": "Edge 扩展，按当前网站找相似站点。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "找类似网站",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "crxsoso-com-webstore-detail-necpbmbhhdiplmfhmjicabdeighkndkn",
+      "title": "找相似",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.crxsoso.com/webstore/detail/necpbmbhhdiplmfhmjicabdeighkndkn",
+      "description": "Edge 扩展，找与当前网站相似的站点。",
+      "tags": [
+        "知识",
+        "站长日常工作经验分享",
+        "普通人也受用",
+        "调研思路"
+      ],
+      "aliases": [
+        "站长日常工作经验分享#普通人也受用#调研思路",
+        "找相似",
+        "crxsoso",
+        "知识",
+        "站长日常工作经验分享",
+        "普通人也受用",
+        "调研思路"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-adguard-e5-b9-bf-e5-91-8a-e6",
+      "title": "AdGuard 广告拦截",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/adguard-%E5%B9%BF%E5%91%8A%E6%8B%A6%E6%88%AA%E5%99%A8/pdffkfellgipmhklpdmokmckkkfcopbh?hl=zh-CN",
+      "description": "Edge 扩展，拦截网页广告与追踪脚本。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "AdGuard",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-e5-b0-8f-e7-94-b5-e8-a7-86-e",
+      "title": "B站恰饭跳过",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/%E5%B0%8F%E7%94%B5%E8%A7%86%E7%A9%BA%E9%99%8D%E5%8A%A9%E6%89%8B/khkeolgobhdoloioehjgfpobjnmagfha?hl=zh-CN",
+      "description": "Edge 扩展，自动跳过 B 站视频里的广告片段。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "跳过B站恰饭片段",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-bilibili-e5-ad-97-e5-b9-95-e",
+      "title": "B站字幕获取",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/bilibili-%E5%AD%97%E5%B9%95%E6%8F%90%E5%8F%96%E5%99%A8/piefbmcaopkgkcdimjlegiacighgoinb?hl=zh-CN",
+      "description": "Edge 扩展，下载 B 站视频的字幕文件。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "获取B站字幕文件",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bandisoft-com-bandizip",
+      "title": "Bandizip",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.bandisoft.com/bandizip/",
+      "description": "轻量压缩解压软件，可直接预览压缩包内容。",
+      "tags": [
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "aliases": [
+        "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+        "官网下载",
+        "bandisoft",
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-klocman-bulk-crap-uninstaller",
+      "title": "Bulk Crap Uninstaller",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/Klocman/Bulk-Crap-Uninstaller",
+      "description": "批量卸载软件，自动检测残留。",
+      "tags": [
+        "软件",
+        "卸载工具大合集"
+      ],
+      "aliases": [
+        "卸载工具大合集",
+        "官方地址",
+        "github",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-bluepointlilac-contextmenumanager",
+      "title": "ContextMenuManager",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/BluePointLilac/ContextMenuManager",
+      "description": "管理 Windows 右键菜单项。",
+      "tags": [
+        "软件",
+        "鼠标右击管理菜单"
+      ],
+      "aliases": [
+        "鼠标右击管理菜单",
+        "Github",
+        "github",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "crxsoso-com",
+      "title": "CRX 扩展商店",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.crxsoso.com/",
+      "description": "浏览器扩展下载站，可直接装 CRX。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "CRX扩展商店",
+        "crxsoso",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "voidtools-com-zh-cn-support-everything",
+      "title": "Everything",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.voidtools.com/zh-cn/support/everything/",
+      "description": "毫秒级文件名搜索，比系统搜索快得多。",
+      "tags": [
+        "软件"
+      ],
+      "aliases": [
+        "电脑快捷搜索软件listary&everything",
+        "Voidtools",
+        "voidtools",
+        "软件"
+      ],
+      "featured": true
+    },
+    {
+      "id": "github-com-imdema-freemove",
+      "title": "FreeMove",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/imDema/FreeMove",
+      "description": "把已安装的软件移到其它盘，不用重装。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "如何把C盘软件迁移到其他盘教学",
+        "Github",
+        "github",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "geekuninstaller-com",
+      "title": "Geek Uninstaller",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://geekuninstaller.com/",
+      "description": "轻量卸载工具，绿色免安装。",
+      "tags": [
+        "软件",
+        "卸载工具大合集"
+      ],
+      "aliases": [
+        "卸载工具大合集",
+        "官网下载",
+        "geekuninstaller",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com",
+      "title": "GitHub",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/",
+      "description": "全球最大的代码托管与开源社区。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第五课】：如何找到高质量的网站&软件解决需求",
+        "Github",
+        "github",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "hibitsoft-ir-uninstaller-html",
+      "title": "HiBit Uninstaller",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.hibitsoft.ir/Uninstaller.html",
+      "description": "卸载软件并清理残留。",
+      "tags": [
+        "软件",
+        "卸载工具大合集"
+      ],
+      "aliases": [
+        "卸载工具大合集",
+        "官网下载",
+        "hibitsoft",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-superdms-hsfreezer-hidden-in-the-snow",
+      "title": "HsFreezer",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/superDMS/HsFreezer-Hidden-in-the-snow-",
+      "description": "冻结游戏进程，多开不卡。",
+      "tags": [
+        "软件",
+        "打游戏必备",
+        "游戏进程冻结器",
+        "游戏多开不卡"
+      ],
+      "aliases": [
+        "打游戏必备#游戏进程冻结器#游戏多开不卡",
+        "Github",
+        "github",
+        "软件",
+        "打游戏必备",
+        "游戏进程冻结器",
+        "游戏多开不卡"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-infinity-e6-96-b0-e6-a0-87-e",
+      "title": "Infinity 新标签页",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/infinity-%E6%96%B0%E6%A0%87%E7%AD%BE%E9%A1%B5-pro/hajlmbnnniemimmaehcefkamdadpjlfa?hl=zh-CN",
+      "description": "Edge 扩展，可自定义的新标签页。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "infinity",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "iobit-com-en-advanceduninstaller-php",
+      "title": "IObit Uninstaller",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.iobit.com/en/advanceduninstaller.php",
+      "description": "批量卸载软件，清理注册表残留。",
+      "tags": [
+        "软件",
+        "卸载工具大合集"
+      ],
+      "aliases": [
+        "卸载工具大合集",
+        "官网下载",
+        "iobit",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-itab-e6-96-b0-e6-a0-87-e7-ad",
+      "title": "iTab 新标签页",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/itab%E6%96%B0%E6%A0%87%E7%AD%BE%E9%A1%B5/inedkoakiaeepjoblbiiipedngonadhn?hl=zh-CN",
+      "description": "Edge 扩展，把新标签页做成自定义工作台。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "i Tab新标签页",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "kms-cx",
+      "title": "KMS 激活",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://kms.cx/",
+      "description": "在线 KMS 激活服务，用于 Office 与 Windows。",
+      "tags": [
+        "软件",
+        "office绿色版本",
+        "excel",
+        "word",
+        "ppt"
+      ],
+      "aliases": [
+        "office绿色版本#excel#word#ppt",
+        "Kms",
+        "kms",
+        "软件",
+        "office绿色版本",
+        "excel",
+        "word",
+        "ppt"
+      ],
+      "featured": false
+    },
+    {
+      "id": "listary-com",
+      "title": "Listary",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.listary.com/",
+      "description": "文件搜索与快速启动工具。",
+      "tags": [
+        "软件"
+      ],
+      "aliases": [
+        "电脑快捷搜索软件listary&everything",
+        "Listary",
+        "listary",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "localsend-org-zh-cn-download-os-linux",
+      "title": "LocalSend",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://localsend.org/zh-CN/download?os=linux",
+      "description": "跨设备局域网传文件，不需要联网。",
+      "tags": [
+        "工具",
+        "文件传输"
+      ],
+      "aliases": [
+        "文件传输",
+        "Linux下载",
+        "localsend",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "neatdownloadmanager-com-index-php-en",
+      "title": "Neat Download Manager",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://neatdownloadmanager.com/index.php/en/",
+      "description": "多线程下载管理器，可接管浏览器下载。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第三课】：软件下载教程和必装软件",
+        "官网下载",
+        "neatdownloadmanager",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pixpinapp-com",
+      "title": "PixPin",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://pixpinapp.com/",
+      "description": "截图、贴图、长截图、GIF 录制的桌面工具。",
+      "tags": [
+        "软件",
+        "截图软件",
+        "长截图",
+        "gif录制",
+        "悬浮截图"
+      ],
+      "aliases": [
+        "截图软件#长截图#gif录制#悬浮截图",
+        "点击下載（win、mac）",
+        "pixpinapp",
+        "软件",
+        "截图软件",
+        "长截图",
+        "gif录制",
+        "悬浮截图"
+      ],
+      "featured": false
+    },
+    {
+      "id": "potplayer-tv",
+      "title": "PotPlayer",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://potplayer.tv/",
+      "description": "本地视频播放器，支持多种格式和字幕。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第三课】：软件下载教程和必装软件",
+        "官网下载",
+        "potplayer",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "apps-microsoft-com-detail-xp89dcgq3k6vld-hl-zh-cn-gl-cn",
+      "title": "PowerToys",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://apps.microsoft.com/detail/xp89dcgq3k6vld?hl=zh-CN&gl=CN",
+      "description": "微软官方效率工具集：窗口分屏、批量重命名、取色器。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第四课】快捷软件和快捷键思路",
+        "Apps",
+        "apps",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-barry-ran-qtscrcpy",
+      "title": "QtScrcpy",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/barry-ran/QtScrcpy",
+      "description": "安卓手机投屏到电脑并直接控制。",
+      "tags": [
+        "软件",
+        "手机投屏电脑开源工具"
+      ],
+      "aliases": [
+        "手机投屏电脑开源工具",
+        "Github",
+        "github",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "getquicker-net",
+      "title": "Quicker",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://getquicker.net/",
+      "description": "动作库式效率工具，一键执行常用操作。",
+      "tags": [
+        "软件",
+        "quicker效率提升"
+      ],
+      "aliases": [
+        "quicker效率提升",
+        "Getquicker",
+        "getquicker",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-ql-win-quicklook",
+      "title": "QuickLook",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/QL-Win/QuickLook",
+      "description": "按空格预览文件，像 macOS 那样。",
+      "tags": [
+        "软件",
+        "look"
+      ],
+      "aliases": [
+        "快速预览电脑文件效率神器quick look",
+        "Github",
+        "github",
+        "软件",
+        "look"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-huiyadanli-revokemsgpatcher-tab-readme-ov-file",
+      "title": "RevokeMsgPatcher 防撤回",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/huiyadanli/RevokeMsgPatcher?tab=readme-ov-file",
+      "description": "让微信、QQ 消息撤回后仍然可见。",
+      "tags": [
+        "软件",
+        "微信防撤回消息",
+        "QQ防撤回"
+      ],
+      "aliases": [
+        "微信防撤回消息#QQ防撤回",
+        "GitHub – huiyadanli/RevokeMsgPatcher",
+        "github",
+        "软件",
+        "微信防撤回消息",
+        "QQ防撤回"
+      ],
+      "featured": false
+    },
+    {
+      "id": "zh-snipaste-com",
+      "title": "Snipaste",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://zh.snipaste.com/",
+      "description": "截图加贴图工具，按 F1 截图、F3 贴图。",
+      "tags": [
+        "软件",
+        "截图软件",
+        "长截图",
+        "gif录制",
+        "悬浮截图"
+      ],
+      "aliases": [
+        "截图软件#长截图#gif录制#悬浮截图",
+        "Zh",
+        "zh",
+        "软件",
+        "截图软件",
+        "长截图",
+        "gif录制",
+        "悬浮截图"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-planshit-tai",
+      "title": "Tai 使用时间统计",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://github.com/Planshit/Tai",
+      "description": "统计电脑上各软件的使用时长。",
+      "tags": [
+        "软件",
+        "电脑软件使用时间查看器"
+      ],
+      "aliases": [
+        "电脑软件使用时间查看器",
+        "Github原地址",
+        "github",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "martau-com-zh-cn",
+      "title": "Total Uninstall",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.martau.com/zh-CN/",
+      "description": "卸载软件并追踪安装时的注册表改动。",
+      "tags": [
+        "软件",
+        "卸载工具大合集"
+      ],
+      "aliases": [
+        "卸载工具大合集",
+        "官方地址",
+        "martau",
+        "软件"
+      ],
+      "featured": false
+    },
+    {
+      "id": "u-tools-cn-plugins",
+      "title": "uTools",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.u-tools.cn/plugins/",
+      "description": "插件化的效率启动器，快捷键呼出。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第四课】快捷软件和快捷键思路",
+        "U Tools",
+        "u tools",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "winrar-com-cn",
+      "title": "WinRAR",
+      "category": "software",
+      "categoryTitle": "电脑软件",
+      "url": "https://www.winrar.com.cn/",
+      "description": "老牌压缩软件，RAR 格式的官方工具。",
+      "tags": [
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "aliases": [
+        "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+        "官网下载",
+        "winrar",
+        "软件",
+        "压缩软件",
+        "解压",
+        "zip",
+        "国际版",
+        "winraw"
+      ],
+      "featured": false
+    },
+    {
+      "id": "33-agilestudio-cn",
+      "title": "33 素材",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://33.agilestudio.cn/",
+      "description": "视频、音效、图片素材站。",
+      "tags": [
+        "资源",
+        "视频素材",
+        "混剪素材",
+        "绿幕素材",
+        "可商用"
+      ],
+      "aliases": [
+        "视频素材#混剪素材#绿幕素材#可商用",
+        "33",
+        "资源",
+        "视频素材",
+        "混剪素材",
+        "绿幕素材",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "dongci-kawo-com",
+      "title": "动次 GIF 录制",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://dongci.kawo.com/",
+      "description": "在线录制屏幕生成 GIF 动图，可压缩体积。",
+      "tags": [
+        "工具",
+        "gif动图录制",
+        "gif格式",
+        "gif压缩"
+      ],
+      "aliases": [
+        "gif动图录制#gif格式#gif压缩",
+        "Dongci",
+        "dongci",
+        "工具",
+        "gif动图录制",
+        "gif格式",
+        "gif压缩"
+      ],
+      "featured": false
+    },
+    {
+      "id": "heycan-com-material-video",
+      "title": "黑罐头",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.heycan.com/material#video",
+      "description": "视频、音效、图片素材库。",
+      "tags": [
+        "资源",
+        "视频素材",
+        "混剪素材",
+        "绿幕素材",
+        "可商用"
+      ],
+      "aliases": [
+        "视频素材#混剪素材#绿幕素材#可商用",
+        "黑罐头",
+        "heycan",
+        "资源",
+        "视频素材",
+        "混剪素材",
+        "绿幕素材",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-global-speed-e8-a7-86-e9-a2-",
+      "title": "视频速度控制",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/global-speed-%E8%A7%86%E9%A2%91%E9%80%9F%E5%BA%A6%E6%8E%A7%E5%88%B6/mjhlabbcmjflkpjknnicihkfnmbdfced?hl=zh-CN",
+      "description": "Edge 扩展，用快捷键调整网页视频播放速度。",
+      "tags": [
+        "电脑课"
+      ],
+      "aliases": [
+        "【第二课】：浏览器插件&小技巧",
+        "视频速度控制",
+        "microsoftedge",
+        "电脑课"
+      ],
+      "featured": false
+    },
+    {
+      "id": "tingwu-aliyun-com-home",
+      "title": "通义听悟",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://tingwu.aliyun.com/home",
+      "description": "上传音视频自动转文字，生成摘要和提纲。",
+      "tags": [
+        "工具",
+        "视频提取文案",
+        "音视频转文字",
+        "AI总结视频",
+        "视频大纲提炼"
+      ],
+      "aliases": [
+        "视频提取文案#音视频转文字#AI总结视频#视频大纲提炼",
+        "Tingwu",
+        "tingwu",
+        "工具",
+        "视频提取文案",
+        "音视频转文字",
+        "AI总结视频",
+        "视频大纲提炼"
+      ],
+      "featured": false
+    },
+    {
+      "id": "autocut-video",
+      "title": "AutoCut",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://autocut.video/",
+      "description": "按语音自动剪掉口播里的停顿和空白。",
+      "tags": [
+        "工具",
+        "口播自动剪辑",
+        "剪辑口播",
+        "音频自动剪辑口气"
+      ],
+      "aliases": [
+        "口播自动剪辑#剪辑口播#音频自动剪辑口气",
+        "Autocut",
+        "autocut",
+        "工具",
+        "口播自动剪辑",
+        "剪辑口播",
+        "音频自动剪辑口气"
+      ],
+      "featured": false
+    },
+    {
+      "id": "sound-effects-bbcrewind-co-uk",
+      "title": "BBC 音效库",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://sound-effects.bbcrewind.co.uk/",
+      "description": "BBC 开放的音效素材库。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "Sound Effects",
+        "sound effects",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "bensound-com",
+      "title": "Bensound 配乐",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.bensound.com/",
+      "description": "免费背景音乐素材，部分需署名。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "Bensound",
+        "bensound",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "github-com-vst93-bili-fm",
+      "title": "bili-fm",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://github.com/vst93/bili-fm",
+      "description": "把 B 站音频做成私人电台的开源项目。",
+      "tags": [
+        "资源",
+        "免费听歌思路",
+        "B站音频",
+        "音乐下载"
+      ],
+      "aliases": [
+        "免费听歌思路#B站音频#音乐下载",
+        "giithub项目地址",
+        "github",
+        "资源",
+        "免费听歌思路",
+        "B站音频",
+        "音乐下载"
+      ],
+      "featured": false
+    },
+    {
+      "id": "cdkm-com-cn-cut-audio",
+      "title": "CDKM 音频剪辑",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://cdkm.com/cn/cut-audio",
+      "description": "在线裁剪音频，支持多种格式互转。",
+      "tags": [
+        "工具",
+        "音频编辑",
+        "剪辑",
+        "拼接",
+        "合成"
+      ],
+      "aliases": [
+        "音频编辑#剪辑#拼接#合成",
+        "Cdkm",
+        "cdkm",
+        "工具",
+        "音频编辑",
+        "剪辑",
+        "拼接",
+        "合成"
+      ],
+      "featured": false
+    },
+    {
+      "id": "freepd-com-electronic-php",
+      "title": "FreePD 音乐",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://freepd.com/electronic.php",
+      "description": "公有领域音乐素材，可免费商用。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "FreePD",
+        "freepd",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "jgwav-com",
+      "title": "JGWav 音乐",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.jgwav.com/",
+      "description": "在线音乐试听与下载。",
+      "tags": [
+        "资源",
+        "免费听歌思路",
+        "B站音频",
+        "音乐下载"
+      ],
+      "aliases": [
+        "免费听歌思路#B站音频#音乐下载",
+        "Jgwav",
+        "jgwav",
+        "资源",
+        "免费听歌思路",
+        "B站音频",
+        "音乐下载"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mixkit-co-free-stock-music-tag-electro",
+      "title": "Mixkit",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://mixkit.co/",
+      "description": "免费视频、配乐、音效素材，可商用。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "Mixkit",
+        "mixkit",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mp3cutter-pro-zh-cn",
+      "title": "MP3 Cutter",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://mp3cutter.pro/zh-CN",
+      "description": "在线剪辑 MP3，支持裁剪、拼接、合并。",
+      "tags": [
+        "工具",
+        "音频编辑",
+        "剪辑",
+        "拼接",
+        "合成"
+      ],
+      "aliases": [
+        "音频编辑#剪辑#拼接#合成",
+        "MP3 Cutter",
+        "mp3cutter",
+        "工具",
+        "音频编辑",
+        "剪辑",
+        "拼接",
+        "合成"
+      ],
+      "featured": false
+    },
+    {
+      "id": "mp3b-com",
+      "title": "MP3B 音乐",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.mp3b.com/",
+      "description": "在线音乐搜索与下载。",
+      "tags": [
+        "资源",
+        "免费听歌思路",
+        "B站音频",
+        "音乐下载"
+      ],
+      "aliases": [
+        "免费听歌思路#B站音频#音乐下载",
+        "Mp3b",
+        "mp3b",
+        "资源",
+        "免费听歌思路",
+        "B站音频",
+        "音乐下载"
+      ],
+      "featured": false
+    },
+    {
+      "id": "obsproject-com",
+      "title": "OBS Studio",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://obsproject.com/",
+      "description": "开源录屏与直播推流软件。",
+      "tags": [
+        "工具",
+        "电脑录屏",
+        "屏幕录制"
+      ],
+      "aliases": [
+        "电脑录屏#屏幕录制#",
+        "Obsproject",
+        "obsproject",
+        "工具",
+        "电脑录屏",
+        "屏幕录制"
+      ],
+      "featured": true
+    },
+    {
+      "id": "pexels-com-zh-cn-videos",
+      "title": "Pexels 视频",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.pexels.com/zh-cn/videos/",
+      "description": "免费高清视频素材，可商用。",
+      "tags": [
+        "资源",
+        "视频素材",
+        "混剪素材",
+        "绿幕素材",
+        "可商用"
+      ],
+      "aliases": [
+        "视频素材#混剪素材#绿幕素材#可商用",
+        "Pexels",
+        "pexels",
+        "资源",
+        "视频素材",
+        "混剪素材",
+        "绿幕素材",
+        "可商用"
+      ],
+      "featured": false
+    },
+    {
+      "id": "pixabay-com-videos",
+      "title": "Pixabay 视频素材",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://pixabay.com/videos/",
+      "description": "免费视频与音乐素材，可商用。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "pixabay",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": true
+    },
+    {
+      "id": "tools-rotato-app-compress",
+      "title": "Rotato 视频压缩",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://tools.rotato.app/compress",
+      "description": "在线压缩视频体积，支持多种格式。",
+      "tags": [
+        "工具",
+        "视频压缩"
+      ],
+      "aliases": [
+        "视频压缩",
+        "Tools",
+        "tools",
+        "工具"
+      ],
+      "featured": false
+    },
+    {
+      "id": "microsoftedge-microsoft-com-addons-detail-screenity-e5-b1-8f-e5-b9-95-",
+      "title": "Screenity 录屏",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://microsoftedge.microsoft.com/addons/detail/screenity-%E5%B1%8F%E5%B9%95%E5%BD%95%E5%83%8F%E5%92%8C%E6%A0%87%E6%B3%A8%E5%B7%A5%E5%85%B7/nbdkgeeeabnfegekngimpknhnkmocjcj?hl=zh-CN",
+      "description": "Edge 扩展，录制屏幕并直接标注。",
+      "tags": [
+        "工具",
+        "电脑录屏",
+        "屏幕录制"
+      ],
+      "aliases": [
+        "电脑录屏#屏幕录制#",
+        "Microsoftedge",
+        "microsoftedge",
+        "工具",
+        "电脑录屏",
+        "屏幕录制"
+      ],
+      "featured": false
+    },
+    {
+      "id": "soundinstants-com-zh",
+      "title": "Soundinstants 音效",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://soundinstants.com/zh/",
+      "description": "免费音效素材库，可在线试听下载。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "Soundinstants",
+        "soundinstants",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "tiktokvoice-net-zh-sounds-effect",
+      "title": "TikTok Voice",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://tiktokvoice.net/zh/sounds-effect",
+      "description": "在线生成 TikTok 风格的 AI 配音。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "Tiktokvoice",
+        "tiktokvoice",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    },
+    {
+      "id": "videocaptioner-cn-guide-getting-started",
+      "title": "VideoCaptioner",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.videocaptioner.cn/guide/getting-started",
+      "description": "批量生成视频字幕并翻译的桌面工具。",
+      "tags": [
+        "工具",
+        "视频字幕生成",
+        "批量转字幕",
+        "视频翻译"
+      ],
+      "aliases": [
+        "视频字幕生成#批量转字幕#视频翻译",
+        "Videocaptioner",
+        "videocaptioner",
+        "工具",
+        "视频字幕生成",
+        "批量转字幕",
+        "视频翻译"
+      ],
+      "featured": false
+    },
+    {
+      "id": "vidsplay-com",
+      "title": "Vidsplay 视频素材",
+      "category": "video-audio",
+      "categoryTitle": "视频音频",
+      "url": "https://www.vidsplay.com/",
+      "description": "免费视频片段素材下载。",
+      "tags": [
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "aliases": [
+        "音效素材#音效#抽象#可商业音乐#剪辑必备",
+        "vidsplay",
+        "资源",
+        "音效素材",
+        "音效",
+        "抽象",
+        "可商业音乐",
+        "剪辑必备"
+      ],
+      "featured": false
+    }
+  ]
+}

@@ -6,6 +6,12 @@
 - `ai-tools`：AI / 效率工具导航。
 - `wish-wall`：访客许愿墙。
 - `cloudflare-lab`：Cloudflare 平台能力面板。
+- `stock-watch`：自选股看盘。
+- `food`：今天吃什么。
+- `party-games`：聚会游戏（谁是卧底 / 真心话大冒险）。
+- `local-music`：本地音乐库与播放。
+
+完整路由表、路由三态契约（上线 / 冷藏 / 归档）见 `spec.md`。
 
 ## 快速开始
 
@@ -41,22 +47,12 @@ npm run preview
 - `order`：插件展示顺序。
 - `config`：插件自己的运行配置。
 
-当前默认启用：`profile`、`ai-navigator`、`wish-wall`、`cloudflare-lab`。其他插件保留为后续扩展，默认禁用，避免展示占位数据或不可达入口。
+当前默认启用：`profile`、`ai-navigator`、`wish-wall`、`cloudflare-lab`、`stock-watch`、`food`、`party-games`、`local-music`。其余插件默认禁用，路由保留但访问时显示「模块不可用」面板，不静默跳转，也不会展示占位数据。
 
-## Cloudflare-native 扩展
+## 规格与整改记录
 
-当前规划见：
-
-- `spec-cloudflare-native-hub.md`
-- `cloudflare-plan.md`
-- `spec-cloudflare-roadmap.md`
-- `spec-cloudflare-data-foundation.md`
-- `spec-cloudflare-ai-tool-intelligence.md`
-- `spec-cloudflare-wish-wall-2.md`
-- `spec-cloudflare-browser-lab.md`
-- `spec-cloudflare-realtime-playground.md`
-- `spec-cloudflare-automation-center.md`
-- `spec-cloudflare-public-api-toolbox.md`
+现行规格在 `spec.md`；进行中的任务在 `tasks.md`，验收清单在 `checklist.md`。
+`docs/audit-product-2026-10-21.md` 是 2026-10-21 的产品盘点与整改记录（含整改前后对比）。
 
 功能开关位于 `public/config/features.config.json`。所有需要 D1、KV、R2、Durable Objects、Queues、Workers AI、Vectorize 或 Browser Rendering 的实验功能，应先进入 feature flags，再逐步启用。
 
@@ -66,11 +62,14 @@ npm run preview
 
 ## 数据质量
 
-`npm run check:data` 会检查 AI 工具导航数据：
+`npm run check:data` 会检查 AI 工具导航数据，规则实现在 `scripts/lib/ai-tools-rules.mjs`：
 
-- 缺少 `id/title/category/url/description` 会失败。
-- 未知分类会失败。
-- 重复 id、泛化标题和高频重复标题会输出 warning。
+- 缺少 `id/title/category/url/description`、未知分类、重复 id、重复 URL 会失败。
+- 域名派生标题（`Web`、`Lab`、`Tools` 这类）、模板描述、同一描述重复出现、描述过短会失败。
+- 小游戏混进素材分类、同站超过 2 条却未声明 `variantOf` 会失败。
+- 标题或描述含非法 UTF-16（孤立代理项）会失败。
+- 存量问题记录在 `scripts/ai-tools-baseline.json`，上限由 `MAX_BASELINE` 控制；
+  2026-10-21 清洗后基线为 0，任何新增错位都会直接让门禁失败。
 
 ## 许愿墙
 
@@ -96,15 +95,13 @@ npx wrangler d1 migrations apply kkhome_wishes
 
 插件应保证配置缺失时不崩溃，并在空数据时展示明确的空状态或直接返回 `null`。
 
-## 子项目：hub-agent
+## 子项目
 
-`hub-agent/` 是基于 CodeBuddy Agent SDK 的独立全栈子项目（Express + SSE 后端，React + TDesign 前端），
-定位为「Hub 工具顾问」：用户带着任务问该用哪个工具，Agent 只从本仓真实的 AI 工具目录里检索并推荐，
-目录没有匹配项时如实说明并帮用户写一条许愿墙需求。
+`experiments/remotion/` 是一次性的聚会游戏视频脚本（10 个文件），与主站零耦合，不参与构建和 CI。
 
-- 数据来源：`public/config/plugins.config.json` 的 `ai-navigator`，由 `npm run sync:catalog` 同步到 `hub-agent/data/`。
-- 它有独立的 `package.json` 与依赖，不参与主站构建和 lint（已在 `eslint.config.mjs` 中 ignore）。
-- 使用和二次开发说明见 `hub-agent/README.md`。
+曾经放在这里的 `hub-agent`（CodeBuddy Agent SDK 的「Hub 工具顾问」）经评估属于鸡肋的炫技，
+已于 2026-10-21 归档到 `docs/archive/experiments-retired-2026-10-21/hub-agent/`，
+未物理删除，历史里随时可取回。
 
 ## 部署
 

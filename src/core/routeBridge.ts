@@ -1,6 +1,6 @@
 import { UtilityItem } from './types'
 
-export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'workbench' | 'collections' | 'scratchpad' | 'stocks' | 'stock-watch' | 'food' | 'party-games' | 'local-music'
+export type HubRouteId = 'home' | 'inbox' | 'launch' | 'ai-tools' | 'wish-wall' | 'cloudflare-lab' | 'workbench' | 'collections' | 'scratchpad' | 'stocks' | 'stock-watch' | 'food' | 'party-games' | 'local-music'
 
 export type ToolKind = NonNullable<UtilityItem['utilityType']>
 
@@ -24,6 +24,9 @@ const routeAliases: Record<string, HubRouteId> = {
   wish: 'wish-wall',
   wishes: 'wish-wall',
   'wish-wall': 'wish-wall',
+  'cloudflare-lab': 'cloudflare-lab',
+  cloudflare: 'cloudflare-lab',
+  lab: 'cloudflare-lab',
   workbench: 'workbench',
   collections: 'collections',
   scratchpad: 'scratchpad',
@@ -58,6 +61,7 @@ export const ROUTE_ITEMS: RouteItem[] = [
   { id: 'home', label: '首页', href: '#/home', pluginId: 'profile' },
   { id: 'ai-tools', label: '导向', href: '#/ai-tools', pluginId: 'ai-navigator' },
   { id: 'wish-wall', label: '许愿', href: '#/wish-wall', pluginId: 'wish-wall' },
+  { id: 'cloudflare-lab', label: 'Cloudflare', href: '#/cloudflare-lab', pluginId: 'cloudflare-lab' },
   { id: 'stock-watch', label: '看盘', href: '#/stock-watch', pluginId: 'stock-watch' },
   { id: 'food', label: '吃啥', href: '#/food', pluginId: 'food' },
   { id: 'party-games', label: '游戏', href: '#/party-games', pluginId: 'party-games' },

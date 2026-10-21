@@ -44,10 +44,66 @@
 
 - 插件开关在 `public/config/plugins.config.json`（**不是** `src/` 里）。
   改它等于改产品形态，不要为了验证方便去动 —— 验证完要还原。
-- `food` / `ambient-music` 已实现但**未注册进配置**，属编译但不可达的模块。
+- **`applyConfigs` 只覆盖配置里列出的插件**：注册表写 `enabled: true`、配置里没有 → 仍然启用。
+  所以「配置里没有 = 关着」这个直觉是错的，新增插件必须同时改注册表和配置。
+- 路由三态契约（2026-10-21 起）：**上线**（注册 + 配置启用 + 路由 + e2e）/
+  **冷藏**（注册但 `enabled:false`，路由可留，访问显示 OFFLINE）/ **归档**（移到 `docs/archive/`）。
+  不允许「配置说开着但没路由」或「有路由但禁用却静默跳到别的页」。
+- `ambient-music` 不是插件，是音频引擎（App.tsx 直接 import，不承担路由）。
+- 归档区：`docs/archive/plugins-retired-2026-10-21/`（13 个目录）。
+
+## 桌面壳与 dock 播放器
+
+- `.ac-dock-player`（ambient-music MiniPlayer）是桌面 route-mode 的常驻 fixed 浮层，
+  268×246–310（随播放态变），距右/底各 20px；移动端不渲染。
+- **遮挡必须按「整列让位」修，垫底部 padding 没用**：`padding-bottom` 只能保证滚到底干净，
+  默认视图和滚动中内容照样整块从播放器下面经过。现行解法：
+  `.route-mode:has(.ac-dock-player) .route-view { padding-right: 300px }`
+  （挂 `.route-view` 而非 `.kk-body`：标题头和正文要共用同一列，否则居中内容相对标题偏左）。
+- 护栏 `tests/dock-clearance.spec.ts`：每条桌面路由在初始视图 + 滚到底两个位置断言
+  可见叶子节点 ∩ dock 矩形 = ∅。已做变异验证（摘掉 CSS 规则即变红，并指名报出被压卡片）。
+
+## experiments/ 与文档布局
+
+- `experiments/` 现在只剩 `remotion`（一次性视频产物，与主站零引用，不参与 lint/CI/构建）。
+  `hub-agent` 已于 2026-10-21 评估为鸡肋炫技，归档到
+  `docs/archive/experiments-retired-2026-10-21/hub-agent/`（`git mv`，未物理删）。
+  动这类子项目只改自己目录；`sync-catalog.mjs` 有 `__dirname/../..` 相对路径，搬家要跟着改。
+- 根文档分工：`AGENTS.md`（仓库怎么用）/ `spec.md`（现行规格）/ `tasks.md` / `checklist.md`，
+  `agent.md` 已是指针，README 只做导览。**别再建第五份**；md 交叉引用改完要校验目标文件存在
+  （README 曾引用 9 个不存在的 `spec-cloudflare-*.md`）。
+
+## Cloudflare 绑定实况（2026-10-21 核对）
+
+- **已绑**：D1 `WISHES_DB`（真实 id，migration 001–009 已 apply）、R2 `MUSIC_BUCKET`
+  （音乐 songs/stream 在读，MP3 已移出 git）、DO `PARTY_ROOMS`（独立 worker，deploy-edge 部署）。
+- **未绑**：KV `HUB_KV`（wrangler.toml 里是注释占位；feature flags 按设计降级读 features.config.json）。
+  Vectorize / Queues / AI 是规划实验能力，未绑是设计内状态。
+- 行情后端 `/api/stock/*` 是真实上游代理（Yahoo Finance + 天天基金），**不需要存储绑定**。
+- 已知命名缺口：`/api/health` 探测的是 `HUB_BUCKET`，wrangler.toml 绑的是 `MUSIC_BUCKET`，
+  所以 lab 页 fileArtifacts 永远显示 unavailable（规划项，非故障，但名字对不上会误导）。
+- **教训**：checklist 里没勾 ≠ 没做。我犯过把已绑的 D1/R2 写成未绑。
+  下结论前先读 `wrangler.toml` 和 `functions/` 的实际引用。
+
+## AI 工具数据
+
+- 门禁：`scripts/check-ai-tools.mjs`，规则在 `scripts/lib/ai-tools-rules.mjs`（**单一实现**，
+  `refresh-baseline.mjs` 也 import 它，别写第二份）。
+- **基线棘轮**：`scripts/ai-tools-baseline.json` + `MAX_BASELINE`。2026-10-21 已清零到 0，
+  任何新增错位直接失败。别再给它开口子。
+- 结构性错误（`required` / `category` / `duplicate-id` / `duplicate-url` / `surrogate`）
+  **不可豁免**，基线管不到。
+- 判「域名派生标题」要区分品牌名：`PixPin ← pixpinapp.com`、`SuperCLUE ← superclueai.com`
+  是品牌，`Web / Lab / Tools / Ps / Font` 才是域名派生。有误报就调规则，别放水。
 
 ## 内容真实性
 
 - 仓库硬规矩：**不许出现占位数据/假数据**。有 e2e 断言专门卡这条
   （`homepage renders configured content without placeholders`）。
 - 降级要有明确提示，不静默失败（如 hero 视频不可用时显示 `.vh-note`）。
+- **描述不能由分类模板批量生成**。曾经 313 条只有 26 种描述，`download`/`ai` 各 1 种，
+  卡片全在说假话。现在 `desc-template` / `desc-repeated` 两条规则钉死。
+- **`test-results/` 会被 Playwright 启动时清空**。一次性脚本、探针、证据放
+  `shots/` 或 `docs/`，别放那里（本轮 7 个清洗脚本就是这么丢的）。
+- 依赖时段的 e2e 必须固定时钟（`page.clock.setFixedTime`）。
+  `food-menu.spec.ts` 曾因 13:00 分界而「上午绿、下午红」。

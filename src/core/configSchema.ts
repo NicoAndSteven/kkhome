@@ -204,18 +204,19 @@ const aiToolSchema = z.object({
   category: z.string().min(1),
   url: z.string().min(1),
   description: z.string().min(1),
+  // kind：点开之后会发生什么。online = 直接在浏览器用，desktop = 要下载安装，
+  // resource = 是去看内容/找素材，不是工具本身。
+  kind: z.enum(['online', 'desktop', 'resource']).optional(),
+  // variantOf：同一站点被拆成多条时的归属声明（门禁用它判断「一页拆 N 条」）
+  variantOf: z.string().optional(),
   tags: z.array(z.string().min(1)).optional(),
   aliases: z.array(z.string().min(1)).optional(),
   icon: z.string().optional(),
   featured: z.boolean().optional(),
-  sourceTitle: z.string().optional(),
-  sourceUrl: z.string().optional(),
-  sourceCategory: z.string().optional(),
 })
 
 const aiNavigatorConfigSchema = z.object({
   categories: z.array(aiCategorySchema).catch([]).default([]),
-  intentPrompts: z.array(z.string().min(1)).catch([]).default([]),
   tools: z.array(aiToolSchema).catch([]).default([]),
 })
 

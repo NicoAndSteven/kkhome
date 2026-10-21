@@ -63,6 +63,7 @@ const RouteNav = ({ routes, activeIndex, onContactClick }: Props) => {
               key={route.id}
               href={route.href}
               className="kk-nav-item m-rise"
+              data-route-id={route.id}
               aria-label={route.label}
               aria-current={active ? 'page' : undefined}
               title={route.label}

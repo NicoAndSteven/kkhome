@@ -144,6 +144,7 @@ test('homepage renders configured content without placeholders', async ({ page }
     'home',
     'ai-tools',
     'wish-wall',
+    'cloudflare-lab',
     'stock-watch',
     'food',
     'party-games',
@@ -219,7 +220,7 @@ test('homepage renders configured content without placeholders', async ({ page }
 test('routes stay within desktop and mobile viewports', async ({ browser }) => {
   test.setTimeout(70_000)
 
-  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/stock-watch', '/#/food', '/#/party-games', '/#/local-music']
+  const routes = ['/', '/#/ai-tools', '/#/wish-wall', '/#/cloudflare-lab', '/#/stock-watch', '/#/food', '/#/party-games', '/#/local-music']
   const viewports = [
     { width: 1440, height: 1000, isMobile: false },
     { width: 390, height: 844, isMobile: true },

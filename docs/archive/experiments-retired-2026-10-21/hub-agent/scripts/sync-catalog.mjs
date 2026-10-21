@@ -14,7 +14,8 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const SOURCE = path.resolve(__dirname, '..', '..', 'public', 'config', 'plugins.config.json');
+// 仓库根在 experiments/hub-agent/scripts 往上三层
+const SOURCE = path.resolve(__dirname, '..', '..', '..', 'public', 'config', 'plugins.config.json');
 const OUT_DIR = path.resolve(__dirname, '..', 'data');
 
 function fail(message) {

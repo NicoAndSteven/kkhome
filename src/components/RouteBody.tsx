@@ -34,9 +34,9 @@ const RouteBody = ({ routeId, children }: Props) => {
   const ref = useStaggerIn<HTMLDivElement>({
     selector: ':scope > * > *',
     trigger: routeId,
-    duration: 440,
-    stagger: 55,
-    maxTotal: 680,
+    duration: 240,
+    stagger: 24,
+    maxTotal: 320,
     from: 0,
   })
 

@@ -194,7 +194,6 @@ test('parsePluginConfigs parses ai-navigator config with categories and tools', 
           categories: [
             { id: 'all', title: '全部' },
           ],
-          intentPrompts: ['搜索'],
           tools: [
             {
               id: 'test',

@@ -6,6 +6,10 @@ import { expect, test } from '@playwright/test'
  * is both a UI regression test and a check that dev/offline editing still works.
  */
 test('food menu adds and deletes items when the API is unavailable', async ({ page }) => {
+  // 固定在北京时间 10:00。`getCurrentPeriod()` 以 13:00 为午/晚分界，
+  // 而这条用例全程在「中午」tab 里增删 —— 下午或晚上跑，轮盘会显示晚餐菜单，
+  // 中午项自然找不到。之前它只在上午跑得通，属于时间依赖型假绿。
+  await page.clock.setFixedTime(new Date('2026-10-21T02:00:00Z'))
   await page.goto('/#/food', { waitUntil: 'domcontentloaded' })
   await page.evaluate(() => localStorage.clear())
   await page.reload({ waitUntil: 'domcontentloaded' })

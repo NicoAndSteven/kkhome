@@ -292,7 +292,17 @@ function App() {
 
   // === 公共路由模式 ===
   const availableRouteItems = blogRouteItems.filter((route) => enabledPluginIds.has(route.pluginId))
+  /**
+   * 不可用路由（插件被禁用但路由仍声明）必须落到 OFFLINE 面板。
+   *
+   * 原来这里直接 fallback 到「第一个可用路由」——用户点「工作台」会看到「导向」，
+   * 地址栏却还写着 #/workbench。这是典型的静默失败：不报错、不提示，
+   * 只让人觉得"点了没反应"。下面那段 kk-unavailable 分支本来就是为它准备的，
+   * 之前永远走不到。
+   */
+  const declaredRouteItem = blogRouteItems.find((route) => route.id === activeRoute)
   const activeRouteItem = availableRouteItems.find((route) => route.id === activeRoute)
+    ?? declaredRouteItem
     ?? blogRouteItems.find((route) => enabledPluginIds.has(route.pluginId))
     ?? blogRouteItems[0]
   const activePlugin = enabledPlugins.find((plugin) => plugin.id === activeRouteItem.pluginId)
@@ -341,10 +351,11 @@ function App() {
             routeId={activeRouteItem.id}
             index={activeIdx + 1}
             direction={cutDir}
+            mode="cut"
             className="route-view"
             label={activeRouteItem.label}
           >
-            <RouteHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} direction={cutDir} accentSwitcher />
+            <RouteHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} direction={cutDir} transition="cut" accentSwitcher />
             <ErrorBoundary key={activeRouteItem.id}>
               {activePlugin ? (
                 <Suspense fallback={<div className="kk-loading">LOADING…</div>}>
@@ -381,10 +392,11 @@ function App() {
             routeId={activeRouteItem.id}
             index={activeIdx + 1}
             direction={cutDir}
+            mode="morph"
             className="route-view"
             label={activeRouteItem.label}
           >
-            <RouteHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} direction={cutDir} />
+            <RouteHeader route={activeRouteItem} index={activeIdx + 1} total={availableRouteItems.length} direction={cutDir} transition="morph" />
             <ErrorBoundary key={activeRouteItem.id}>
               {activePlugin ? (
                 <Suspense fallback={<div className="kk-loading">LOADING…</div>}>

@@ -15,7 +15,12 @@ interface AiCategory {
   icon?: string
 }
 
-const fallbackIntentPrompts = ['文件转换器', 'PDF 转 Word', '图片压缩', '视频转音频', '电脑录屏', 'PPT 模板']
+/** kind 的中文标记：让用户点开前就知道会发生什么 */
+const KIND_LABEL: Record<NonNullable<AiTool['kind']>, string> = {
+  online: '在线',
+  desktop: '软件',
+  resource: '资源',
+}
 
 const fallbackCategories: AiCategory[] = [
   { id: 'all', title: '全部', icon: 'travel_explore' },
@@ -96,19 +101,26 @@ const AiNavigatorPlugin = ({ config }: Props) => {
     () => (Array.isArray(config?.tools) ? config.tools : fallbackTools) as AiTool[],
     [config?.tools],
   )
-  const intentPrompts = useMemo(
-    () => (Array.isArray(config?.intentPrompts) ? config.intentPrompts : fallbackIntentPrompts) as string[],
-    [config?.intentPrompts],
-  )
   const [query, setQuery] = useState('')
   const [activeCategory, setActiveCategory] = useState(categories[0]?.id ?? 'all')
   const normalizedQuery = query.trim().toLowerCase()
+
+  // 无搜索词时按分类顺序排，避免首屏出现「转换 → 文档 → 视频」来回跳。
+  // 有搜索词时仍然以相关度为主，分类顺序只作为同分时的次级排序。
+  const categoryRank = useMemo(
+    () => new Map(categories.map((category, index) => [category.id, index])),
+    [categories],
+  )
 
   const rankedTools = tools
     .filter((tool) => activeCategory === 'all' || tool.category === activeCategory)
     .map((tool, index) => ({ tool, score: scoreTool(tool, normalizedQuery), index }))
     .filter((entry) => !normalizedQuery || entry.score > 0)
-    .sort((a, b) => b.score - a.score || a.index - b.index)
+    .sort((a, b) => (
+      b.score - a.score
+      || (categoryRank.get(a.tool.category) ?? 99) - (categoryRank.get(b.tool.category) ?? 99)
+      || a.index - b.index
+    ))
   const filteredTools = rankedTools.map((entry) => entry.tool)
   const visibleTools = query.trim() || activeCategory !== 'all' ? filteredTools : filteredTools.slice(0, 48)
 
@@ -169,24 +181,6 @@ const AiNavigatorPlugin = ({ config }: Props) => {
               <Icon name="close" className="text-sm" />
             </button>
           )}
-        </div>
-
-        {/* Intent chips */}
-        <div className="flex flex-wrap gap-1.5">
-          {intentPrompts.slice(0, 8).map((prompt) => (
-            <button
-              key={prompt}
-              type="button"
-              onClick={() => { setQuery(prompt); setActiveCategory('all') }}
-              className={`rounded-full border px-2.5 py-1 font-label-mono text-[10px] uppercase tracking-[0.14em] transition-all duration-150 ${
-                query === prompt
-                  ? 'border-primary/30 bg-primary/8 text-primary'
-                  : 'border-border-subtle text-text-muted hover:border-primary/20 hover:text-on-surface'
-              }`}
-            >
-              {prompt}
-            </button>
-          ))}
         </div>
       </div>
 
@@ -249,8 +243,14 @@ const AiNavigatorPlugin = ({ config }: Props) => {
                     </span>
                   )}
                 </div>
-                <span className="mt-0.5 block font-label-mono text-[9px] uppercase tracking-[0.14em] text-primary/60">
-                  {getHostname(tool.url) || tool.sourceCategory || 'external'}
+                <span className="mt-0.5 flex items-center gap-1.5 font-label-mono text-[9px] uppercase tracking-[0.14em] text-primary/60">
+                  <span className="truncate">{getHostname(tool.url) || 'external'}</span>
+                  {/* kind 标记：点开之后是直接用、要安装、还是去看内容 */}
+                  {tool.kind && (
+                    <span className="shrink-0 rounded border border-primary/25 px-1 py-px text-[8px] tracking-normal text-primary/70">
+                      {KIND_LABEL[tool.kind]}
+                    </span>
+                  )}
                 </span>
                 <p className="mt-1.5 line-clamp-2 text-[12px] leading-relaxed text-text-muted">
                   {tool.description}

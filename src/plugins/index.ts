@@ -2,12 +2,9 @@ import ProfilePlugin from './profile'
 import AiNavigatorPlugin from './ai-navigator'
 import WishWallPlugin from './wish-wall'
 import CloudflareLabPlugin from './cloudflare-lab'
-import NewsPlugin from './news'
 import StockWatchPlugin from './stock-watch'
 import FoodPlugin from './food'
 import PartyGamesPlugin from './party-games'
-import AmbientMusicPlugin from './ambient-music'
-import GalleryPlugin from './gallery'
 import LocalMusicPlugin from './local-music'
 import UniversalInboxPlugin from './universal-inbox'
 import QuickLaunchPlugin from './quick-launch'
@@ -18,7 +15,14 @@ import { Plugin } from '@core/types'
 
 /**
  * 插件注册表
- * 导出所有可用插件
+ *
+ * 约定（2026-10-21 收敛后）：
+ * - 这里每一条都必须满足「已注册 + 已配置 + 有可达路由 + 有 e2e 断言」三者齐备，
+ *   否则访问该路由会落到 OFFLINE 面板。半成品不要放进来。
+ * - `ambient-music` 不在本表：它是音频引擎（首页雨声 + dock 播放器），
+ *   由 App.tsx 直接 import，不承担路由。把它当插件注册只会让「插件数 ≠ 可见页数」。
+ * - 已退役的 13 个插件目录在 `docs/archive/plugins-retired-2026-10-21/`，
+ *   恢复方式是移回 src/plugins 并重新走一遍上面的四条验收。
  */
 export const plugins: Plugin[] = [
   {
@@ -54,19 +58,11 @@ export const plugins: Plugin[] = [
     component: CloudflareLabPlugin,
   },
   {
-    id: 'news',
-    name: '新闻聚合',
-    version: '1.0.0',
-    enabled: true,
-    order: 5,
-    component: NewsPlugin,
-  },
-  {
     id: 'stock-watch',
     name: '股市看盘',
     version: '1.0.0',
     enabled: true,
-    order: 6,
+    order: 5,
     component: StockWatchPlugin,
   },
   {
@@ -74,7 +70,7 @@ export const plugins: Plugin[] = [
     name: '今天吃什么',
     version: '1.0.0',
     enabled: true,
-    order: 7,
+    order: 6,
     component: FoodPlugin,
   },
   {
@@ -82,31 +78,15 @@ export const plugins: Plugin[] = [
     name: '聚会游戏',
     version: '1.0.0',
     enabled: true,
-    order: 8,
+    order: 7,
     component: PartyGamesPlugin,
-  },
-  {
-    id: 'ambient-music',
-    name: '氛围音乐',
-    version: '1.0.0',
-    enabled: true,
-    order: 8,
-    component: AmbientMusicPlugin,
-  },
-  {
-    id: 'gallery',
-    name: '视觉画廊',
-    version: '1.0.0',
-    enabled: true,
-    order: 9,
-    component: GalleryPlugin,
   },
   {
     id: 'local-music',
     name: '本地音乐',
     version: '1.0.0',
     enabled: true,
-    order: 10,
+    order: 8,
     component: LocalMusicPlugin,
   },
   {
@@ -114,7 +94,7 @@ export const plugins: Plugin[] = [
     name: '万能投入口',
     version: '1.0.0',
     enabled: false,
-    order: 8,
+    order: 9,
     component: UniversalInboxPlugin,
   },
   {
@@ -122,7 +102,7 @@ export const plugins: Plugin[] = [
     name: '快速启动',
     version: '1.0.0',
     enabled: false,
-    order: 9,
+    order: 10,
     component: QuickLaunchPlugin,
   },
   {
@@ -130,7 +110,7 @@ export const plugins: Plugin[] = [
     name: '工作台',
     version: '1.0.0',
     enabled: false,
-    order: 10,
+    order: 11,
     component: WorkbenchPlugin,
   },
   {
@@ -138,7 +118,7 @@ export const plugins: Plugin[] = [
     name: '资源收藏',
     version: '1.0.0',
     enabled: false,
-    order: 11,
+    order: 12,
     component: CollectionsPlugin,
   },
   {
@@ -146,7 +126,7 @@ export const plugins: Plugin[] = [
     name: '临时收纳',
     version: '1.0.0',
     enabled: false,
-    order: 12,
+    order: 13,
     component: ScratchpadPlugin,
   },
 ]
@@ -161,11 +141,8 @@ export {
   AiNavigatorPlugin,
   WishWallPlugin,
   CloudflareLabPlugin,
-  NewsPlugin,
   StockWatchPlugin,
   FoodPlugin,
   PartyGamesPlugin,
-  AmbientMusicPlugin,
-  GalleryPlugin,
   LocalMusicPlugin,
 }

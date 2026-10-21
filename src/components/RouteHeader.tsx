@@ -26,6 +26,11 @@ export interface RouteHeaderProps {
   total: number
   /** 前进 / 后退，决定页头元素的位移方向（与切镜幕布的行进方向一致） */
   direction: 'ac-fwd' | 'ac-back'
+  /**
+   * morph：配合导航条 → 页头的共享元素转场，节奏更短；
+   * cut：配合移动端双层幕布，保留原来的延迟。
+   */
+  transition?: 'morph' | 'cut'
   /** 移动端在页头挂强调色切换器（桌面由导航轨承担，避免两处重复） */
   accentSwitcher?: boolean
 }
@@ -46,12 +51,22 @@ export interface RouteHeaderProps {
  * 页头揭示由这里负责，不由 RouteCut 代劳：元素归属决定职责边界，
  * 隔着组件边界 `querySelector` 别人的 DOM，改一次页头结构就会静默失效。
  */
-const RouteHeader = ({ route, index, total, direction, accentSwitcher = false }: RouteHeaderProps) => {
+const RouteHeader = ({ route, index, total, direction, transition = 'morph', accentSwitcher = false }: RouteHeaderProps) => {
   const kicker = EN_LABEL[route.pluginId] ?? 'MODULE'
   const dir = direction === 'ac-fwd' ? 1 : -1
 
-  // 描边序号滚到本次路由号。延迟对齐幕布擦过页头的时间点。
-  const idxRef = useCountUp<HTMLDivElement>(index, { pad: 2, duration: 780, delay: 300 })
+  // morph 的节奏以「幽灵条 320ms 落到 kicker」为基准；
+  // cut 仍然等幕布擦过页头，所以保留原来的长延迟。
+  const timing = transition === 'cut'
+    ? { kicker: [140, 460], title: [190, 680], idx: [250, 560], rule: [300, 820], meta: [430, 440], count: [300, 780] }
+    : { kicker: [320, 180], title: [100, 320], idx: [120, 260], rule: [200, 320], meta: [180, 220], count: [140, 480] }
+
+  // 描边序号滚到本次路由号。延迟对齐转场的落点。
+  const idxRef = useCountUp<HTMLDivElement>(index, {
+    pad: 2,
+    duration: timing.count[1],
+    delay: timing.count[0],
+  })
 
   const { ref } = useMotionScope<HTMLElement>(`route-head:${route.id}`, ({ q, timeline, prime }) => {
     prime('.kk-head-kicker', { rise: 10 * dir })
@@ -73,17 +88,17 @@ const RouteHeader = ({ route, index, total, direction, accentSwitcher = false }:
           opacity: [0, 1],
           '--m-rise': [10 * dir, 0],
           textContent: scrambleText({ chars: 'A-Z0-9/#_', cursor: '_' }),
-          duration: 460,
+          duration: timing.kicker[1],
           ease: 'outExpo',
         },
-        140,
+        timing.kicker[0],
       )
       // 标题：遮罩内推进来
-      .add(q('.kk-head-title'), { opacity: [0, 1], '--m-rise': [34 * dir, 0], duration: 680, ease: 'outExpo' }, 190)
-      .add(q('.kk-head-idx'), { opacity: [0, 1], '--m-rise': [16 * dir, 0], duration: 560, ease: 'outExpo' }, 250)
+      .add(q('.kk-head-title'), { opacity: [0, 1], '--m-rise': [34 * dir, 0], duration: timing.title[1], ease: 'outExpo' }, timing.title[0])
+      .add(q('.kk-head-idx'), { opacity: [0, 1], '--m-rise': [16 * dir, 0], duration: timing.idx[1], ease: 'outExpo' }, timing.idx[0])
       // 发丝线从左（前进）/ 右（后退）长出来，方向和幕布一致
-      .add(rule, { scaleX: [0, 1], duration: 820, ease: 'outExpo' }, 300)
-      .add(q('.kk-head-meta'), { opacity: [0, 1], '--m-rise': [8 * dir, 0], duration: 440, ease: 'outQuad' }, 430)
+      .add(rule, { scaleX: [0, 1], duration: timing.rule[1], ease: 'outExpo' }, timing.rule[0])
+      .add(q('.kk-head-meta'), { opacity: [0, 1], '--m-rise': [8 * dir, 0], duration: timing.meta[1], ease: 'outQuad' }, timing.meta[0])
   })
 
   return (

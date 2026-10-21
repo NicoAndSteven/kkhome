@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>移动端快速淡入 · 路由转场实验室</title>
+    <link rel="stylesheet" href="./demo.css" />
+  </head>
+  <body>
+    <main class="mobile-page">
+      <p class="phone-note">
+        线上移动端目前会用 <b>650ms 的整屏幕布</b> 连 TabBar 一起盖住；这个版本只换内容层，
+        <b>140ms</b> 完成，TabBar 始终在。
+      </p>
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-status"><span>9:41</span><span>KK / MOBILE</span></div>
+          <div class="m-content" id="m-content"></div>
+          <div class="m-tabs" id="m-tabs" role="tablist" aria-label="移动端演示导航"></div>
+        </div>
+      </div>
+      <div class="m-actions">
+        <span>QUICK FADE / 140ms</span>
+        <button type="button" data-act="prev">← 后退</button>
+        <button type="button" data-act="replay">重播</button>
+        <button type="button" data-act="next">前进 →</button>
+        <button type="button" data-act="auto">AUTO</button>
+      </div>
+    </main>
+    <script type="module" src="./quick-fade.js"></script>
+  </body>
+</html>

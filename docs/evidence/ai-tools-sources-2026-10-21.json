@@ -1,0 +1,1341 @@
+{
+  "_note": "2026-10-21 清洗时从 plugins.config.json 摘出的采集溯源字段。运行时不需要，留档备查。",
+  "capturedAt": "2026-10-21",
+  "tools": {
+    "convertio": {
+      "sourceTitle": "文件格式转换#Pdf#Word#Excel",
+      "sourceUrl": "https://www.30aitool.com/924.html",
+      "sourceCategory": "工具"
+    },
+    "file-converter-local": {
+      "sourceTitle": "格式转换本地软件大合集",
+      "sourceUrl": "https://www.30aitool.com/999.html",
+      "sourceCategory": "软件"
+    },
+    "freeconvert-video-mp3": {
+      "sourceTitle": "视频转音频#转mp3#mp4转mp3",
+      "sourceUrl": "https://www.30aitool.com/3817.html",
+      "sourceCategory": "工具"
+    },
+    "markdown-lovejade-cn": {
+      "sourceTitle": "Markdown编辑工具",
+      "sourceUrl": "https://www.30aitool.com/3462.html",
+      "sourceCategory": "工具"
+    },
+    "b3log-org-siyuan": {
+      "sourceTitle": "Markdown编辑工具",
+      "sourceUrl": "https://www.30aitool.com/3462.html",
+      "sourceCategory": "工具"
+    },
+    "dongci-kawo-com": {
+      "sourceTitle": "gif动图录制#gif格式#gif压缩",
+      "sourceUrl": "https://www.30aitool.com/2485.html",
+      "sourceCategory": "工具"
+    },
+    "tingwu-aliyun-com-home": {
+      "sourceTitle": "视频提取文案#音视频转文字#AI总结视频#视频大纲提炼",
+      "sourceUrl": "https://www.30aitool.com/409.html",
+      "sourceCategory": "工具"
+    },
+    "aixdownloader-com-zh": {
+      "sourceTitle": "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
+      "sourceUrl": "https://www.30aitool.com/397.html",
+      "sourceCategory": "工具"
+    },
+    "microsoftedge-microsoft-com-addons-detail-e7-8c-ab-e6-8a-93-oohmdefbja": {
+      "sourceTitle": "网站视频下载#音频下载#图片下载#音乐下载#视频号下载",
+      "sourceUrl": "https://www.30aitool.com/397.html",
+      "sourceCategory": "工具"
+    },
+    "ps-gaoding-com": {
+      "sourceTitle": "图片编辑#AI做图#豆包#在线版PS#添加水印",
+      "sourceUrl": "https://www.30aitool.com/2619.html",
+      "sourceCategory": "工具"
+    },
+    "cuijianzhuang-github-io-photo-watermark": {
+      "sourceTitle": "图片编辑#AI做图#豆包#在线版PS#添加水印",
+      "sourceUrl": "https://www.30aitool.com/2619.html",
+      "sourceCategory": "工具"
+    },
+    "moonvy-com-apps-pxevapo": {
+      "sourceTitle": "图片压缩#png压缩#批量压缩#GIF压缩",
+      "sourceUrl": "https://www.30aitool.com/376.html",
+      "sourceCategory": "工具"
+    },
+    "tinypng-com": {
+      "sourceTitle": "图片压缩#png压缩#批量压缩#GIF压缩",
+      "sourceUrl": "https://www.30aitool.com/376.html",
+      "sourceCategory": "工具"
+    },
+    "zh-recompressor-com": {
+      "sourceTitle": "图片压缩#png压缩#批量压缩#GIF压缩",
+      "sourceUrl": "https://www.30aitool.com/376.html",
+      "sourceCategory": "工具"
+    },
+    "bigjpg-com": {
+      "sourceTitle": "模糊修复-测试",
+      "sourceUrl": "https://www.30aitool.com/680.html",
+      "sourceCategory": "工具"
+    },
+    "zh-bgsub-com-webapp": {
+      "sourceTitle": "抠图免费网站",
+      "sourceUrl": "https://www.30aitool.com/7.html",
+      "sourceCategory": "工具"
+    },
+    "remove-bg-zh-upload": {
+      "sourceTitle": "抠图免费网站",
+      "sourceUrl": "https://www.30aitool.com/7.html",
+      "sourceCategory": "工具"
+    },
+    "pixian-ai": {
+      "sourceTitle": "抠图免费网站",
+      "sourceUrl": "https://www.30aitool.com/7.html",
+      "sourceCategory": "工具"
+    },
+    "videocaptioner-cn-guide-getting-started": {
+      "sourceTitle": "视频字幕生成#批量转字幕#视频翻译",
+      "sourceUrl": "https://www.30aitool.com/2606.html",
+      "sourceCategory": "工具"
+    },
+    "web-baimiaoapp-com-image-to-excel": {
+      "sourceTitle": "图片转excel#图片文字提取#pdf转文字",
+      "sourceUrl": "https://www.30aitool.com/2668.html",
+      "sourceCategory": "工具"
+    },
+    "lab-magiconch-com-eva-title": {
+      "sourceTitle": "文字海报#eva#多种样式#免费字体#工程文件",
+      "sourceUrl": "https://www.30aitool.com/2544.html",
+      "sourceCategory": "工具"
+    },
+    "postspark-app": {
+      "sourceTitle": "文字海报#eva#多种样式#免费字体#工程文件",
+      "sourceUrl": "https://www.30aitool.com/2544.html",
+      "sourceCategory": "工具"
+    },
+    "shots-so": {
+      "sourceTitle": "文字海报#eva#多种样式#免费字体#工程文件",
+      "sourceUrl": "https://www.30aitool.com/2544.html",
+      "sourceCategory": "工具"
+    },
+    "notecard-top": {
+      "sourceTitle": "文字海报#eva#多种样式#免费字体#工程文件",
+      "sourceUrl": "https://www.30aitool.com/2544.html",
+      "sourceCategory": "工具"
+    },
+    "obsproject-com": {
+      "sourceTitle": "电脑录屏#屏幕录制#",
+      "sourceUrl": "https://www.30aitool.com/832.html",
+      "sourceCategory": "工具"
+    },
+    "microsoftedge-microsoft-com-addons-detail-screenity-e5-b1-8f-e5-b9-95-": {
+      "sourceTitle": "电脑录屏#屏幕录制#",
+      "sourceUrl": "https://www.30aitool.com/832.html",
+      "sourceCategory": "工具"
+    },
+    "apeaksoft-com-watermark-remover-editor": {
+      "sourceTitle": "去照片水印#图片水印去除",
+      "sourceUrl": "https://www.30aitool.com/354.html",
+      "sourceCategory": "工具"
+    },
+    "picwish-cn-remove-unwanted-object": {
+      "sourceTitle": "去照片水印#图片水印去除",
+      "sourceUrl": "https://www.30aitool.com/354.html",
+      "sourceCategory": "工具"
+    },
+    "md2card-com-zh": {
+      "sourceTitle": "Markdown卡片#文字卡片#知识卡片",
+      "sourceUrl": "https://www.30aitool.com/3521.html",
+      "sourceCategory": "工具"
+    },
+    "nextbconvert-com-zh": {
+      "sourceTitle": "图片格式转换大全",
+      "sourceUrl": "https://www.30aitool.com/367.html",
+      "sourceCategory": "工具"
+    },
+    "send-vis-ee": {
+      "sourceTitle": "文件传输",
+      "sourceUrl": "https://www.30aitool.com/1303.html",
+      "sourceCategory": "工具"
+    },
+    "airportal-cn": {
+      "sourceTitle": "文件传输",
+      "sourceUrl": "https://www.30aitool.com/1303.html",
+      "sourceCategory": "工具"
+    },
+    "localsend-org-zh-cn-download-os-linux": {
+      "sourceTitle": "文件传输",
+      "sourceUrl": "https://www.30aitool.com/1303.html",
+      "sourceCategory": "工具"
+    },
+    "autohanding-com": {
+      "sourceTitle": "模拟手写样式",
+      "sourceUrl": "https://www.30aitool.com/4689.html",
+      "sourceCategory": "工具"
+    },
+    "chartcube-alipay-com": {
+      "sourceTitle": "图表制作#支持Excel文件导入",
+      "sourceUrl": "https://www.30aitool.com/933.html",
+      "sourceCategory": "工具"
+    },
+    "vidbee-org-zh-tools-convert-mp4-to-mp3": {
+      "sourceTitle": "视频格式转换#格式转换",
+      "sourceUrl": "https://www.30aitool.com/4262.html",
+      "sourceCategory": "工具"
+    },
+    "mp3cutter-pro-zh-cn": {
+      "sourceTitle": "音频编辑#剪辑#拼接#合成",
+      "sourceUrl": "https://www.30aitool.com/901.html",
+      "sourceCategory": "工具"
+    },
+    "cdkm-com-cn-cut-audio": {
+      "sourceTitle": "音频编辑#剪辑#拼接#合成",
+      "sourceUrl": "https://www.30aitool.com/901.html",
+      "sourceCategory": "工具"
+    },
+    "autocut-video": {
+      "sourceTitle": "口播自动剪辑#剪辑口播#音频自动剪辑口气",
+      "sourceUrl": "https://www.30aitool.com/2049.html",
+      "sourceCategory": "工具"
+    },
+    "tools-rotato-app-compress": {
+      "sourceTitle": "视频压缩",
+      "sourceUrl": "https://www.30aitool.com/836.html",
+      "sourceCategory": "工具"
+    },
+    "magiconch-com-vaporwave-from-home": {
+      "sourceTitle": "图片风格化#蒸汽波#油画#像素画",
+      "sourceUrl": "https://www.30aitool.com/381.html",
+      "sourceCategory": "工具"
+    },
+    "pixel-me-tokyo-en": {
+      "sourceTitle": "图片风格化#蒸汽波#油画#像素画",
+      "sourceUrl": "https://www.30aitool.com/381.html",
+      "sourceCategory": "工具"
+    },
+    "photomosh-com-app": {
+      "sourceTitle": "图片风格化#蒸汽波#油画#像素画",
+      "sourceUrl": "https://www.30aitool.com/381.html",
+      "sourceCategory": "工具"
+    },
+    "magiconch-com-patina": {
+      "sourceTitle": "图片风格化#蒸汽波#油画#像素画",
+      "sourceUrl": "https://www.30aitool.com/381.html",
+      "sourceCategory": "工具"
+    },
+    "lab-magiconch-com-one-last-image": {
+      "sourceTitle": "图片风格化#蒸汽波#油画#像素画",
+      "sourceUrl": "https://www.30aitool.com/381.html",
+      "sourceCategory": "工具"
+    },
+    "miao3-cn": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "font-sucai999-com": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "zfont-cn": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "maoken-com-freefonts": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "100font-com-forum-1-1-htm-tagids-8-0-0-0": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "fontspace-com": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "fontshow-com-zh": {
+      "sourceTitle": "免费字体#可商用字体#",
+      "sourceUrl": "https://www.30aitool.com/967.html",
+      "sourceCategory": "资源"
+    },
+    "github-com-vst93-bili-fm": {
+      "sourceTitle": "免费听歌思路#B站音频#音乐下载",
+      "sourceUrl": "https://www.30aitool.com/2538.html",
+      "sourceCategory": "资源"
+    },
+    "jgwav-com": {
+      "sourceTitle": "免费听歌思路#B站音频#音乐下载",
+      "sourceUrl": "https://www.30aitool.com/2538.html",
+      "sourceCategory": "资源"
+    },
+    "mp3b-com": {
+      "sourceTitle": "免费听歌思路#B站音频#音乐下载",
+      "sourceUrl": "https://www.30aitool.com/2538.html",
+      "sourceCategory": "资源"
+    },
+    "yinfans-me": {
+      "sourceTitle": "电影资源下载#仅供学习交流",
+      "sourceUrl": "https://www.30aitool.com/1008.html",
+      "sourceCategory": "资源"
+    },
+    "rrdynb-com-index-html": {
+      "sourceTitle": "电影资源下载#仅供学习交流",
+      "sourceUrl": "https://www.30aitool.com/1008.html",
+      "sourceCategory": "资源"
+    },
+    "moviebluebook-com-movie": {
+      "sourceTitle": "电影资源下载#仅供学习交流",
+      "sourceUrl": "https://www.30aitool.com/1008.html",
+      "sourceCategory": "资源"
+    },
+    "kuakes-com-films": {
+      "sourceTitle": "电影资源下载#仅供学习交流",
+      "sourceUrl": "https://www.30aitool.com/1008.html",
+      "sourceCategory": "资源"
+    },
+    "canva-cn-templates-query-e7-ae-80-e5-8e-86": {
+      "sourceTitle": "简历模板#在线编辑#简历制作",
+      "sourceUrl": "https://www.30aitool.com/893.html",
+      "sourceCategory": "资源"
+    },
+    "magicv-art-app-dashboard-templates": {
+      "sourceTitle": "简历模板#在线编辑#简历制作",
+      "sourceUrl": "https://www.30aitool.com/893.html",
+      "sourceCategory": "资源"
+    },
+    "jianlixiazai-cn-jianlizhongxin-html-type-1-order-2": {
+      "sourceTitle": "简历模板#在线编辑#简历制作",
+      "sourceUrl": "https://www.30aitool.com/893.html",
+      "sourceCategory": "资源"
+    },
+    "soundinstants-com-zh": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "sound-effects-bbcrewind-co-uk": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "freepd-com-electronic-php": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "pixabay-com-videos": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "mixkit-co-free-stock-music-tag-electro": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "vidsplay-com": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "bensound-com": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "tiktokvoice-net-zh-sounds-effect": {
+      "sourceTitle": "音效素材#音效#抽象#可商业音乐#剪辑必备",
+      "sourceUrl": "https://www.30aitool.com/2303.html",
+      "sourceCategory": "资源"
+    },
+    "guozhivip-com-fun-2048": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "blockbreaker-onl-zh": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "hex-frvr-com": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "eazhijia-com-fun-map-html": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "zty-pe": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "poki-com-zh-g-flappy-chicken": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "js13kgames-com-2025-games-kittens-crossing": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "js13kgames-com-2025-games-clawstrike-play": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "js13kgames-com-2025-games-cat-survivors-play": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "cuber-heheda-top": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "oskarstalberg-com-townscaper": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "fn-heheda-top": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "aring-cc-human-benchmark-index": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "polkadotgame-com": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "missile-game-bwhmather-com": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "lab-hakim-se-core": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "poki-com-zh-g-temple-run-2-holi-festival": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "u-ali213-net-games-jisushiliang-index-html": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "suroi-fpsgo-net": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "yohoho-io": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "narrow-one": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "yikm-net": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "bulletz-io": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "krunker-io": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "miku-sci-fifans-net": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "touchpianist-com": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "beatstage-com": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "heyzxz-me-pcol": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "dapingpang-top": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "yandex-com-games-zh-app-178531-app-id-178531-catalog-session-uid-catal": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "poki-com-zh": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "yikm-net-play-id-4137": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "yikm-net-play-id-3501": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "yikm-net-play-id-4275": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "girlsgogames-com": {
+      "sourceTitle": "在线小游戏#点开即玩#在线摸鱼流畅游玩",
+      "sourceUrl": "https://www.30aitool.com/1023.html",
+      "sourceCategory": "资源"
+    },
+    "bg-painter-com": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "color4bg-com-zh-hans": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "app-haikei-app": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "bg-patterns-com": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "kyuncuts-com": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "products-ls-graphics-mesh-gradients": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "glitchart-io": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "tartanify-com-tartan-aitken": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "durves-com": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "tinkersynth-com-slopes": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "wangyasai-github-io-stars-emmision": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "transparenttextures-com": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "fffuel-co-tttexture": {
+      "sourceTitle": "背景图素材#自定义#免费生成#PPT必备",
+      "sourceUrl": "https://www.30aitool.com/885.html",
+      "sourceCategory": "资源"
+    },
+    "53bk-com-baokan": {
+      "sourceTitle": "报纸杂志",
+      "sourceUrl": "https://www.30aitool.com/3476.html",
+      "sourceCategory": "资源"
+    },
+    "zq5-bookan-com-cn-id-21160": {
+      "sourceTitle": "报纸杂志",
+      "sourceUrl": "https://www.30aitool.com/3476.html",
+      "sourceCategory": "资源"
+    },
+    "magazinelib-com": {
+      "sourceTitle": "报纸杂志",
+      "sourceUrl": "https://www.30aitool.com/3476.html",
+      "sourceCategory": "资源"
+    },
+    "archive-org-details-magazine-rack-tab-collection-query-primary-collect": {
+      "sourceTitle": "报纸杂志",
+      "sourceUrl": "https://www.30aitool.com/3476.html",
+      "sourceCategory": "资源"
+    },
+    "minimalmockups-com-mockups": {
+      "sourceTitle": "样机生成#免费样机在线合成",
+      "sourceUrl": "https://www.30aitool.com/3027.html",
+      "sourceCategory": "资源"
+    },
+    "mockups-design-com-free-mockups": {
+      "sourceTitle": "样机生成#免费样机在线合成",
+      "sourceUrl": "https://www.30aitool.com/3027.html",
+      "sourceCategory": "资源"
+    },
+    "unblast-com-mockups": {
+      "sourceTitle": "样机生成#免费样机在线合成",
+      "sourceUrl": "https://www.30aitool.com/3027.html",
+      "sourceCategory": "资源"
+    },
+    "resourceboy-com-mockups": {
+      "sourceTitle": "样机生成#免费样机在线合成",
+      "sourceUrl": "https://www.30aitool.com/3027.html",
+      "sourceCategory": "资源"
+    },
+    "heycan-com-material-video": {
+      "sourceTitle": "视频素材#混剪素材#绿幕素材#可商用",
+      "sourceUrl": "https://www.30aitool.com/2253.html",
+      "sourceCategory": "资源"
+    },
+    "pexels-com-zh-cn-videos": {
+      "sourceTitle": "视频素材#混剪素材#绿幕素材#可商用",
+      "sourceUrl": "https://www.30aitool.com/2253.html",
+      "sourceCategory": "资源"
+    },
+    "33-agilestudio-cn": {
+      "sourceTitle": "视频素材#混剪素材#绿幕素材#可商用",
+      "sourceUrl": "https://www.30aitool.com/2253.html",
+      "sourceCategory": "资源"
+    },
+    "yesicon-app": {
+      "sourceTitle": "图标#icon#svg#图形#开源图标#可商业",
+      "sourceUrl": "https://www.30aitool.com/964.html",
+      "sourceCategory": "资源"
+    },
+    "icon-sucai999-com": {
+      "sourceTitle": "图标#icon#svg#图形#开源图标#可商业",
+      "sourceUrl": "https://www.30aitool.com/964.html",
+      "sourceCategory": "资源"
+    },
+    "icon-icons-com-zh": {
+      "sourceTitle": "图标#icon#svg#图形#开源图标#可商业",
+      "sourceUrl": "https://www.30aitool.com/964.html",
+      "sourceCategory": "资源"
+    },
+    "slidecoretemplates-com": {
+      "sourceTitle": "PPT模板#高级模板#免费免登录#附上工具",
+      "sourceUrl": "https://www.30aitool.com/972.html",
+      "sourceCategory": "资源"
+    },
+    "justfreeslide-com-zh-document-tag-cute": {
+      "sourceTitle": "PPT模板#高级模板#免费免登录#附上工具",
+      "sourceUrl": "https://www.30aitool.com/972.html",
+      "sourceCategory": "资源"
+    },
+    "pptmon-com-category-free-templates-creative": {
+      "sourceTitle": "PPT模板#高级模板#免费免登录#附上工具",
+      "sourceUrl": "https://www.30aitool.com/972.html",
+      "sourceCategory": "资源"
+    },
+    "ypppt-com-moban": {
+      "sourceTitle": "PPT模板#高级模板#免费免登录#附上工具",
+      "sourceUrl": "https://www.30aitool.com/972.html",
+      "sourceCategory": "资源"
+    },
+    "pptsupermarket-com-ppts": {
+      "sourceTitle": "PPT模板#高级模板#免费免登录#附上工具",
+      "sourceUrl": "https://www.30aitool.com/972.html",
+      "sourceCategory": "资源"
+    },
+    "bzdt-ch-mnr-gov-cn-index-html": {
+      "sourceTitle": "其他图片#手机历史图#艺术#抽象#地图",
+      "sourceUrl": "https://www.30aitool.com/2266.html",
+      "sourceCategory": "资源"
+    },
+    "laozhaopian5-com": {
+      "sourceTitle": "其他图片#手机历史图#艺术#抽象#地图",
+      "sourceUrl": "https://www.30aitool.com/2266.html",
+      "sourceCategory": "资源"
+    },
+    "mobilephonemuseum-com-catalogue": {
+      "sourceTitle": "其他图片#手机历史图#艺术#抽象#地图",
+      "sourceUrl": "https://www.30aitool.com/2266.html",
+      "sourceCategory": "资源"
+    },
+    "irasutoya-com": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "undraw-co-illustrations": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "cocomaterial-com": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "dotown-maeda-design-room-net": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "pixie-haus": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "shigureni-com": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "sozai-good-com": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "frame-illust-com": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "loosedrawing-com": {
+      "sourceTitle": "插画素材#PPT必备#自媒体#可商用",
+      "sourceUrl": "https://www.30aitool.com/881.html",
+      "sourceCategory": "资源"
+    },
+    "ask-xiaoyuzhoufm-com": {
+      "sourceTitle": "听播客#电台#小宇宙#播客#高质量摸鱼",
+      "sourceUrl": "https://www.30aitool.com/2464.html",
+      "sourceCategory": "资源"
+    },
+    "xyzrank-com": {
+      "sourceTitle": "听播客#电台#小宇宙#播客#高质量摸鱼",
+      "sourceUrl": "https://www.30aitool.com/2464.html",
+      "sourceCategory": "资源"
+    },
+    "podcasts-apple-com-cn-new": {
+      "sourceTitle": "听播客#电台#小宇宙#播客#高质量摸鱼",
+      "sourceUrl": "https://www.30aitool.com/2464.html",
+      "sourceCategory": "资源"
+    },
+    "soogif-com-funny": {
+      "sourceTitle": "表情包#梗图#表情DIY",
+      "sourceUrl": "https://www.30aitool.com/941.html",
+      "sourceCategory": "资源"
+    },
+    "diydoutu-com-diy-doutu": {
+      "sourceTitle": "表情包#梗图#表情DIY",
+      "sourceUrl": "https://www.30aitool.com/941.html",
+      "sourceCategory": "资源"
+    },
+    "zuomeme-com": {
+      "sourceTitle": "表情包#梗图#表情DIY",
+      "sourceUrl": "https://www.30aitool.com/941.html",
+      "sourceCategory": "资源"
+    },
+    "toolwa-com-petpet": {
+      "sourceTitle": "表情包#梗图#表情DIY",
+      "sourceUrl": "https://www.30aitool.com/941.html",
+      "sourceCategory": "资源"
+    },
+    "pcfreetime-com-formatfactory-cn-download-html": {
+      "sourceTitle": "格式转换本地软件大合集",
+      "sourceUrl": "https://www.30aitool.com/999.html",
+      "sourceCategory": "软件"
+    },
+    "pdfgear-com-zh": {
+      "sourceTitle": "格式转换本地软件大合集",
+      "sourceUrl": "https://www.30aitool.com/999.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-bluepointlilac-contextmenumanager": {
+      "sourceTitle": "鼠标右击管理菜单",
+      "sourceUrl": "https://www.30aitool.com/1051.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-barry-ran-qtscrcpy": {
+      "sourceTitle": "手机投屏电脑开源工具",
+      "sourceUrl": "https://www.30aitool.com/1048.html",
+      "sourceCategory": "软件"
+    },
+    "listary-com": {
+      "sourceTitle": "电脑快捷搜索软件listary&everything",
+      "sourceUrl": "https://www.30aitool.com/4184.html",
+      "sourceCategory": "软件"
+    },
+    "voidtools-com-zh-cn-support-everything": {
+      "sourceTitle": "电脑快捷搜索软件listary&everything",
+      "sourceUrl": "https://www.30aitool.com/4184.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-planshit-tai": {
+      "sourceTitle": "电脑软件使用时间查看器",
+      "sourceUrl": "https://www.30aitool.com/1054.html",
+      "sourceCategory": "软件"
+    },
+    "hibitsoft-ir-uninstaller-html": {
+      "sourceTitle": "卸载工具大合集",
+      "sourceUrl": "https://www.30aitool.com/996.html",
+      "sourceCategory": "软件"
+    },
+    "iobit-com-en-advanceduninstaller-php": {
+      "sourceTitle": "卸载工具大合集",
+      "sourceUrl": "https://www.30aitool.com/996.html",
+      "sourceCategory": "软件"
+    },
+    "geekuninstaller-com": {
+      "sourceTitle": "卸载工具大合集",
+      "sourceUrl": "https://www.30aitool.com/996.html",
+      "sourceCategory": "软件"
+    },
+    "martau-com-zh-cn": {
+      "sourceTitle": "卸载工具大合集",
+      "sourceUrl": "https://www.30aitool.com/996.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-klocman-bulk-crap-uninstaller": {
+      "sourceTitle": "卸载工具大合集",
+      "sourceUrl": "https://www.30aitool.com/996.html",
+      "sourceCategory": "软件"
+    },
+    "ruancang-net": {
+      "sourceTitle": "adobe软件下载全家桶网站",
+      "sourceUrl": "https://www.30aitool.com/4946.html",
+      "sourceCategory": "软件"
+    },
+    "kms-cx": {
+      "sourceTitle": "office绿色版本#excel#word#ppt",
+      "sourceUrl": "https://www.30aitool.com/936.html",
+      "sourceCategory": "软件"
+    },
+    "360totalsecurity-com-zh-cn-360zip": {
+      "sourceTitle": "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+      "sourceUrl": "https://www.30aitool.com/982.html",
+      "sourceCategory": "软件"
+    },
+    "bandisoft-com-bandizip": {
+      "sourceTitle": "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+      "sourceUrl": "https://www.30aitool.com/982.html",
+      "sourceCategory": "软件"
+    },
+    "7-zip-org": {
+      "sourceTitle": "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+      "sourceUrl": "https://www.30aitool.com/982.html",
+      "sourceCategory": "软件"
+    },
+    "winrar-com-cn": {
+      "sourceTitle": "压缩软件#解压#7zip#‎‎‎‎‎‎‎Bandizip#360国际版#winraw",
+      "sourceUrl": "https://www.30aitool.com/982.html",
+      "sourceCategory": "软件"
+    },
+    "pixpinapp-com": {
+      "sourceTitle": "截图软件#长截图#gif录制#悬浮截图",
+      "sourceUrl": "https://www.30aitool.com/987.html",
+      "sourceCategory": "软件"
+    },
+    "zh-snipaste-com": {
+      "sourceTitle": "截图软件#长截图#gif录制#悬浮截图",
+      "sourceUrl": "https://www.30aitool.com/987.html",
+      "sourceCategory": "软件"
+    },
+    "getquicker-net": {
+      "sourceTitle": "quicker效率提升",
+      "sourceUrl": "https://www.30aitool.com/4940.html",
+      "sourceCategory": "软件"
+    },
+    "uuyc-163-com": {
+      "sourceTitle": "电脑远程软件#免费#流程",
+      "sourceUrl": "https://www.30aitool.com/4905.html",
+      "sourceCategory": "软件"
+    },
+    "newsupport-lenovo-com-cn-drivedownloads-index-html": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "mi-com-service-notebook-drivers": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "consumer-huawei-com-cn-support-driver-list": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "asus-com-cn-support-id-155": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "mechrevo-com-service": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "amd-com-zh-cn-support-download-drivers-html": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "nvidia-cn-geforce-drivers": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "intel-cn-content-www-cn-zh-support-detect-html": {
+      "sourceTitle": "驱动下载",
+      "sourceUrl": "https://www.30aitool.com/1002.html",
+      "sourceCategory": "软件"
+    },
+    "tbtool-cn": {
+      "sourceTitle": "图吧工具箱#烤机#",
+      "sourceUrl": "https://www.30aitool.com/4626.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-huiyadanli-revokemsgpatcher-tab-readme-ov-file": {
+      "sourceTitle": "微信防撤回消息#QQ防撤回",
+      "sourceUrl": "https://www.30aitool.com/1045.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-ql-win-quicklook": {
+      "sourceTitle": "快速预览电脑文件效率神器quick look",
+      "sourceUrl": "https://www.30aitool.com/4942.html",
+      "sourceCategory": "软件"
+    },
+    "github-com-superdms-hsfreezer-hidden-in-the-snow": {
+      "sourceTitle": "打游戏必备#游戏进程冻结器#游戏多开不卡",
+      "sourceUrl": "https://www.30aitool.com/4779.html",
+      "sourceCategory": "软件"
+    },
+    "bestblogs-dev": {
+      "sourceTitle": "AI优质每日信息源查看",
+      "sourceUrl": "https://www.30aitool.com/4987.html",
+      "sourceCategory": "知识"
+    },
+    "ruanyifeng-com-blog": {
+      "sourceTitle": "AI优质每日信息源查看",
+      "sourceUrl": "https://www.30aitool.com/4987.html",
+      "sourceCategory": "知识"
+    },
+    "github-com-ruanyf-weekly-tab-readme-ov-file": {
+      "sourceTitle": "AI优质每日信息源查看",
+      "sourceUrl": "https://www.30aitool.com/4987.html",
+      "sourceCategory": "知识"
+    },
+    "ai-hubtoday-app": {
+      "sourceTitle": "AI优质每日信息源查看",
+      "sourceUrl": "https://www.30aitool.com/4987.html",
+      "sourceCategory": "知识"
+    },
+    "failory-com-graveyard": {
+      "sourceTitle": "创业相关网站#失败案例总结#挖掘痛点",
+      "sourceUrl": "https://www.30aitool.com/4785.html",
+      "sourceCategory": "知识"
+    },
+    "itjuzi-com-deathcompany": {
+      "sourceTitle": "创业相关网站#失败案例总结#挖掘痛点",
+      "sourceUrl": "https://www.30aitool.com/4785.html",
+      "sourceCategory": "知识"
+    },
+    "idea-search-0gab-onrender-com": {
+      "sourceTitle": "创业相关网站#失败案例总结#挖掘痛点",
+      "sourceUrl": "https://www.30aitool.com/4785.html",
+      "sourceCategory": "知识"
+    },
+    "cook-yunyoujun-cn": {
+      "sourceTitle": "实用指南手册#租房#医保#做饭",
+      "sourceUrl": "https://www.30aitool.com/3711.html",
+      "sourceCategory": "知识"
+    },
+    "yibao-233h-com": {
+      "sourceTitle": "实用指南手册#租房#医保#做饭",
+      "sourceUrl": "https://www.30aitool.com/3711.html",
+      "sourceCategory": "知识"
+    },
+    "zufang-ababtools-com": {
+      "sourceTitle": "实用指南手册#租房#医保#做饭",
+      "sourceUrl": "https://www.30aitool.com/3711.html",
+      "sourceCategory": "知识"
+    },
+    "zh-ifixit-com-guide": {
+      "sourceTitle": "实用指南手册#租房#医保#做饭",
+      "sourceUrl": "https://www.30aitool.com/3711.html",
+      "sourceCategory": "知识"
+    },
+    "owenyoung-com": {
+      "sourceTitle": "优质博客内容#blog",
+      "sourceUrl": "https://www.30aitool.com/3048.html",
+      "sourceCategory": "知识"
+    },
+    "buzzing-cc": {
+      "sourceTitle": "国外优质文章#中文预览海外优质内容",
+      "sourceUrl": "https://www.30aitool.com/3619.html",
+      "sourceCategory": "知识"
+    },
+    "readhub-cn": {
+      "sourceTitle": "国外优质文章#中文预览海外优质内容",
+      "sourceUrl": "https://www.30aitool.com/3619.html",
+      "sourceCategory": "知识"
+    },
+    "games-solidot-org": {
+      "sourceTitle": "国外优质文章#中文预览海外优质内容",
+      "sourceUrl": "https://www.30aitool.com/3619.html",
+      "sourceCategory": "知识"
+    },
+    "zeli-app-zh": {
+      "sourceTitle": "国外优质文章#中文预览海外优质内容",
+      "sourceUrl": "https://www.30aitool.com/3619.html",
+      "sourceCategory": "知识"
+    },
+    "hn-aimaker-dev": {
+      "sourceTitle": "国外优质文章#中文预览海外优质内容",
+      "sourceUrl": "https://www.30aitool.com/3619.html",
+      "sourceCategory": "知识"
+    },
+    "nbfox-com": {
+      "sourceTitle": "审美提升网站#艺术#网站设计#平面（持续更新）",
+      "sourceUrl": "https://www.30aitool.com/3347.html",
+      "sourceCategory": "知识"
+    },
+    "film-grab-com": {
+      "sourceTitle": "审美提升网站#艺术#网站设计#平面（持续更新）",
+      "sourceUrl": "https://www.30aitool.com/3347.html",
+      "sourceCategory": "知识"
+    },
+    "crxsoso-com-webstore-detail-hhfkpjffbhledfpkhhcoidplcebgdgbk": {
+      "sourceTitle": "站长日常工作经验分享#普通人也受用#调研思路",
+      "sourceUrl": "https://www.30aitool.com/3120.html",
+      "sourceCategory": "知识"
+    },
+    "crxsoso-com-webstore-detail-ipnlcfhfdicbfbchfoihipknbaeenenm": {
+      "sourceTitle": "站长日常工作经验分享#普通人也受用#调研思路",
+      "sourceUrl": "https://www.30aitool.com/3120.html",
+      "sourceCategory": "知识"
+    },
+    "crxsoso-com-webstore-detail-necpbmbhhdiplmfhmjicabdeighkndkn": {
+      "sourceTitle": "站长日常工作经验分享#普通人也受用#调研思路",
+      "sourceUrl": "https://www.30aitool.com/3120.html",
+      "sourceCategory": "知识"
+    },
+    "englearner-site-cn-index-html": {
+      "sourceTitle": "学习英语网站#看剧学#打字学#背单词合集#大合集",
+      "sourceUrl": "https://www.30aitool.com/3072.html",
+      "sourceCategory": "知识"
+    },
+    "qwerty-kaiyi-cool-gallery": {
+      "sourceTitle": "学习英语网站#看剧学#打字学#背单词合集#大合集",
+      "sourceUrl": "https://www.30aitool.com/3072.html",
+      "sourceCategory": "知识"
+    },
+    "wordflow-click-application-sentence": {
+      "sourceTitle": "学习英语网站#看剧学#打字学#背单词合集#大合集",
+      "sourceUrl": "https://www.30aitool.com/3072.html",
+      "sourceCategory": "知识"
+    },
+    "wordsfunny-com-sat-3-words": {
+      "sourceTitle": "学习英语网站#看剧学#打字学#背单词合集#大合集",
+      "sourceUrl": "https://www.30aitool.com/3072.html",
+      "sourceCategory": "知识"
+    },
+    "babelabc-com-ref-toolsdar-cn": {
+      "sourceTitle": "学习英语网站#看剧学#打字学#背单词合集#大合集",
+      "sourceUrl": "https://www.30aitool.com/3072.html",
+      "sourceCategory": "知识"
+    },
+    "englishnewsinlevels-com": {
+      "sourceTitle": "学习英语网站#看剧学#打字学#背单词合集#大合集",
+      "sourceUrl": "https://www.30aitool.com/3072.html",
+      "sourceCategory": "知识"
+    },
+    "markdown-com-cn-basic-syntax-headings-html": {
+      "sourceTitle": "markdown语法",
+      "sourceUrl": "https://www.30aitool.com/2910.html",
+      "sourceCategory": "知识"
+    },
+    "markdown-cn": {
+      "sourceTitle": "markdown语法",
+      "sourceUrl": "https://www.30aitool.com/2910.html",
+      "sourceCategory": "知识"
+    },
+    "follow-is": {
+      "sourceTitle": "搭建自己的优质信息",
+      "sourceUrl": "https://www.30aitool.com/1238.html",
+      "sourceCategory": "知识"
+    },
+    "microsoftedge-microsoft-com-addons-detail-rsshub-radar-gangkeiaobmjcjo": {
+      "sourceTitle": "搭建自己的优质信息",
+      "sourceUrl": "https://www.30aitool.com/1238.html",
+      "sourceCategory": "知识"
+    },
+    "newrank-cn-ranklist-gongzhonghao-l-sq-main-t-bd": {
+      "sourceTitle": "搭建自己的优质信息",
+      "sourceUrl": "https://www.30aitool.com/1238.html",
+      "sourceCategory": "知识"
+    },
+    "tophub-today": {
+      "sourceTitle": "搭建自己的优质信息",
+      "sourceUrl": "https://www.30aitool.com/1238.html",
+      "sourceCategory": "知识"
+    },
+    "microsoftedge-microsoft-com-addons-detail-e5-ad-a6-e6-9c-af-e8-b5-84-e": {
+      "sourceTitle": "搭建自己的优质信息",
+      "sourceUrl": "https://www.30aitool.com/1238.html",
+      "sourceCategory": "知识"
+    },
+    "rss-source-com": {
+      "sourceTitle": "搭建自己的优质信息",
+      "sourceUrl": "https://www.30aitool.com/1238.html",
+      "sourceCategory": "知识"
+    },
+    "metaso-cn-echo": {
+      "sourceTitle": "AI语音输入#语音输入法",
+      "sourceUrl": "https://www.30aitool.com/4844.html",
+      "sourceCategory": "AI"
+    },
+    "claude-ai": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "doubao-com": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "kimi-com": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "chatgpt-com": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "grok-com": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "superclueai-com-homepage": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "arena-ai-zh-c-new": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "llm-stats-com": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "artificialanalysis-ai-image-arena": {
+      "sourceTitle": "AI大模型排行榜测评网站｜ 当下什么 AI 最强呢？",
+      "sourceUrl": "https://www.30aitool.com/4670.html",
+      "sourceCategory": "AI"
+    },
+    "aishort-top": {
+      "sourceTitle": "AI提示词合集网站",
+      "sourceUrl": "https://www.30aitool.com/4653.html",
+      "sourceCategory": "AI"
+    },
+    "promptup-net-scoreboard": {
+      "sourceTitle": "AI提示词合集网站",
+      "sourceUrl": "https://www.30aitool.com/4653.html",
+      "sourceCategory": "AI"
+    },
+    "prompterhub-cn-home": {
+      "sourceTitle": "AI提示词合集网站",
+      "sourceUrl": "https://www.30aitool.com/4653.html",
+      "sourceCategory": "AI"
+    },
+    "boardmix-cn-app-share-cae-ck3b5qwgasoqtaqlmrrgc2oi0dvg4bdjbjagqae-yuby": {
+      "sourceTitle": "deepseek结合飞书使用#效率翻倍#工作流搭建",
+      "sourceUrl": "https://www.30aitool.com/3039.html",
+      "sourceCategory": "AI"
+    },
+    "huorong-cn-person": {
+      "sourceTitle": "C盘清理指南，全网最全",
+      "sourceUrl": "https://www.30aitool.com/5008.html",
+      "sourceCategory": "电脑课"
+    },
+    "github-com-imdema-freemove": {
+      "sourceTitle": "如何把C盘软件迁移到其他盘教学",
+      "sourceUrl": "https://www.30aitool.com/4996.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-itab-e6-96-b0-e6-a0-87-e7-ad": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-e9-9d-92-e6-9f-a0-e8-b5-b7-e": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-infinity-e6-96-b0-e6-a0-87-e": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "separator-mayastudios-com-horz-bookmark-differentiator-234fd716-90a2-4": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-adguard-e5-b9-bf-e5-91-8a-e6": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-e6-b2-89-e6-b5-b8-e5-bc-8f-e": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-global-speed-e8-a7-86-e9-a2-": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-bilibili-e5-ad-97-e5-b9-95-e": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-e5-b0-8f-e7-94-b5-e8-a7-86-e": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "crxsoso-com-webstore-detail-mompgifjlbbfcmgfgpfjdhhaibnmamki": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-douban-book-kfdimcpljilcbhml": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-edge-e7-9a-84-e7-b1-bb-e4-bc": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-gofullpage-full-page-sc-hfac": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "microsoftedge-microsoft-com-addons-detail-e5-b0-8f-e7-ba-a2-e4-b9-a6-e": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "crxsoso-com": {
+      "sourceTitle": "【第二课】：浏览器插件&小技巧",
+      "sourceUrl": "https://www.30aitool.com/3933.html",
+      "sourceCategory": "电脑课"
+    },
+    "store-steampowered-com-about": {
+      "sourceTitle": "【第三课】：软件下载教程和必装软件",
+      "sourceUrl": "https://www.30aitool.com/4031.html",
+      "sourceCategory": "电脑课"
+    },
+    "neatdownloadmanager-com-index-php-en": {
+      "sourceTitle": "【第三课】：软件下载教程和必装软件",
+      "sourceUrl": "https://www.30aitool.com/4031.html",
+      "sourceCategory": "电脑课"
+    },
+    "potplayer-tv": {
+      "sourceTitle": "【第三课】：软件下载教程和必装软件",
+      "sourceUrl": "https://www.30aitool.com/4031.html",
+      "sourceCategory": "电脑课"
+    },
+    "github-com-coodesker-coodesker-desktop": {
+      "sourceTitle": "【第四课】快捷软件和快捷键思路",
+      "sourceUrl": "https://www.30aitool.com/4172.html",
+      "sourceCategory": "电脑课"
+    },
+    "u-tools-cn-plugins": {
+      "sourceTitle": "【第四课】快捷软件和快捷键思路",
+      "sourceUrl": "https://www.30aitool.com/4172.html",
+      "sourceCategory": "电脑课"
+    },
+    "apps-microsoft-com-detail-xp89dcgq3k6vld-hl-zh-cn-gl-cn": {
+      "sourceTitle": "【第四课】快捷软件和快捷键思路",
+      "sourceUrl": "https://www.30aitool.com/4172.html",
+      "sourceCategory": "电脑课"
+    },
+    "web-okjike-com-following": {
+      "sourceTitle": "【第五课】：如何找到高质量的网站&软件解决需求",
+      "sourceUrl": "https://www.30aitool.com/4373.html",
+      "sourceCategory": "电脑课"
+    },
+    "v2ex-com": {
+      "sourceTitle": "【第五课】：如何找到高质量的网站&软件解决需求",
+      "sourceUrl": "https://www.30aitool.com/4373.html",
+      "sourceCategory": "电脑课"
+    },
+    "52pojie-cn": {
+      "sourceTitle": "【第五课】：如何找到高质量的网站&软件解决需求",
+      "sourceUrl": "https://www.30aitool.com/4373.html",
+      "sourceCategory": "电脑课"
+    },
+    "github-com": {
+      "sourceTitle": "【第五课】：如何找到高质量的网站&软件解决需求",
+      "sourceUrl": "https://www.30aitool.com/4373.html",
+      "sourceCategory": "电脑课"
+    }
+  }
+}

@@ -1,0 +1,4 @@
+{
+  "_note": "存量错位豁免清单：只降不升。每清洗一批就删掉对应 id，并下调 check-ai-tools.mjs 的 MAX_BASELINE。",
+  "ids": []
+}

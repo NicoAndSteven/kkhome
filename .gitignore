@@ -11,7 +11,7 @@ test-results
 
 # 生产
 build
-remotion/out
+experiments/remotion/out
 
 # 杂项
 .DS_Store
@@ -48,9 +48,9 @@ node_modules/.npm-cache
 # Vite 加载 TS 配置时产生的临时文件
 vite.config.ts.timestamp-*.mjs
 
-# hub-agent（子项目运行时数据）
-hub-agent/.npm-cache
-hub-agent/data/chat.db
-hub-agent/data/chat.db-shm
-hub-agent/data/chat.db-wal
-hub-agent/dist
+# 已归档子项目（hub-agent）运行时数据
+docs/archive/experiments-retired-2026-10-21/hub-agent/.npm-cache
+docs/archive/experiments-retired-2026-10-21/hub-agent/data/chat.db
+docs/archive/experiments-retired-2026-10-21/hub-agent/data/chat.db-shm
+docs/archive/experiments-retired-2026-10-21/hub-agent/data/chat.db-wal
+docs/archive/experiments-retired-2026-10-21/hub-agent/dist

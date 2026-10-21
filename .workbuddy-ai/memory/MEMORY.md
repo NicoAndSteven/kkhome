@@ -95,6 +95,10 @@
   **不可豁免**，基线管不到。
 - 判「域名派生标题」要区分品牌名：`PixPin ← pixpinapp.com`、`SuperCLUE ← superclueai.com`
   是品牌，`Web / Lab / Tools / Ps / Font` 才是域名派生。有误报就调规则，别放水。
+- **ai-navigator 的意图词 chip 行已删**（2026-10-21）：8 个 chip 里 7 个是分类 tab 的同义词，
+  且点进去只有 0~3 条结果（「PDF 转 Word」为 0）—— 重复且是假入口。
+  `intentPrompts` 配置字段、Zod schema、fallback 常量已一并移除，**不要引回来**。
+  搜索入口只保留搜索框 + 分类 tab。
 
 ## 内容真实性
 
